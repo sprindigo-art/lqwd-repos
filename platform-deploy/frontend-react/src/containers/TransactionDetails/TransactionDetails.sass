@@ -1,0 +1,53 @@
+.transaction-details
+    .transaction-type
+        width: fit-content
+        padding: 4px 12px 4px 10px
+    .transaction-type-invoice
+        background: #D7F0FF
+        border-radius: 8px
+    .transaction-type-direct
+        background: #D7F0FF
+        border-radius: 8px
+    .transaction-type-fund
+        background: #D7F0FF
+        border-radius: 8px
+    .transaction-type-withdraw
+        background: #FEE8C7
+        border-radius: 8px
+    .transaction-type-fees
+        background: #D7F0FF
+        border-radius: 8px
+
+    .transaction-status
+        width: fit-content
+        padding: 4px 12px 4px 10px
+    .transaction-status-pending
+        background: #FBCE8B
+        border-radius: 8px
+    .transaction-status-unpaid
+        background: rgba(255, 203, 200, 0.5)
+        border-radius: 8px
+    .transaction-status-paid
+        background: rgba(183, 246, 182, 0.5)
+        border-radius: 8px
+    .transaction-status-expired
+        background: rgba(255, 203, 200, 0.5)
+        border-radius: 8px
+    #copy-tooltip
+        &> .tooltip-inner
+            background-color: #24AB20
+            color: #FFFFFF
+            border: 1px solid #24AB20
+            border-radius: 6px
+            font-family: 'Rubik'
+            font-style: normal
+            font-weight: 400
+            font-size: 14px
+            line-height: 20px
+
+    #copy-tooltip
+        &> .tooltip-arrow::before
+            border-top-color: #24AB20 !important
+
+    #copy:hover
+        color: #009EE2

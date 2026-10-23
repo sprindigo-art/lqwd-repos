@@ -1,0 +1,121 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: regtest
+  namespace: lqwd-lnd
+  labels:
+    app: regtest
+spec:
+  selector:
+    matchLabels:
+      app: regtest
+  template:
+    metadata:
+      labels:
+        app: regtest
+    spec:
+      containers:
+        - name: regtest
+          image: '514063904685.dkr.ecr.us-west-2.amazonaws.com/lnd:$LND_IMAGE_TAG'
+          terminationMessagePath: "/tmp/my-log"
+          env:
+            - name: WENV
+              value: "stage"
+            - name: POSTGRES_DB
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: POSTGRES_DB
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: POSTGRES_USER
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: POSTGRES_PASSWORD
+            - name: LND_PASSPHRASE
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: LND_PASSPHRASE
+            - name: LND_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: LND_PASSWORD
+            - name: LND_EXTERNALIP
+              value: 192.243.215.106
+            - name: LND_PODNAME
+              value: regtest
+            - name: SCENARIO
+              value: regtest
+            - name: LND_BITCOIND
+              value: "true"
+            - name: WATCHTOWER
+              value: "true"
+            - name: LND_NETWORK
+              value: regtest
+            - name: LND_ALIAS
+              value: lqwd-lnd
+            - name: LND_RPCUSER
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: LND_RPCUSER
+            - name: LND_RPCPASS
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: LND_RPCPASS
+            - name: LND_RPCHOST
+              value: tbtc1
+            - name: ENCRYPT_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: ENCRYPT_KEY
+            - name: ENCRYPT_ASD
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: ENCRYPT_ASD
+
+          ports:
+            - containerPort: 10009
+            - containerPort: 8080
+            - containerPort: 9735
+            - containerPort: 29088
+            - containerPort: 29099
+          resources:
+            requests:
+              memory: "1000Mi"
+              cpu: "200m"
+            limits:
+              memory: "2000Mi"
+              cpu: "400m"
+          volumeMounts:
+            - name: lnd
+              mountPath: /data
+          readinessProbe:
+            exec:
+              command:
+                - cat
+                - /data/bitcoind/regtest/bitcoind.pid
+            initialDelaySeconds: 120
+            timeoutSeconds: 1
+            periodSeconds: 5
+            successThreshold: 1
+            failureThreshold: 3
+      volumes:
+        - name: lnd
+          persistentVolumeClaim:
+            claimName: pv10-claim
+        - name: secret
+          secret:
+            secretName: secret
+      imagePullSecrets:
+        - name: ecr-token
+

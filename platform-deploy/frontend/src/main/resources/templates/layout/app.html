@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" th:classappend="${user == null} ? 'sidebar-noneoverflow': ''">
+    <head th:replace="${#session.getAttribute('light')} ? ~{layout/head_light::header_main_light(~{::title}, ~{::link})} : ~{layout/head::header_main(~{::title}, ~{::link})}"></head>
+    <style layout:fragment="style"></style>
+    <body th:classappend="${user == null} ? 'sidebar-noneoverflow': ''">
+        <!--  NavBar  -->
+        <div class="header-container fixed-top">
+            <div th:replace="layout/navbar::navbar"></div>
+
+            <div th:if="${user != null}">
+                <div th:unless="${user.isEmailstatus()}">
+                    <div th:replace="auth/fragments/alert-banner::alert-banner"></div>
+                </div>
+            </div>
+        </div>
+
+
+        <div th:replace="layout/navbar::sub-header(~{::section})" >
+            <section layout:fragment="sub-header"></section>
+        </div>
+
+
+        <!--  BEGIN MAIN CONTAINER  -->
+        <div class="main-container" th:classappend="${user == null} ? 'sidebar-closed': ''" id="container">
+            <div class="overlay" th:classappend="${user == null} ? 'show': ''"></div>
+            <div class="cs-overlay"></div>
+            <div class="search-overlay"></div>
+
+            <div th:if="${user != null}" th:replace="layout/sidebar::side-navbar"></div>
+            <!--  END SIDEBAR  -->
+
+            <!--  BEGIN CONTENT AREA  -->
+            <div id="content" class="main-content">
+
+                <div layout:fragment="content-section"></div>
+
+<!--                <div th:replace="layout/footer::footer_wrap"></div>-->
+
+            </div>
+            <!--  END CONTENT AREA  -->
+        </div>
+        <!--  END MAIN CONTAINER  -->
+        <div th:replace="layout/footer::footer_main(~{::script})" >
+            <!-- END GLOBAL MANDATORY SCRIPTS -->
+            <div layout:fragment="scripts"></div>
+        </div>
+        <script th:inline="javascript">
+            /*<![CDATA[*/
+            $(document).ready(function() {
+                var light_dark = /*[[${#session.getAttribute('light')}]]*/'';
+                $('#light-dark-toggle').prop('checked', light_dark);
+            });
+            /*]]>*/
+        </script>
+		<script th:src="@{/js/auth/token.js}"></script>
+    </body>
+
+</html>

@@ -1,0 +1,31 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <include file="db/changelog/db.changelog-01.xml"/>
+
+    <changeSet id="currency-creation" author="chris">
+        <sqlFile dbms="postgresql,h2"
+                 path="db/migrations/db.migration-create-currency.sql"/>
+    </changeSet>
+    <changeSet id="product-creation" author="chris">
+        <sqlFile dbms="postgresql,h2"
+                 path="db/migrations/db.migration-create-product.sql"/>
+    </changeSet>
+    <changeSet id="plans-creation" author="chris">
+        <sqlFile dbms="postgresql,h2"
+                 path="db/migrations/db.migration-create-plans.sql"/>
+    </changeSet>
+
+    <include file="db/changelog/db.changelog-02.xml"/>
+    <include file="db/changelog/db.changelog-03.xml"/>
+    <include file="db/changelog/db.changelog-04.xml"/>
+    <include file="db/changelog/db.changelog-05.xml"/>
+    <include file="db/changelog/db.changelog-06.xml"/>
+    <include file="db/changelog/db.changelog-07.xml"/>
+    <include file="db/changelog/db.changelog-08.yaml"/>
+    <include file="db/changelog/db.changelog-09.yaml"/>
+    <include file="db/changelog/db.changelog-10.yaml"/>
+</databaseChangeLog>

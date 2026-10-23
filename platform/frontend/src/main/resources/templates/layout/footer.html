@@ -1,0 +1,117 @@
+<div th:fragment="footer_wrap" class="footer-wrapper">
+    <div class="footer-section f-section-1">
+        <h5>About</h5>
+        <ul class="list-unstyled text-small">
+            <li><a class="text-muted" href="#">Team</a></li>
+            <li><a class="text-muted" href="#">Locations</a></li>
+            <li><a class="text-muted" href="#">Privacy</a></li>
+            <li><a class="text-muted" href="#">Terms</a></li>
+        </ul>
+    </div>
+    <div class="footer-section f-section-1">
+        <h5>About</h5>
+        <ul class="list-unstyled text-small">
+            <li><a class="text-muted" href="#">Team</a></li>
+            <li><a class="text-muted" href="#">Locations</a></li>
+            <li><a class="text-muted" href="#">Privacy</a></li>
+            <li><a class="text-muted" href="#">Terms</a></li>
+        </ul>
+    </div>
+    <div class="footer-section f-section-1">
+        <h5>About</h5>
+        <ul class="list-unstyled text-small">
+            <li><a class="text-muted" href="#">Team</a></li>
+            <li><a class="text-muted" href="#">Locations</a></li>
+            <li><a class="text-muted" href="#">Privacy</a></li>
+            <li><a class="text-muted" href="#">Terms</a></li>
+        </ul>
+    </div>
+</div>
+
+<div th:fragment="footer_main(scripts)" th:with="pluginPath='/plugins/light'">
+    <!-- BEGIN GLOBAL MANDATORY SCRIPTS -->
+    <script th:src="@{/assets/js/app.js}"></script>
+    <script th:src="@{/assets/js/libs/jquery-3.1.1.min.js}"></script>
+    <script th:src="@{/bootstrap/js/popper.min.js}"></script>
+    <script th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+    <script th:src="@{${pluginPath + '/perfect-scrollbar/perfect-scrollbar.min.js'}}"></script>
+    <script th:if="${user != null}">
+        $(document).ready(function () {
+            App.init();
+
+            $('#sidebar').find("a").each(function () {
+                if ($(this).attr("href") == window.location.pathname) {
+                    $(this).closest("ul").siblings(".dropdown-toggle").attr("aria-expanded", "true");
+                    $(this).closest("ul").addClass("show");
+                    $(this).parent("li").addClass("active");
+                }
+            });
+
+            $(".navbar_a_currency-dropdown").on('click', function () {
+                var currency = $(this).attr("data-value");
+
+                $.ajax({
+                    url: "/change-currency",
+                    type: "POST",
+                    data: {
+                        'currency': currency
+                    },
+                    success: function (data) {
+                        var response = JSON.parse(data);
+                        Snackbar.show({
+                            text: response['message'],
+                            pos: 'top-center',
+                            actionTextColor: '#fff',
+                            backgroundColor: '#8dbf42'
+                        });
+                        location.reload();
+                    },
+                    error: function (data) {
+                        var response = JSON.parse(data);
+
+                        Snackbar.show({
+                            text: response['message'],
+                            pos: 'top-center',
+                            duration: false,
+                            actionTextColor: '#fff',
+                            backgroundColor: '#e7515a'
+                        });
+                    }
+                });
+            });
+
+        });
+    </script>
+    <script th:src="@{/assets/js/custom.js}"></script>
+    <!-- toastr -->
+    <script th:src="@{${pluginPath + '/notification/snackbar/snackbar.min.js'}}"></script>
+
+    <script>
+        $('#alert-banner_a_email-verification').on('click', function (e) {
+            e.preventDefault();
+            var url = $(this).attr('href');
+
+            $("#alert-banner_div_alert").alert('close');
+            $.get(url, function (response) {
+                var success = JSON.parse(response);
+                Snackbar.show({
+                    text: success['message'],
+                    pos: 'top-center',
+                    actionTextColor: '#fff',
+                    backgroundColor: '#8dbf42'
+                });
+            })
+        });
+    </script>
+    <script th:src="@{${pluginPath + '/font-icons/feather/feather.min.js'}}"></script>
+    <script th:src="@{${pluginPath + '/sweetalerts/sweetalert2.min.js'}}"></script>
+    <script type="text/javascript">
+        feather.replace();
+    </script>
+    <script th:src="@{${pluginPath + '/bootstrap-select/bootstrap-select.min.js'}}"></script>
+    <!-- END GLOBAL MANDATORY SCRIPTS -->
+    <script th:src="@{/js/toggle-light/toggle-light.js}"></script>
+    <script th:src="@{/js/footer/lnd-session.js}"></script>
+
+    <th:block th:replace="${scripts}"/>
+</div>

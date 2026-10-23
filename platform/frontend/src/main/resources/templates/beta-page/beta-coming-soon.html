@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/head::header_main(~{::title}, ~{::link})">
+    <title>LQwD | Coming Soon</title>
+    <!--  <link th:href="@{/assets/css/authentication/form-1.css}"  rel="stylesheet" type="text/css" />-->
+    <link rel="stylesheet" type="text/css" th:href="@{/assets/css/forms/theme-checkbox-radio.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/assets/css/forms/switches.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/login.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/assets/css/components/custom-modal.css}">
+    <link th:href="@{/plugins/loaders/custom-loader.css}" rel="stylesheet" type="text/css"/>
+    <link th:href="@{assets/css/pages/coming-soon/style.css}" rel="stylesheet" type="text/css">
+    <link th:href="@{assets/css/authentication/form-1.css}" rel="stylesheet" type="text/css"/>
+    <!--  Recaptcha -->
+    <script th:src='|https://www.google.com/recaptcha/api.js?render=${@captchaSettings.getSite()}'></script>
+
+</head>
+<body class="coming-soon">
+
+<div class="coming-soon-container">
+    <div class="coming-soon-cont">
+        <div class="coming-soon-wrap">
+            <div class="coming-soon-container">
+                <div class="coming-soon-content">
+
+                    <h4 class="">Coming Soon</h4>
+                    <p class="">We will be here in a shortwhile.....</p>
+
+                    <h3>Register to be invited to beta!</h3>
+
+                    <form id="beta-coming-soon_frm_beta-coming-soon" class="text-left" action="javascript:void(0);">
+                        <div class="coming-soon">
+
+                            <div class="">
+                                <div id="beta-coming-soon_div_email" class="field-wrapper input">
+                                    <i data-feather="at-sign"></i>
+                                    <input id="beta-coming-soon_txt_email" name="email" class="form-control" type="text"
+                                           value="" placeholder="Email">
+                                    <button id="beta-coming-soon_btn_subscribe" class="btn btn-success" value="">
+                                        Subscribe
+                                    </button>
+                                </div>
+                                <span id="beta-coming-soon_txt_email-response" class="text-success"></span>
+                            </div>
+
+                        </div>
+                    </form>
+
+                    <p class="terms-conditions">
+                        © 2021 All Rights Reserved. <a id="beta-coming-soon_a_lqwd" href="https://lqwdfintech.com">LQwD
+                        Financial Corp</a>.<br>
+                        <a id="beta-coming-soon_a_cookie" th:href="@{/cookies}">Cookie Preferences</a>,
+                        <a id="beta-coming-soon_a_privacy" th:href="@{/privacy}">Privacy</a>, and
+                        <a id="beta-coming-soon_a_terms" th:href="@{/terms}">Terms</a>.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="coming-soon-image">
+        <div class="l-image">
+            <div class="img-content">
+                <img th:src="@{images/logo/LQwD.png}" alt="coming_soon">
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- BEGIN GLOBAL MANDATORY SCRIPTS -->
+<div th:replace="layout/footer::footer_main(~{::script})">
+    <!-- END GLOBAL MANDATORY SCRIPTS -->
+    <script th:src="@{/js/beta/beta-coming.js}"></script>
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        $(document).ready(function () {
+
+            $("#beta-coming-soon_btn_subscribe").on('click', function () {
+
+                var secretKey = /*[[${@captchaSettings.getSite()}]]*/'';
+                grecaptcha.ready(function () {
+                    grecaptcha.execute(secretKey,
+                        {action: /*[[${T(lqwd.frontend.captcha.CaptchaServiceV3).SUBSCRIBE_BETA_ACTION}]]*/''})
+                        .then(function (response) {
+
+                            registerForBeta(response);
+
+                        });
+                });
+            });
+
+            $("#beta-coming-soon_txt_email").on('change', function () {
+                $.ajax({
+                    url: '/check-email',
+                    type: "POST",
+                    data: {
+                        'email': $('#beta-coming-soon_txt_email').val()
+                    },
+                    success: function (response) {
+                        var success_msg = JSON.parse(response);
+                        $("#beta-coming-soon_txt_email-response").html(success_msg['message']).removeClass('text-danger').addClass('text-success');
+                        $("#beta-coming-soon_btn_subscribe").prop('disabled', false);
+                    },
+                    error: function (response) {
+                        var error_msg = JSON.parse(response['responseText']);
+                        $("#beta-coming-soon_txt_email-response").html(error_msg['message']).removeClass('text-success').addClass('text-danger');
+                        $("#beta-coming-soon_btn_subscribe").prop('disabled', true);
+                    }
+                });
+            });
+
+        });
+        /*]]>*/
+    </script>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,3 @@
+databaseChangeLog:
+  - include:
+      file: db/migration/changelog/V1_create_lnd_invoice_table.yaml

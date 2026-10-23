@@ -1,0 +1,55 @@
+#spring
+spring.profiles.active=dev
+spring.application.name=lnd-advance-process
+server.port=8588
+
+
+app.auth_post_url=192.168.123.252
+app.auth_post_port=8187
+app.auth_user_name=
+app.auth_password=
+app.auth_grand_type=password
+
+
+#kafka spring.kafka.bootstrap-servers=localhost:9092,localhost:9093,localhost:9094
+spring.kafka.bootstrap-servers=192.168.123.252:9092
+spring.kafka.enable.auto.commit=true
+spring.kafka.auto.commit.interval.ms=10000
+spring.kafka.session.timeout.ms=30000
+spring.kafka.consumer.timeout.ms=120000
+
+spring.kafka.jaas.enabled=true
+spring.kafka.properties.security.protocol=SASL_PLAINTEXT
+spring.kafka.properties.sasl.mechanism=PLAIN
+spring.kafka.properties.sasl.jaas.config=org.apache.kafka.common.security.plain.PlainLoginModule required username="admin" password="" user_admin="" user_kafka="";
+
+spring.kafka.admin.ssl.key-password=password12
+spring.kafka.admin.ssl.key-store-location= file:src/main/resources/kafka.server.keystore.jks
+spring.kafka.admin.ssl.key-store-password=
+spring.kafka.admin.ssl.trust-store-location= file:src/main/resources/kafka.server.truststore.jks
+spring.kafka.admin.ssl.trust-store-password=
+#spring.kafka.template.default-topic= # Default topic to which messages will be sent.
+
+#server.ssl.key-store-type: PKCS12
+server.ssl.key-store: 'file:src/main/resources/keystore.jks'
+server.ssl.key-store-password:
+#server.ssl.key-alias: cert
+
+grpc.client.target=192.168.123.252:8080
+
+
+spring.cloud.stream.default.producer.useNativeEncoding=true
+spring.cloud.stream.default.consumer.useNativeEncoding=true
+spring.cloud.stream.bindings.input.destination=tmessage-details
+spring.cloud.stream.bindings.input.content-type=application/*+avro
+spring.cloud.stream.bindings.input.group=group-1
+#spring.cloud.stream.bindings.input.concurrency=3
+spring.cloud.stream.bindings.output.destination=tmessage-details
+spring.cloud.stream.bindings.output.content-type=application/*+avro
+spring.cloud.stream.kafka.binder.producer-properties.key.serializer=io.confluent.kafka.serializers.KafkaAvroSerializer
+spring.cloud.stream.kafka.binder.producer-properties.value.serializer=io.confluent.kafka.serializers.KafkaAvroSerializer
+spring.cloud.stream.kafka.binder.producer-properties.schema.registry.url=http://192.168.123.252:8081
+spring.cloud.stream.kafka.binder.consumer-properties.key.deserializer=io.confluent.kafka.serializers.KafkaAvroDeserializer
+spring.cloud.stream.kafka.binder.consumer-properties.value.deserializer=io.confluent.kafka.serializers.KafkaAvroDeserializer
+spring.cloud.stream.kafka.binder.consumer-properties.schema.registry.url=http://192.168.123.252:8081
+spring.cloud.stream.kafka.binder.consumer-properties.specific.avro.reader=true

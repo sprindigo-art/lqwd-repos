@@ -1,0 +1,55 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+ <changeSet author="femi" id="1636437090147-1">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="lnd_creation_state_check_queue"/>
+            </not>
+        </preConditions>
+        <createTable tableName="lnd_creation_state_check_queue">
+
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="lnd_creation_state_check_queue_pkey"/>
+            </column>
+
+            <column name="node_name" type="text">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="no_of_times_checked" type="BIGINT">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="running_state" type="text">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="last_run_time" type="BIGINT">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="created" type="TIMESTAMP WITHOUT TIME ZONE"/>
+
+            <column name="updated" type="TIMESTAMP WITHOUT TIME ZONE"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1637185421536-1">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="signup_confirmation_token"/>
+            </not>
+        </preConditions>
+        <createTable tableName="signup_confirmation_token">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="signup_confirmation_tokenPK"/>
+            </column>
+            <column name="date_created" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="email" type="VARCHAR(50)"/>
+            <column name="invite_code" type="VARCHAR(50)"/>
+            <column name="usage_date" type="TIMESTAMP WITHOUT TIME ZONE"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1637185421536-2">
+        <addUniqueConstraint columnNames="email" constraintName="UC_SIGNUP_CONFIRMATION_TOKENEMAIL_COL" tableName="signup_confirmation_token"/>
+    </changeSet>
+</databaseChangeLog>

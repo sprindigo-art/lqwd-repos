@@ -1,0 +1,314 @@
+<div id="transaction-list-container" class="mail-box-container">
+  <div class="mail-overlay"></div>
+
+  <div class="tab-title">
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-12 text-center">
+        <h5 class="app-title">History</h5>
+      </div>
+      <div class="todoList-sidebar-scroll">
+        <div class="col-md-12 col-sm-12 col-12 mt-4 pl-0">
+          <ul class="nav nav-pills d-block" id="pills-tab" role="tablist">
+            <li class="nav-item">
+              <a class="nav-link list-actions active" id="all-list" data-toggle="pill" href="#pills-all" role="tab" aria-selected="false">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-grid">
+                  <rect x="3" y="3" width="7" height="7"></rect>
+                  <rect x="14" y="3" width="7" height="7"></rect>
+                  <rect x="14" y="14" width="7" height="7"></rect>
+                  <rect x="3" y="14" width="7" height="7"></rect>
+                </svg>
+                All
+                <span class="todo-badge badge"></span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link list-actions" id="invoices-list" data-toggle="pill" href="#pills-invoices" role="tab" aria-selected="true">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-list">
+                  <line x1="8" y1="6" x2="21" y2="6"></line>
+                  <line x1="8" y1="12" x2="21" y2="12"></line>
+                  <line x1="8" y1="18" x2="21" y2="18"></line>
+                  <line x1="3" y1="6" x2="3.01" y2="6"></line>
+                  <line x1="3" y1="12" x2="3.01" y2="12"></line>
+                  <line x1="3" y1="18" x2="3.01" y2="18"></line>
+                </svg>
+                Invoices
+                <span class="todo-badge badge"></span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link list-actions" id="payments-list" data-toggle="pill" href="#pills-payments" role="tab" aria-selected="false">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-credit-card">
+                  <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
+                  <line x1="1" y1="10" x2="23" y2="10"></line>
+                </svg>
+                Payments
+                <span class="todo-badge badge"></span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link list-actions" id="transactions-list" data-toggle="pill" href="#pills-transactions" role="tab" aria-selected="false">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-fast-forward">
+                  <polygon points="13 19 22 12 13 5 13 19"></polygon>
+                  <polygon points="2 19 11 12 2 5 2 19"></polygon>
+                </svg>
+                Transactions
+                <span class="todo-badge badge"></span>
+              </a>
+            </li>
+
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="todo-inbox" class="accordion todo-inbox">
+    <div class="search">
+      <input type="text" class="form-control input-search" placeholder="Search Here...">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu mail-menu d-lg-none">
+        <line x1="3" y1="12" x2="21" y2="12"></line>
+        <line x1="3" y1="6" x2="21" y2="6"></line>
+        <line x1="3" y1="18" x2="21" y2="18"></line>
+      </svg>
+    </div>
+    <div class="todo-box">
+
+      <div id="ct" class="todo-box-scroll">
+        <div th:each="transactionHistory : ${transactionHistories}"  th:insert="transaction_history/fragments/history-list::historyList(${transactionHistory})"></div>
+        <div th:if="${transactionHistories} == null or ${#lists.isEmpty(transactionHistories)}">
+            <h5 class="text-center pt-5 pb-5" style="color: #4B555B;">No Transactions Found.</h5>
+        </div>
+      </div>
+
+      <div class="modal fade" id="todoShowListItem" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-body">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x close" data-dismiss="modal"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+              <div class="compose-box">
+                <div class="compose-content">
+                  <h5 id="todoModalHeading" class="task-heading"></h5>
+                  <p id="todoModalText" class="task-text"></p>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button class="btn" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div layout:fragment="scripts">
+    <script>
+      $('.input-search').on('keyup', function() {
+        var rex = new RegExp($(this).val(), 'i');
+        $('.todo-box .todo-item').hide();
+        $('.todo-box .todo-item').filter(function() {
+          return rex.test($(this).text());
+        }).show();
+      });
+
+      const taskViewScroll = new PerfectScrollbar('.task-text', {
+        wheelSpeed:.5,
+        swipeEasing:!0,
+        minScrollbarLength:40,
+        maxScrollbarLength:300,
+        suppressScrollX : true
+      });
+      function dynamicBadgeNotification( setTodoCategoryCount ) {
+        var todoCategoryCount = setTodoCategoryCount;
+
+        // Get Parents Div(s)
+        var get_ParentsDiv = $('.todo-item');
+
+        var get_TodoAllListParentsDiv = $('.todo-item.all-list');
+        var get_InvoiceListParentsDiv = $('.todo-item.invoices-list');
+        var get_PaymentsListParentsDiv = $('.todo-item.payments-list');
+        var get_TransactionListParentsDiv = $('.todo-item.transactions-list');
+
+        // Get Parents Div(s) Counts
+        var get_TodoListElementsCount = get_TodoAllListParentsDiv.length;
+        var get_InvoiceElementsCount = get_InvoiceListParentsDiv.length;
+        var get_PaymentElementsCount = get_PaymentsListParentsDiv.length;
+        var get_TransactionElementsCount = get_TransactionListParentsDiv.length;
+
+        // Get Badge Div(s)
+        var getBadgeTodoAllListDiv = $('#all-list .todo-badge');
+        var getBadgeInvoiceListDiv = $('#invoices-list .todo-badge');
+        var getBadgePaymentListDiv = $('#payments-list .todo-badge');
+        var getBadgeTransactionListDiv = $('#transactions-list .todo-badge');
+
+
+        if (todoCategoryCount === 'allList') {
+          if (get_TodoListElementsCount === 0) {
+            getBadgeTodoAllListDiv.text('');
+            return;
+          }
+          if (get_TodoListElementsCount > 9) {
+            getBadgeTodoAllListDiv.css({
+              padding: '2px 0px',
+              height: '25px',
+              width: '25px'
+            });
+          } else if (get_TodoListElementsCount <= 9) {
+            getBadgeTodoAllListDiv.removeAttr('style');
+          }
+          getBadgeTodoAllListDiv.text(get_TodoListElementsCount);
+        }
+        else if (todoCategoryCount === 'invoiceList') {
+          if (get_InvoiceElementsCount === 0) {
+            getBadgeInvoiceListDiv.text('');
+            return;
+          }
+          if (get_InvoiceElementsCount > 9) {
+            getBadgeInvoiceListDiv.css({
+              padding: '2px 0px',
+              height: '25px',
+              width: '25px'
+            });
+          } else if (get_InvoiceElementsCount <= 9) {
+            getBadgeInvoiceListDiv.removeAttr('style');
+          }
+          getBadgeInvoiceListDiv.text(get_InvoiceElementsCount);
+        }
+        else if (todoCategoryCount === 'paymentList') {
+          if (get_PaymentElementsCount === 0) {
+            getBadgePaymentListDiv.text('');
+            return;
+          }
+          if (get_PaymentElementsCount > 9) {
+            getBadgePaymentListDiv.css({
+              padding: '2px 0px',
+              height: '25px',
+              width: '25px'
+            });
+          } else if (get_PaymentElementsCount <= 9) {
+            getBadgePaymentListDiv.removeAttr('style');
+          }
+          getBadgePaymentListDiv.text(get_PaymentElementsCount);
+        }
+        else if (todoCategoryCount === 'transactionList') {
+          if (get_TransactionElementsCount === 0) {
+            getBadgeTransactionListDiv.text('');
+            return;
+          }
+          if (get_TransactionElementsCount > 9) {
+            getBadgeTransactionListDiv.css({
+              padding: '2px 0px',
+              height: '25px',
+              width: '25px'
+            });
+          } else if (get_TransactionElementsCount <= 9) {
+            getBadgeTransactionListDiv.removeAttr('style');
+          }
+          getBadgeTransactionListDiv.text(get_TransactionElementsCount);
+        }
+      }
+
+      new dynamicBadgeNotification('allList');
+      new dynamicBadgeNotification('invoiceList');
+      new dynamicBadgeNotification('paymentList');
+      new dynamicBadgeNotification('transactionList');
+
+      $('.mail-menu').on('click', function(event) {
+        $('.tab-title').addClass('mail-menu-show');
+        $('.mail-overlay').addClass('mail-overlay-show');
+      })
+
+      $('.mail-overlay').on('click', function(event) {
+        $('.tab-title').removeClass('mail-menu-show');
+        $('.mail-overlay').removeClass('mail-overlay-show');
+      })
+
+      const ps = new PerfectScrollbar('.todo-box-scroll', {
+        suppressScrollX : true
+      });
+
+      const todoListScroll = new PerfectScrollbar('.todoList-sidebar-scroll', {
+        suppressScrollX : true
+      });
+
+
+      function todoItem(itemId) {
+
+        itemId = '#'.concat(itemId);
+        var $_taskTitle = $(itemId).find('.todo-heading').attr('data-todoHeading');
+        var $todoHtml = $(itemId).find('.todo-text').attr('data-todoHtml');
+
+        $('#todoModalHeading').text($_taskTitle);
+        $('#todoModalText').html($todoHtml);
+        $('#todoShowListItem').modal('show');
+      }
+
+      $('#all-list').on('click', function (){
+      });
+      var $btns = $('.list-actions').click(function() {
+
+        if (this.id == 'all-list') {
+          var $el = $('.' + this.id).fadeIn();
+          $('.ct2 > div').not($el).hide();
+        } else if (this.id == 'invoices-list') {
+          var $el = $('.' + this.id).fadeIn();
+          $('.ct2 > div').not($el).hide();
+        } else if (this.id == 'payments-list') {
+          var $el = $('.' + this.id).fadeIn();
+          $('.ct2 > div').not($el).hide();
+        } else if (this.id == 'transactions-list') {
+          var $el = $('.' + this.id).fadeIn();
+          $('.ct2 > div').not($el).hide();
+        }else {
+          var $el = $('.' + this.id).fadeIn();
+          $('.ct2 > div').not($el).hide();
+        }
+        $btns.removeClass('active');
+        $(this).addClass('active');
+      })
+
+      $('.tab-title .nav-pills a.nav-link').on('click', function(event) {
+        $(this).parents('.mail-box-container').find('.tab-title').removeClass('mail-menu-show')
+        $(this).parents('.mail-box-container').find('.mail-overlay').removeClass('mail-overlay-show')
+      })
+
+
+    </script>
+
+    <script th:inline="javascript">
+      function loadFragmentForPopUp(type, creation_date) {
+        console.log(type, creation_date);
+        var transactionHistories = [[${transactionHistories}]];
+        var transactionHistory = null;
+
+        for (let i = 0; i < transactionHistories.length; i++) {
+          console.log(transactionHistories[i]);
+          if (transactionHistories[i]['type'] === type && transactionHistories[i]['creation_date'] === creation_date) {
+            transactionHistory = transactionHistories[i];
+          }
+        }
+
+        if (transactionHistory != null) {
+          $.ajax({
+            url: "/get-history-fragment",
+            type: "POST",
+            data: {
+              "transactionHistory": JSON.stringify(transactionHistory)
+            },
+            success: function (fragment) {
+              var itemId = "#".concat(creation_date);
+
+              console.log(fragment);
+              $("#todoShowListItem").replaceWith(fragment);
+              $('#todoShowListItem').modal('show');
+            },
+            error: function (response) {
+              console.log(response);
+            }
+          });
+        }
+      }
+    </script>
+  </div>
+</div>

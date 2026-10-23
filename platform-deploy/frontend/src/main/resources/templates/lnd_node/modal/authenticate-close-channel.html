@@ -1,0 +1,29 @@
+<div th:fragment="channel-close-authorize" class="modal fade text-left" id="channelCloseAuth" tabindex="-1"
+     role="dialog"
+     aria-labelledby="channelCloseModalLabel" aria-hidden="true" data-check="false">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" id="modal-reload">
+            <div class="modal-header">
+                <h5 class="modal-title" id="channelCloseModalLabel">Authorize</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="channelCloseAuth_txt_password">Password</label>
+                        <input type="password" class="form-control" id="channelCloseAuth_txt_password"
+                               placeholder="Password">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button id="channelAuthModal-dismiss" type="button" class="btn" data-dismiss="modal">Close</button>
+                <button id="channelAuthModal-blockui" type="button" class="btn btn-primary" data-channelpoint=""
+                        data-lnd="">Authorize
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

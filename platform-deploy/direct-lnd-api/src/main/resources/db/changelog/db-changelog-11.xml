@@ -1,0 +1,69 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <changeSet author="femi" id="1630967628231-1">
+        <createTable tableName="lsp_staking">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="lspstakingPK"/>
+            </column>
+            <column name="user_id" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="amount" type="numeric(19, 2)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="days" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="payment_type" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="created" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="updated" type="TIMESTAMP WITHOUT TIME ZONE"/>
+
+            <column name="status" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="unique_address" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="femi" id="1630967628231-2">
+        <createTable tableName="lsp_transaction">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="lsptransactionPK"/>
+            </column>
+
+            <column name="id_lsp_staking" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="amount" type="numeric(19, 2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="from" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="to" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="created" type="TIMESTAMP WITHOUT TIME ZONE"/>
+
+            <column name="status" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="updated" type="TIMESTAMP WITHOUT TIME ZONE"/>
+
+            <column name="created_by" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+
+        </createTable>
+    </changeSet>
+</databaseChangeLog>

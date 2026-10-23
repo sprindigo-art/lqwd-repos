@@ -1,0 +1,14 @@
+/dev/root            /                    auto       defaults              1  1
+proc                 /proc                proc       defaults              0  0
+devpts               /dev/pts             devpts     mode=0620,ptmxmode=0666,gid=5      0  0
+tmpfs                /run                 tmpfs      mode=0755,nodev,nosuid,strictatime 0  0
+tmpfs                /var/volatile        tmpfs      defaults              0  0
+
+# Data partition (mmcblk0p3): lnd wallet, macaroons, TLS material, sqlite db.
+# Survives OS updates - see docs/UPDATES.md.
+# nosuid/nodev/noexec: nothing here is ever executed or a device node.
+/dev/mmcblk0p3       /data                ext4       defaults,noatime,nosuid,nodev,noexec  0  2
+
+# The boot partition is intentionally NOT mounted at runtime. Nothing on a
+# running system needs to write firmware or kernel files. Mount it by hand
+# when updating: mount /dev/mmcblk0p1 /boot

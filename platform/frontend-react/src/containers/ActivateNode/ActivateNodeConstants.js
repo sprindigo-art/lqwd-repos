@@ -1,0 +1,14 @@
+export const SHOW_ACTIVATE_MODAL = 'lqwd/frontend/SHOW_ACTIVATE_MODAL';
+export const HIDE_ACTIVATE_MODAL = 'lqwd/frontend/HIDE_ACTIVATE_MODAL';
+export const GET_SEEDS_FOR_ACTIVATION =
+  'lqwd/frontend/GET_SEEDS_FOR_ACTIVATION';
+export const ACTIVATION_SEEDS_SUCCESS =
+  'lqwd/frontend/ACTIVATION_SEEDS_SUCCESS';
+export const ACTIVATION_SEEDS_ERROR = 'lqwd/frontend/ACTIVATION_SEEDS_ERROR';
+export const ACTIVATE_NODE_REQUEST = 'lqwd/frontend/ACTIVATE_NODE_REQUEST';
+export const ACTIVATE_NODE_SUCCEEDED = 'lqwd/frontend/ACTIVATE_NODE_SUCCEEDED';
+export const ACTIVATE_NODE_FAILED = 'lqwd/frontend/ACTIVATE_NODE_FAILED';
+
+export const ACTIVATE_NODE_EXPIRED = 'lqwd/frontend/ACTIVATE_NODE_EXPIRED';
+export const ACTIVATE_NODE_EXPIRED_CONFIRM =
+  'lqwd/frontend/ACTIVATE_NODE_EXPIRED_CONFIRM';

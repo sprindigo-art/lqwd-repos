@@ -1,0 +1,13 @@
+export const WITHDRAW_SELECT_NODE = 'lqwd/frontend/WITHDRAW_SELECT_NODE';
+export const WITHDRAW_UPDATE_INFO = 'lqwd/frontend/WITHDRAW_UPDATE_INFO';
+export const WITHDRAW_ACTIVE_STEP = 'lqwd/frontend/WITHDRAW_ACTIVE_STEP';
+export const WITHDRAW_SEND_COINS = 'lqwd/frontend/WITHDRAW_SEND_COINS';
+export const WITHDRAW_SEND_COINS_FAILED =
+  'lqwd/frontend/WITHDRAW_SEND_COINS_FAILED';
+export const WITHDRAW_SEND_COINS_SUCCESS =
+  'lqwd/frontend/WITHDRAW_SEND_COINS_SUCCESS';
+export const WITHDRAW_RESET = 'lqwd/frontend/WITHDRAW_RESET';
+export const WITHDRAW_SHOW_AUTHORIZE_MODAL =
+  'lqwd/frontend/WITHDRAW_SHOW_AUTHORIZE_MODAL';
+export const WITHDRAW_HIDE_AUTHORIZE_MODAL =
+  'lqwd/frontend/WITHDRAW_HIDE_AUTHORIZE_MODAL';

@@ -1,0 +1,206 @@
+.signup-page-container-mobile {
+    /* White */
+    padding-left: 6.1%;
+    padding-right: 6.1%;
+    padding-top: 3.2%;
+}
+
+.signup-page-form-container-mobile {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    height: 100%;
+}
+
+.signup-page-form-header-mobile {
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 20px;
+}
+
+.signup-page-form-title-mobile {
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 36px;
+    line-height: 44px;
+    /* identical to box height, or 122% */
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    color: #000000;
+
+}
+
+.signup-page-form-mobile {
+    display: flex;
+    flex-direction: column;
+    row-gap: 20px;
+}
+
+.signup-page-form-inputs {
+    display: flex;
+    flex-direction: column;
+    row-gap: 8px;
+}
+
+.signup-page-form-label {
+    display: flex;
+    flex-direction: row;
+}
+
+.signup-page-form-input {
+    display: flex;
+    flex-direction: row;
+
+    align-items: center;
+    padding: 12px;
+    gap: 10px;
+
+    height: 45px;
+
+    background: #FFFFFF;
+    border: 1px solid #DDDDDD;
+    border-radius: 8px;
+}
+
+.signup-page-form-checkbox {
+    display: flex;
+    flex-direction: row;
+    column-gap: 11px;
+}
+
+.signup-page-not-registered-mobile {
+    /* Label 1 */
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    /* identical to box height, or 143% */
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    /* Text - Primary */
+    color: #111111;
+}
+
+.signup-page-create-account-link-mobile {
+    padding-left: 5px;
+    /* Primary */
+    color: #009EE2;
+    text-decoration: none;
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 20px;
+    /* identical to box height, or 143% */
+
+    display: flex;
+    align-items: center;
+    text-align: right;
+}
+
+.forgot-password-link {
+    color: #009EE2;
+    text-decoration: none;
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 20px;
+
+    display: flex;
+    align-items: center;
+    text-align: right;
+}
+
+.signup-page-form-footer-mobile {
+    flex-direction: column;
+    color: #111111;
+    position: absolute;
+    bottom: 10px;
+}
+.signup-page-form-footer-row-mobile {
+    display: flex;
+    flex-direction: row;
+    padding-bottom: 12px;
+
+    /* Label 1 */
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    /* identical to box height, or 143% */
+
+    display: flex;
+    align-items: center;
+
+    /* Text - Primary */
+
+    color: #111111;
+}
+
+.signup-page-form-footer-rights-line-mobile {
+    display: flex;
+    flex-direction: row;
+    padding-bottom: 4px;
+
+    /* Label 2 */
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 17px;
+
+    /* Text - Tertiary */
+    color: #7A7A7A;
+}
+
+.footer-term-links-mobile {
+    display: flex;
+    flex-direction: row;
+    column-gap: 8px;
+}
+
+.footer-term-links-link-mobile {
+    /* Primary */
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 17px;
+
+    text-align: center;
+    text-decoration: none;
+    /* Primary */
+    color: #009EE2;
+
+    padding-right: 20px;
+}
+
+.signup-page-terms-services {
+    /* Label 2 */
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 17px;
+    /* identical to box height, or 142% */
+
+    display: flex;
+    align-items: center;
+    /* Text - Primary */
+    color: #111111;
+}
+
+.signup-page-terms-services >> a {
+    color: #009EE2 !important;
+    text-decoration: none !important;
+}

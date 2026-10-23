@@ -1,0 +1,17 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <changeSet author="djbabs (generated)" id="1654800821674-1">
+        <createTable tableName="lnd_payment_index">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="lnd_payment_indexPK"/>
+            </column>
+            <column name="node_name" type="VARCHAR(255)"/>
+            <column name="payment_index" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1654800821674-2">
+        <addUniqueConstraint columnNames="node_name" constraintName="UC_LND_PAYMENT_INDEXNODE_NAME_COL" tableName="lnd_payment_index"/>
+    </changeSet>
+</databaseChangeLog>

@@ -1,0 +1,23 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <changeSet author="djbabs (generated)" id="1630256260968-1">
+        <createTable tableName="shedlock">
+            <column autoIncrement="false" name="name" type="VARCHAR(64)">
+                <constraints primaryKey="true" primaryKeyName="shedlockPK"/>
+            </column>
+            <column name="lock_until" type="TIMESTAMP(3)"/>
+            <column name="locked_at" type="TIMESTAMP(3)"/>
+            <column name="locked_by" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1630256260968-2">
+        <addColumn tableName="liquidity">
+            <column name="channel_expiry_date" type="timestamp"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1630256260968-3">
+        <addColumn tableName="liquidity">
+            <column name="expired" type="boolean"/>
+        </addColumn>
+    </changeSet>
+</databaseChangeLog>

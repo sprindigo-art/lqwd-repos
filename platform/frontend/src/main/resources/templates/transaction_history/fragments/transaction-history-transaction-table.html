@@ -1,0 +1,58 @@
+<div class="widget-content widget-content-area br-6" th:fragment="transaction-table(${transactionList},${transactionTotalPages},${transactionPageNumber},${transactionTotalItems},${transactionPageSize})">
+    <div th:if="${transactionTotalItems==0}" class="widget" id="list-transaction_div_list-empty">
+        <div class="widget-content widget-content-area justify-content-center text-center">
+            <h3 style="padding: 20px;">You Do Not Have Any On-Chain Transactions</h3>
+        </div>
+    </div>
+    <div th:unless="${transactionTotalItems==0}" id="default-ordering_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4">
+        <div class="table-responsive">
+            <table id="list-transaction_tbl_list" class="table table-hover dataTable" role="grid">
+                <thead>
+                    <tr role="row">
+                        <th class="" tabindex="0" aria-controls="default-ordering" rowspan="1" colspan="1">Transaction Hash</th>
+                        <th class="sorting" tabindex="0" aria-controls="default-ordering" rowspan="1" colspan="1">Value</th>
+                        <th class="sorting" tabindex="0" aria-controls="default-ordering" rowspan="1" colspan="1">Total Fees</th>
+
+                        <th class="" tabindex="0" aria-controls="default-ordering" rowspan="1" colspan="1">Confirmations</th>
+                        <th class="" tabindex="0" aria-controls="default-ordering" rowspan="1" colspan="1">Sent To</th>
+                        <th class="sorting" tabindex="0" aria-controls="default-ordering" rowspan="1" colspan="1">Creation Date</th>
+
+                        <th class="dt-no-sorting text-center sorting" tabindex="0" aria-controls="default-ordering" rowspan="1" colspan="1" aria-label="View Transacton Details"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr role="row" th:each="transaction: ${transactionList}">
+                        <td th:text="${#strings.abbreviate(transaction.getTx_hash(),25)}">
+                            <a th:href="'https://mempool.space/tx/'+${transaction.getTx_hash()}">
+                                [[${#strings.abbreviate(transaction.getTx_hash(),25)}]]
+                            </a>
+                        </td>
+                        <td th:text="${#numbers.formatInteger(transaction.getAmount(), 1, 'COMMA')} + ' Sats'"></td>
+                        <td th:text="${#numbers.formatInteger(transaction.getTotal_fees(), 1, 'COMMA')} + ' Sats'"></td>
+
+                        <td th:text="${transaction.getNum_confirmations()}"></td>
+                        <td th:text="${transaction.getDest_addresses()}"></td>
+                        <td th:text="${transaction.getReadableDate()}"></td>
+
+                        <td class="text-center">
+                            <button class="btn btn-primary btn-sm" th:attr="onclick=|getTransactionDetails('${transaction.toJson()}')|">View</button>
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th>Transaction Hash</th>
+                        <th>Value</th>
+                        <th>Total Fees</th>
+
+                        <th>Confirmations</th>
+                        <th>Sent To</th>
+                        <th>Creation Date</th>
+
+                        <th class="invisible" rowspan="1" colspan="1"></th>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>

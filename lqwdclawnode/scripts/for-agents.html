@@ -1,0 +1,763 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>For Agents — LQWD</title>
+    <meta name="description" content="Two ways AI agents onboard to the Bitcoin Lightning Network through LQWD: MCP tools and a channel faucet for agents running their own Lightning node.">
+    <meta name="robots" content="index,follow">
+    <meta name="theme-color" content="#05070c">
+    <link rel="icon" type="image/png" href="https://api.lqwdclaw.bot/logo.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@500;600;700;800&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #05070c;
+            --bg-gradient-top: #0a1220;
+            --ink: #e8eef8;
+            --ink-muted: #8a96a8;
+            --cyan: #4fc3f7;
+            --cyan-dim: rgba(79, 195, 247, 0.5);
+            --gold: #f7931a;
+            --gold-dim: rgba(247, 147, 26, 0.75);
+            --hairline: rgba(79, 195, 247, 0.18);
+            --surface: rgba(79, 195, 247, 0.04);
+            --code-bg: #0a1017;
+        }
+
+        * { box-sizing: border-box; }
+
+        html, body {
+            margin: 0; padding: 0;
+            background: var(--bg);
+            color: var(--ink);
+            font-family: "Instrument Sans", system-ui, sans-serif;
+            font-size: 17px;
+            line-height: 1.6;
+            letter-spacing: 0.005em;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            min-height: 100vh;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background:
+                radial-gradient(1200px 800px at 15% -10%, rgba(79, 195, 247, 0.08), transparent 60%),
+                radial-gradient(1000px 700px at 85% 110%, rgba(247, 147, 26, 0.06), transparent 60%),
+                linear-gradient(180deg, var(--bg-gradient-top) 0%, var(--bg) 55%);
+            background-attachment: fixed;
+        }
+
+        body::before {
+            content: "";
+            position: fixed; inset: 0;
+            pointer-events: none;
+            background-image:
+                radial-gradient(circle at 12% 22%, rgba(79, 195, 247, 0.4) 1px, transparent 1.5px),
+                radial-gradient(circle at 68% 14%, rgba(79, 195, 247, 0.3) 1px, transparent 1.5px),
+                radial-gradient(circle at 28% 60%, rgba(79, 195, 247, 0.35) 1px, transparent 1.5px),
+                radial-gradient(circle at 82% 48%, rgba(79, 195, 247, 0.25) 1px, transparent 1.5px),
+                radial-gradient(circle at 48% 82%, rgba(247, 147, 26, 0.3) 1px, transparent 1.5px),
+                radial-gradient(circle at 93% 88%, rgba(247, 147, 26, 0.25) 1px, transparent 1.5px),
+                radial-gradient(circle at 6% 78%, rgba(79, 195, 247, 0.25) 1px, transparent 1.5px),
+                radial-gradient(circle at 58% 36%, rgba(79, 195, 247, 0.2) 1px, transparent 1.5px);
+            opacity: 0.75; z-index: 1;
+        }
+
+        body::after {
+            content: "";
+            position: fixed; inset: 0;
+            pointer-events: none;
+            opacity: 0.04;
+            mix-blend-mode: screen;
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='240' height='240' filter='url(%23n)'/></svg>");
+            z-index: 1;
+        }
+
+        /* Topbar */
+        header.topbar {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            backdrop-filter: blur(12px);
+            background: rgba(5, 7, 12, 0.72);
+            border-bottom: 1px solid var(--hairline);
+        }
+        header.topbar .inner {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 18px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 24px;
+        }
+        header.topbar .wordmark {
+            font-family: "Syne", sans-serif;
+            font-weight: 700;
+            font-size: 18px;
+            letter-spacing: 0.02em;
+            text-transform: lowercase;
+            color: var(--ink);
+        }
+        header.topbar .wordmark em { color: var(--cyan); font-style: normal; }
+        header.topbar .ticker {
+            font-family: "JetBrains Mono", ui-monospace, monospace;
+            font-size: 11px;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--ink-muted);
+        }
+        header.topbar .ticker .sep { color: var(--cyan); margin: 0 8px; }
+
+        /* Layout */
+        .layout {
+            position: relative;
+            z-index: 2;
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 40px 40px 80px;
+            display: grid;
+            grid-template-columns: 200px minmax(0, 1fr);
+            gap: 56px;
+        }
+        @media (max-width: 960px) {
+            .layout { grid-template-columns: 1fr; padding: 24px 20px 64px; gap: 24px; }
+        }
+
+        /* TOC */
+        aside.toc {
+            position: sticky;
+            top: 88px;
+            align-self: start;
+            font-family: "JetBrains Mono", ui-monospace, monospace;
+            font-size: 12px;
+            line-height: 2.1;
+        }
+        @media (max-width: 960px) {
+            aside.toc {
+                position: static;
+                padding: 16px 0;
+                border-bottom: 1px solid var(--hairline);
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+            aside.toc ol {
+                display: inline-flex;
+                gap: 20px;
+            }
+            aside.toc li { margin: 0; }
+        }
+        aside.toc .label {
+            font-size: 10px;
+            letter-spacing: 0.16em;
+            color: var(--gold);
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+        aside.toc ol {
+            list-style: none;
+            padding: 0; margin: 0;
+            counter-reset: section;
+        }
+        aside.toc li {
+            counter-increment: section;
+            margin: 0;
+        }
+        aside.toc a {
+            display: block;
+            color: var(--ink-muted);
+            text-decoration: none;
+            letter-spacing: 0.05em;
+            padding: 2px 0;
+            transition: color 0.15s ease;
+        }
+        aside.toc a::before {
+            content: counter(section, decimal-leading-zero) " · ";
+            color: var(--cyan-dim);
+        }
+        aside.toc a:hover,
+        aside.toc a.active {
+            color: var(--cyan);
+        }
+
+        /* Main */
+        main { min-width: 0; }
+
+        section + section { margin-top: 72px; }
+        @media (max-width: 960px) {
+            section + section { margin-top: 56px; }
+        }
+
+        /* Section heading */
+        .section-label {
+            font-family: "JetBrains Mono", ui-monospace, monospace;
+            font-size: 11px;
+            letter-spacing: 0.14em;
+            color: var(--gold);
+            text-transform: uppercase;
+            margin-bottom: 14px;
+        }
+        h1.page-title {
+            font-family: "Syne", sans-serif;
+            font-weight: 700;
+            font-size: clamp(40px, 5vw, 64px);
+            line-height: 1.04;
+            letter-spacing: -0.02em;
+            margin: 0 0 24px 0;
+            max-width: 18ch;
+        }
+        h1.page-title em { font-style: normal; color: var(--cyan); }
+        h2.sec-title {
+            font-family: "Syne", sans-serif;
+            font-weight: 600;
+            font-size: clamp(28px, 3vw, 38px);
+            line-height: 1.1;
+            letter-spacing: -0.015em;
+            color: var(--ink);
+            margin: 0 0 20px 0;
+        }
+        h2.sec-title em { font-style: normal; color: var(--cyan); }
+        h3 {
+            font-family: "Syne", sans-serif;
+            font-weight: 600;
+            font-size: 19px;
+            letter-spacing: -0.005em;
+            color: var(--ink);
+            margin: 28px 0 10px 0;
+        }
+        p { margin: 0 0 16px 0; }
+        p.lede {
+            font-size: 19px;
+            color: var(--ink);
+            max-width: 62ch;
+            margin-bottom: 24px;
+        }
+        ul, ol { padding-left: 22px; margin: 0 0 16px 0; }
+        li { margin-bottom: 6px; color: var(--ink-muted); }
+        li strong { color: var(--ink); font-weight: 500; }
+
+        code {
+            font-family: "JetBrains Mono", ui-monospace, monospace;
+            font-size: 0.88em;
+            background: rgba(79, 195, 247, 0.08);
+            color: var(--cyan);
+            padding: 2px 6px;
+            border-radius: 3px;
+            border: 1px solid var(--hairline);
+        }
+        a {
+            color: var(--cyan);
+            text-decoration: underline;
+            text-decoration-color: var(--cyan-dim);
+            text-decoration-thickness: 1px;
+            text-underline-offset: 4px;
+            transition: text-decoration-thickness 0.2s ease, color 0.2s ease;
+        }
+        a:hover {
+            color: var(--gold);
+            text-decoration-color: var(--gold-dim);
+            text-decoration-thickness: 2px;
+            text-underline-offset: 6px;
+        }
+
+        /* Path cards — two paths in v1, channel faucet is primary */
+        .paths-grid {
+            display: grid;
+            grid-template-columns: 1.25fr 1fr;
+            gap: 24px;
+            margin: 28px 0 0;
+            align-items: stretch;
+        }
+        @media (max-width: 880px) { .paths-grid { grid-template-columns: 1fr; gap: 16px; } }
+        .path-card.primary {
+            background: rgba(79, 195, 247, 0.05);
+            border-top: 2px solid var(--cyan);
+        }
+        .path-card.primary h3 { font-size: 22px; }
+        .path-card {
+            padding: 22px;
+            background: var(--surface);
+            border: 1px solid var(--hairline);
+            border-radius: 4px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .path-card .num {
+            font-family: "JetBrains Mono", ui-monospace, monospace;
+            font-size: 10px;
+            letter-spacing: 0.14em;
+            color: var(--gold);
+            text-transform: uppercase;
+        }
+        .path-card h3 {
+            margin: 0;
+            font-size: 20px;
+        }
+        .path-card h3 em { font-style: normal; color: var(--cyan); }
+        .path-card p { margin: 0; font-size: 14px; color: var(--ink-muted); line-height: 1.55; }
+        .path-card .jump {
+            margin-top: auto;
+            padding-top: 8px;
+            font-family: "JetBrains Mono", ui-monospace, monospace;
+            font-size: 12px;
+        }
+
+        /* Code blocks */
+        pre.code {
+            background: var(--code-bg);
+            color: var(--ink);
+            font-family: "JetBrains Mono", ui-monospace, monospace;
+            font-size: 13px;
+            line-height: 1.7;
+            padding: 22px 26px;
+            border: 1px solid var(--hairline);
+            border-radius: 4px;
+            overflow-x: auto;
+            margin: 12px 0 20px 0;
+            position: relative;
+        }
+        pre.code::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0;
+            width: 3px; height: 100%;
+            background: linear-gradient(180deg, var(--cyan) 0%, var(--gold) 100%);
+            border-radius: 4px 0 0 4px;
+        }
+        pre.code .c { color: var(--ink-muted); font-style: italic; }
+        pre.code .k { color: var(--gold); }
+        pre.code .s { color: var(--cyan); }
+        pre.code .p { color: var(--gold-dim); }
+        pre.code .n { color: #a0d4e4; }
+
+        .code-label {
+            font-family: "JetBrains Mono", ui-monospace, monospace;
+            font-size: 10px;
+            letter-spacing: 0.14em;
+            color: var(--ink-muted);
+            text-transform: uppercase;
+            margin: 18px 0 -8px 0;
+        }
+
+        /* Tables */
+        table.kv {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 12px 0 20px 0;
+            font-size: 14px;
+        }
+        table.kv th, table.kv td {
+            text-align: left;
+            padding: 10px 12px;
+            border-bottom: 1px solid var(--hairline);
+            vertical-align: top;
+        }
+        table.kv th {
+            font-family: "JetBrains Mono", ui-monospace, monospace;
+            font-size: 11px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--gold);
+            font-weight: 500;
+        }
+        table.kv td { color: var(--ink-muted); }
+        table.kv td strong { color: var(--ink); font-weight: 500; }
+        table.kv td code { font-size: 12.5px; }
+
+        /* Callouts */
+        .callout {
+            border-left: 2px solid var(--gold);
+            background: rgba(247, 147, 26, 0.06);
+            padding: 14px 18px;
+            margin: 18px 0;
+            border-radius: 0 4px 4px 0;
+            font-size: 15px;
+            line-height: 1.55;
+        }
+        .callout strong { color: var(--gold); font-weight: 600; }
+
+        /* Reference links */
+        .ref-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin-top: 24px;
+        }
+        .ref-item .label {
+            font-family: "JetBrains Mono", ui-monospace, monospace;
+            font-size: 10px;
+            letter-spacing: 0.14em;
+            color: var(--gold);
+            text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+        .ref-item .target {
+            font-family: "Syne", sans-serif;
+            font-size: 18px;
+            color: var(--ink);
+        }
+        .ref-item .target a { text-decoration-thickness: 2px; }
+
+        /* Footer */
+        footer {
+            position: relative;
+            z-index: 2;
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 32px 40px 56px;
+            border-top: 1px solid var(--hairline);
+            font-size: 13px;
+            line-height: 1.7;
+            color: var(--ink-muted);
+        }
+        footer strong { color: var(--ink); font-weight: 500; }
+        footer p { margin: 0 0 10px 0; }
+
+        @media (prefers-reduced-motion: reduce) {
+            html { scroll-behavior: auto; }
+            * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+        }
+    </style>
+</head>
+<body>
+<header class="topbar">
+    <div class="inner">
+        <div class="wordmark">lqwd<em>claw</em> / for-agents</div>
+        <div class="ticker">TSX.V <span class="sep">·</span> LQWD <span class="sep">·</span> OTCQB <span class="sep">·</span> LQWDF</div>
+    </div>
+</header>
+
+<div class="layout">
+    <aside class="toc">
+        <div class="label">Contents</div>
+        <ol>
+            <li><a href="#overview">Overview</a></li>
+            <li><a href="#channel">Channel faucet</a></li>
+            <li><a href="#mcp">MCP tools</a></li>
+            <li><a href="#limits">Limits</a></li>
+            <li><a href="#reference">Reference</a></li>
+        </ol>
+    </aside>
+
+    <main>
+        <section id="overview">
+            <div class="section-label">Overview</div>
+            <h1 class="page-title">Onboard to <em>Lightning.</em></h1>
+            <p class="lede">
+                The product LQWD offers today is a <strong>free mainnet Lightning channel</strong> for AI agents running their own node. MCP is the management surface for registering and checking channel status. There is no paid service at this time — adding paid liquidity for use is a later version.
+            </p>
+
+            <div class="paths-grid">
+                <div class="path-card primary">
+                    <div class="num">The product</div>
+                    <h3>A free mainnet channel, <em>on registration</em></h3>
+                    <p>Agents running a Bitcoin mainnet Lightning node (LND or LDK) register with their <code>pubkey</code> + <code>node_uri</code> and receive a one-time channel from LQWD. 20,000 sat capacity, 1,354 sats pushed to your side. Operator-funded, zero cost to the agent. This is the only product in v1.</p>
+                    <p style="font-size: 13px; color: var(--ink-muted);">No node yet? <a href="https://github.com/lqwdtech/SaturnZap">SaturnZap</a> — an OSS CLI + MCP Lightning wallet from LQWD — stands one up on mainnet in minutes.</p>
+                    <div class="jump"><a href="#channel">→ Channel faucet</a></div>
+                </div>
+                <div class="path-card">
+                    <div class="num">Management surface</div>
+                    <h3>Same product, over <em>MCP</em></h3>
+                    <p>Claude Desktop, Cursor, Cline, or any MCP client can call the same registration + status tools over the Model Context Protocol instead of curl. Bearer-authed with the <code>api_key</code> you get on registration. Not an alternate onboarding path — just a different transport for the one product.</p>
+                    <div class="jump"><a href="#mcp">→ MCP setup</a></div>
+                </div>
+            </div>
+
+            <h3 style="margin-top: 36px;">The call</h3>
+            <p>Registration is one POST with your <code>pubkey</code> and <code>node_uri</code>. LQWD opens the channel to you asynchronously and returns an <code>api_key</code> (prefix <code>lqwd_</code>) plus a <code>channel_status_url</code> for polling the open. The api_key exists so you can check channel status, retry a failed open, and use the MCP management surface — it is not a standalone product.</p>
+
+            <div class="code-label">curl — channel faucet registration</div>
+<pre class="code"><span class="c"># One call, one free mainnet channel</span>
+<span class="k">curl</span> <span class="p">-X</span> POST https://api.lqwdclaw.bot/v1/internal/accounts/register \
+  <span class="p">-H</span> <span class="s">"Content-Type: application/json"</span> \
+  <span class="p">-d</span> <span class="s">'{
+    "name": "&lt;pick-unique-node-name&gt;",
+    "pubkey": "&lt;66-char-hex-pubkey&gt;",
+    "node_uri": "&lt;pubkey&gt;@&lt;host&gt;:9735"
+  }'</span></pre>
+
+            <p class="lede" style="font-size: 15px; color: var(--ink-muted);">Save the <code>api_key</code> — you can rotate it, but not retrieve it. Rate limited to 3 registrations per IP per hour. A <code>pubkey</code> and <code>node_uri</code> are required — there is no account-only path in v1.</p>
+        </section>
+
+        <section id="channel">
+            <div class="section-label">The channel faucet</div>
+            <h2 class="sec-title">Run your own node? Request <em>inbound liquidity</em>.</h2>
+
+            <p>If you operate (or plan to operate) a Bitcoin mainnet Lightning node, LQWD will open a channel to you as part of tier-1 registration. One-time grant, operator-funded, ~20,000 sat capacity with a small push to give you some immediate outbound.</p>
+
+            <h3>Channel specifics</h3>
+            <table class="kv">
+                <tr><th>Field</th><th>Value</th></tr>
+                <tr><td><strong>Capacity</strong></td><td>20,000 sats</td></tr>
+                <tr><td><strong>Push to your side</strong></td><td>1,354 sats (1,000 spendable + 354 sat p2wsh reserve)</td></tr>
+                <tr><td><strong>LQWD side</strong></td><td>~18,646 sats outbound (your inbound liquidity)</td></tr>
+                <tr><td><strong>Fee rate</strong></td><td>Operator-chosen based on mempool</td></tr>
+                <tr><td><strong>Grants per agent</strong></td><td>One (tier-1)</td></tr>
+            </table>
+
+            <h3>Requirements</h3>
+            <ul>
+                <li><strong>A mainnet Lightning node</strong> — Bitcoin mainnet, not signet or regtest. LND, LDK (via <a href="https://github.com/lqwdtech/SaturnZap">SaturnZap</a>), or any BOLT-compatible implementation.</li>
+                <li><strong>Publicly reachable at the host:port in your <code>node_uri</code></strong> — any port you advertise in the URI must accept inbound TCP from the public internet. 9735 is the Lightning default; SaturnZap v1.1.0+ uses 9735 on mainnet (pre-1.1.0 used 9737). Confirm with <code>sz connect-info</code> before opening firewall rules.</li>
+                <li><strong>Your node_uri</strong> — <code>pubkey@host:port</code> format</li>
+                <li><strong>Peer-connect to LQWD BEFORE registering</strong> — see the next section. Skipping this step risks counting toward the 3-failure ban if LQWD's ConnectPeer attempt fails for any reason.</li>
+                <li><strong>Run a reachability pre-flight</strong> (below) — confirm LQWD can dial you <em>before</em> you consume a registration slot. Your IP has a limit of 3 registrations per hour.</li>
+            </ul>
+
+            <div class="callout">
+                <strong>Ban policy.</strong> Channel-open failures count toward a rolling 3-failure threshold per pubkey. A single transient glitch will NOT ban you — but three consecutive failures will. If you hit that wall, fix your reachability, then use <code>POST /v1/internal/channel/retry</code> with your api_key to retry without re-registering (preserves your api_key, doesn't consume the /register rate limit). If your pubkey does get banned, operators can clear it manually on request.
+            </div>
+
+            <h3>Pre-flight: two things to get right before you register</h3>
+            <p><strong>1. Configure a node alias.</strong> LQWD opens <em>announced</em> (public) channels into your node. Nodes without a configured alias reject announced channels outright — your registration will fail with <code>Channel request rejected</code> / "Node alias is not configured" in your node's log, and your pubkey will be auto-banned. Set one before bringing the node up:</p>
+            <div class="code-label">bash — set node alias</div>
+<pre class="code"><span class="c"># LND: edit ~/.lnd/lnd.conf and set</span>
+<span class="c">#   alias=&lt;pick-unique-node-name&gt;</span>
+<span class="c"># then restart lnd.</span>
+
+<span class="c"># SaturnZap: the LDK config lives at</span>
+<span class="c">#   ~/.local/share/saturnzap/bitcoin/ldk/config.toml</span>
+<span class="c"># Add a line: node_alias = "&lt;pick-unique-node-name&gt;" and restart the daemon.</span></pre>
+
+            <p><strong>2. Peer-connect to LQWD <em>before</em> registering.</strong> The faucet calls <code>ConnectPeer</code> on your node when it opens the inbound channel. If that call fails — transient network glitch, wrong port advertised, firewall race — your pubkey is auto-banned and you have to ask an operator to unban. Avoid the trap by establishing the peer connection <em>before</em> registering. Once the peer exists on your side, LQWD's ConnectPeer is a no-op.</p>
+
+            <p>Fetch LQWD's own node URI from discovery:</p>
+            <div class="code-label">curl — get LQWD's node URI</div>
+<pre class="code"><span class="k">curl</span> <span class="p">-s</span> https://api.lqwdclaw.bot/v1/discovery \
+  | jq <span class="p">-r</span> .data.lqwd_node.uri</pre>
+
+            <p>Then connect from your node:</p>
+            <div class="code-label">bash — peer-connect (LND)</div>
+<pre class="code"><span class="c"># LND</span>
+<span class="k">lncli</span> connect <span class="s">"&lt;lqwd-uri&gt;"</span>
+
+<span class="c"># SaturnZap</span>
+<span class="k">sz</span> peers add <span class="s">"&lt;lqwd-uri&gt;"</span>
+
+<span class="c"># Verify — match on the 66-char hex pubkey from &lt;lqwd-uri&gt;,</span>
+<span class="c"># NOT a friendly name. LQWD's node advertises the alias</span>
+<span class="c"># "LQWD-AI-Launchpad" on the network — that's a display label,</span>
+<span class="c"># not an identifier to match on.</span>
+<span class="k">lncli</span> listpeers   <span class="c"># or: sz peers list</span></pre>
+            <p style="font-size: 14px; color: var(--ink-muted);">Confirm the peer with the pubkey portion of <code>&lt;lqwd-uri&gt;</code> shows as connected. The node's alias will display as <code>LQWD-AI-Launchpad</code> on the network — that's a human-readable display label, not the identifier you should match on. Always match on the 66-char hex pubkey. If the peer-connect itself fails, your reachability or node URI is wrong — fix that before registering, not after.</p>
+
+            <h3>Pre-flight: reachability check (no rate-limit cost)</h3>
+            <p>Once your node is up and peered, ask LQWD to dial you back from the gateway side. This is a free, no-account, no-rate-limit probe — if it reports <code>reachable: true</code>, your subsequent <code>/register</code> will almost certainly succeed.</p>
+            <div class="code-label">curl — pre-flight reachability check</div>
+<pre class="code"><span class="k">curl</span> <span class="p">-X</span> POST https://api.lqwdclaw.bot/v1/internal/accounts/reachability-check \
+  <span class="p">-H</span> <span class="s">"Content-Type: application/json"</span> \
+  <span class="p">-d</span> <span class="s">'{
+    "pubkey": "&lt;66-char-hex&gt;",
+    "node_uri": "&lt;pubkey&gt;@&lt;host&gt;:&lt;port&gt;"
+  }'</span></pre>
+            <p style="font-size: 14px; color: var(--ink-muted);">Response shape: <code>{ ok: true, data: { reachable: true } }</code> on success, or <code>{ reachable: false, error: "&lt;lnd-error-text&gt;" }</code> with a diagnostic string. If the check fails, fix the underlying issue (firewall not attached, wrong port advertised, node not listening, etc.) and re-run — this endpoint is free to call.</p>
+
+            <h3>If something goes wrong: retry without re-registering</h3>
+            <p>If a registration ends up in <code>status: failed</code> (for example your firewall wasn't actually attached at registration time), use the retry endpoint to kick off a fresh channel-open attempt without creating a new account. Your api_key carries over, the /register rate limit is not consumed, and your failure history is preserved (each retry still counts toward the 3-failure ban threshold).</p>
+            <div class="code-label">curl — retry a failed channel open</div>
+<pre class="code"><span class="k">curl</span> <span class="p">-X</span> POST https://api.lqwdclaw.bot/v1/internal/channel/retry \
+  <span class="p">-H</span> <span class="s">"Authorization: Bearer lqwd_YOUR_KEY"</span></pre>
+            <p style="font-size: 14px; color: var(--ink-muted);">Returns 202 with a new <code>channel_id</code> on success, 409 if your latest grant isn't in failed state (nothing to retry), 404 if you never registered a node_uri, or 403 if you've already hit the 3-failure ban.</p>
+
+            <div class="callout">
+                <strong>Don't have a node yet?</strong> <a href="https://github.com/lqwdtech/SaturnZap">SaturnZap</a> is LQWD's open-source CLI + MCP Lightning wallet (Python + LDK). It stands up a mainnet Lightning node on a fresh host in minutes with no bitcoind sync. An MCP-capable agent with both SaturnZap and LQWD configured can boot the node, capture <code>pubkey@host:port</code>, and register for the channel in a single prompt.
+            </div>
+
+            <h3>SaturnZap install reference</h3>
+            <p>The install shape below is declarative — it describes the commands an operator runs on their own host. LQWD does not host a shell wrapper; there is no <code>| sh</code> pattern on this domain.</p>
+            <p>Prerequisite: <code>uv</code> (Astral's Python tool manager). Install from the packaging source of your choice — Homebrew, apt, dnf, or the official installer at <a href="https://docs.astral.sh/uv/" target="_blank" rel="noopener">docs.astral.sh/uv/</a>. Do not pipe remote scripts straight into a shell.</p>
+            <p>With <code>uv</code> present, install SaturnZap from the GitHub release page using the explicit <code>--find-links</code> form. This is also the canonical install command published in <code>/v1/discovery</code> and <code>/.well-known/ai-agent-trust.json</code>.</p>
+            <div class="code-label">bash — SaturnZap install reference (v1.3.1)</div>
+<pre class="code"><span class="c"># Pinned release, explicit index, no curl-to-shell.</span>
+<span class="k">uv</span> tool install saturnzap <span class="p">--find-links</span> https://github.com/lqwdtech/SaturnZap/releases/expanded_assets/v1.3.1
+<span class="k">sz</span> <span class="p">--version</span>
+
+<span class="c"># Initialize the wallet. v1.3.0 safety flags:</span>
+<span class="c">#   --backup-to writes the encrypted mnemonic to a file of your choosing</span>
+<span class="c">#   --no-mnemonic-stdout keeps the recovery phrase out of shell history</span>
+<span class="k">export</span> SZ_PASSPHRASE=<span class="s">"..."</span>
+<span class="k">sz</span> init <span class="p">--backup-to</span> ~/.saturnzap-mnemonic <span class="p">--no-mnemonic-stdout</span>
+
+<span class="c"># Persist as a systemd service.</span>
+<span class="k">sz</span> service install
+<span class="k">systemctl</span> start saturnzap
+
+<span class="c"># Print your node identifier for the /register payload.</span>
+<span class="k">sz</span> connect-info                  <span class="c"># prints your pubkey@host:port</span>
+
+<span class="c"># Close a channel cleanly with the v1.3.0 --yes confirmation flag.</span>
+<span class="k">sz</span> channels close <span class="p">--yes</span> <span class="s">"&lt;channel-id&gt;"</span></pre>
+            <p style="font-size: 14px; color: var(--ink-muted);">Use <code>sz init</code>, NOT <code>sz setup --auto</code>. The <code>--auto</code> path connects to LQWD-AI-Grid (an LSPS2 JIT LSP node) which is a different onboarding flow. The LQWD channel faucet opens an inbound channel <em>to</em> your node directly, via the <code>/register</code> call shown below. Copy <code>pubkey@host:port</code> from <code>sz connect-info</code> into the registration payload.</p>
+
+            <div class="callout">
+                <strong>name vs node-alias.</strong> The <code>name</code> field in the <code>/register</code> payload is a registration handle the LQWD gateway uses to identify your agent in its records. It is distinct from the LND (or LDK) <code>alias</code> — the string your node advertises on the Lightning gossip layer and prints from <code>sz status</code> or <code>lncli getinfo</code>. You can set both to the same string, but be aware that changing one does not change the other. The node alias is required for announced channels (see the "Configure a node alias" pre-flight above); the registration <code>name</code> is how LQWD looks you up after the fact.</div>
+
+            <h3>Request a channel</h3>
+            <p>Pass <code>pubkey</code> and <code>node_uri</code> to the same registration endpoint:</p>
+
+            <div class="code-label">curl — channel faucet registration</div>
+<pre class="code"><span class="k">curl</span> <span class="p">-X</span> POST https://api.lqwdclaw.bot/v1/internal/accounts/register \
+  <span class="p">-H</span> <span class="s">"Content-Type: application/json"</span> \
+  <span class="p">-d</span> <span class="s">'{
+    "name": "&lt;pick-unique-node-name&gt;",
+    "pubkey": "03abc...",
+    "node_uri": "03abc...@1.2.3.4:9735"
+  }'</span></pre>
+
+            <p>The response includes <code>channel_granted: true</code>, a <code>channel_id</code>, and <code>next_steps.channel_status_url</code> for polling. LQWD opens the channel asynchronously — expect 1 to 6 blocks for on-chain confirmation.</p>
+
+            <h3>Check your channel status</h3>
+            <p>From MCP: call <code>lqwd_check_channel_status</code> with your Bearer token. From REST:</p>
+            <div class="code-label">curl — poll channel status</div>
+<pre class="code"><span class="k">curl</span> <span class="p">-H</span> <span class="s">"Authorization: Bearer lqwd_YOUR_KEY"</span> \
+  https://api.lqwdclaw.bot/v1/internal/channel/status</pre>
+
+            <p>States progress <code>pending</code> → <code>pending_open</code> (funding broadcast) → <code>active</code> (confirmed on-chain, routable).</p>
+        </section>
+
+        <section id="mcp">
+            <div class="section-label">Management surface</div>
+            <h2 class="sec-title">Plug in via <em>MCP</em>.</h2>
+
+            <p>LQWD exposes a <a href="https://modelcontextprotocol.io" target="_blank" rel="noopener">Model Context Protocol</a> server at <code>https://api.lqwdclaw.bot/v1/mcp</code>. Streamable HTTP transport, version <code>2025-03-26</code>. After registering, any MCP client with Bearer auth support can connect and see the account-management tools.</p>
+
+            <h3>Tools</h3>
+            <table class="kv">
+                <tr><th>Tool</th><th>Purpose</th><th>Cost</th></tr>
+                <tr><td><code>lqwd_register</code></td><td>Register your mainnet node for the free Lightning channel. Requires <code>pubkey</code> + <code>node_uri</code>. Returns <code>api_key</code> for subsequent status polling and MCP tool calls.</td><td>free</td></tr>
+                <tr><td><code>lqwd_check_balance</code></td><td>Read your account profile (tier, status, created_at).</td><td>free</td></tr>
+                <tr><td><code>lqwd_check_channel_status</code></td><td>Poll your channel-faucet grant status.</td><td>free</td></tr>
+            </table>
+            <p class="lede" style="font-size: 15px; color: var(--ink-muted);">v1 ships account-management tools only. There is no paid service at this time; metered data tools are a later version.</p>
+
+            <div class="callout">
+                <strong>Authentication.</strong> Authenticated tools require the HTTP header <code>Authorization: Bearer &lt;your_api_key&gt;</code> on every MCP request (where <code>&lt;your_api_key&gt;</code> is the <code>lqwd_...</code> key from <code>lqwd_register</code>). Same Bearer for all tools.
+            </div>
+
+            <h3>Claude Desktop</h3>
+            <p>Add an entry to <code>~/Library/Application Support/Claude/claude_desktop_config.json</code> (macOS) or equivalent path on other OSes:</p>
+            <div class="code-label">claude_desktop_config.json</div>
+<pre class="code">{
+  <span class="s">"mcpServers"</span>: {
+    <span class="s">"lqwdclaw"</span>: {
+      <span class="s">"url"</span>: <span class="s">"https://api.lqwdclaw.bot/v1/mcp"</span>,
+      <span class="s">"headers"</span>: {
+        <span class="s">"Authorization"</span>: <span class="s">"Bearer lqwd_YOUR_KEY_HERE"</span>
+      }
+    }
+  }
+}</pre>
+
+            <h3>Cursor / Cline / generic MCP client</h3>
+            <p>Any MCP Streamable HTTP client. Point at <code>https://api.lqwdclaw.bot/v1/mcp</code>, set the Authorization header to <code>Bearer &lt;your_api_key&gt;</code>. The client will discover the account-management tools on first handshake.</p>
+
+            <h3>Manual MCP call</h3>
+            <p>If you're driving MCP from your own code rather than through a harness:</p>
+            <div class="code-label">bash — initialize + register + check balance via MCP</div>
+<pre class="code"><span class="c"># 1. Initialize the session, grab Mcp-Session-Id header</span>
+<span class="k">curl</span> <span class="p">-D</span> /tmp/h <span class="p">-X</span> POST https://api.lqwdclaw.bot/v1/mcp \
+  <span class="p">-H</span> <span class="s">"Content-Type: application/json"</span> \
+  <span class="p">-H</span> <span class="s">"Accept: application/json, text/event-stream"</span> \
+  <span class="p">-d</span> <span class="s">'{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2025-03-26","capabilities":{},"clientInfo":{"name":"&lt;pick-unique-node-name&gt;","version":"1"}}}'</span>
+
+SID=$(grep <span class="p">-i</span> mcp-session-id /tmp/h | awk <span class="s">'{print $2}'</span> | tr <span class="p">-d</span> <span class="s">'\r'</span>)
+
+<span class="c"># 2. Register (unauthenticated — the tool that issues the key)</span>
+<span class="k">curl</span> <span class="p">-X</span> POST https://api.lqwdclaw.bot/v1/mcp \
+  <span class="p">-H</span> <span class="s">"Content-Type: application/json"</span> \
+  <span class="p">-H</span> <span class="s">"Accept: application/json, text/event-stream"</span> \
+  <span class="p">-H</span> <span class="s">"Mcp-Session-Id: $SID"</span> \
+  <span class="p">-d</span> <span class="s">'{"jsonrpc":"2.0","id":2,"method":"tools/call","params":{"name":"lqwd_register","arguments":{"name":"&lt;pick-unique-node-name&gt;"}}}'</span>
+
+<span class="c"># 3. Confirm your account profile with Bearer auth</span>
+<span class="k">curl</span> <span class="p">-X</span> POST https://api.lqwdclaw.bot/v1/mcp \
+  <span class="p">-H</span> <span class="s">"Content-Type: application/json"</span> \
+  <span class="p">-H</span> <span class="s">"Accept: application/json, text/event-stream"</span> \
+  <span class="p">-H</span> <span class="s">"Mcp-Session-Id: $SID"</span> \
+  <span class="p">-H</span> <span class="s">"Authorization: Bearer lqwd_YOUR_KEY"</span> \
+  <span class="p">-d</span> <span class="s">'{"jsonrpc":"2.0","id":3,"method":"tools/call","params":{"name":"lqwd_check_balance","arguments":{}}}'</span></pre>
+        </section>
+
+        <section id="limits">
+            <div class="section-label">Fair use</div>
+            <h2 class="sec-title">Limits + honest defaults.</h2>
+
+            <table class="kv">
+                <tr><th>Limit</th><th>Value</th></tr>
+                <tr><td>Registrations per IP</td><td>3 per hour</td></tr>
+                <tr><td>Channel capacity</td><td>20,000 sats (tier 1)</td></tr>
+                <tr><td>Push to your side</td><td>1,354 sats (1,000 spendable + 354 sat reserve)</td></tr>
+                <tr><td>Channel grants per agent</td><td>One (tier 1)</td></tr>
+                <tr><td>Cost to the agent</td><td>Zero — LQWD funds the channel open on-chain</td></tr>
+            </table>
+
+            <h3>What's not in v1</h3>
+            <ul>
+                <li><strong>Paid data tools / metered API access</strong> — no paid service exists at this time. Paid liquidity and metered tools are a later version. Existing endpoints that would be metered are not publicly advertised.</li>
+                <li><strong>Additional channel grants</strong> — one per agent, not increasable via self-service in v1.</li>
+                <li><strong>Self-service tier upgrades</strong> — future tiers exist in the code but are operator-granted only for now.</li>
+            </ul>
+        </section>
+
+        <section id="reference">
+            <div class="section-label">Reference</div>
+            <h2 class="sec-title">Everything else.</h2>
+
+            <div class="ref-grid">
+                <div class="ref-item">
+                    <div class="label">Machine catalog</div>
+                    <div class="target"><a href="https://api.lqwdclaw.bot/v1/discovery">/v1/discovery</a></div>
+                </div>
+                <div class="ref-item">
+                    <div class="label">Health</div>
+                    <div class="target"><a href="https://api.lqwdclaw.bot/v1/health">/v1/health</a></div>
+                </div>
+                <div class="ref-item">
+                    <div class="label">MCP endpoint</div>
+                    <div class="target"><a href="https://api.lqwdclaw.bot/v1/mcp">/v1/mcp</a></div>
+                </div>
+                <div class="ref-item">
+                    <div class="label">Source</div>
+                    <div class="target"><a href="https://github.com/lqwdtech/lqwdclawnode">github</a></div>
+                </div>
+                <div class="ref-item">
+                    <div class="label">API landing</div>
+                    <div class="target"><a href="https://api.lqwdclaw.bot/">api.lqwdclaw.bot</a></div>
+                </div>
+                <div class="ref-item">
+                    <div class="label">MCP spec</div>
+                    <div class="target"><a href="https://modelcontextprotocol.io" target="_blank" rel="noopener">modelcontextprotocol.io</a></div>
+                </div>
+            </div>
+        </section>
+    </main>
+</div>
+
+<footer>
+    <div style="max-width: 1300px; margin: 0 auto;">
+        <p>Operated by <strong>LQWD Technologies Corp.</strong> — a publicly-traded Lightning infrastructure company listed on the TSX Venture Exchange (LQWD) and OTCQB (LQWDF). Every sat is accountable.</p>
+        <p>For the programmatic surface (machine-readable catalog, health), visit <a href="https://api.lqwdclaw.bot">api.lqwdclaw.bot</a>.</p>
+    </div>
+</footer>
+
+<script>
+    // Minimal TOC active-state tracker
+    (function () {
+        const links = document.querySelectorAll('aside.toc a');
+        const sections = Array.from(links).map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+        function onScroll() {
+            const y = window.scrollY + 120;
+            let active = sections[0];
+            for (const s of sections) { if (s.offsetTop <= y) active = s; }
+            links.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + active.id));
+        }
+        window.addEventListener('scroll', onScroll, { passive: true });
+        onScroll();
+    })();
+</script>
+</body>
+</html>

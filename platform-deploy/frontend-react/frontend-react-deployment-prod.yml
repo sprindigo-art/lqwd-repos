@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: react
+  namespace: microservice
+  labels:
+    app: react
+spec:
+  selector:
+    matchLabels:
+      app: react
+  template:
+    metadata:
+      labels:
+        app: react
+    spec:
+      nodeSelector:
+        nodegroup: m5l
+      containers:
+        - name: react
+          image: '514063904685.dkr.ecr.us-west-2.amazonaws.com/react:prod-$BUILD_NUMBER'
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: mnt-react-nginx-conf
+              mountPath: /etc/nginx/conf.d/default.conf
+              subPath: default.conf
+          resources:
+            limits:
+              cpu: 50m
+              memory: 512Mi
+            requests:
+              cpu: 15m
+              memory: 512Mi
+
+      volumes:
+        - name: secret
+          secret:
+            secretName: secret
+        - name: mnt-react-nginx-conf
+          configMap:
+            name: react-nginx-conf
+      imagePullSecrets:
+        - name: ecr-token

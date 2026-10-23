@@ -1,0 +1,15 @@
+databaseChangeLog:
+  - changeSet:
+      id: set_lnd_node_info_sequence
+      validCheckSum: ANY
+      author: femi
+      preConditions:
+        onFail: MARK_RAN
+        not:
+          sequenceExists:
+            sequenceName: lndnodeinfo_id
+      changes:
+        - createSequence:
+            sequenceName: lndnodeinfo_id
+            startValue: 32500
+            incrementBy: 1

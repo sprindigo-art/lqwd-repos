@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: zookeeper
+  namespace: kafka-v1
+  labels:
+    app: zookeeper
+spec:
+  selector:
+    matchLabels:
+      app: zookeeper
+  template:
+    metadata:
+      labels:
+        app: zookeeper
+    spec:
+      containers:
+        - name: zookeeper
+          image: '514063904685.dkr.ecr.us-west-2.amazonaws.com/zookeeper'
+          ports:
+            - containerPort: 2181
+            - containerPort: 2888
+            - containerPort: 3888
+          volumeMounts:
+            - name: dataz
+              mountPath: /data
+          env:
+            - name: USERPASS
+              valueFrom:
+                secretKeyRef:
+                  name: zoosecret
+                  key: USERPASS
+            - name: ADMINPASS
+              valueFrom:
+                secretKeyRef:
+                  name: zoosecret
+                  key: ADMINPASS
+          resources:
+            requests:
+             
+            limits:
+             
+      volumes:
+        - name: dataz
+          persistentVolumeClaim:
+            claimName: pv02-claim
+        - name: zoosecret
+          secret:
+            secretName: zoosecret
+      imagePullSecrets:
+        - name: ecr-token

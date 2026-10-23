@@ -1,0 +1,138 @@
+.desc {
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 32px;
+    text-align: center;
+    color: #111111;
+}
+
+
+/*.create-btn-primary {*/
+
+
+/*    color: #fff !important;*/
+
+
+/*    background-color: #009EE2 !important;*/
+
+
+/*    border-color: #009EE2 !important;*/
+
+
+/*}*/
+
+
+/*.create-btn-primary:hover {*/
+
+
+/*    color: #fff !important;*/
+
+
+/*    background-color: #0492ce !important;*/
+
+
+/*    border-color: #038dc9 !important;*/
+
+
+/*}*/
+
+.create-btn {
+    font-family: 'Rubik';
+    font-style: normal;
+    font-size: 15px !important;
+    line-height: 33px;
+    color: #FFFFFF !important;
+    text-decoration: none;
+    border-radius: 8px;
+    display: flex;
+}
+
+.create-btn svg {
+    width: auto !important;
+    height: auto !important;
+    vertical-align: middle !important;
+}
+
+.empty-container {
+    padding: 0 !important;
+    box-sizing: border-box;
+    box-shadow: 0px 8px 44px rgba(176, 186, 199, 0.26);
+    border-radius: 16px;
+    margin-bottom: 40px;
+}
+
+.btn.details {
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 22px;
+    display: flex;
+    align-items: center;
+    color: #009EE2 !important;
+    padding: 0 !important;
+}
+
+.node-select {
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 32px;
+    display: flex;
+    align-items: center;
+    color: #111111;
+}
+
+.node-select svg {
+    margin-left: 10px;
+}
+
+.details svg {
+    margin-left: 10px;
+}
+
+.dropdown-toggle::after {
+    display: none;
+}
+
+.tag-holder {
+    margin-right: 20px;
+}
+
+.badge-status {
+    border-radius: 4px !important;
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 10px;
+    line-height: 15px;
+    color: #111111;
+    text-align: center;
+    height: 25px;
+}
+
+.shared-role-status {
+    display: flex;
+
+    align-self: center;
+
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 15px;
+    color: #111111;
+    text-align: center;
+    height: 25px;
+
+    margin-left: 10px;
+
+    padding: 4px 12px;
+    gap: 10px;
+    background: #D7F0FF;
+    border-radius: 8px;
+    width: fit-content;
+}

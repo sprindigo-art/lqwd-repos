@@ -1,0 +1,132 @@
+<div th:fragment="transaction-detail-modal" id="transactionDetailsModal" class="modal fade text-left" tabindex="-1" role="dialog" aria-hidden="true" data-check="false" data-nodeName="">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Transaction Details</h5>
+                <button id="modal-transaction-details-popup_btn_close" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row layout-spacing">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 layout-spacing">
+                        <div class="widget">
+                            <div class="widget-heading">
+                                <h5 class="">Transaction - [[${transaction.getReadableDate()}]]</h5>
+                            </div>
+                            <div class="widget-content widget-content-area">
+                                <div class="row">
+                                    <div class="col-5">
+                                        LND Node
+                                    </div>
+                                    <div class="col-7">
+                                        <span class="" th:text="${lndNode.getLndNodeName()}"></span>
+                                    </div>
+                                </div>
+                                <div class="row pt-2">
+                                    <div class="col-5">
+                                        Total Fees
+                                    </div>
+                                    <div class="col-7">
+                                        <span class="" th:text="${#numbers.formatInteger(transaction.getTotal_fees(), 1, 'COMMA')} + ' Satoshi'"></span>
+                                    </div>
+                                </div>
+                                <div class="row pt-2">
+                                    <div class="col-5">
+                                        Amount
+                                    </div>
+                                    <div class="col-7">
+                                        <span class="" th:text="${#numbers.formatInteger(transaction.getAmount(), 1, 'COMMA')} + ' Satoshi'"></span>
+                                    </div>
+                                </div>
+                                <div class="row pt-2">
+                                    <div class="col-5">
+                                        Transaction Hash
+                                    </div>
+                                    <div class="col-7">
+                                        <span class="" th:text="${#strings.abbreviate(transaction.getTx_hash(), 50)}"></span>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                             fill="none"
+                                             stroke="currentColor"
+                                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                             class="feather feather-copy"
+                                             style="width: 16px !important; height: 16px !important;"
+                                             th:attr="onclick=|copyToClipboard('${transaction.getTx_hash()}')|">
+                                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <div class="row pt-2">
+                                    <div class="col-5">
+                                        Number of Confirmations
+                                    </div>
+                                    <div class="col-7">
+                                        <span class="" th:text="${transaction.getNum_confirmations()}"></span>
+                                    </div>
+                                </div>
+                                <div class="row pt-2">
+                                    <div class="col-5">
+                                        Block Hash
+                                    </div>
+                                    <div class="col-7">
+                                        <span class="" th:text="${#strings.abbreviate(transaction.getBlock_hash(), 50)}"></span>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                             fill="none"
+                                             stroke="currentColor"
+                                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                             class="feather feather-copy"
+                                             style="width: 16px !important; height: 16px !important;"
+                                             th:attr="onclick=|copyToClipboard('${transaction.getBlock_hash()}')|">
+                                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <div class="row pt-2">
+                                    <div class="col-5">
+                                        Block Height
+                                    </div>
+                                    <div class="col-7">
+                                        <span class="" th:text="${transaction.getBlock_height()}"></span>
+                                    </div>
+                                </div>
+                                <div class="row pt-2">
+                                    <div class="col-5">
+                                        Raw Transaction Hex
+                                    </div>
+                                    <div class="col-7">
+                                        <span class="" th:text="${#strings.abbreviate(transaction.getRaw_tx_hex(), 50)}"></span>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                             fill="none"
+                                             stroke="currentColor"
+                                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                             class="feather feather-copy"
+                                             style="width: 16px !important; height: 16px !important;"
+                                             th:attr="onclick=|copyToClipboard('${transaction.getRaw_tx_hex()}')|">
+                                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <div class="row pt-2">
+                                    <div class="col-5">
+                                        Date
+                                    </div>
+                                    <div class="col-7">
+                                        <span class="" th:text="${transaction.getReadableDate()}"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="modal-mnemonic-popup_btn_modal-dismiss" type="button" class="btn" data-dismiss="modal">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

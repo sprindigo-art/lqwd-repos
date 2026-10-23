@@ -1,0 +1,207 @@
+# The VPN exists ONLY inside these containers. The server host is deliberately
+# left alone: no tun0 in the host namespace, no route added, no iptables rule
+# edited, and the host is NOT a VPN participant.
+#
+#   openvpn         owns tun0 and 10.99.0.1 in its own network namespace.
+#   bitcoind        regtest node, joins that namespace, so it is reachable at
+#                   10.99.0.1 from the Pi and 127.0.0.1 from lnd-server.
+#   bitcoind-miner  mines one block every MINE_INTERVAL seconds.
+#   lnd-server      joins the same namespace; binds 10.99.0.1 for p2p.
+#
+# The only thing reaching the host is the published udp/1194. Docker forwards
+# published ports through PREROUTING/FORWARD rather than INPUT, so this works
+# alongside the host's existing "INPUT DROP" policy without adding a rule.
+
+services:
+  openvpn:
+    build: ./openvpn
+    image: embedded-lnd/openvpn:local
+    container_name: lnd-testbed-vpn
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    ports:
+      - "1194:1194/udp"
+    volumes:
+      # Single mount: easyrsa needs to recreate the pki/ directory, which it
+      # cannot do if pki/ is itself the mount point.
+      - /vm/testbed/vpn:/etc/openvpn/state
+    env_file:
+      - .env
+    restart: unless-stopped
+
+  bitcoind:
+    build: ./bitcoind
+    image: embedded-lnd/bitcoind:local
+    container_name: lnd-testbed-bitcoind
+    network_mode: "service:openvpn"
+    depends_on:
+      - openvpn
+    volumes:
+      - /vm/testbed/bitcoind:/data/bitcoind
+    env_file:
+      - .env
+      - ../secrets/bitcoind-rpc.env
+    restart: unless-stopped
+
+  bitcoind-miner:
+    image: embedded-lnd/bitcoind:local
+    container_name: lnd-testbed-miner
+    network_mode: "service:openvpn"
+    depends_on:
+      - bitcoind
+    entrypoint: ["/usr/local/bin/miner.sh"]
+    volumes:
+      - /vm/testbed/bitcoind:/data/bitcoind
+    env_file:
+      - .env
+      - ../secrets/bitcoind-rpc.env
+    restart: unless-stopped
+
+  # The appliance stand-in: same binary and same hardening policy as the Pi
+  # image, so the security layer can be tested without flashing an SD card.
+  #
+  # Behind a profile, so the default `docker compose up -d` does not start it:
+  # it refuses to run without a provisioned merchant address, and that address
+  # can only be minted once bitcoind is up. Start it with
+  # scripts/64-provision-merchant.sh.
+  lnd-merchant:
+    build:
+      context: .
+      dockerfile: lnd/Dockerfile
+    image: embedded-lnd/lnd:local
+    container_name: lnd-testbed-merchant
+    profiles:
+      - merchant
+    network_mode: "service:openvpn"
+    depends_on:
+      - bitcoind
+    environment:
+      LND_ROLE: merchant
+      LND_CONF: /etc/lnd/lnd-merchant.conf
+    volumes:
+      - /vm/testbed/lnd-merchant:/data/lnd
+    env_file:
+      - .env
+      - ../secrets/bitcoind-rpc.env
+      - ../secrets/merchant.env
+    restart: unless-stopped
+
+  lnd-server:
+    build:
+      context: .
+      dockerfile: lnd/Dockerfile
+    image: embedded-lnd/lnd:local
+    container_name: lnd-testbed-node
+    # Share the VPN container's network namespace. lnd is therefore ON the VPN
+    # while the host is not. It publishes no ports of its own: its p2p listener
+    # is on 10.99.0.1 and its RPC is on loopback inside that namespace.
+    network_mode: "service:openvpn"
+    depends_on:
+      - bitcoind
+    volumes:
+      - /vm/testbed/lnd:/data/lnd
+      # The gateway's own certificate, read-only. In the LNURL demo this node
+      # also stands in for a customer's wallet, and a wallet that skipped
+      # certificate verification would not be testing what a wallet does.
+      - /vm/testbed/lnurl-gateway/gateway.crt:/gw/gateway.crt:ro
+    env_file:
+      - .env
+      - ../secrets/bitcoind-rpc.env
+    restart: unless-stopped
+
+  # --- BOLT 12 -----------------------------------------------------------
+  #
+  # lnd carries onion messages but has no offers RPC, so BOLT 12 is lndk's
+  # job on both ends: it creates the offer, answers the invoice_request with
+  # an invoice, and pays one. One instance per node, each with its own gRPC
+  # port in the shared network namespace.
+  #
+  # The merchant's lndk cannot pay an offer - SendPaymentV2 is disabled by the
+  # appliance's security policy - which is exactly what a receive-only payment
+  # terminal should look like, and is checked by scripts/69-bolt12-demo.sh.
+  lndk-merchant:
+    image: embedded-lnd/lnd:local
+    container_name: lnd-testbed-lndk-merchant
+    profiles:
+      - merchant
+    network_mode: "service:openvpn"
+    depends_on:
+      - lnd-merchant
+    entrypoint: ["/usr/local/bin/lndk-entrypoint.sh"]
+    environment:
+      LND_DIR: /data/lnd
+      LND_RPC: 127.0.0.1:10010
+      LNDK_DATA: /data/lndk
+      LNDK_GRPC_PORT: "7000"
+    volumes:
+      # lnd's directory is read-only here: lndk reads the certificate and the
+      # macaroon and writes nothing.
+      - /vm/testbed/lnd-merchant:/data/lnd:ro
+      - /vm/testbed/lndk-merchant:/data/lndk
+    restart: unless-stopped
+
+  lndk-gateway:
+    image: embedded-lnd/lnd:local
+    container_name: lnd-testbed-lndk-gateway
+    profiles:
+      - merchant
+    network_mode: "service:openvpn"
+    depends_on:
+      - lnd-server
+    entrypoint: ["/usr/local/bin/lndk-entrypoint.sh"]
+    environment:
+      LND_DIR: /data/lnd
+      LND_RPC: 127.0.0.1:10009
+      LNDK_DATA: /data/lndk
+      LNDK_GRPC_PORT: "7001"
+    volumes:
+      - /vm/testbed/lnd:/data/lnd:ro
+      - /vm/testbed/lndk-gateway:/data/lndk
+    restart: unless-stopped
+
+  # --- LNURL-pay ---------------------------------------------------------
+  #
+  # lnurlpd runs ON the appliance and binds the VPN address only. The public
+  # URL belongs to lnurl-gateway below, which proxies to it over the tunnel
+  # the device dialled out to - the device serves a public payment URL while
+  # accepting no inbound connection from the internet.
+  lnurlpd-merchant:
+    image: embedded-lnd/lnd:local
+    container_name: lnd-testbed-lnurlpd
+    profiles:
+      - merchant
+    network_mode: "service:openvpn"
+    depends_on:
+      - lnd-merchant
+    entrypoint: ["/usr/local/bin/lnurlpd-entrypoint.sh"]
+    environment:
+      LND_DIR: /data/lnd
+      LND_REST: https://127.0.0.1:8081
+      LNURLPD_LISTEN: 10.99.0.1:8090
+      LNURLPD_MAX_SAT: "1000000"
+    volumes:
+      - /vm/testbed/lnd-merchant:/data/lnd:ro
+    # The public endpoint is provisioning, not configuration: the same
+    # merchant.env that carries the settlement address carries it, and the Pi
+    # image bakes in the same value.
+    env_file:
+      - ../secrets/merchant.env
+    restart: unless-stopped
+
+  # The public front door. nginx rather than anything of ours, because in the
+  # product this is ordinary gateway infrastructure and not part of the
+  # appliance at all.
+  lnurl-gateway:
+    image: nginx:1.27-alpine
+    container_name: lnd-testbed-lnurl-gateway
+    profiles:
+      - merchant
+    network_mode: "service:openvpn"
+    depends_on:
+      - lnurlpd-merchant
+    volumes:
+      - /vm/testbed/compose/lnurl-gateway/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - /vm/testbed/lnurl-gateway:/etc/nginx/tls:ro
+    restart: unless-stopped

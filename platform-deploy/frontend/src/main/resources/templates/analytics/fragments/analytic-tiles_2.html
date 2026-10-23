@@ -1,0 +1,82 @@
+<div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-12 layout-spacing">
+  <div class="widget widget-one_hybrid widget-followers analytic-tile-cards">
+    <div class="widget-heading">
+      <div class="w-title">
+        <div class="w-icon">
+          <img th:src="@{images/logo/LQwD-Q.png}" class="" alt="LND Node" style="border-radius: 10%; width: 30px; height: 30px;">
+        </div>
+        <div class="">
+          <p class="w-value" th:text="${#numbers.formatDecimal(lightningStats.getNumberofnodes(), 0, 0)}"></p>
+          <h4 class="tile-header">Number of Nodes</h4>
+          <h5 class="">Last Updated @ [[${lightningStats.getReabableLastUpdated()}]]</h5>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-12 layout-spacing">
+  <div class="widget widget-one_hybrid widget-followers analytic-tile-cards">
+    <div class="widget-heading">
+      <div class="w-title">
+        <div class="w-icon">
+          <img th:src="@{images/logo/LQwD-Q.png}" class="" alt="LND Node" style="border-radius: 10%; width: 30px; height: 30px;">
+        </div>
+        <div class="">
+          <p class="w-value" th:text="${#numbers.formatDecimal(lightningStats.getNumberofchannels(), 0, 0)}"></p>
+          <h4 class="tile-header">Number of Channels</h4>
+          <h5 class="">Last Updated @ [[${lightningStats.getReabableLastUpdated()}]]</h5>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-12 layout-spacing">
+  <div class="widget widget-one_hybrid widget-followers analytic-tile-cards">
+    <div class="widget-heading">
+      <div class="w-title">
+        <div class="w-icon">
+          <img th:src="@{images/logo/LQwD-Q.png}" class="" alt="LND Node" style="border-radius: 10%; width: 30px; height: 30px;">
+        </div>
+        <div class="">
+          <p class="w-value" th:text="${#numbers.formatDecimal(lightningStats.getNumberofnodeswithactivechannels(), 0, 0)}"></p>
+          <h4 class="tile-header">Number of Nodes with Active Channels</h4>
+          <h5 class="">Last Updated @ [[${lightningStats.getReabableLastUpdated()}]]</h5>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-12 layout-spacing">
+  <div class="widget widget-one_hybrid widget-followers analytic-tile-cards">
+    <div class="widget-heading">
+      <div class="w-title">
+        <div class="w-icon">
+          <img th:src="@{images/logo/LQwD-Q.png}" class="" alt="LND Node" style="border-radius: 10%; width: 30px; height: 30px;">
+        </div>
+        <div class="">
+          <p class="w-value" th:text="${#numbers.formatDecimal(lightningStats.getUpdatedchannels24h(), 0, 0)}"></p>
+          <h4 class="tile-header">Updated Channels in 24 hours</h4>
+          <h5 class="">Last Updated @ [[${lightningStats.getReabableLastUpdated()}]]</h5>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="col-xl-4 layout-spacing d-xl-block d-lg-none">
+  <div class="widget widget-one_hybrid widget-followers analytic-tile-cards">
+    <div class="widget-heading">
+      <div class="w-title">
+        <div class="w-icon">
+          <img th:src="@{images/logo/LQwD-Q.png}" class="" alt="LND Node" style="border-radius: 10%; width: 30px; height: 30px;">
+        </div>
+        <div class="">
+          <p class="w-value" th:text="${#numbers.formatDecimal(lightningStats.getPublicipnodes(), 0, 0)}"></p>
+          <h4 class="tile-header">Public IP Nodes</h4>
+          <h5 class="">Last Updated @ [[${lightningStats.getReabableLastUpdated()}]]</h5>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

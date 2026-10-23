@@ -1,0 +1,36 @@
+<html>
+    <head th:include="fragment/headerfooter::header"></head>
+    <body >
+        <div id="containerMain">
+            <img th:src="@{/images/LQwD-Logo_green_small.png}" class="img-responsive center-block" width="300" height="300" alt="Logo"/>
+            <div align="center" th:if="${message}">
+                <h4>
+                    <p style="font-size: 14px; color: #1aff38;" th:text="${message}"></p>
+                </h4>
+            </div>
+            <form th:action="@{/send}" method="POST" class="form-horizontal">
+                <h3 class="form-signin-heading" th:text="Welcome"></h3>
+                <br/>
+
+                <input type="text" id="tmess" name="tmess" th:placeholder="message"
+                       class="form-control"/> <br/>
+
+                <input type="text" th:placeholder="amount"
+                       id="id" name="id" class="form-control"/> <br/>
+
+                <input type="text" id="tdescription" name="tdescription" th:placeholder="description"
+                       class="form-control"/> <br/>
+
+                <input type="text" id="taction" name="taction" th:placeholder="action"
+                       class="form-control"/> <br/>
+                <input type="text" id="tdesignation" name="tdesignation" th:placeholder="designation"
+                       class="form-control"/> <br/>
+
+                <div align="center" th:if="${param.error}">
+                    <p style="font-size: 12px; color: #FF1C19;">Input error, please verify</p>
+                </div>
+                <input value="Send" type="Submit"></button>
+            </form>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,76 @@
+name: GitHub Actions on PR
+on:
+  pull_request:
+    branches:
+      - develop
+jobs:
+  Explore-GitHub-Actions:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: install kubeval
+        run: | 
+          wget https://github.com/instrumenta/kubeval/releases/latest/download/kubeval-linux-amd64.tar.gz
+          tar xf kubeval-linux-amd64.tar.gz
+          ./kubeval --version
+      - name: file change detection
+        uses: dorny/paths-filter@v2
+        id: changes
+        with:
+          filters: |
+            configuration-server:
+              - 'configuration-server/**'
+            lnd:
+              - 'lnd/**'            
+            direct-lnd-api:
+              - 'direct-lnd-api/**'
+            fe_microservices:
+              - 'fe_microservices/**'
+            frontend:
+              - 'frontend/**'
+            messaging-service:
+              - 'messaging-service/**'
+            oauth2server:
+              - 'oauth2server/**'
+            py-backend:
+              - 'py-backend/**'
+            tools:
+              - 'tools/**'
+
+      - name: validation if file change detected in configuration-server
+        if: steps.changes.outputs.configuration-server == 'true'
+        run: |
+          ./kubeval configuration-server/*.yml
+      - name: validation if file change detected in lnd
+        if: steps.changes.outputs.lnd == 'true'
+        run: |
+          ./kubeval lnd/*.yml
+      - name: validation if file change detected in direct-lnd-api
+        if: steps.changes.outputs.direct-lnd-api == 'true'
+        run: |
+          ./kubeval direct-lnd-api/*.yml
+      - name: validation if file change detected in fe_microservices
+        if: steps.changes.outputs.fe_microservices == 'true'
+        run: |
+          ./kubeval fe_microservices/*.yml
+      - name: validation if file change detected in frontend
+        if: steps.changes.outputs.frontend == 'true'
+        run: |
+          ./kubeval frontend/*.yml
+      - name: validation if file change detected in messaging-service
+        if: steps.changes.outputs.messaging-service == 'true'
+        run: |
+          ./kubeval messaging-service/*.yaml         
+      - name: validation if file change detected in oauth2server
+        if: steps.changes.outputs.oauth2server == 'true'
+        run: |
+          ./kubeval oauth2server/*.yml
+      - name: validation if file change detected in py-backend
+        if: steps.changes.outputs.py-backend == 'true'
+        run: |
+          ./kubeval py-backend/*.yml
+      - name: validation if file change detected in tools
+        if: steps.changes.outputs.tools == 'true'
+        run: |
+          ./kubeval tools/*.yml          
+

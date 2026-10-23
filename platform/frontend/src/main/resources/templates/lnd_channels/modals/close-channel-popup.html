@@ -1,0 +1,72 @@
+<div th:fragment="close-channel-modal" class="modal fade text-left" id="close-channel-popup_div_modal" tabindex="-1" role="dialog"
+     aria-labelledby="closeChannelModalLabel" aria-hidden="true" data-check="false">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content" id="modal-reload">
+            <div class="modal-header">
+                <h5 class="modal-title" id="close-channel-popup_h5_authorize">Confirm Channel Closure</h5>
+                <button id="close-channel-popup_btn_close" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-6 widget widget-account-invoice-two">
+                        <div class="widget-content">
+                            <div class="account-box">
+                                <div class="info">
+                                    <div class="inv-title">
+                                        <h5 class="">Channel ID</h5>
+                                    </div>
+                                    <div class="inv-balance-info">
+                                        <a th:href="'https://amboss.space/edge/'+${lndChannel.getChan_id()}">
+                                            <p class="inv-balance" th:text="${lndChannel.getChan_id()}"></p>
+                                        </a>
+                                        <span class="inv-stats" th:if="${lndChannel.isActive()}">Status: Active</span>
+                                        <span class="inv-stats-desc" th:unless="${lndChannel.isActive()}">Status: Inactive</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6 widget widget-account-invoice-two">
+                        <div class="widget-content">
+                            <div class="account-box">
+                                <div class="info">
+                                    <div class="inv-title">
+                                        <h5 class="">Local Balance</h5>
+                                        <h5 class="">Remote Balance</h5>
+                                    </div>
+                                    <div class="inv-balance-info">
+                                        <p class="inv-balance" th:text="${#numbers.formatInteger(lndChannel.getLocal_balance(), 1, 'COMMA')} + ' Satoshi'"></p>
+                                        <p class="inv-balance" th:text="${#numbers.formatInteger(lndChannel.getRemote_balance(), 1, 'COMMA')} + ' Satoshi'"></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <p class="modal-text text-center">
+                    Are you sure you want to delete Channel: [[${lndChannel.getChan_id()}]]?
+                    <br>This action cannot be undone!
+                </p>
+
+            </div>
+            <div class="modal-footer">
+
+                <button th:if="${lndChannel.isActive()}" id="close-channel-popup_btn_modal-blockui" type="button" class="btn btn-primary" data-email="true"
+                        th:attr="onclick=|authorizeCloseChannel('${lndChannel.getChannel_point()}', '${#session.getAttribute('lnd')}', true)|">Cooperative Close Channel</button>
+
+                <button th:unless="${lndChannel.isActive()}" type="button" class="btn btn-primary bs-tooltip"
+                        data-placement="top" title="Cannot Cooperative Close Inactive Channels" disabled>
+                    Cooperative Close Channel
+                </button>
+
+                <button id="close-channel-popup_force_btn_modal-blockui" type="button" class="btn btn-outline-danger" data-email="true"
+                        th:attr="onclick=|authorizeCloseChannel('${lndChannel.getChannel_point()}', '${#session.getAttribute('lnd')}', false)|">
+                    Force Close Channel
+                </button>
+
+            </div>
+        </div>
+    </div>
+</div>

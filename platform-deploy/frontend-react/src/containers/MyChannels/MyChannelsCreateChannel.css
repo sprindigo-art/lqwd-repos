@@ -1,0 +1,397 @@
+.create-channel-breadcrumb{
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    padding-left: 10px !important;
+    gap: 20px;
+}
+
+.create-channel-breadcrumb-step {
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+}
+
+.create-channel-breadcrumb-step-icon {
+    /* Label 1 */
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    /* identical to box height, or 143% */
+
+    display: flex;
+    align-items: center;
+
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+
+    /* Text - Placeholder */
+    color: #B2B2B2;
+}
+
+.create-channel-breadcrumb-step-title {
+    /* Label 1 */
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+
+    justify-content: center;
+    display: flex;
+    align-items: center;
+
+    /* Text - Placeholder */
+    color: #B2B2B2;
+}
+
+.create-channel-breadcrumb-step.active-step > .create-channel-breadcrumb-step-title{
+    /* Label 1 */
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    /* identical to box height, or 143% */
+
+    justify-content: center;
+    display: flex;
+    align-items: center;
+
+    padding-left: 10px;
+    color: #111111;
+}
+
+.create-channel-breadcrumb-step.active-step > .create-channel-breadcrumb-step-icon{
+    /* Label 1 */
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    /* identical to box height, or 143% */
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #FFFFFF;
+    background-color: #009EE2;
+    border-radius: 100px;
+
+    width: 28px;
+    height: 28px;
+}
+
+.create-channel-form-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+}
+
+.create-channel-form {
+    padding-left: 10px;
+    gap: 16px;
+}
+
+.create-channel-form-row {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0px;
+
+    /* Inside auto layout */
+    flex: none;
+    order: 1;
+    align-self: stretch;
+    flex-grow: 0;
+}
+.create-channel-form-label {
+    /* Label 1 */
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+
+    display: flex;
+    align-items: center;
+
+    /* Text - Tertiary */
+    color: #7A7A7A;
+
+    /* Inside auto layout */
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+}
+
+.create-channel-form-input {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 12px;
+    gap: 10px;
+
+    background: #FFFFFF;
+    border: 1px solid #DDDDDD;
+    border-radius: 8px;
+
+    /* Inside auto layout */
+    flex: none;
+    order: 1;
+    align-self: stretch;
+    flex-grow: 0;
+}
+
+.create-channel-form-input::placeholder{
+    /* Body 1 */
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 21px;
+    /* identical to box height, or 140% */
+
+    display: flex;
+    align-items: center;
+
+    /* Text - Placeholder */
+    color: #B2B2B2;
+}
+.create-channel-select-option::placeholder{
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 21px;
+    /* identical to box height, or 140% */
+
+    display: flex;
+    align-items: center;
+
+    /* Text - Placeholder */
+    color: #B2B2B2;
+}
+.create-channel-form-submit {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 8px 20px;
+    gap: 8px;
+    /* Inside auto layout */
+    flex: none;
+    order: 1;
+    flex-grow: 0;
+}
+
+.create-channel-switch-label {
+    /* Label 1 */
+
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    /* identical to box height, or 143% */
+
+    display: flex;
+    align-items: center;
+
+    /* Text - Primary */
+
+    color: #111111;
+
+}
+
+.create-channel-form-row.advanced-settings{
+    box-sizing: border-box;
+    /* Auto layout */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    align-self: stretch;
+
+    padding: 12px 12px 12px 0px;
+    gap: 16px;
+
+    border-width: 1px 0px;
+    border-style: solid;
+    border-color: #E0E4EC;
+}
+
+.create-channel-advanced {
+    /* Auto layout */
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    padding: 0px;
+    gap: 10px;
+
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 20px;
+
+    /* Text - Secondary */
+    color: #4D4D4D;
+
+    /* Inside auto layout */
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+}
+.create-channel-advanced-row {
+    box-sizing: border-box;
+
+    /* Auto layout */
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    align-self: stretch;
+}
+.create-channel-advanced-icon {
+    width: 20px;
+    height: 20px;
+}
+
+.switch-label{
+    /* Label 1 */
+
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    /* identical to box height, or 143% */
+
+    display: flex;
+    align-items: center;
+
+    margin: 0 !important;
+    padding-right: 20px !important;
+    /* Text - Primary */
+
+    color: #111111;
+}
+
+.create-channel-confirmation-panel {
+    align-self: stretch;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    /* Background - Panel */
+    background: #F3F5F9;
+    /* Border */
+
+    border-width: 1px 0px 1px 1px;
+    border-style: solid;
+    border-color: #E6E7ED;
+    border-radius: 8px;
+}
+.create-channel-confirmation {
+    /* Background - Panel */
+    background: #F3F5F9;
+    align-self: stretch;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 24px 32px;
+    gap: 16px;
+
+}
+.create-channel-confirmation-row {
+    /* Auto layout */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0px;
+    gap: 8px;
+
+    /* Background - Panel */
+
+    background: #F3F5F9;
+    /* Border */
+
+    border-width: 1px 0px 1px 1px;
+    border-color: #E6E7ED;
+    border-radius: 8px;
+}
+
+.create-channel-confirmation-label {
+    /* Label 1 */
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+
+    display: flex;
+    align-items: center;
+
+    /* Text - Secondary */
+    color: #4D4D4D;
+}
+
+.create-channel-confirmation-value {
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 15px;
+    line-height: 22px;
+
+    display: flex;
+    align-items: center;
+
+    /* Text - Secondary */
+    color: #4D4D4D;
+}
+
+.create-channel-confirmation-line {
+    border: 1px solid #E0E4EC;
+    /* Inside auto layout */
+    align-self: stretch;
+    border-radius: 1px;
+}
+
+.channel-strike {
+    display: block;
+    text-align: center;
+    overflow: hidden;
+    white-space: nowrap;
+    padding: 20px;
+}
+
+.channel-strike > span {
+    position: relative;
+    display: inline-block;
+}
+
+.channel-strike > span:before,
+.channel-strike > span:after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 9999px;
+    height: 1px;
+    background: black;
+}
+
+.channel-strike > span:before {
+    right: 100%;
+    margin-right: 15px;
+}
+
+.channel-strike > span:after {
+    left: 100%;
+    margin-left: 15px;
+}

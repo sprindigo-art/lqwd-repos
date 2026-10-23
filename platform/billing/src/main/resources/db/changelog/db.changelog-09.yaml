@@ -1,0 +1,14 @@
+databaseChangeLog:
+        - changeSet:
+                  id: update_invoice_table
+                  preConditions:
+                    - onFail: MARK_RAN
+                  validCheckSum: ANY
+                  author: aziz
+                  changes:
+                          - sql:
+                                    sql: ALTER TABLE public.invoice
+                                          ADD COLUMN IF NOT EXISTS start_date timestamp without time zone,
+                                          ADD COLUMN IF NOT EXISTS end_date timestamp without time zone,
+                                          ADD COLUMN IF NOT EXISTS amount_usd double precision,
+                                          ADD COLUMN IF NOT EXISTS rate double precision;

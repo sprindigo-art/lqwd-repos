@@ -1,0 +1,481 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+  /* LQWD brand — navy #1A3C79 (NOT Bitcoin orange). NOC Light is the primary
+     — and only — theme (operator decision 2026-06-11, supersedes the Phase 2
+     dark default). Navy is structural chrome only, never a health color. */
+  --color-brand: #1A3C79;
+  --color-brand-light: #2A5299;
+  /* Navy-bright for links/affordances on light surfaces —
+     still brand chrome, never a health color. */
+  --color-brand-glow: #2C5CB4;
+
+  /* Health status palette (sketch findings: NOC Light, validated 2026-06-11).
+     A SEPARATE token family from brand navy: navy is structural chrome only and
+     is never a health color. Hues darkened for contrast on light surfaces; the
+     -dim family carries the faint matching tints for chip/panel backgrounds. */
+  --color-status-ok: #0B8A51;
+  --color-status-ok-dim: rgba(11, 138, 81, 0.08);
+  --color-status-warn: #8F5D00;
+  --color-status-warn-dim: rgba(143, 93, 0, 0.09);
+  --color-status-critical: #D92638;
+  --color-status-critical-dim: rgba(217, 38, 56, 0.08);
+  --color-status-stale: #5D6A80;
+  --color-status-stale-dim: rgba(107, 118, 137, 0.10);
+  --color-status-nodata: #5D6A80;
+  --color-status-nodata-dim: rgba(107, 118, 137, 0.10);
+  /* Kept for existing consumers (updated in 03-12) — no longer the outlier
+     presentation color. */
+  --color-status-outlier: #8b5cf6;
+
+  /* Sketch-validated fonts (wired via next/font variables in app/layout.tsx):
+     Saira Semi Condensed = display headers, IBM Plex Mono = data/labels,
+     Inter = body. */
+  --font-sans: var(--font-inter), system-ui, sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, monospace;
+  --font-display: var(--font-saira), var(--font-inter), sans-serif;
+}
+
+/* ============================================================
+   Inlined from the shadcn@4.11.0 package's `dist/tailwind.css` (the CLI
+   emits an @import of that stylesheet which would require the CLI package
+   as a runtime dependency — outside this repo's supply-chain allowlist
+   {class-variance-authority, radix-ui, @radix-ui/*} (T-02-SC). The file is
+   pure CSS (keyframes + data-state variants + one utility), inlined verbatim
+   so vendored components keep working without the package.
+   ============================================================ */
+@theme inline {
+  @keyframes accordion-down {
+    from {
+      height: 0;
+    }
+    to {
+      height: var(
+        --radix-accordion-content-height,
+        var(--accordion-panel-height, auto)
+      );
+    }
+  }
+
+  @keyframes accordion-up {
+    from {
+      height: var(
+        --radix-accordion-content-height,
+        var(--accordion-panel-height, auto)
+      );
+    }
+    to {
+      height: 0;
+    }
+  }
+}
+
+/* Custom variants */
+@custom-variant data-open {
+  &:where([data-state="open"]),
+  &:where([data-open]:not([data-open="false"])) {
+    @slot;
+  }
+}
+
+@custom-variant data-closed {
+  &:where([data-state="closed"]),
+  &:where([data-closed]:not([data-closed="false"])) {
+    @slot;
+  }
+}
+
+@custom-variant data-checked {
+  &:where([data-state="checked"]),
+  &:where([data-checked]:not([data-checked="false"])) {
+    @slot;
+  }
+}
+
+@custom-variant data-unchecked {
+  &:where([data-state="unchecked"]),
+  &:where([data-unchecked]:not([data-unchecked="false"])) {
+    @slot;
+  }
+}
+
+@custom-variant data-selected {
+  &:where([data-selected="true"]) {
+    @slot;
+  }
+}
+
+@custom-variant data-disabled {
+  &:where([data-disabled="true"]),
+  &:where([data-disabled]:not([data-disabled="false"])) {
+    @slot;
+  }
+}
+
+@custom-variant data-active {
+  &:where([data-state="active"]),
+  &:where([data-active]:not([data-active="false"])) {
+    @slot;
+  }
+}
+
+@custom-variant data-horizontal {
+  &:where([data-orientation="horizontal"]) {
+    @slot;
+  }
+}
+
+@custom-variant data-vertical {
+  &:where([data-orientation="vertical"]) {
+    @slot;
+  }
+}
+
+@utility no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+/* ============== end inlined shadcn dist tailwind css =============== */
+
+@layer base {
+  body {
+    @apply bg-background text-foreground;
+  }
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    @apply font-sans;
+  }
+  /* Text selection wears the brand navy — chrome, never a health signal. */
+  ::selection {
+    background-color: var(--color-brand);
+    color: #ffffff;
+  }
+}
+
+@theme inline {
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --color-foreground: var(--foreground);
+  --color-background: var(--background);
+  /* Tight radii per the sketch contract (3/6/10px) — instruments, not bubbles. */
+  --radius-sm: 3px;
+  --radius-md: 6px;
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+:root {
+  /* NOC Light surfaces (sketch findings, operator-validated 2026-06-11) —
+     light is the only mode. Pale blue-gray ground, white panels, dark
+     navy-gray text scale (do not lighten; mono at text-xs eats contrast). */
+  --background: #eef1f7;
+  --foreground: #0D1626;
+  --card: #ffffff;
+  --card-foreground: #0D1626;
+  --popover: #f4f7fc;
+  --popover-foreground: #0D1626;
+  --primary: #1A3C79;
+  --primary-foreground: #ffffff;
+  --secondary: #f4f7fc;
+  --secondary-foreground: #0D1626;
+  --muted: #f4f7fc;
+  --muted-foreground: #34435E;
+  --accent: #f4f7fc;
+  --accent-foreground: #0D1626;
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: #d8dfeb;
+  --input: #b9c5da;
+  --ring: #2C5CB4;
+  --chart-1: oklch(0.87 0 0);
+  --chart-2: oklch(0.556 0 0);
+  --chart-3: oklch(0.439 0 0);
+  --chart-4: oklch(0.371 0 0);
+  --chart-5: oklch(0.269 0 0);
+  --radius: 0.625rem;
+  --sidebar: #f4f7fc;
+  --sidebar-foreground: #0D1626;
+  --sidebar-primary: #1A3C79;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #eef1f7;
+  --sidebar-accent-foreground: #0D1626;
+  --sidebar-border: #d8dfeb;
+  --sidebar-ring: #2C5CB4;
+}
+
+/* ============================================================
+   Inbox triage grammar (Phase 7, INBOX-01/INBOX-02) — sketch-005 winner E.
+   BINDING design contract (.claude/skills/sketch-findings-nodemonitor/
+   references/inbox-triage-layout.md): severity is STATE-only (3px left border
+   + label tint, NO dots/emoji/icons); navy #1A3C79 is STRUCTURE/ACT-only
+   (links, focus, active facet, the .act button — never on severity); IBM Plex
+   Mono carries data; native <details> folds; CSS-grid rail swap (NOT a shadcn
+   sidebar). The skill's draft CSS uses shorthand token names; here they are
+   bound to this repo's real @theme tokens.
+   ============================================================ */
+@layer components {
+  /* severity section header — color is a 3px left border + the label, nothing else */
+  .sectionbar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 9px 16px;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+  .sectionbar.crit {
+    border-left: 3px solid var(--color-status-critical);
+    color: var(--color-status-critical);
+  }
+  .sectionbar.warn {
+    border-left: 3px solid var(--color-status-warn);
+    color: var(--color-status-warn);
+  }
+  .sectionbar.info {
+    border-left: 3px solid var(--border);
+    color: var(--muted-foreground);
+  }
+  .sectionbar.suppressed {
+    border-left: 3px solid var(--color-status-warn);
+    color: var(--color-status-warn);
+  }
+
+  /* the deliberate act — navy reserved for enqueue/approve/confirm only */
+  .act {
+    border: 1px solid var(--color-brand);
+    color: var(--color-brand);
+    background: none;
+  }
+  .act:hover {
+    background: var(--color-brand);
+    color: #fff;
+  }
+  .act.ghost {
+    border-color: var(--border);
+    color: var(--muted-foreground);
+  }
+
+  /* bulk fold — native <details> collapse for the routine fee bulk */
+  .fold > summary {
+    list-style: none;
+    cursor: pointer;
+  }
+  .fold > summary::-webkit-details-marker {
+    display: none;
+  }
+  .fold > summary .tw {
+    display: inline-block;
+    transition: transform 0.15s;
+  }
+  .fold[open] > summary .tw {
+    transform: rotate(90deg); /* ▸ → ▾ via rotation */
+  }
+
+  /* two-column synthesis grid + collapsible rail (CSS-grid swap, NOT a sidebar) */
+  .syn {
+    display: grid;
+    grid-template-columns: 200px minmax(0, 1fr);
+    gap: 1rem;
+    transition: grid-template-columns 0.15s;
+  }
+  .syn.railoff {
+    grid-template-columns: 0 minmax(0, 1fr);
+  }
+  /* Below md the fixed 200px rail crushes the spine (audit F) — collapse to a
+     single column so the facet rail stacks ABOVE the content instead. */
+  @media (max-width: 767px) {
+    .syn,
+    .syn.railoff {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    /* railoff on mobile: drop the hidden rail row entirely so it leaves no gap. */
+    .syn.railoff .railpane {
+      display: none;
+    }
+  }
+  .syn.railoff .railpane {
+    overflow: hidden;
+    visibility: hidden;
+  }
+
+  /* facet rail — counts mono tabular-nums; navy on the active filter only */
+  .facet {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    padding: 4px 8px;
+    border-radius: 3px;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--muted-foreground);
+    transition:
+      background 0.12s,
+      color 0.12s;
+  }
+  .facet:hover {
+    background: var(--color-status-stale-dim);
+  }
+  .facet.on {
+    color: var(--color-brand);
+    background: rgba(26, 60, 121, 0.08);
+    font-weight: 600;
+  }
+  .facet .fc {
+    margin-inline-start: auto;
+    font-variant-numeric: tabular-nums;
+    color: var(--muted-foreground);
+  }
+  /* multi-select marker — a square that fills navy when the facet is active
+     (navy = structure/active only; no glyph, matching the no-icons rule) */
+  .fcheck {
+    flex: none;
+    width: 13px;
+    height: 13px;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    background: var(--card);
+    transition:
+      background 0.12s,
+      border-color 0.12s;
+  }
+  .fcheck.on {
+    border-color: var(--color-brand);
+    background: var(--color-brand);
+    box-shadow: inset 0 0 0 2px var(--card);
+  }
+}
+
+/* ============================================================
+   DATA-FORWARD v2 design system (Phase 10, DS-01). ADDITIVE ONLY.
+   Source of truth: byte-perfect off the locked prototype
+   ".prototype-snapshot/Ops Center - Data-Forward v2.dc.html" (verified 2026-06-23).
+   These df-* tokens are a SEPARATE namespace from the NOC @theme (lines 6-40)
+   and :root (206-242) above — the NOC blocks are FORBIDDEN to edit (D-05).
+   Light-only. Severity ramp is set-disjoint from chrome/brand navy.
+   ============================================================ */
+@theme {
+  /* ── surfaces ── */
+  --color-df-bg: #EEF1F5;            /* page ground (prototype body bg) */
+  --color-df-surface: #FFFFFF;       /* cards */
+  --color-df-surface-sub: #FAFBFD;   /* evidence panel insets */
+  --color-df-border: #E4E7EE;        /* card border */
+  --color-df-border-soft: #ECEFF4;   /* inset border */
+  /* ── ink ── */
+  --color-df-ink: #10131A;
+  --color-df-muted: #6F7787;         /* AA-large/UI (3.97:1 on bg) — labels, not body text */
+  --color-df-faint: #9AA3B4;         /* DECORATIVE ONLY — fails 4.5:1 AND 3:1 as text */
+  /* ── chrome (structure, never a health color) ── */
+  --color-df-chrome: #13284F;        /* left rail / dark navy surfaces / command code bg */
+  --color-df-chrome-accent: #2C4A7E; /* lighter navy — rail avatar / chrome insets */
+  --color-df-brand: #1A3C79;         /* brand accent/affordance only (selection/focus) */
+  --color-df-brand-tint: #EAEEF6;    /* faint navy wash — safety footer / brand-tinted grounds */
+  --color-df-slate: #64748B;         /* neutral chart gray — threshold line + peer-median band (prototype #64748B) */
+  --color-df-caption: #8A92A0;       /* SVG chart caption/axis label gray (tokenizes EvidenceChart literal) */
+  /* ── severity ramp (structurally separate from chrome/brand) ── */
+  --color-df-critical: #E0392B;      /* accent/dot/icon (prototype wins over #D92638) */
+  --color-df-critical-tint: #FCEBEA; /* wash bg */
+  --color-df-critical-border: #F3D3D0;
+  --color-df-warning: #C8770A;
+  --color-df-warning-tint: #FBF0DD;
+  --color-df-warning-border: #EFE0C5;
+  --color-df-watch: #0E8C84;         /* teal */
+  --color-df-watch-tint: #E2F2EF;
+  --color-df-watch-border: #C2E3DD;
+  --color-df-ok: #1E9E63;            /* dots / sparks / accents (3.43:1 — NON-TEXT role) */
+  --color-df-ok-text: #1E7A4E;       /* green TEXT/labels (5.32:1 — AA-text role) */
+  --color-df-ok-tint: #E7F4EC;
+  /* ── stale / no-data — SHAPE-distinct, not just hue (DS-01 honest stale primitive) ── */
+  --color-df-stale-dot: #C8A23A;     /* square dot (radius 2px) */
+  --color-df-stale-text: #A9912F;    /* stale label text */
+  --color-df-stale-tint: #F7F0DC;
+  --color-df-stale-border: #E9DCB6;
+  /* ── impl tags ── */
+  --color-df-lnd: #33559B;  --color-df-lnd-bg: #EAEFF8;   /* AA-text 6.25:1 */
+  --color-df-ldk: #7A4FA3;  --color-df-ldk-bg: #F1EAF8;   /* AA-text 5.14:1 — [ASSUMED A2] */
+  /* ── type ── */
+  --font-df-sans: var(--font-plex-sans), system-ui, sans-serif;
+  --font-df-mono: var(--font-plex-mono), ui-monospace, monospace;
+  /* ── radius (prototype: pills 5–6 / buttons 8–11 / cards 13–16) ── */
+  --radius-df-pill: 6px;
+  --radius-df-btn: 9px;
+  --radius-df-card: 14px;
+  --radius-df-card-lg: 18px;        /* hero card */
+  /* ── shadow (rest → hover) ── */
+  --shadow-df-rest: 0 1px 3px rgba(16,19,26,.05);
+  --shadow-df-hover: 0 10px 30px rgba(16,19,26,.10);
+}
+
+/* Bespoke Data-Forward v2 keyframes — ported verbatim from the prototype <style>
+   (lines 30-32). Placed in @layer components following the inbox-grammar precedent
+   above (NOT inline). v2pulse = critical heartbeat ring; v2drop = evidence-panel
+   reveal; v2flow = force-close link dash animation. */
+@layer components {
+  @keyframes v2pulse {
+    0% {
+      box-shadow: 0 0 0 0 #E0392B55;
+    }
+    70% {
+      box-shadow: 0 0 0 7px #E0392B00;
+    }
+    100% {
+      box-shadow: 0 0 0 0 #E0392B00;
+    }
+  }
+  @keyframes v2drop {
+    from {
+      opacity: 0;
+      transform: translateY(-4px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  @keyframes v2flow {
+    to {
+      stroke-dashoffset: -18;
+    }
+  }
+}

@@ -1,0 +1,31 @@
+<div th:fragment="qrCode">
+  <div class="modal fade profile-modal" id="qrModal_div_qrModal" tabindex="-1" role="dialog"
+       aria-labelledby="qrLiquidityModal" aria-hidden="true">
+    <div class="modal-dialog modal-sm" role="document">
+      <div class="modal-content">
+        <button id="qrModal_btn_closeButton" type="button" class="close" data-dismiss="modal"
+                aria-label="Close">
+          <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+               viewBox="0 0 24 24"
+               fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+               stroke-linejoin="round" class="feather feather-x">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+        <div class="modal-header border-0 justify-content-center">
+          <h4 class="modal-title text-center" id="qrAddressModalLabel">QR Code</h4>
+        </div>
+        <div class="modal-body text-center">
+          <img id="qrCode" src="">
+        </div>
+        <div class="modal-footer border-0 justify-content-center mb-4">
+          <button id="qrLiquidityModal_btn_qrLiquidityModal-dismiss" type="button" class="btn"
+                  data-dismiss="modal">
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,55 @@
+spring:
+  profiles:
+    active: ${WENV}
+  application:
+    name: cipher-service
+  cloud:
+    bus:
+      enabled: true
+  liquibase:
+    change-log: classpath:/db/changelog/db.changelog-master.xml
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQL9Dialect
+    properties:
+      hibernate:
+        temp:
+          use_jdbc_metadata_defaults: false
+server:
+  port: 8790
+hibernate:
+  show_sql: true
+  order_inserts: true
+  order_updates: true
+  jdbc:
+    batch_size: 30
+    batch_versioned_data: true
+
+---
+spring:
+  profiles: development
+  cloud:
+    config:
+      uri: ${CONFIG_SERVER:http://config-server.microservice:8888}
+      label: develop
+      username: ${CONFIG_USERNAME}
+      password: ${CONFIG_PASSWORD}
+
+---
+spring:
+  profiles: staging
+  cloud:
+    config:
+      uri: http://config-server.microservice:8888
+      label: staging
+      username: ${CONFIG_USERNAME}
+      password: ${CONFIG_PASSWORD}
+
+---
+spring:
+  profiles: production
+  cloud:
+    config:
+      uri: http://config-server.microservice:8888
+      label: main
+      username: ${CONFIG_USERNAME}
+      password: ${CONFIG_PASSWORD}

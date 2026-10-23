@@ -1,0 +1,20 @@
+.text-input .error-message {
+    color: red;
+}
+
+.empty-node-text{
+    font-family: Inter;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 21px;
+    letter-spacing: 0em;
+    text-align: left;
+}
+
+.node-share-status {
+    padding: 4px 12px;
+    gap: 10px;
+    background: #D7F0FF;
+    border-radius: 8px;
+    width: fit-content;
+}

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout/app}" lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <title>LQwD | Transaction History</title>
+    <link th:href="@{${pluginPath + '/apex/apexcharts.css'}}" rel="stylesheet" type="text/css" />
+    <link th:href="@{${pluginPath + '/editors/quill/quill.snow.css'}}" rel="stylesheet" type="text/css" />
+    <link th:href="@{${cssPath + '/widgets/modules-widgets.css'}}" rel="stylesheet" type="text/css"/>
+    <link th:href="@{${cssPath + '/apps/todolist.css'}}" rel="stylesheet" type="text/css" />
+    <link th:href="@{${cssPath + '/components/timeline/custom-timeline.css'}}" rel="stylesheet" type="text/css"/>
+</head>
+<style layout:fragment="style">
+    .history-list-container {
+        position: relative;
+        display: flex;
+        border-radius: 6px;
+        margin-bottom: 10px;
+        background: #0e1726;
+        -webkit-box-shadow: 0 6px 10px 0 rgba(0,0,0,.14), 0 1px 18px 0 rgba(0,0,0,.12), 0 3px 5px -1px rgba(0,0,0,.2);
+        -moz-box-shadow: 0 6px 10px 0 rgba(0,0,0,.14), 0 1px 18px 0 rgba(0,0,0,.12), 0 3px 5px -1px rgba(0,0,0,.2);
+        box-shadow: 0 6px 10px 0 rgba(0,0,0,.14), 0 1px 18px 0 rgba(0,0,0,.12), 0 3px 5px -1px rgba(0,0,0,.2);
+    }
+</style>
+<body>
+<section layout:fragment="sub-header">
+    <span>Transaction History</span>
+</section>
+
+<div layout:fragment="content-section" class="layout-px-spacing">
+    <div class="row layout-top-spacing">
+        <div class="col-xl-12 col-lg-12 col-md-12">
+            <div id="transaction-list-container" class="mail-box-container">
+                <div class="mail-overlay"></div>
+
+                <div class="tab-title">
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 col-12 text-center">
+                            <h5 class="app-title">History</h5>
+                        </div>
+                        <div class="todoList-sidebar-scroll">
+                            <div class="col-md-12 col-sm-12 col-12 mt-4 pl-0">
+                                <ul class="nav nav-pills d-block" id="pills-tab" role="tablist">
+                                    <li class="nav-item">
+                                        <a class="nav-link list-actions active" id="all-list" data-toggle="pill" href="#pills-all" role="tab" aria-selected="false">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-grid">
+                                                <rect x="3" y="3" width="7" height="7"></rect>
+                                                <rect x="14" y="3" width="7" height="7"></rect>
+                                                <rect x="14" y="14" width="7" height="7"></rect>
+                                                <rect x="3" y="14" width="7" height="7"></rect>
+                                            </svg>
+                                            All
+                                            <span class="todo-badge badge"></span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link list-actions" id="invoices-list" data-toggle="pill" href="#pills-invoices" role="tab" aria-selected="true">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-list">
+                                                <line x1="8" y1="6" x2="21" y2="6"></line>
+                                                <line x1="8" y1="12" x2="21" y2="12"></line>
+                                                <line x1="8" y1="18" x2="21" y2="18"></line>
+                                                <line x1="3" y1="6" x2="3.01" y2="6"></line>
+                                                <line x1="3" y1="12" x2="3.01" y2="12"></line>
+                                                <line x1="3" y1="18" x2="3.01" y2="18"></line>
+                                            </svg>
+                                            Invoices
+                                            <span class="todo-badge badge"></span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link list-actions" id="payments-list" data-toggle="pill" href="#pills-payments" role="tab" aria-selected="false">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-credit-card">
+                                                <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
+                                                <line x1="1" y1="10" x2="23" y2="10"></line>
+                                            </svg>
+                                            Payments
+                                            <span class="todo-badge badge"></span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link list-actions" id="transactions-list" data-toggle="pill" href="#pills-transactions" role="tab" aria-selected="false">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-fast-forward">
+                                                <polygon points="13 19 22 12 13 5 13 19"></polygon>
+                                                <polygon points="2 19 11 12 2 5 2 19"></polygon>
+                                            </svg>
+                                            Transactions
+                                            <span class="todo-badge badge"></span>
+                                        </a>
+                                    </li>
+
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="todo-inbox" class="accordion todo-inbox">
+                    <div class="search">
+                        <input type="text" class="form-control input-search" placeholder="Search Here...">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu mail-menu d-lg-none">
+                            <line x1="3" y1="12" x2="21" y2="12"></line>
+                            <line x1="3" y1="6" x2="21" y2="6"></line>
+                            <line x1="3" y1="18" x2="21" y2="18"></line>
+                        </svg>
+                    </div>
+                    <div class="todo-box">
+                        <div id="ct" class="todo-box-scroll text-center pt-5">
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div layout:fragment="scripts">
+
+    <script th:src="@{${pluginPath + '/apex/apexcharts.min.js'}}"></script>
+    <script th:src="@{${pluginPath + '/blockui/custom-blockui.js'}}"></script>
+    <script th:src="@{${pluginPath + '/blockui/jquery.blockUI.min.js'}}"></script>
+    <script th:src="@{/assets/js/widgets/modules-widgets.js}"></script>
+    <script th:src="@{/assets/js/ie11fix/fn.fix-padStart.js}"></script>
+    <script th:src="@{${pluginPath + '/editors/quill/quill.js'}}"></script>
+    <script th:src="@{/js/tools/tools.js}"></script>
+    <script>
+        function getTransactionHistory(){
+            $.ajax({
+                url: "/get-transaction-history",
+                type: "POST",
+                beforeSend: function () {
+                    blockArea("#transaction-list-container", "Loading Transactions...");
+                },
+                success: function (fragment){
+                    $("#transaction-list-container").replaceWith(fragment);
+                    new dynamicBadgeNotification('allList');
+                    new dynamicBadgeNotification('invoiceList');
+                    new dynamicBadgeNotification('paymentList');
+                    new dynamicBadgeNotification('transactionList');
+                    unblockArea("#transaction-list-container", "");
+                },
+                error: function (response){
+                    console.log(response);
+                    unblockArea("#transaction-list-container", "");
+                }
+            });
+        }
+
+        $(document).ready(function() {
+            getTransactionHistory();
+            feather.replace();
+        });
+    </script>
+</div>
+</body>
+</html>

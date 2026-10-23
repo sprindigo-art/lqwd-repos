@@ -1,0 +1,14 @@
+databaseChangeLog:
+  - changeSet:
+      id: update_lndnode_status
+      validCheckSum: ANY
+      author: chris
+      changes:
+        - sql:
+            sql: UPDATE lndnodeinfo SET status = 'RUNNING' WHERE status = 'running';
+        - sql:
+            sql: UPDATE lndnodeinfo SET status = 'RUNNING' WHERE status = 'active';
+        - sql:
+            sql: UPDATE lndnodeinfo SET status = 'CREATING' WHERE status = 'creating';
+        - sql:
+            sql: UPDATE lndnodeinfo SET status = 'DELETED' WHERE status = 'deleted';

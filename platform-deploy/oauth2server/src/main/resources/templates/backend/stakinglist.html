@@ -1,0 +1,55 @@
+<html>
+<head th:include="fragment/headerfooter::header1"></head>
+<body onload="startTime()">
+<div id="containerMain">
+    <div th:include="fragment/headerfooter::top_menu('action')"></div>
+    <div id="titleMain">
+        <h1>Staking</h1>
+    </div>
+
+    <div id="contentMain">
+        <table id="customers">
+            <tr>
+                <th>ID</th>
+                <th>UserId</th>
+                <th>Amt</th>
+                <th>Days</th>
+                <th>Email</th>
+                <th>Status</th>
+                <th>Ref</th>
+                <th>Type</th>
+                <th>Node</th>
+                <th>Date Paid</th>
+                <th>Date Created</th>
+            </tr>
+            <tr th:each="item, iItem : ${content}">
+
+                <td th:text="${item.id}"/>
+                <td>
+                    <a th:href="@{/backend/edit/user(id=${item.userId})}" th:text="${item.userId}"/>
+                </td>
+                <td th:text="${item.amount} ?: 'NA'"/>
+                <td th:text="${item.days}"/>
+                <td th:text="${item.userEmail} ?: 'NA'"/>
+                <td th:text="${item.status}"/>
+                <td th:text="${item.stakingReference}"/>
+                <td th:text="${item.stakingType} ?: 'NA'"/>
+                <td th:text="${item.nodeName}"/>
+                <td th:text="${item.paymentDate} ?: 'NA'"/>
+                <td th:text="${item.created} ?: 'NA'"/>
+            </tr>
+        </table>
+        <div id="paginationMain">
+            <div class="center">
+                <div class="pagination" th:each="i: ${#numbers.sequence(0, pages)}">
+                    <a th:class="${i == (pageNumber)} ? 'current page-numbers' : 'page-numbers'"
+                       th:href="@{/backend/staking/find_all(pageSize=10, pageNumber=${i})}"
+                       th:text="${i}"> </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

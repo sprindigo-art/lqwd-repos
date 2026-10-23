@@ -1,0 +1,21 @@
+<div th:fragment="select-node" id="select-node" class="widget widget-activity-four" style="width: 100%; margin: 15px;" enctype="application/x-www-form-urlencoded" xmlns="http://www.w3.org/1999/html">
+  <div class="widget-content widget-content-area" style="border: 0px;">
+    <h3>Select the node to list all addresses</h3>
+    <div class="form-group pt-4">
+      <div class="row">
+        <div class="col-lg-10 col-12">
+            <select th:unless="${user.isEmailstatus()}" id="select-node_slct_verify" class="col-12 selectpicker form-control" disabled>
+                <option disabled selected>Please Verify Account</option>
+            </select>
+          <select th:if="${user.isEmailstatus()}" id="select-node_slct_lnd-select" class="custom-select" required>
+            <option th:each="lndNode : ${user.getLndNodes()}" th:value="${lndNode.getLndNodeName()}" th:text="${lndNode.getLndNodeName()}"></option>
+          </select>
+        </div>
+        <div class="col-lg-2 col-12">
+          <button th:unless="${user.isEmailstatus()}" id="select-node_btn_verify"  class="btn btn-lg btn-primary mb-2" disabled>Please Verify Account</button>
+          <button th:if="${user.isEmailstatus()}" id="select-node_btn_show-addresses"  class="btn btn-lg btn-primary mb-2">Show addresses</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

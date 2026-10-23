@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/head::header_main(~{::title}, ~{::link})">
+  <title>LQWD | QR Code</title>
+  <!-- END GLOBAL MANDATORY STYLES -->
+  <link th:href="@{${cssPath + '/authentication/form-1.css'}}"  rel="stylesheet" type="text/css" />
+  <link rel="stylesheet" type="text/css" th:href="@{${cssPath + '/forms/theme-checkbox-radio.css'}}" >
+  <link rel="stylesheet" type="text/css" th:href="@{${cssPath + '/forms/switches.css'}}" >
+  <link rel="stylesheet" type="text/css" th:href="@{/css/login.css}"/>
+  <link rel="stylesheet" type="text/css" th:href="@{${cssPath + '/components/custom-modal.css'}}">
+</head>
+<body class="form">
+
+  <div id="qr-code" class="form-container">
+    <div class="form-form">
+      <div class="form-form-wrap">
+        <div class="form-container">
+          <div class="form-content">
+            <div th:replace="auth/fragments/qrcode"><div>
+          </div>
+        </div>
+      </div>
+        </div>
+      </div>
+    </div>
+    <div class="form-image">
+      <div class="l-image"></div>
+    </div>
+  </div>
+
+  <div id="check-qr-code" class="form-container" style="display:none;">
+    <div class="form-form">
+      <div class="form-form-wrap">
+        <div class="form-container">
+          <div class="form-content">
+            <div th:replace="auth/fragments/check-qr-code"><div>
+            </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="form-image">
+      <div class="l-image"></div>
+    </div>
+  </div>
+
+  <div th:replace="layout/footer::footer_main(~{::script})" >
+    <script>
+      /* This creates all the OTP input fields dynamically. Change the otp_length variable  to change the OTP Length */
+      const $otp_length = 6;
+
+      const element = document.getElementById('check-qr-code_div_OTPInput');
+      for (let i = 0; i < $otp_length; i++) {
+        let inputField = document.createElement('input'); // Creates a new input element
+        inputField.className = "col-2 rounded pl-1 mt-4 mb-4 p-2";
+        // Do individual OTP input styling here;
+        inputField.style.cssText = "color: black; text-shadow: 0 0 0 gray; text-align: center;";
+        // Input field text styling. This css hides the text caret
+        inputField.id = 'qrcode_txt_otp-field' + i; // Don't remove
+        inputField.maxLength = 1; // Sets individual field length to 1 char
+        element.appendChild(inputField); // Adds the input field to the parent div (OTPInput)
+      }
+
+      /*  This is for switching back and forth the input box for user experience */
+      const inputs = document.querySelectorAll('#check-qr-code_div_OTPInput > *[id]');
+
+      for (let i = 0; i < inputs.length; i++) {
+        inputs[i].addEventListener('keydown', function (event) {
+          if (event.key === "Backspace") {
+            inputs[i].value = '';
+            if (i !== 0) {
+              inputs[i - 1].focus();
+            }
+          } else if (event.key === "ArrowLeft" && i !== 0) {
+            inputs[i - 1].focus();
+          } else if (event.key === "ArrowRight" && i !== inputs.length - 1) {
+            inputs[i + 1].focus();
+          }
+        });
+        inputs[i].addEventListener('input', function () {
+          inputs[i].value = inputs[i].value.toUpperCase(); // Converts to Upper case. Remove .toUpperCase() if conversion isnt required.
+          if (i === inputs.length - 1 && inputs[i].value !== '') {
+            return true;
+          } else if (inputs[i].value !== '') {
+            inputs[i + 1].focus();
+          }
+        });
+
+      }
+
+      function getCodeValue(){
+        const inputs = document.querySelectorAll('#check-qr-code_div_OTPInput > *[id]');
+        let compiledOtp = '';
+        for (let i = 0; i < inputs.length; i++) {
+          compiledOtp += inputs[i].value;
+        }
+
+        return compiledOtp;
+
+      }
+
+      $(document).ready(function (){
+        $('#qrcode_btn_continue').on('click', function (){
+          $('#qrcode_div_qrcode').toggle();
+          $('#check-qr-code_div_check-qr-code').toggle();
+        });
+
+            $('#check-qr-code_btn_continue').on('click', function () {
+                var code = getCodeValue();
+                //check code
+                $.ajax({
+                    url: "/check-code",
+                    type: "POST",
+                    data: {
+                        'code': code
+                    },
+                    success: function (response) {
+                        window.location = '/login';
+                    },
+                    error: function (response) {
+                        var error = JSON.parse(response['responseJSON']['message']);
+                        Snackbar.show({
+                            text: error['error_description'],
+                            pos: 'top-center',
+                            duration: false,
+                            actionTextColor: '#fff',
+                            backgroundColor: '#e7515a'
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+  </div>
+</body>
+</html>

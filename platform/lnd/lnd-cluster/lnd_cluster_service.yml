@@ -1,0 +1,43 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: lnd-cluster
+  namespace: lqwd-lnd
+  labels:
+    app: lnd-cluster
+
+spec:
+  selector:
+    app: lnd-cluster
+  ports:
+    - name: tcp-9735
+      protocol: TCP
+      port: 9735
+      targetPort: 9735
+
+    - name: tcp-10009
+      protocol: TCP
+      port: 10009
+      targetPort: 10009
+
+    - name: tcp-8080
+      protocol: TCP
+      port: 8080
+      targetPort: 8080
+
+
+    - name: tcp-29088
+      protocol: TCP
+      port: 29088
+      targetPort: 29088
+
+    - name: tcp-29099
+      protocol: TCP
+      port: 29099
+      targetPort: 29099
+
+    - name: tcp-853
+      protocol: TCP
+      port: 853
+      targetPort: 853
+  type: NodePort

@@ -1,0 +1,17 @@
+# LAN-only static configuration.
+#
+# Address, netmask and gateway are fixed on purpose - this appliance must be
+# reachable at a known address and must never accept a DHCP-supplied route or
+# DNS server from an untrusted network.
+
+auto lo
+iface lo inet loopback
+
+auto eth0
+iface eth0 inet static
+    address   192.168.1.50
+    netmask   255.255.255.0
+    gateway   192.168.1.1
+    # NOTE: a "dns-nameservers" line here would do nothing - it is a
+    # resolvconf feature and resolvconf is not installed. DNS is configured
+    # statically in /etc/resolv.conf, shipped by this same recipe.

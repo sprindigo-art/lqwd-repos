@@ -1,0 +1,16 @@
+
+    7  apt-get update
+    8  apt install nano
+    9  nano synch.py
+
+
+   12  apt-get install python3
+
+   16  apt-get install python3-pip
+
+   21  apt-get install postgresgl-client
+
+   26  apt install libpq-dev
+
+   28  python3 synch.py
+   29  nano synch.py

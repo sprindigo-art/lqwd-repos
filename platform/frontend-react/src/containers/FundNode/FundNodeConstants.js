@@ -1,0 +1,7 @@
+export const SHOW_FUND_NODE_MODAL = 'lqwd/frontend/SHOW_FUND_NODE_MODAL';
+export const HIDE_FUND_NODE_MODAL = 'lqwd/frontend/HIDE_FUND_NODE_MODAL';
+export const CREATE_DEPOSIT_ADDRESS = 'lqwd/frontend/CREATE_DEPOSIT_ADDRESS';
+export const CREATE_DEPOSIT_ADDRESS_SUCCESS =
+  'lqwd/frontend/CREATE_DEPOSIT_ADDRESS_SUCCESS';
+export const CREATE_DEPOSIT_ADDRESS_FAILED =
+  'lqwd/frontend/CREATE_DEPOSIT_ADDRESS_FAILED';

@@ -1,0 +1,27 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <changeSet author="djbabs (generated)" id="1654334004304-1">
+        <addColumn tableName="lsp_monitor_invoice">
+            <column name="payment_addr" type="varchar(255)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1654334004304-2">
+        <addColumn tableName="lsp_monitor_invoice">
+            <column name="pre_image" type="varchar(255)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1654334004304-3">
+        <addColumn tableName="lsp_monitor_invoice">
+            <column name="r_hash" type="varchar(255)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1654334004304-22">
+        <dropNotNullConstraint columnDataType="int" columnName="block_height" tableName="lsp_transaction"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1654334004304-36">
+        <dropNotNullConstraint columnDataType="int" columnName="no_of_confirmations" tableName="lsp_transaction"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1654334004304-37">
+        <dropNotNullConstraint columnDataType="float8" columnName="total_fees" tableName="lsp_transaction"/>
+    </changeSet>
+</databaseChangeLog>

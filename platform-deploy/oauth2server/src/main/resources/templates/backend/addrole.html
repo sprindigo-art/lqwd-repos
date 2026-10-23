@@ -1,0 +1,91 @@
+<html>
+<head th:include="fragment/headerfooter::header1"></head>
+<body onload="startTime()">
+<div id="containerMain">
+    <div th:include="fragment/headerfooter::top_menu('action')"></div>
+    <div id="titleMain">
+        <h1>Add New Role </h1>
+    </div>
+
+    <div id="contentMain">
+        <form autocomplete="off" action="#" th:action="@{/backend/add/role}"
+              th:object="${role}" method="post" class="form-horizontal"
+              role="form">
+            <input type="hidden" th:field="*{id}" />
+            <div class="row">
+                <div class="col-25">
+                    <label>Name</label>
+                </div>
+                <div class="col-25">
+                    <label th:if="${#fields.hasErrors('name')}"
+                           th:errors="*{name}" class="validation-message">
+                    </label>
+                </div>
+                <div class="col-75">
+                    <select th:class="'name_field '+ ${roleNames.size() > 0 ? 'is_shown' : 'is_hidden'}" th:if="${roleNames.size() > 0}" id="name_select" th:field="*{name}">
+                          <option th:each="item : ${roleNames}" th:value="${item}"
+                                th:text="${item}"
+                                th:selected="${item == role.name}"></option>
+                    </select>
+
+                    <input th:class="'name_field '+${roleNames.size() > 0 ? 'is_hidden' : 'is_shown'}" id="name_input" type="text" th:field="*{name}" placeholder="Enter role name" class="form-control" />
+                    <br />
+                    <span th:if="${roleNames.size() > 0}"><input type="checkbox"  onchange="isNewSelected(this)" /> Enter New Role Name</span>
+                </div>
+            </div>
+
+
+
+            <div class="row">
+                <div class="col-25">
+                    <label>Mservice</label>
+                </div>
+                <div class="col-25">
+                    <label th:if="${#fields.hasErrors('mserviceId')}"
+                           th:errors="mserviceId" class="validation-message"> </label>
+                </div>
+                <div class="col-75">
+                    <select id="mservice" th:field="*{mserviceId}">
+                        <option th:each="item : ${mservices}" th:value="${item.id}"
+                                th:text="${item.name}"
+                                th:selected="${item.id == role.mserviceId}"></option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row">
+                <input type="submit" th:value="${role.id == null?'ADD':'EDIT'}" />
+            </div>
+
+            <h2>
+                <span class="text-success" th:utext="${successMessage}"></span>
+            </h2>
+        </form>
+    </div>
+</div>
+<script>
+function isNewSelected(element){
+    var  name_fields = document.getElementsByClassName("name_field");
+    for(var i = 0; i < name_fields.length; i++){
+        name_fields[i].classList.remove("is_shown");
+        name_fields[i].classList.remove("is_hidden");
+        name_fields[i].removeAttribute("name");
+        name_fields[i].disabled = true;
+    }
+    if (element.checked) {
+        document.getElementById("name_input").classList.add("is_shown");
+        document.getElementById("name_select").classList.add("is_hidden");
+        document.getElementById("name_input").setAttribute("name","name");
+        document.getElementById("name_input").disabled= false;
+
+    } else {
+        document.getElementById("name_select").classList.add("is_shown");
+        document.getElementById("name_input").classList.add("is_hidden");
+        document.getElementById("name_select").setAttribute("name","name");
+        document.getElementById("name_select").disabled = false;
+    }
+}
+
+</script>
+</body>
+</html>

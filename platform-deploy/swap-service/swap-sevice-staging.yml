@@ -1,0 +1,15 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: swap-service
+  namespace: lqwd-lnd
+  labels:
+    app: swap-service
+spec:
+  selector:
+    app: swap-service
+  ports:
+    - name: client
+      port: 80
+      targetPort: 80
+      protocol: TCP

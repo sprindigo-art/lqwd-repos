@@ -1,0 +1,23 @@
+ <form th:fragment="contact" id="contact" class="section contact" enctype="application/x-www-form-urlencoded">
+     <div class="widget-content widget-content-area">
+         <h3>Contact Information</h3>
+        <div class="row">
+            <div class="col-md-11 mx-auto">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="contact_txt_phone">Phone</label>
+                            <input type="text" class="form-control mb-4" id="contact_txt_phone" placeholder="Write your phone number here" th:value="${user.getPhone()}">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="contact_txt_email">Email</label>
+                            <input type="text" class="form-control mb-4" id="contact_txt_email" placeholder="Write your email here" th:attr="data-initial=${user.getEmail()}" th:value="${user.getEmail()}">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+     </div>
+</form>

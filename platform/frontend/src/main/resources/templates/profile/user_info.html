@@ -1,0 +1,55 @@
+<div th:fragment="user_info">
+    <div class="widget-content widget-content-area">
+        <div class="d-flex justify-content-between">
+            <h3 class="">Profile</h3>
+            <a id="user-info_a_profile" th:href="@{/account-settings}" class="mt-2 edit-profile">
+                <i data-feather="edit-3"></i>
+            </a>
+        </div>
+        <div class="text-center user-info">
+            <div class="avatar avatar-lg">
+                <img alt="avatar" th:src="@{images/avatar_icon.png}" class="rounded-circle" width="90" height="90">
+            </div>
+            <p class="" th:text="${user.getFullName()}">Fake User</p>
+            <div class="">
+                <ul class="contacts-block list-unstyled">
+                    <li class="contacts-block pt-1">
+                        <div class="row justify-content-center">
+                            <div class="col-1">
+                                <i data-feather="user"></i>
+                            </div>
+                            <div class="col-4">
+                                <span id="user-info_span_username" th:text="${user.getUsername() == null ? user.getEmail() : user.getUsername()}"></span>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="contacts-block pt-2">
+                        <div class="row justify-content-center">
+                            <div class="col-1">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-mail">
+                                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                                    <polyline points="22,6 12,13 2,6"></polyline>
+                                </svg>
+                            </div>
+                            <div class="col-4">
+                                <a id="user-info_a_mailto" th:href="'mailto:' + ${user.getEmail()}">
+                                    <span th:text="${user.getEmail() == null ? user.getUsername() : user.getEmail()}"></span>
+                                </a>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="contacts-block pt-2">
+                        <div class="row justify-content-center">
+                            <div class="col-1">
+                                <i data-feather="phone"></i>
+                            </div>
+                            <div class="col-4">
+                                <span th:text="${user.getPhone()}"></span>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

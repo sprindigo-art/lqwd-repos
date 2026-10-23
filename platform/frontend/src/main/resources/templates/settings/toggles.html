@@ -1,0 +1,21 @@
+<form th:fragment="toggles" class="section general-info" enctype="application/x-www-form-urlencoded">
+    <div class="widget-content widget-content-area">
+        <h3>Preferences</h3>
+        <div class="row">
+            <div class="col-lg-11 mx-auto pt-1">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="n-chk">
+                            <div class="row">
+                                <div class="custom-control custom-switch">
+                                    <input th:checked="${user.isReceiveNews()}" type="checkbox" class="custom-control-input s-primary" id="toggles_chk_receive-news">
+                                    <label class="custom-control-label" for="toggles_chk_receive-news">Allow Newsletters</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

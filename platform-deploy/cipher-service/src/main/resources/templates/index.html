@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes"/>
+
+    <title>Cipher-Service</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link href="app.css" th:href="@{/app.css}" rel="stylesheet" media="screen"/>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class="row">
+    <img class="header_image"src="logo.jpg" th:href="@{/logo.jpg}" />
+</div>
+<div class="row" id="login_div">
+    <div class="login-form">
+        <div class="form">
+            <h2 class="text-center">Log in</h2>
+            <div class="form-group">
+                <input id="username" type="text" class="form-control" placeholder="Username" required="required">
+            </div>
+            <div class="form-group">
+                <input id="password" type="password" class="form-control" placeholder="Password" required="required">
+            </div>
+            <div class="form-group">
+                <button id="do_login" class="btn btn-primary btn-block">Log in</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="row" id="application_div">
+    <div class="container">
+
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item active">
+                <a class="nav-link active" id="settings-tab" data-toggle="tab" href="#settings" role="tab" aria-controls="settings" aria-selected="true">Configure</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="updates-tab" data-toggle="tab" href="#updates" role="tab" aria-controls="updates" aria-selected="false">Encrypted Files</a>
+            </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+
+            <div class="page tab-pane fade active in" id="settings" role="tabpanel" aria-labelledby="settings-tab">
+
+                <p class="page_header" role="alert">Use this form to Configure/Register the available encryption/decryption methods.</p>
+                <div>
+                    <div class="form-group">
+                        <label>Available Encryption/Decryption Methods:</label>
+                        <select id="method_list_configure" class="form-control">
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <div><label><input type="checkbox" id="is_default"/>Set as  default method</label></div>
+                        <small class="form-text text-muted">
+                            Every new file added to lnd_main_v2 will use this method as default method for encryption/decryption
+                        </small>
+                    </div>
+                    <div class="form-group">
+                        <label>Enter Secret Key:</label>
+                        <textarea id="method_secret" class="form-control" rows="10" placeholder="Paste secret key here"></textarea>
+                        <small class="form-text text-muted">
+                            Take note that once the secret key is updated, all existing files using this method will be decrypted and then encrypted with the new secret key
+                        </small>
+                    </div>
+                    <button id="do_generate" class="btn btn-warning" type="button" >
+                        Generate Secret Key
+                    </button>
+                    <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                        Test b/4 Saving
+                    </button>
+                    <button id="do_configure" type="button" class="btn btn-default">Save</button>
+                    <div class="collapse" id="collapseExample">
+                        <br />
+                        <div class="row">
+                            <div class="col-sm-6 card card-body">
+                                <label>Content to encrypt</label>
+                                <textarea id="test_encrypt_text" class="form-control" rows="3" placeholder="Paste content here and encrypt"></textarea>
+                                <br />
+                                <button id="do_encrypt_test" type="button" class="btn btn-primary">Encrypt</button>
+                            </div>
+
+                            <div class="col-sm-6 card card-body">
+                                <label>Content to decrypt</label>
+                                <textarea id="test_decrypt_text" class="form-control" rows="3" placeholder="Paste content here and decrypt"></textarea>
+                                <br />
+                                <button id="do_decrypt_test" type="button" class="btn btn-warning">Decrypt</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="page tab-pane fade" id="updates" role="tabpanel" aria-labelledby="updates-tab">
+                <p class="page_header" role="alert">Use this form to Update the encryption/decryption method for the selected files below.</p>
+                <div class="panel">
+                    <div class="card">
+                        <div class="card-body">
+                            <form class="form-inline">
+
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="panel">
+                    <div class="card">
+                        <div class="card-body">
+                            <form class="form-inline">
+                                <div class="form-group mb-3">
+                                    <select class="form-control" id="method_list_update">
+                                    </select>
+                                    <button type="button" id="do_update" class="btn btn-primary mb-2">Run Decrypt And Encrypt</button>
+                                    <label><input type="checkbox" class="custom-control-input" id="select_all_files">Apply To All files(including files from other pages in table below)</label>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <table class="table table-bordered">
+                    <thead>
+                    <tr class="filter_header">
+                        <th colspan="3">
+                            <div class="form-inline">
+                                <input id="search_text" type="text" class="form-control" placeholder="Search by filetype, name or node name" />
+                                <button id="do_filter" type="button" class="btn btn-primary mb-2">Filter</button>
+                            </div>
+                        </th>
+                        <th>
+                            <nav  class="toright">
+                                <ul class="pagination">
+                                    <li id="prev_button"  class="page-item disabled"><a class="page-link">Previous</a></li>
+                                    <li id="next_button"   class="page-item disabled"><a class="page-link">Next</a></li>
+                                </ul>
+                            </nav>
+                        </th>
+                    </tr>
+                    <tr>
+                        <th scope="col"><label><input type="checkbox" class="custom-control-input" id="all_none">Select all/none</label></th>
+                        <th scope="col">LND Node</th>
+                        <th scope="col">Current Encryption/Decryption Method</th>
+                        <th scope="col">File Name</th>
+                    </tr>
+                    </thead>
+                    <tbody id="file_body">
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+<script src="app.js" th:src="@{/app.js}"></script>
+</body>
+</html>

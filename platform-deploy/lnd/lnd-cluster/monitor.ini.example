@@ -1,0 +1,16 @@
+[monitor]
+sasl_mechanism=PLAIN
+security_protocol=SASL_PLAINTEXT
+schema_host=http://192.168.123.252:8081/
+user_kafka_pass=sample_pass
+user_kafka=sample_user
+kafka_host=192.168.123.252:9092
+kafka_co_topic=request
+kafka_co_group_id=334
+kafka_offset_reset=earliest
+kafka_pro_topic=reply
+monitor_node_name=slnd-1221
+monitor_node_host=localhost
+monitor_node_port=8080
+monitor_node_network=REGTEST
+monitor_debug=True

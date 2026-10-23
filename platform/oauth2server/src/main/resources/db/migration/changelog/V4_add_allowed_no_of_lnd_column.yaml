@@ -1,0 +1,21 @@
+databaseChangeLog:
+  - changeSet:
+      id: add_allowed_no_of_lnd
+      validCheckSum: ANY
+      author: femi
+      preConditions:
+        onFail: MARK_RAN
+        not:
+          columnExists:
+            tableName: user_
+            columnName: allowed_no_of_lnd
+      changes:
+        - addColumn:
+            tableName: user_
+            columns:
+              - column:
+                  name: allowed_no_of_lnd
+                  type: integer
+                  defaultValue: 20
+                  constraints:
+                    nullable: false

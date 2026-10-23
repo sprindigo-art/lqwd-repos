@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#EEF1F5;font-family:'IBM Plex Sans',system-ui,sans-serif;-webkit-font-smoothing:antialiased;color:#10131A}
+  ::selection{background:#1A3C7926}
+  .v2-num{font-variant-numeric:tabular-nums}
+  .v2-mono{font-family:'IBM Plex Mono',monospace}
+  .v2-card{transition:box-shadow .16s,transform .16s,border-color .16s}
+  .v2-card:hover{box-shadow:0 10px 30px rgba(16,19,26,.10)}
+  .v2-card:hover .v2-export{opacity:1}
+  .v2-rail-btn:hover{background:#ffffff18}
+  .v2-btn:hover{filter:brightness(1.08)}
+  .v2-ghost:hover{background:#E5E9F0}
+  .v2-x:hover{background:#00000010}
+  .v2-host:hover{transform:translateY(-2px)}
+  .v2-chev{transition:transform .18s}
+  .v2-link:hover{background:#EAF0FA}
+  @keyframes v2pulse{0%{box-shadow:0 0 0 0 #E0392B55}70%{box-shadow:0 0 0 7px #E0392B00}100%{box-shadow:0 0 0 0 #E0392B00}}
+  @keyframes v2drop{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+  @keyframes v2flow{to{stroke-dashoffset:-18}}
+</style>
+</helmet>
+
+<div style="min-height:100vh;background:#EEF1F5;display:flex">
+
+  <!-- Left rail -->
+  <div style="position:fixed;top:0;left:0;bottom:0;width:60px;background:#13284F;display:flex;flex-direction:column;align-items:center;padding:14px 0;z-index:30">
+    <div style="width:32px;height:32px;border-radius:9px;background:#fff;display:flex;align-items:center;justify-content:center;margin-bottom:22px">
+      <div style="width:13px;height:13px;border:2.5px solid #13284F;border-radius:4px"></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:6px;width:100%;align-items:center">
+      <div class="v2-rail-btn" style="width:40px;height:40px;border-radius:11px;background:#ffffff1f;display:flex;align-items:center;justify-content:center;cursor:pointer">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>
+      </div>
+      <a href="Nodes.dc.html" class="v2-rail-btn" title="Nodes" style="width:40px;height:40px;border-radius:11px;display:flex;align-items:center;justify-content:center;cursor:pointer">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#9FB0CE" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M13 3 4 14h6l-1 7 9-12h-6l1-6z"/></svg>
+      </a>
+      <a href="Hosts.dc.html" class="v2-rail-btn" title="Hosts" style="width:40px;height:40px;border-radius:11px;display:flex;align-items:center;justify-content:center;cursor:pointer">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#9FB0CE" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="6" rx="1.5"/><rect x="3" y="14" width="18" height="6" rx="1.5"/><circle cx="7" cy="7" r="1" fill="#9FB0CE" stroke="none"/><circle cx="7" cy="17" r="1" fill="#9FB0CE" stroke="none"/></svg>
+      </a>
+      <div class="v2-rail-btn" style="width:40px;height:40px;border-radius:11px;display:flex;align-items:center;justify-content:center;cursor:pointer">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#9FB0CE" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v6c0 4.2-2.9 7.4-7 9-4.1-1.6-7-4.8-7-9V6l7-3z"/></svg>
+      </div>
+    </div>
+    <div style="margin-top:auto;width:32px;height:32px;border-radius:50%;background:#2C4A7E"></div>
+  </div>
+
+  <div style="margin-left:60px;flex:1;min-width:0">
+
+    <!-- Top bar -->
+    <div style="position:sticky;top:0;z-index:20;background:rgba(238,241,245,.9);backdrop-filter:blur(12px);border-bottom:1px solid #DFE3EB;padding:14px 32px;display:flex;align-items:center;gap:18px">
+      <div>
+        <div style="font-size:15.5px;font-weight:700;letter-spacing:-.01em">Operations Center</div>
+        <div style="font-size:12px;color:#6F7787">LQWD Technologies · fleet overview</div>
+      </div>
+      <div style="margin-left:20px;display:flex;align-items:center;gap:10px">
+        <div style="width:230px;height:9px;border-radius:5px;overflow:hidden;display:flex;background:#E1E5ED">
+          <sc-for list="{{ ramp }}" as="seg" hint-placeholder-count="4"><span style="width:{{ seg.w }};background:{{ seg.c }}"></span></sc-for>
+        </div>
+        <div style="display:flex;gap:11px;font-size:11.5px;color:#6F7787" class="v2-num">
+          <sc-for list="{{ tally }}" as="t" hint-placeholder-count="4"><span><b style="color:{{ t.c }}">{{ t.n }}</b> {{ t.label }}</span></sc-for>
+        </div>
+      </div>
+      <div style="margin-left:auto;display:flex;align-items:center;gap:12px">
+        <div style="display:flex;align-items:center;gap:7px">
+          <span style="font-size:11px;color:#9AA3B4">Preview</span>
+          <div style="display:flex;background:#E5E9F0;border-radius:8px;padding:2px">
+            <sc-for list="{{ viewTabs }}" as="vt" hint-placeholder-count="2"><span onClick="{{ vt.onClick }}" style="font-size:11.5px;font-weight:600;padding:5px 11px;border-radius:6px;cursor:pointer;background:{{ vt.bg }};color:{{ vt.color }};box-shadow:{{ vt.shadow }};white-space:nowrap">{{ vt.label }}</span></sc-for>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;font-size:12px;color:#6F7787;background:#fff;border:1px solid #DFE3EB;padding:7px 12px;border-radius:9px">
+          <span style="width:7px;height:7px;border-radius:50%;background:#1E9E63;box-shadow:0 0 0 3px #1E9E6322"></span>
+          Live · polled <span class="v2-num" style="color:#10131A;font-weight:600">4s</span> ago
+        </div>
+      </div>
+    </div>
+
+    <div style="max-width:1180px;margin:0 auto;padding:24px 32px 64px">
+
+      <!-- AI summary -->
+      <sc-if value="{{ aiOpen }}" hint-placeholder-val="{{ true }}">
+      <div style="margin-bottom:22px;display:flex;background:#13284F;border-radius:16px;overflow:hidden;box-shadow:0 10px 30px rgba(19,40,79,.2)">
+        <div style="flex:1;padding:20px 24px">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:15px">
+            <div style="width:25px;height:25px;border-radius:7px;background:#ffffff22;display:flex;align-items:center;justify-content:center">
+              <svg width="14" height="14" viewBox="0 0 24 24"><path d="M12 3l1.6 5.4L19 10l-5.4 1.6L12 17l-1.6-5.4L5 10l5.4-1.6L12 3z" fill="#fff"/></svg>
+            </div>
+            <span style="font-size:12.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#fff;white-space:nowrap">What needs you now</span>
+            <span style="font-size:11px;color:#A9B8D6;border:1px solid #ffffff2e;padding:2px 9px;border-radius:20px;white-space:nowrap">AI · explains & ranks, never runs commands</span>
+            <div onClick="{{ onDismissAi }}" class="v2-x" style="margin-left:auto;width:25px;height:25px;border-radius:6px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#A9B8D6">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 5l14 14M19 5L5 19"/></svg>
+            </div>
+          </div>
+          <sc-if value="{{ aiBusy }}" hint-placeholder-val="{{ true }}">
+          <div style="display:flex;flex-direction:column;gap:12px">
+            <sc-for list="{{ aiLines }}" as="line" hint-placeholder-count="3">
+              <div style="display:flex;gap:13px;align-items:flex-start">
+                <span style="width:20px;height:20px;border-radius:6px;background:{{ line.tagBg }};color:{{ line.tagColor }};font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex:none;margin-top:1px" class="v2-num">{{ line.tag }}</span>
+                <p style="font-size:14.5px;line-height:1.55;color:#CBD6EC;max-width:92ch"><span style="font-weight:600;color:#fff">{{ line.head }}</span>{{ line.body }}</p>
+              </div>
+            </sc-for>
+          </div>
+          </sc-if>
+          <sc-if value="{{ aiCalm }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;gap:13px;align-items:center">
+            <span style="width:30px;height:30px;border-radius:9px;background:#1E9E6326;display:flex;align-items:center;justify-content:center;flex:none"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#54D08A" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>
+            <p style="font-size:14.5px;line-height:1.55;color:#CBD6EC"><span style="font-weight:600;color:#fff">Nothing needs you right now.</span> All 26 nodes are healthy and reporting fresh — the last incident resolved 6h ago.</p>
+          </div>
+          </sc-if>
+        </div>
+      </div>
+      </sc-if>
+
+      <!-- HERO critical incident -->
+      <sc-if value="{{ hasHero }}" hint-placeholder-val="{{ true }}">
+      <div style="margin-bottom:26px">
+        <div style="display:flex;align-items:center;gap:9px;margin-bottom:10px">
+          <span style="font-size:11.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:#E0392B">Top priority</span>
+          <span style="flex:1;height:1px;background:#E0DCDA"></span>
+        </div>
+        <div class="v2-card" style="background:#fff;border:1px solid #F0CFCB;border-radius:18px;overflow:hidden;box-shadow:0 12px 34px rgba(224,57,43,.14)">
+          <div style="display:flex;align-items:stretch">
+            <div style="width:7px;background:#E0392B;flex:none"></div>
+            <div style="flex:1;min-width:0;padding:22px 24px">
+              <!-- header row -->
+              <div style="display:flex;align-items:flex-start;gap:18px">
+                <div style="flex:1;min-width:0">
+                  <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:11px">
+                    <span style="display:inline-flex;align-items:center;gap:7px;font-size:11px;font-weight:700;letter-spacing:.07em;color:#fff;background:#E0392B;padding:4px 10px;border-radius:6px"><span style="width:7px;height:7px;border-radius:50%;background:#fff;animation:v2pulse 1.8s infinite"></span>CRITICAL</span>
+                    <span style="font-size:11px;font-weight:700;letter-spacing:.06em;color:#E0392B;background:#FCEBEA;border:1px solid #F3D3D0;padding:4px 10px;border-radius:6px">ROOT CAUSE · 3 nodes roll up</span>
+                    <span style="display:inline-flex;align-items:center;gap:5px;font-size:11.5px;color:#6F7787;margin-left:2px"><span style="width:6px;height:6px;border-radius:50%;background:#1E9E63"></span>data fresh · 4s</span>
+                  </div>
+                  <h2 style="font-size:23px;font-weight:700;letter-spacing:-.02em;line-height:1.18;color:#10131A">bitcoind on host-03 stalled — 22 min behind chain tip</h2>
+                  <p style="font-size:14.5px;line-height:1.6;color:#4F5663;margin-top:9px;max-width:62ch">The chain backend stopped advancing at <span class="v2-mono">14:02</span>. Every Lightning node on host-03 can no longer confirm channel state, so pending HTLCs are at risk of force-closing. Fix the host first — the three node alerts below clear with it.</p>
+                  <div style="display:flex;align-items:center;gap:8px;margin-top:14px;flex-wrap:wrap">
+                    <span style="font-size:11.5px;color:#6F7787;background:#F1F4F8;padding:4px 10px;border-radius:6px;font-weight:500">bitcoind · host-03</span>
+                    <span class="v2-mono" style="font-size:11.5px;color:#6F7787;background:#F1F4F8;padding:4px 10px;border-radius:6px">flagged 14:08 · 22m ago</span>
+                  </div>
+                </div>
+                <!-- hero evidence chart -->
+                <div style="flex:none;width:392px;background:#FAFBFD;border:1px solid #ECEFF4;border-radius:13px;padding:13px 15px 9px">
+                  <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:6px">
+                    <span style="font-size:11px;color:#8A92A0;font-weight:500">{{ hero.evLabel }}</span>
+                    <span class="v2-num" style="font-size:16px;font-weight:700;color:#E0392B">{{ hero.evValue }}</span>
+                  </div>
+                  {{ hero.chart }}
+                  <div style="font-size:10.5px;color:#9AA3B4;margin-top:7px;line-height:1.4">{{ hero.evNote }}</div>
+                </div>
+              </div>
+              <!-- blast radius -->
+              <div style="margin-top:18px;background:#FCF8F7;border:1px solid #F2E0DD;border-radius:13px;padding:14px 16px 13px">
+                <div style="display:flex;align-items:center;gap:9px;margin-bottom:12px">
+                  <span style="font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#9A5B55">Blast radius</span>
+                  <span style="font-size:11.5px;color:#9AA3B4">one host outage → 3 nodes on it</span>
+                </div>
+                {{ hero.blast }}
+                <div style="display:flex;align-items:center;gap:8px;margin-top:11px;padding-top:11px;border-top:1px solid #F2E5E3">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1E9E63" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><path d="M20 6L9 17l-5-5"/></svg>
+                  <span style="font-size:12.5px;color:#3A414E">Restart bitcoind on host-03 and <span style="font-weight:600;color:#10131A">all 3 nodes clear automatically</span> — they share its backend, so don't act on them individually.</span>
+                </div>
+              </div>
+              <!-- footer toggles -->
+              <div style="display:flex;align-items:center;gap:10px;margin-top:18px;padding-top:16px;border-top:1px solid #F0F2F6">
+                <span onClick="{{ hero.onToggle }}" class="v2-link" style="display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:600;color:#13284F;cursor:pointer;border:1px solid #D8DEEA;padding:7px 12px;border-radius:8px">
+                  <svg class="v2-chev" style="transform:{{ hero.chev }}" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+                  {{ hero.expandLabel }}
+                </span>
+                <span style="margin-left:auto"></span>
+                <span onClick="{{ hero.onExport }}" class="v2-btn" style="font-size:13px;font-weight:600;padding:9px 16px;background:#13284F;color:#fff;border-radius:9px;cursor:pointer">{{ hero.actionLabel }}</span>
+              </div>
+            </div>
+          </div>
+          <!-- expand: why-chain + children -->
+          <sc-if value="{{ hero.expanded }}" hint-placeholder-val="{{ false }}">
+            <div style="animation:v2drop .2s ease;background:#FAFBFD;border-top:1px solid #ECEFF4;padding:18px 24px 22px 31px;display:grid;grid-template-columns:1fr 1fr;gap:28px">
+              <!-- why-chain -->
+              <div>
+                <div style="font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:#9AA3B4;font-weight:700;margin-bottom:13px">Why this is flagged · detection chain</div>
+                <div style="display:flex;flex-direction:column">
+                  <sc-for list="{{ hero.timeline }}" as="ev" hint-placeholder-count="5">
+                    <div style="display:flex;gap:12px">
+                      <div style="display:flex;flex-direction:column;align-items:center;flex:none">
+                        <span style="width:9px;height:9px;border-radius:50%;background:{{ ev.dot }};border:2px solid #FAFBFD;box-shadow:0 0 0 1px {{ ev.dot }}"></span>
+                        <span style="width:2px;flex:1;background:{{ ev.line }};min-height:14px"></span>
+                      </div>
+                      <div style="padding-bottom:14px">
+                        <span class="v2-mono" style="font-size:11px;color:#9AA3B4">{{ ev.t }}</span>
+                        <p style="font-size:13px;line-height:1.45;color:#3A414E;margin-top:1px">{{ ev.text }}</p>
+                      </div>
+                    </div>
+                  </sc-for>
+                </div>
+                <div style="display:flex;gap:9px;align-items:flex-start;background:#EEF2FA;border:1px solid #DCE4F2;border-radius:10px;padding:11px 13px;margin-top:4px">
+                  <svg width="14" height="14" viewBox="0 0 24 24" style="flex:none;margin-top:1px"><path d="M12 3l1.6 5.4L19 10l-5.4 1.6L12 17l-1.6-5.4L5 10l5.4-1.6L12 3z" fill="#13284F"/></svg>
+                  <p style="font-size:12.5px;line-height:1.5;color:#33415E"><span style="font-weight:600">AI grouping · </span>{{ hero.aiReason }}</p>
+                </div>
+              </div>
+              <!-- children -->
+              <div>
+                <div style="font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:#9AA3B4;font-weight:700;margin-bottom:13px">3 grouped node alerts · clear when host-03 recovers</div>
+                <div style="display:flex;flex-direction:column;gap:9px">
+                  <sc-for list="{{ hero.children }}" as="ch" hint-placeholder-count="3">
+                    <div style="display:flex;align-items:center;gap:12px;padding:11px 13px;background:#fff;border:1px solid #EEF0F4;border-radius:10px">
+                      <span style="width:8px;height:8px;border-radius:2px;background:#E0392B;flex:none"></span>
+                      <span class="v2-mono" style="font-size:12.5px;font-weight:600;color:#10131A">{{ ch.node }}</span>
+                      <span style="font-size:11px;color:#6F7787;background:#F1F4F8;padding:2px 8px;border-radius:5px">{{ ch.kind }}</span>
+                      <span style="font-size:12.5px;color:#4F5663">{{ ch.note }}</span>
+                      <span class="v2-mono" style="margin-left:auto;font-size:10.5px;color:#9AA3B4">{{ ch.detail }}</span>
+                    </div>
+                  </sc-for>
+                </div>
+              </div>
+            </div>
+          </sc-if>
+        </div>
+      </div>
+      </sc-if>
+
+      <!-- ALL-CLEAR hero -->
+      <sc-if value="{{ isAllClear }}" hint-placeholder-val="{{ false }}">
+      <div style="margin-bottom:26px">
+        <div style="display:flex;align-items:center;gap:9px;margin-bottom:10px">
+          <span style="font-size:11.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:#1E9E63">Fleet status</span>
+          <span style="flex:1;height:1px;background:#D7E6DC"></span>
+        </div>
+        <div class="v2-card" style="background:#fff;border:1px solid #CDE7D6;border-radius:18px;overflow:hidden;box-shadow:0 8px 26px rgba(30,158,99,.12)">
+          <div style="display:flex;align-items:stretch">
+            <div style="width:7px;background:#1E9E63;flex:none"></div>
+            <div style="flex:1;min-width:0;padding:24px 26px;display:flex;align-items:center;gap:24px">
+              <div style="flex:none;width:56px;height:56px;border-radius:16px;background:#E7F4EC;display:flex;align-items:center;justify-content:center">
+                <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#1E9E63" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+              </div>
+              <div style="flex:1;min-width:0">
+                <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px">
+                  <span style="font-size:11px;font-weight:700;letter-spacing:.07em;color:#fff;background:#1E9E63;padding:4px 10px;border-radius:6px">ALL CLEAR</span>
+                  <span style="display:inline-flex;align-items:center;gap:5px;font-size:11.5px;color:#6F7787"><span style="width:6px;height:6px;border-radius:50%;background:#1E9E63"></span>all data fresh · 4s</span>
+                </div>
+                <h2 style="font-size:23px;font-weight:700;letter-spacing:-.02em;color:#10131A">Nothing needs you right now</h2>
+                <p style="font-size:14.5px;line-height:1.55;color:#4F5663;margin-top:7px;max-width:64ch"><span class="v2-num" style="font-weight:600;color:#10131A">26 / 26</span> nodes healthy · all 8 hosts up · 34/34 services running · bitcoind at tip fleet-wide.</p>
+              </div>
+              <div style="flex:none;display:flex;gap:28px;padding-left:26px;border-left:1px solid #EEF0F4">
+                <div>
+                  <div style="font-size:10.5px;letter-spacing:.07em;text-transform:uppercase;color:#9AA3B4;font-weight:600">Last incident</div>
+                  <div style="font-size:13px;color:#3A414E;margin-top:6px;max-width:16ch;line-height:1.4">host-03 bitcoind stall<br><span style="color:#9AA3B4">resolved 6h ago</span></div>
+                </div>
+                <div>
+                  <div style="font-size:10.5px;letter-spacing:.07em;text-transform:uppercase;color:#9AA3B4;font-weight:600">Fleet uptime</div>
+                  <div class="v2-num" style="font-size:22px;font-weight:700;color:#1E9E63;margin-top:4px">99.98%</div>
+                  <div style="font-size:10.5px;color:#9AA3B4">trailing 30 days</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      </sc-if>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:13px">
+        <h2 style="font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#6F7787;white-space:nowrap">Attention queue · <span style="color:#10131A">{{ queueCount }}</span> more</h2>
+        <div style="display:flex;gap:6px">
+          <sc-for list="{{ filters }}" as="f" hint-placeholder-count="4">
+            <span onClick="{{ f.onClick }}" class="v2-ghost" style="font-size:12px;padding:5px 11px;border-radius:8px;cursor:pointer;border:1px solid {{ f.border }};background:{{ f.bg }};color:{{ f.color }};font-weight:{{ f.weight }}">{{ f.label }}</span>
+          </sc-for>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <sc-for list="{{ incidents }}" as="inc" hint-placeholder-count="5">
+          <div class="v2-card" style="background:#fff;border:1px solid {{ inc.border }};border-radius:14px;overflow:hidden;box-shadow:{{ inc.shadow }}">
+            <div style="display:flex;align-items:stretch">
+              <div style="width:6px;background:{{ inc.accent }};flex:none"></div>
+              <div style="flex:1;min-width:0;padding:16px 18px;display:flex;gap:18px;align-items:flex-start">
+                <div style="flex:none;width:38px;height:38px;border-radius:10px;background:{{ inc.wash }};display:flex;align-items:center;justify-content:center;margin-top:1px">
+                  <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="{{ inc.accent }}" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="{{ inc.iconD }}"/></svg>
+                </div>
+                <div style="flex:1;min-width:0">
+                  <div style="display:flex;align-items:center;gap:9px;flex-wrap:wrap">
+                    <span style="font-size:10.5px;font-weight:700;letter-spacing:.07em;color:#fff;background:{{ inc.accent }};padding:3px 8px;border-radius:5px">{{ inc.sevLabel }}</span>
+                    <h3 style="font-size:15.5px;font-weight:600;letter-spacing:-.01em;color:#10131A">{{ inc.title }}</h3>
+                    <sc-if value="{{ inc.stale }}" hint-placeholder-val="{{ false }}">
+                      <span style="display:inline-flex;align-items:center;gap:5px;font-size:10px;font-weight:700;letter-spacing:.04em;color:#7A6A2E;background:#F7F0DC;border:1px solid #E9DCB6;padding:2px 8px;border-radius:5px"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#A9912F" stroke-width="2.4"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2" stroke-linecap="round"/></svg>STALE DATA</span>
+                    </sc-if>
+                  </div>
+                  <p style="font-size:13.5px;line-height:1.5;color:#5A616E;margin-top:6px;max-width:64ch">{{ inc.why }}</p>
+                  <div style="display:flex;align-items:center;gap:13px;margin-top:11px;flex-wrap:wrap">
+                    <span style="font-size:11.5px;color:#6F7787;background:#F1F4F8;padding:3px 9px;border-radius:6px;font-weight:500">{{ inc.layer }}</span>
+                    <span style="display:inline-flex;align-items:center;gap:6px;font-size:11.5px;color:{{ inc.freshColor }}"><span style="width:6px;height:6px;border-radius:50%;background:{{ inc.freshDot }}"></span>{{ inc.freshLabel }}</span>
+                    <span onClick="{{ inc.onToggle }}" class="v2-link" style="display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:600;color:#13284F;cursor:pointer;padding:3px 8px;border-radius:7px;margin-left:-4px">
+                      <svg class="v2-chev" style="transform:{{ inc.chev }}" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+                      {{ inc.expandLabel }}
+                    </span>
+                  </div>
+                </div>
+                <!-- inline evidence -->
+                <div style="flex:none;width:212px;background:#FAFBFD;border:1px solid #ECEFF4;border-radius:11px;padding:11px 13px 8px">
+                  <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:5px">
+                    <span style="font-size:10px;color:#8A92A0;font-weight:500">{{ inc.evLabel }}</span>
+                    <span class="v2-num" style="font-size:13px;font-weight:700;color:{{ inc.evValueColor }}">{{ inc.evValue }}</span>
+                  </div>
+                  {{ inc.chart }}
+                </div>
+              </div>
+            </div>
+            <!-- expand -->
+            <sc-if value="{{ inc.expanded }}" hint-placeholder-val="{{ false }}">
+              <div style="animation:v2drop .2s ease;background:#FAFBFD;border-top:1px solid #ECEFF4;padding:16px 20px 18px 62px">
+                <div style="font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:#9AA3B4;font-weight:700;margin-bottom:12px">Why this is flagged · detection chain</div>
+                <div style="display:grid;grid-template-columns:1.1fr 1fr;gap:26px">
+                  <div style="display:flex;flex-direction:column">
+                    <sc-for list="{{ inc.timeline }}" as="ev" hint-placeholder-count="4">
+                      <div style="display:flex;gap:12px">
+                        <div style="display:flex;flex-direction:column;align-items:center;flex:none">
+                          <span style="width:9px;height:9px;border-radius:50%;background:{{ ev.dot }};border:2px solid #FAFBFD;box-shadow:0 0 0 1px {{ ev.dot }}"></span>
+                          <span style="width:2px;flex:1;background:{{ ev.line }};min-height:12px"></span>
+                        </div>
+                        <div style="padding-bottom:13px">
+                          <span class="v2-mono" style="font-size:11px;color:#9AA3B4">{{ ev.t }}</span>
+                          <p style="font-size:12.5px;line-height:1.45;color:#3A414E;margin-top:1px">{{ ev.text }}</p>
+                        </div>
+                      </div>
+                    </sc-for>
+                  </div>
+                  <div>
+                    <div style="display:flex;gap:9px;align-items:flex-start;background:#EEF2FA;border:1px solid #DCE4F2;border-radius:10px;padding:11px 13px">
+                      <svg width="14" height="14" viewBox="0 0 24 24" style="flex:none;margin-top:1px"><path d="M12 3l1.6 5.4L19 10l-5.4 1.6L12 17l-1.6-5.4L5 10l5.4-1.6L12 3z" fill="#13284F"/></svg>
+                      <p style="font-size:12.5px;line-height:1.5;color:#33415E"><span style="font-weight:600">AI read · </span>{{ inc.aiReason }}</p>
+                    </div>
+                    <sc-if value="{{ inc.stale }}" hint-placeholder-val="{{ false }}">
+                      <div style="display:flex;gap:9px;align-items:flex-start;background:#F7F0DC;border:1px solid #E9DCB6;border-radius:10px;padding:11px 13px;margin-top:10px">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#A9912F" stroke-width="2" style="flex:none;margin-top:1px"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2" stroke-linecap="round"/></svg>
+                        <p style="font-size:12.5px;line-height:1.5;color:#6A5B26"><span style="font-weight:600">Freshness · </span>{{ inc.staleNote }}</p>
+                      </div>
+                    </sc-if>
+                  </div>
+                </div>
+                <div style="display:flex;margin-top:6px">
+                  <span onClick="{{ inc.onExport }}" class="v2-btn" style="font-size:12.5px;font-weight:600;padding:8px 14px;background:#13284F;color:#fff;border-radius:8px;cursor:pointer">{{ inc.actionLabel }}</span>
+                </div>
+              </div>
+            </sc-if>
+            <!-- collapsed export (hover) -->
+            <sc-if value="{{ inc.collapsed }}" hint-placeholder-val="{{ true }}">
+              <div style="display:flex;justify-content:flex-end;padding:0 18px 14px 62px;margin-top:-6px">
+                <span onClick="{{ inc.onExport }}" class="v2-export v2-btn" style="opacity:.45;font-size:12px;font-weight:600;padding:7px 13px;background:#13284F;color:#fff;border-radius:8px;cursor:pointer;transition:opacity .15s">{{ inc.actionLabel }}</span>
+              </div>
+            </sc-if>
+          </div>
+        </sc-for>
+        <sc-if value="{{ queueEmpty }}" hint-placeholder-val="{{ false }}">
+          <div style="background:#fff;border:1px dashed #D7DCE5;border-radius:14px;padding:32px;text-align:center">
+            <div style="width:40px;height:40px;border-radius:12px;background:#E7F4EC;display:flex;align-items:center;justify-content:center;margin:0 auto 12px"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1E9E63" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></div>
+            <p style="font-size:14px;font-weight:600;color:#10131A">{{ queueEmptyMsg }}</p>
+            <p style="font-size:12.5px;color:#9AA3B4;margin-top:4px">NodeMonitor is watching — new incidents surface here the moment they're detected.</p>
+          </div>
+        </sc-if>
+      </div>
+
+      <!-- Fleet vitals (support, glanceable) -->
+      <h2 style="font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#6F7787;margin:30px 0 13px">Fleet vitals</h2>
+      <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px">
+        <sc-for list="{{ vitals }}" as="v" hint-placeholder-count="5">
+          <div style="background:#fff;border:1px solid #E4E7EE;border-radius:13px;padding:15px 16px">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:11px">
+              <span style="width:8px;height:8px;border-radius:50%;background:{{ v.dot }}"></span>
+              <span style="font-size:12px;color:#6F7787;font-weight:500">{{ v.label }}</span>
+            </div>
+            <div style="display:flex;align-items:baseline;gap:6px">
+              <span class="v2-num" style="font-size:24px;font-weight:700;letter-spacing:-.02em">{{ v.value }}</span>
+              <span style="font-size:12px;color:#9AA3B4">{{ v.unit }}</span>
+            </div>
+            <div style="font-size:11px;color:{{ v.noteColor }};margin-top:6px">{{ v.note }}</div>
+          </div>
+        </sc-for>
+      </div>
+
+      <!-- Healthy -->
+      <div style="margin-top:14px;background:#fff;border:1px solid #E4E7EE;border-radius:13px;overflow:hidden">
+        <div onClick="{{ onToggleHealthy }}" style="padding:15px 18px;display:flex;align-items:center;gap:12px;cursor:pointer">
+          <span style="width:9px;height:9px;border-radius:50%;background:#1E9E63;box-shadow:0 0 0 4px #1E9E6318;flex:none"></span>
+          <span style="font-size:14px;font-weight:600"><span class="v2-num">{{ healthyCount }}</span> nodes healthy</span>
+          <span style="font-size:12.5px;color:#9AA3B4">all reporting fresh · no action needed</span>
+          <svg class="v2-chev" style="margin-left:auto;transform:{{ healthyChev }}" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9AA3B4" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+        <sc-if value="{{ healthyOpen }}" hint-placeholder-val="{{ false }}">
+          <div style="padding:2px 18px 18px;border-top:1px solid #F0F2F6">
+            <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-top:13px">
+              <sc-for list="{{ healthyNodes }}" as="n" hint-placeholder-count="20">
+                <div style="display:flex;align-items:center;gap:7px;padding:8px 10px;background:#FAFBFD;border:1px solid #EDEFF4;border-radius:8px">
+                  <span style="width:6px;height:6px;border-radius:50%;background:#1E9E63;flex:none"></span>
+                  <span class="v2-mono" style="font-size:11.5px;color:#3A4150">{{ n }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </sc-if>
+      </div>
+
+      <!-- Safety -->
+      <div style="margin-top:22px;display:flex;align-items:center;gap:11px;padding:14px 18px;background:#EAEEF6;border:1px solid #DBE2EE;border-radius:12px">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#13284F" stroke-width="1.8"><path d="M12 3l7 3v6c0 4.2-2.9 7.4-7 9-4.1-1.6-7-4.8-7-9V6l7-3z"/></svg>
+        <p style="font-size:12.5px;color:#5A616E;line-height:1.5"><span style="color:#10131A;font-weight:600">Zero node credentials stored.</span> NodeMonitor reads and ranks; it never changes the fleet. High-risk fixes export as commands you run — the AI explains, it never executes.</p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Command modal -->
+  <sc-if value="{{ cmdOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ onCloseCmd }}" style="position:fixed;inset:0;z-index:60;background:rgba(16,19,26,.42);backdrop-filter:blur(3px);display:flex;align-items:center;justify-content:center;padding:24px">
+      <div onClick="{{ stop }}" style="width:580px;max-width:100%;background:#fff;border-radius:16px;box-shadow:0 24px 60px rgba(0,0,0,.3);overflow:hidden">
+        <div style="padding:20px 22px 16px;border-bottom:1px solid #ECEEF3">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+            <span style="font-size:10.5px;font-weight:700;letter-spacing:.07em;color:#fff;background:{{ cmd.accent }};padding:3px 8px;border-radius:5px">{{ cmd.sevLabel }}</span>
+            <span style="font-size:12px;color:#9AA3B4">{{ cmd.kicker }}</span>
+            <div onClick="{{ onCloseCmd }}" class="v2-x" style="margin-left:auto;width:26px;height:26px;border-radius:6px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#9AA3B4">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 5l14 14M19 5L5 19"/></svg>
+            </div>
+          </div>
+          <h3 style="font-size:16.5px;font-weight:600">{{ cmd.title }}</h3>
+          <p style="font-size:13px;color:#5A616E;margin-top:5px;line-height:1.5">{{ cmd.intent }}</p>
+        </div>
+        <div style="padding:18px 22px">
+          <sc-if value="{{ cmd.hasRunbook }}" hint-placeholder-val="{{ false }}">
+            <div style="margin-bottom:16px">
+              <div style="font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:#9AA3B4;font-weight:700;margin-bottom:11px">Runbook steps</div>
+              <div style="display:flex;flex-direction:column;gap:10px">
+                <sc-for list="{{ cmd.runbook }}" as="step" hint-placeholder-count="4">
+                  <div style="display:flex;gap:11px;align-items:flex-start">
+                    <span class="v2-num" style="flex:none;width:20px;height:20px;border-radius:50%;background:#EEF2FA;color:#13284F;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:1px">{{ step.n }}</span>
+                    <p style="font-size:13px;line-height:1.5;color:#3A414E">{{ step.text }}</p>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+          </sc-if>
+          <sc-if value="{{ cmd.hasCmdLabel }}" hint-placeholder-val="{{ false }}">
+            <div style="font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:#9AA3B4;font-weight:700;margin-bottom:8px">{{ cmd.cmdLabel }}</div>
+          </sc-if>
+          <div style="background:#13284F;border-radius:11px;padding:15px 16px;overflow:auto">
+            <code class="v2-mono" style="font-size:12.5px;color:#DCE4F4;line-height:1.6;white-space:pre">{{ cmd.command }}</code>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;margin-top:13px">
+            <span onClick="{{ onCopy }}" class="v2-btn" style="font-size:13px;font-weight:600;padding:9px 15px;background:#13284F;color:#fff;border-radius:9px;cursor:pointer">{{ copyLabel }}</span>
+            <span style="font-size:12px;color:#9AA3B4;display:flex;align-items:center;gap:6px">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#9AA3B4" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 8v4M12 16h.01" stroke-linecap="round"/></svg>
+              {{ cmd.note }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1240,&quot;height&quot;:1600}}">
+class Component extends DCLogic {
+  state = { aiDismissed:false, healthyOpen:false, expanded:{ grp:true }, filter:'all', cmd:null, copied:false, view:'incident' };
+
+  // ---- generic inline evidence chart ----
+  chart(s){
+    const e = React.createElement;
+    const W=s.w, H=s.h, P={t:11,r:10,b:15,l:10};
+    const iw=W-P.l-P.r, ih=H-P.t-P.b;
+    const yMax=s.yMax, yMin=s.yMin||0;
+    const Y=v=>P.t+ih-((v-yMin)/(yMax-yMin))*ih;
+    const proj=s.projection||[];
+    const N=s.series.length + proj.length;
+    const X=i=>P.l+(N<=1?0:(i/(N-1))*iw);
+    const SLATE='#64748B', AXIS='#9AA3B4';
+    const k=[];
+    // peer-median band
+    if(s.band){ const yh=Y(s.band.hi), yl=Y(s.band.lo);
+      k.push(e('rect',{key:'bd',x:P.l,y:yh,width:iw,height:Math.max(1,yl-yh),fill:'#64748B1c',rx:2}));
+      k.push(e('text',{key:'bdl',x:P.l+3,y:yl-3,fontSize:8,fill:SLATE},s.band.label||'peer median'));
+    }
+    // threshold (neutral, dashed)
+    if(s.threshold){ const ty=Y(s.threshold.v);
+      k.push(e('line',{key:'th',x1:P.l,y1:ty,x2:W-P.r,y2:ty,stroke:SLATE,strokeWidth:1,strokeDasharray:'3 3'}));
+      k.push(e('text',{key:'thl',x:W-P.r,y:ty-3,fontSize:8,fill:SLATE,textAnchor:'end'},s.threshold.label));
+    }
+    const pts=s.series.map((v,i)=>[X(i),Y(v)]);
+    // area
+    if(s.area){ let base = (s.area==='above'&&s.threshold)?Y(s.threshold.v):Y(yMin);
+      const d='M'+pts.map(p=>p[0]+','+p[1]).join(' L')+` L${pts[pts.length-1][0]},${base} L${pts[0][0]},${base} Z`;
+      k.push(e('path',{key:'ar',d,fill:s.accent+'1f',stroke:'none'}));
+    }
+    // projection dashed
+    if(proj.length){ const startI=s.series.length-1; const pp=[pts[pts.length-1]].concat(proj.map((v,i)=>[X(s.series.length+i),Y(v)]));
+      k.push(e('polyline',{key:'pj',points:pp.map(p=>p[0]+','+p[1]).join(' '),fill:'none',stroke:s.accent,strokeWidth:1.5,strokeDasharray:'3 3',opacity:.65}));
+    }
+    // main line
+    k.push(e('polyline',{key:'ml',points:pts.map(p=>p[0]+','+p[1]).join(' '),fill:'none',stroke:s.accent,strokeWidth:2,strokeLinecap:'round',strokeLinejoin:'round'}));
+    // marker
+    if(s.marker){ const mx=X(s.marker.atIndex);
+      k.push(e('line',{key:'mk',x1:mx,y1:P.t+2,x2:mx,y2:H-P.b,stroke:SLATE,strokeWidth:1,strokeDasharray:'2 2',opacity:.55}));
+      k.push(e('text',{key:'mkl',x:Math.min(mx, W-P.r-2),y:P.t-2,fontSize:8,fill:SLATE,textAnchor:'middle'},s.marker.label));
+    }
+    // last dot
+    const lp=pts[pts.length-1]; k.push(e('circle',{key:'ld',cx:lp[0],cy:lp[1],r:3,fill:s.accent}));
+    // axis labels
+    (s.axis||[]).forEach((t,i,a)=>{ const x=i===0?P.l:(i===a.length-1?W-P.r:P.l+iw/2); const anc=i===0?'start':(i===a.length-1?'end':'middle');
+      k.push(e('text',{key:'ax'+i,x,y:H-3,fontSize:8,fill:AXIS,textAnchor:anc},t));
+    });
+    return e('svg',{width:W,height:H,viewBox:`0 0 ${W} ${H}`,style:{display:'block'}},k);
+  }
+
+  staleChart(w,h){
+    const e=React.createElement;
+    const stripes=[];
+    for(let x=-h;x<w;x+=9){ stripes.push(e('line',{key:'s'+x,x1:x,y1:h,x2:x+h,y2:0,stroke:'#D9D2BC',strokeWidth:5})); }
+    return e('svg',{width:w,height:h,viewBox:`0 0 ${w} ${h}`,style:{display:'block'}},[
+      e('defs',{key:'d'},e('clipPath',{id:'stcl'},e('rect',{x:0,y:0,width:w,height:h,rx:6}))),
+      e('rect',{key:'bg',x:0,y:0,width:w,height:h,rx:6,fill:'#F7F2E4'}),
+      e('g',{key:'st',clipPath:'url(#stcl)',opacity:.5},stripes),
+      e('rect',{key:'br',x:.5,y:.5,width:w-1,height:h-1,rx:6,fill:'none',stroke:'#E4D9B6'}),
+      e('text',{key:'t1',x:w/2,y:h/2-2,fontSize:10,fontWeight:700,fill:'#8A7426',textAnchor:'middle',letterSpacing:'.05em'},'NO FRESH DATA'),
+      e('text',{key:'t2',x:w/2,y:h/2+13,fontSize:9,fill:'#A1924F',textAnchor:'middle'},'last good 4h ago'),
+    ]);
+  }
+
+  blastRadius(){
+    const e=React.createElement; const RED='#E0392B';
+    const W=648,H=144;
+    const host={x:12,y:46,w:172,h:54}; const hcx=host.x+host.w, hcy=host.y+host.h/2;
+    const tx=452, tw=184, th=40;
+    const targets=[ {name:'lqwd-rtr-04', note:'2 HTLCs at risk', y:10}, {name:'lqwd-rtr-09', note:'channel state stale', y:58}, {name:'lqwd-lsp-02', note:'1 HTLC at risk', y:106} ];
+    const k=[];
+    targets.forEach((t,i)=>{ const ty=t.y+th/2;
+      k.push(e('path',{key:'e'+i,d:`M ${hcx} ${hcy} C ${hcx+88} ${hcy}, ${tx-88} ${ty}, ${tx-2} ${ty}`,fill:'none',stroke:RED,strokeWidth:2,strokeOpacity:.5,strokeDasharray:'4 5',style:{animation:'v2flow 1.4s linear infinite'}}));
+      k.push(e('circle',{key:'ed'+i,cx:tx-2,cy:ty,r:3,fill:RED})); });
+    k.push(e('rect',{key:'hg',x:host.x-1,y:host.y-1,width:host.w+2,height:host.h+2,rx:14,fill:'none',stroke:RED,strokeOpacity:.16,strokeWidth:6}));
+    k.push(e('rect',{key:'hr',x:host.x,y:host.y,width:host.w,height:host.h,rx:13,fill:'#fff',stroke:RED,strokeWidth:1.6}));
+    k.push(e('rect',{key:'hi1',x:host.x+16,y:host.y+15,width:22,height:9,rx:2,fill:'none',stroke:RED,strokeWidth:1.5}));
+    k.push(e('rect',{key:'hi2',x:host.x+16,y:host.y+30,width:22,height:9,rx:2,fill:'none',stroke:RED,strokeWidth:1.5}));
+    k.push(e('circle',{key:'hi3',cx:host.x+21,cy:host.y+19.5,r:1.3,fill:RED}));
+    k.push(e('circle',{key:'hi4',cx:host.x+21,cy:host.y+34.5,r:1.3,fill:RED}));
+    k.push(e('text',{key:'ht',x:host.x+48,y:host.y+25,fontSize:14,fontWeight:700,fill:'#10131A',fontFamily:'IBM Plex Mono, monospace'},'host-03'));
+    k.push(e('text',{key:'hs',x:host.x+48,y:host.y+41,fontSize:10.5,fontWeight:600,fill:RED},'bitcoind stalled'));
+    k.push(e('text',{key:'rc',x:host.x+1,y:host.y-9,fontSize:9.5,fontWeight:700,fill:'#9AA3B4',letterSpacing:'.07em'},'ROOT CAUSE \u00b7 FIX HERE'));
+    targets.forEach((t,i)=>{
+      k.push(e('rect',{key:'tr'+i,x:tx,y:t.y,width:tw,height:th,rx:10,fill:'#FCEFEE',stroke:'#F1D1CD',strokeWidth:1}));
+      k.push(e('circle',{key:'tc'+i,cx:tx+15,cy:t.y+th/2,r:4,fill:RED}));
+      k.push(e('text',{key:'tn'+i,x:tx+28,y:t.y+17,fontSize:11.5,fontWeight:600,fill:'#10131A',fontFamily:'IBM Plex Mono, monospace'},t.name));
+      k.push(e('text',{key:'tt'+i,x:tx+28,y:t.y+31,fontSize:9.5,fill:'#9A5B55'},t.note)); });
+    return e('svg',{width:W,height:H,viewBox:`0 0 ${W} ${H}`,style:{display:'block',maxWidth:'100%'}},k);
+  }
+
+  raw(){
+    const C={crit:'#E0392B',warn:'#C8770A',watch:'#0E8C84'};
+    return [
+      { id:'grp', sev:'critical', accent:C.crit, hero:true,
+        title:'bitcoind on host-03 stalled — 22 min behind chain tip',
+        why:'',
+        layer:'bitcoind · host-03', layerKey:'bitcoind', age:'22m', stale:false, fresh:'4s',
+        action:{type:'runbook',label:'Open runbook'},
+        runbook:[
+          'Confirm the stall — check verificationprogress and tip age; do not restart on a transient RPC hiccup.',
+          'Check host-03 health (load, disk, dmesg) — a wedged daemon can be a symptom of host trouble, not the cause.',
+          'If genuinely stalled, restart bitcoind and watch it catch back up to chain tip before clearing the alert.',
+          'Confirm the 3 grouped node alerts clear as the backend recovers; if any persist, treat them individually.',
+        ],
+        iconD:'M4 7c0-1.7 3.6-3 8-3s8 1.3 8 3-3.6 3-8 3-8-1.3-8-3z M4 7v10c0 1.7 3.6 3 8 3s8-1.3 8-3V7 M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3',
+        evLabel:'Minutes behind chain tip · last 30 min', evValue:'+22m', evNote:'Climbing since 14:08. Alert threshold is 5 min — host has been over it for 16 min.',
+        chartSpec:{ w:362,h:104, yMax:26, series:[0,0,0,0,1,1,2,3,5,8,12,17,22], threshold:{v:5,label:'alert >5m'}, area:'above', axis:['-30m','-15m','now'] },
+        timeline:[
+          {t:'14:02', text:'bitcoind RPC getblockchaininfo latency exceeded 30s on host-03.', sev:'info'},
+          {t:'14:06', text:'verificationprogress frozen at 0.99988 across two polls.', sev:'warn'},
+          {t:'14:08', text:'Chain tip unchanged for 3 consecutive polls → host flagged.', sev:'warn'},
+          {t:'14:11', text:'lqwd-rtr-04, -09 and lsp-02 channel-state queries began failing.', sev:'crit'},
+          {t:'14:24', text:'3 pending HTLCs now within 12 blocks of timeout → escalated CRITICAL.', sev:'crit'},
+        ],
+        aiReason:'All three node alerts share host-03\u2019s bitcoind backend, so they are grouped as one incident. Restarting bitcoind should clear all three at once — fix the host before touching the nodes.',
+        children:[
+          {node:'lqwd-rtr-04', kind:'Routing · LND', note:'2 pending HTLCs unconfirmable', detail:'last good 22m ago'},
+          {node:'lqwd-rtr-09', kind:'Routing · LND', note:'channel state stale', detail:'last good 22m ago'},
+          {node:'lqwd-lsp-02', kind:'LSP · LDK', note:'1 pending HTLC unconfirmable', detail:'last good 21m ago'},
+        ],
+        cmd:{ title:'Restart bitcoind on host-03', intent:'Confirms the daemon is wedged, then restarts it and re-checks chain tip. Run the diagnostic first; only restart if it is truly stalled.',
+          command:"ssh ops@host-03 -- 'bitcoin-cli getblockchaininfo | jq .verificationprogress' \\\n  && ssh ops@host-03 -- sudo systemctl restart bitcoind" } },
+
+      { id:'rtr07', sev:'critical', accent:C.crit,
+        title:'lqwd-rtr-07 unreachable — gRPC down 8 min',
+        why:'No gRPC response from the node for 8 minutes. host-06 itself is up and its other node is healthy, so the scope is this node\u2019s lnd process — unrelated to host-03.',
+        layer:'node · host-06', layerKey:'node', age:'8m', stale:false, fresh:'4s',
+        action:{type:'command',label:'Export fix'},
+        iconD:'M13 3 4 14h6l-1 7 9-12h-6l1-6z',
+        evLabel:'gRPC reachability · last 12 min', evValue:'DOWN', evValueColor:C.crit,
+        chartSpec:{ w:188,h:58, yMax:105, series:[100,99,100,98,100,99,42,8,0,0,0,0], area:'under', marker:{atIndex:6,label:'lost'}, axis:['-12m','now'] },
+        timeline:[
+          {t:'14:19', text:'gRPC health probe timed out (1st failure).', sev:'warn'},
+          {t:'14:21', text:'3 consecutive probe failures → node flagged unreachable.', sev:'crit'},
+          {t:'14:22', text:'lnd process not responding; host-06 OS still reachable via SSH.', sev:'crit'},
+        ],
+        aiReason:'host-06 is up and lqwd-rtr-12 on the same host is healthy, so this is the node\u2019s lnd process, not the host. Handle separately from host-03.',
+        cmd:{ title:'Recover lqwd-rtr-07', intent:'Checks the lnd unit status on host-06 and restarts the node if the process has died. Verify the wallet unlocks after restart.',
+          command:"ssh ops@host-06 -- sudo systemctl status lnd@lqwd-rtr-07 \\\n  && ssh ops@host-06 -- sudo systemctl restart lnd@lqwd-rtr-07" } },
+
+      { id:'stor', sev:'warning', accent:C.warn,
+        title:'Storage 94% on host-05 — chain volume',
+        why:'The chain data volume is filling at current block growth (~0.55%/day). Projection reaches full in about 6 days, before bitcoind on host-05 starts failing writes.',
+        layer:'storage · host-05', layerKey:'storage', age:'31m', stale:false, fresh:'4s',
+        action:{type:'command',label:'Export fix'},
+        iconD:'M3 8h18v8H3z M6.5 12h.01 M10 12h7',
+        evLabel:'Chain volume used · 14d + projection', evValue:'94%', evValueColor:C.warn,
+        chartSpec:{ w:188,h:58, yMax:104, yMin:60, series:[71,73,75,77,79,81,83,85,87,89,90.5,92,93,94], threshold:{v:90,label:'alert 90%'}, area:'under', projection:[95.5,97,98.5,100], marker:{atIndex:13,label:'now'}, axis:['14d','+6d'] },
+        timeline:[
+          {t:'Jun 12', text:'Usage crossed 85% on the chain volume.', sev:'info'},
+          {t:'Jun 17', text:'Usage crossed the 90% alert threshold.', sev:'warn'},
+          {t:'today', text:'94% used; 14-day growth ~0.55%/day projects full in ~6 days.', sev:'warn'},
+        ],
+        aiReason:'Linear projection on 14-day growth. No write failures yet — act before the volume fills; extending the LVM volume is low-risk.',
+        cmd:{ title:'Reclaim space on host-05 chain volume', intent:'Shows current usage, then extends the LVM volume by 200G from the free pool. Confirms free extents exist before extending.',
+          command:"ssh ops@host-05 -- df -h /chain \\\n  && ssh ops@host-05 -- sudo lvextend -L +200G /dev/vg0/chain --resizefs" } },
+
+      { id:'fc', sev:'warning', accent:C.warn,
+        title:'Force-close storm on lqwd-lsp-05 — 3 channels closing',
+        why:'Three channels from the same peer cluster entered force-close within 23 minutes, all closing inside 40 minutes. Likely peer-side; outbound liquidity will drop as they settle.',
+        layer:'node · host-02', layerKey:'node', age:'37m', stale:false, fresh:'4s',
+        action:{type:'investigate',label:'Investigate'},
+        iconD:'M13 3 4 14h6l-1 7 9-12h-6l1-6z',
+        evLabel:'Active channels · last hour', evValue:'11 · 3 closing', evValueColor:C.warn,
+        chartSpec:{ w:188,h:58, yMax:15, yMin:9, series:[14,14,14,14,13,13,12,11], area:'under', marker:{atIndex:7,label:'now'}, axis:['-1h','now'] },
+        timeline:[
+          {t:'13:48', text:'Peer 02a4…f1 initiated cooperative close on 2 channels.', sev:'info'},
+          {t:'14:05', text:'1 channel escalated to force-close.', sev:'warn'},
+          {t:'14:11', text:'2 more force-closes opened; soonest sweep in 11 min.', sev:'warn'},
+        ],
+        aiReason:'Three closes from one peer cluster in 23 min points to a peer-side issue, not a node fault. Inspect the pending closes before intervening — most will settle on their own.',
+        cmd:{ title:'Inspect closing channels on lqwd-lsp-05', intent:'Lists pending force-closes with peer pubkeys and sweep status so you can decide whether to intervene. Read-only.',
+          command:"ssh ops@host-02 -- lncli --node=lqwd-lsp-05 pendingchannels \\\n  | jq '.pending_force_closing_channels[] | {peer:.channel.remote_node_pub, sat:.channel.local_balance}'" } },
+
+      { id:'fee', sev:'watch', accent:C.watch,
+        title:'Fee drift on lqwd-rtr-02 — outbound ~3× peer median',
+        why:'Outbound fee rate has drifted to roughly three times the median of comparable routing peers. Routed volume on this node is down ~40% over the drift window.',
+        layer:'node · host-01', layerKey:'node', age:'2h', stale:false, fresh:'4s',
+        action:{type:'command',label:'Export fix'},
+        iconD:'M13 3 4 14h6l-1 7 9-12h-6l1-6z',
+        evLabel:'Outbound fee ppm vs peer band', evValue:'3.1×', evValueColor:C.watch,
+        chartSpec:{ w:188,h:58, yMax:1200, series:[640,720,830,910,980,1020,1045,1050], band:{lo:280,hi:400,label:'peer median'}, axis:['-7d','now'] },
+        timeline:[
+          {t:'-7d', text:'Outbound ppm began drifting above the peer median.', sev:'info'},
+          {t:'-2d', text:'Sustained above 2× peer median.', sev:'watch'},
+          {t:'now', text:'1050 ppm vs 340 median = 3.1×; routed volume down ~40%.', sev:'watch'},
+        ],
+        aiReason:'Routed volume tracks the fee drift closely — fees are the likely cause. Realigning toward peer median should recover volume; not urgent.',
+        cmd:{ title:'Realign outbound fees on lqwd-rtr-02', intent:'Sets the outbound base + ppm rate back toward peer median across all channels. Review the values before running.',
+          command:"ssh ops@host-01 -- lncli --node=lqwd-rtr-02 updatechanpolicy \\\n  --base_fee_msat=1000 --fee_rate_ppm=350 --time_lock_delta=80" } },
+
+      { id:'liq', sev:'watch', accent:C.watch,
+        title:'Liquidity skew on lqwd-rtr-11 — 92% local',
+        why:'Local balance was last read at 92% of capacity — a strong rebalance candidate above the 85% threshold. Telemetry has been stale for 4 hours, so the current value is unconfirmed.',
+        layer:'node · host-04', layerKey:'node', age:'4h', stale:true, fresh:'stale 4h',
+        action:{type:'investigate',label:'Investigate'},
+        iconD:'M13 3 4 14h6l-1 7 9-12h-6l1-6z',
+        evLabel:'Local balance ratio', evValue:'92% · stale', evValueColor:'#A9912F', isStale:true,
+        timeline:[
+          {t:'-1d', text:'Local balance crossed the 85% rebalance threshold.', sev:'watch'},
+          {t:'-4h', text:'Last successful telemetry poll from lqwd-rtr-11.', sev:'info'},
+          {t:'now', text:'No fresh data for 4h — displayed value may be stale.', sev:'stale'},
+        ],
+        aiReason:'Last reading was 92% local and climbing, but telemetry has been stale 4h. Re-poll the node before acting on a rebalance — the value is unconfirmed.',
+        staleNote:'Last good reading 4h ago. NodeMonitor will not fake a fresh value — re-poll lqwd-rtr-11 before trusting this number.',
+        cmd:{ title:'Rebalance lqwd-rtr-11', intent:'Re-checks current liquidity first (telemetry is stale), then drafts a circular rebalance of ~5M sat outbound. Dry-run first; remove --dry_run to execute.',
+          command:"ssh ops@host-04 -- lncli --node=lqwd-rtr-11 channelbalance \\\n  && ssh ops@host-04 -- bos rebalance --node=lqwd-rtr-11 --amount=5000000 --max-fee-rate=120 --dry_run" } },
+    ];
+  }
+
+  sevMeta(sev){ return ({
+    critical:{ accent:'#E0392B', wash:'#FCEBEA', border:'#F3D3D0', label:'CRITICAL' },
+    warning:{ accent:'#C8770A', wash:'#FBF0DD', border:'#EFE0C5', label:'WARNING' },
+    watch:{ accent:'#0E8C84', wash:'#E2F2EF', border:'#C2E3DD', label:'WATCH' },
+  })[sev]; }
+
+  evColors(ev){ return ({ info:{dot:'#9AA3B4',line:'#E2E5EB'}, warn:{dot:'#C8770A',line:'#EADFC8'}, crit:{dot:'#E0392B',line:'#F1D3CF'}, watch:{dot:'#0E8C84',line:'#C2E3DD'}, stale:{dot:'#A9912F',line:'#E9DCB6'} })[ev]; }
+
+  buildTimeline(arr){ return arr.map((ev,i,a)=>{ const c=this.evColors(ev.sev); return { t:ev.t, text:ev.text, dot:c.dot, line:i===a.length-1?'transparent':c.line }; }); }
+
+  renderVals(){
+    const isAllClear=this.state.view==='allclear';
+    const order={critical:0,warning:1,watch:2};
+    const all=isAllClear?[]:this.raw().filter(i=>this.state.filter==='all'||i.layerKey===this.state.filter).sort((a,b)=>order[a.sev]-order[b.sev]);
+
+    const heroRaw = all.find(i=>i.hero) || null;
+    const queueRaw = all.filter(i=>!i.hero);
+
+    const mkInc=(i)=>{ const m=this.sevMeta(i.sev); const expanded=!!this.state.expanded[i.id]; const hasCh=!!(i.children&&i.children.length);
+      const chart = i.isStale ? this.staleChart(186,58) : (i.chartSpec ? this.chart({ ...i.chartSpec, accent:i.accent }) : null);
+      return { ...m, accent:i.accent, sevLabel:m.label,
+        title:i.title, why:i.why, layer:i.layer, age:i.age, stale:!!i.stale, iconD:i.iconD,
+        freshLabel:i.fresh, freshColor:i.stale?'#A9912F':'#1E9E63', freshDot:i.stale?'#C8A23A':'#1E9E63',
+        evLabel:i.evLabel, evValue:i.evValue, evValueColor:i.evValueColor||i.accent, chart,
+        shadow:i.sev==='critical'?'0 6px 22px rgba(224,57,43,.10)':'0 1px 2px rgba(16,19,26,.04)',
+        timeline:this.buildTimeline(i.timeline||[]), aiReason:i.aiReason, staleNote:i.staleNote||'',
+        hasChildren:hasCh, children:i.children||[],
+        expanded, collapsed:!expanded, chev:expanded?'rotate(90deg)':'rotate(0deg)',
+        expandLabel:expanded?'Hide why-chain':(hasCh?'Why-chain & grouped nodes':'Why-chain'),
+        actionLabel:((i.action&&i.action.label)||'Export fix')+' →',
+        onToggle:()=>this.setState(s=>({expanded:{...s.expanded,[i.id]:!s.expanded[i.id]}})),
+        onExport:()=>this.setState({cmd:i,copied:false}) }; };
+
+    const incidents=queueRaw.map(mkInc);
+
+    let hero=null;
+    if(heroRaw){ const expanded=!!this.state.expanded[heroRaw.id];
+      hero={ evLabel:heroRaw.evLabel, evValue:heroRaw.evValue, evNote:heroRaw.evNote,
+        chart:this.chart({ ...heroRaw.chartSpec, accent:heroRaw.accent }), blast:this.blastRadius(),
+        timeline:this.buildTimeline(heroRaw.timeline), aiReason:heroRaw.aiReason, children:heroRaw.children,
+        expanded, chev:expanded?'rotate(90deg)':'rotate(0deg)',
+        expandLabel:expanded?'Hide detail':'Show why-chain & 3 grouped nodes',
+        actionLabel:((heroRaw.action&&heroRaw.action.label)||'Export fix')+' →',
+        onToggle:()=>this.setState(s=>({expanded:{...s.expanded,[heroRaw.id]:!s.expanded[heroRaw.id]}})),
+        onExport:()=>this.setState({cmd:heroRaw,copied:false}) };
+    }
+
+    const mkFilter=(key,label)=>{ const on=this.state.filter===key; return { label, onClick:()=>this.setState({filter:key}), bg:on?'#13284F':'#fff', color:on?'#fff':'#6F7787', border:on?'#13284F':'#DFE3EB', weight:on?'600':'500' }; };
+
+    const vitals = isAllClear ? [
+      { label:'Nodes', value:'26/26', unit:'healthy', dot:'#1E9E63', note:'all reporting fresh', noteColor:'#9AA3B4' },
+      { label:'Hosts', value:'8/8', unit:'up', dot:'#1E9E63', note:'all reachable', noteColor:'#9AA3B4' },
+      { label:'Services', value:'34/34', unit:'running', dot:'#1E9E63', note:'no restarts 24h', noteColor:'#9AA3B4' },
+      { label:'bitcoind', value:'8/8', unit:'at tip', dot:'#1E9E63', note:'max lag 1 block', noteColor:'#9AA3B4' },
+      { label:'Storage', value:'78%', unit:'peak', dot:'#1E9E63', note:'host-05 ~40 days', noteColor:'#9AA3B4' },
+    ] : [
+      { label:'Nodes', value:'19/26', unit:'healthy', dot:'#E0392B', note:'4 critical · 1 warning · 2 watch', noteColor:'#9AA3B4' },
+      { label:'Hosts', value:'7/8', unit:'up', dot:'#E0392B', note:'host-03 degraded', noteColor:'#E0392B' },
+      { label:'Services', value:'31/34', unit:'running', dot:'#C8770A', note:'bitcoind · lnd watched', noteColor:'#9AA3B4' },
+      { label:'bitcoind', value:'7/8', unit:'at tip', dot:'#E0392B', note:'host-03 22m behind', noteColor:'#E0392B' },
+      { label:'Storage', value:'94%', unit:'peak', dot:'#C8770A', note:'host-05 ~6 days', noteColor:'#C8770A' },
+    ];
+
+    const healthyNodes=[];
+    for(let n=1;n<=12;n++){const id='lqwd-rtr-'+String(n).padStart(2,'0'); if(isAllClear||!['lqwd-rtr-02','lqwd-rtr-04','lqwd-rtr-07','lqwd-rtr-09','lqwd-rtr-11'].includes(id)) healthyNodes.push(id);}
+    for(let n=1;n<=8;n++){const id='lqwd-lsp-'+String(n).padStart(2,'0'); if(isAllClear||!['lqwd-lsp-02','lqwd-lsp-05'].includes(id)) healthyNodes.push(id);}
+
+    const counts = isAllClear ? {crit:0,warn:0,watch:0,ok:26} : {crit:4,warn:1,watch:2,ok:19};
+    const T=26; const pct=(x)=>(x/T*100).toFixed(1)+'%';
+    const tally=[ {n:counts.crit,c:'#E0392B',label:'crit'}, {n:counts.warn,c:'#C8770A',label:'warn'}, {n:counts.watch,c:'#0E8C84',label:'watch'}, {n:counts.ok,c:'#1E9E63',label:'ok'} ];
+    const ramp = isAllClear ? [ {w:'100%',c:'#1E9E63'} ] : [ {w:pct(counts.crit),c:'#E0392B'},{w:pct(counts.warn),c:'#C8770A'},{w:pct(counts.watch),c:'#0E8C84'},{w:pct(counts.ok),c:'#1E9E63'} ];
+    const mkTab=(key,label)=>{ const on=this.state.view===key; return { label, onClick:()=>this.setState({view:key}), bg:on?'#fff':'transparent', color:on?'#13284F':'#6F7787', shadow:on?'0 1px 2px rgba(16,19,26,.14)':'none' }; };
+    const viewTabs=[ mkTab('incident','Mid-incident'), mkTab('allclear','All clear') ];
+    const queueEmpty = !hero && incidents.length===0;
+    const queueEmptyMsg = isAllClear ? 'No active incidents — the queue is clear.' : 'No incidents on this layer.';
+    const rc=this.state.cmd; let cmd=null;
+    if(rc){ const cm=this.sevMeta(rc.sev); const type=(rc.action&&rc.action.type)||'command';
+      const meta={ command:{kicker:'Exported command',cmdLabel:'',note:'Runs on your machine — never executed by NodeMonitor.',primary:'Copy command'}, investigate:{kicker:'Investigate · read-only',cmdLabel:'Inspect command · read-only',note:'Read-only — gathers data, applies no change. No fix is run.',primary:'Copy command'}, runbook:{kicker:'Runbook · host operation',cmdLabel:'Diagnostic command',note:'Higher-risk host operation — review each step. NodeMonitor runs nothing for you.',primary:'Copy diagnostic'} }[type];
+      cmd={ accent:cm.accent, sevLabel:cm.label, title:rc.cmd.title, intent:rc.cmd.intent, command:rc.cmd.command, runbook:(rc.runbook||[]).map((t,idx)=>({n:String(idx+1),text:t})), hasRunbook:!!(rc.runbook&&rc.runbook.length), cmdLabel:meta.cmdLabel, hasCmdLabel:!!meta.cmdLabel, kicker:meta.kicker, note:meta.note, primary:meta.primary }; }
+
+    return {
+      isAllClear, viewTabs, tally, ramp,
+      aiOpen:!this.state.aiDismissed, aiBusy:(!this.state.aiDismissed)&&!isAllClear, aiCalm:(!this.state.aiDismissed)&&isAllClear, onDismissAi:()=>this.setState({aiDismissed:true}),
+      aiLines:[
+        { tag:'1', tagBg:'#E0392B', tagColor:'#fff', head:'host-03 bitcoind stalled (22 min behind tip). ', body:'The 3 nodes on it can\u2019t confirm channel state; pending HTLCs at risk. Fix the host first — the 3 node alerts clear with it.' },
+        { tag:'2', tagBg:'#E0392B', tagColor:'#fff', head:'lqwd-rtr-07 unreachable 8 min. ', body:'Single-node lnd outage on host-06, unrelated to host-03 — handle separately.' },
+        { tag:'3', tagBg:'#C8770A', tagColor:'#fff', head:'host-05 chain volume full in ~6 days. ', body:'Not urgent today; schedule space reclaim before writes start failing.' },
+      ],
+      hasHero:!!hero, hero, allClear:{ healthy:'26 / 26', lastIncident:'host-03 bitcoind stall · resolved 6h ago', uptime:'99.98%' },
+      queueCount:incidents.length, incidents, queueEmpty, queueEmptyMsg,
+      filters:[mkFilter('all','All'),mkFilter('hosts','Hosts'),mkFilter('services','Services'),mkFilter('bitcoind','bitcoind'),mkFilter('node','Nodes'),mkFilter('storage','Storage')],
+      vitals,
+      healthyCount: isAllClear?26:19,
+      healthyOpen:this.state.healthyOpen, healthyChev:this.state.healthyOpen?'rotate(180deg)':'rotate(0deg)',
+      onToggleHealthy:()=>this.setState(s=>({healthyOpen:!s.healthyOpen})), healthyNodes,
+      cmdOpen:!!this.state.cmd, cmd, copyLabel:this.state.copied?'Copied ✓':(cmd?cmd.primary:'Copy'),
+      onCopy:()=>{ try{navigator.clipboard.writeText((this.state.cmd.cmd.command||'').replace(/\\\n/g,''));}catch(e){} this.setState({copied:true}); },
+      onCloseCmd:()=>this.setState({cmd:null}), stop:(e)=>e.stopPropagation(),
+    };
+  }
+}
+</script>
+</body>
+</html>

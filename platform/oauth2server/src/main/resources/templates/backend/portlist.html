@@ -1,0 +1,57 @@
+<html>
+<head th:include="fragment/headerfooter::header1"></head>
+<body onload="startTime()">
+<div id="containerMain">
+    <div th:include="fragment/headerfooter::top_menu('action')"></div>
+    <div id="titleMain">
+        <h1>Ports</h1>
+    </div>
+
+    <div th:if="${message != null}" class="info_messages">
+        <p th:text="${message}"></p>
+    </div>
+
+    <div id="contentMain">
+        <div id="actionButtonMain">
+            <div style="float: right;">
+                <a id="a" th:href="@{/backend/add/port}">ADD NEW</a>
+            </div>
+        </div>
+        <table id="customers">
+            <tr>
+                <th>ID</th>
+                <th>Port</th>
+                <th>In use</th>
+                <th>BTC host</th>
+                <th>LND IP</th>
+                <th>Date Modified</th>
+                <th>Date Created</th>
+                <th>DELETE</th>
+            </tr>
+            <tr th:each="item, iItem : ${content}">
+                <td th:text="${item.id}"/>
+                <td th:text="${item.port} ?: 'NA'"/>
+                <td th:text="${item.inUse}"/>
+                <td th:text="${item.btcHost}"/>
+                <td th:text="${item.lndIp}"/>
+                <td th:text="${item.dateModified} ?: 'NA'"/>
+                <td th:text="${item.dateCreated} ?: 'NA'"/>
+                <td>
+                    <a th:href="@{/backend/ports/delete(id=${item.id})}">DELETE</a>
+                </td>
+            </tr>
+        </table>
+        <div id="paginationMain">
+            <div class="center">
+                <div class="pagination" th:each="i: ${#numbers.sequence(0, pages)}">
+                    <a th:class="${i == (pageNumber)} ? 'current page-numbers' : 'page-numbers'"
+                       th:href="@{/backend/ports(pageSize=10, pageNumber=${i})}"
+                       th:text="${i}"> </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

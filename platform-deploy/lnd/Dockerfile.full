@@ -1,0 +1,195 @@
+# Builder image
+FROM golang:1.15.7 as builder
+MAINTAINER Aziz Pulatov <aziz@lqwd.money>
+
+# Add build tools.
+# Add build tools.
+RUN apt-get -y install wget
+
+# Latest stabe version: https://bitcoincore.org/bin
+ARG VERSION=0.21.0
+
+
+# Add build tools.
+RUN apt-get -y install wget
+
+
+WORKDIR /btccore
+
+#get Bitcoin core
+RUN wget https://bitcoincore.org/bin/bitcoin-core-${VERSION}/bitcoin-${VERSION}-x86_64-linux-gnu.tar.gz
+
+#Check sum and fingerprint
+RUN wget https://bitcoincore.org/bin/bitcoin-core-${VERSION}/SHA256SUMS.asc \
+     && wget https://bitcoin.org/laanwj-releases.asc \
+     && sha256sum --check SHA256SUMS.asc --ignore-missing
+
+
+RUN gpg --import ./laanwj-releases.asc \
+    && gpg --refresh-keys \
+    && gpg --verify SHA256SUMS.asc
+
+RUN tar -xvf bitcoin-${VERSION}-x86_64-linux-gnu.tar.gz
+RUN install -m 0755 -o root -t /usr/local/bin bitcoin-${VERSION}/bin/*
+RUN bitcoind --version
+
+
+
+
+WORKDIR /lndcore
+
+# Latest stable version: https://github.com/lightningnetwork/lnd/releases
+ARG VERSION=0.12.0-beta
+
+
+#get LND source
+RUN wget  https://github.com/lightningnetwork/lnd/releases/download/v${VERSION}/lnd-linux-amd64-v${VERSION}.tar.gz
+
+#Check sum and fingerprint
+RUN wget https://github.com/lightningnetwork/lnd/releases/download/v${VERSION}/manifest-v${VERSION}.txt \
+
+    && wget https://keybase.io/roasbeef/pgp_keys.asc \
+    && sha256sum --check manifest-v${VERSION}.txt --ignore-missing
+
+RUN gpg ./pgp_keys.asc \
+    && gpg --import ./pgp_keys.asc
+#    && gpg --verify manifest-v${VERSION}.txt.sig
+
+RUN tar -xvf lnd-linux-amd64-v${VERSION}.tar.gz \
+    && install -m 0755 -o root -g root -t /usr/local/bin lnd-linux-amd64-v${VERSION}/* \
+    && lnd --version
+#for generate header in REST api access
+
+
+#RUN apt-get -y install git
+#
+## Grab and install the latest version of lnd and all related dependencies.
+#WORKDIR $GOPATH/src/github.com/lightningnetwork/lnd
+#RUN git clone https://github.com/lightningnetwork/lnd#
+#WORKDIR "/go/src/github.com/lightningnetwork/lnd/lnd/"
+#
+#RUN make
+#
+#RUN make install tags="experimental monitoring autopilotrpc chainrpc invoicesrpc routerrpc signrpc walletrpc watchtowerrpc wtclientrpc" \
+#  && cp /go/bin/lncli /bin/ \
+#  && cp /go/bin/lnd /bin/
+#
+# Final image
+FROM python:3 as final
+
+MAINTAINER Aziz Pulatov <aziz@lqwd.money>
+
+# Add Utility.
+RUN apt-get update && apt-get -y install nano
+
+#Add Python
+#RUN apt-get update && apt-get -y install python3
+
+# net tools - netstat -tulnp
+RUN apt-get update && apt-get install net-tools
+#
+##Add Pip
+#RUN apt-get -y install python3-pip
+##Add pexpect lib
+RUN pip install --no-cache-dir pexpect
+#RUN pip install  --no-cache-dir setuptools
+#RUN pip install --no-cache-dir tokenize-rt
+#RUN pip install --no-cache-dir os-sys
+RUN pip install --no-cache-dir psycopg2-binary
+#RUN pip3 install python_lnd_grpc
+#
+#RUN apt-get install xxd
+#
+RUN apt-get -y install curl gnupg
+RUN curl -fsSL https://bazel.build/bazel-release.pub.gpg | gpg --dearmor > bazel.gpg
+RUN mv bazel.gpg /etc/apt/trusted.gpg.d/
+RUN echo "deb [arch=amd64] https://storage.googleapis.com/bazel-apt stable jdk1.8" | tee /etc/apt/sources.list.d/bazel.list
+
+RUN apt-get update &&  apt-get -y install bazel
+
+RUN apt-get -y install --no-cache-dir python-dev
+
+#RUN pip3 install tink
+
+RUN apt-get -y remove python3-pip
+RUN apt-get -y remove python-dev
+RUN apt-get -y remove curl
+RUN apt-get -y remove bazel
+RUN apt-get -y autoremove
+
+ARG USER_ID
+ARG GROUP_ID
+
+ENV HOME /lnd
+
+# add user with specified (or default) user/group ids
+ENV USER_ID ${USER_ID:-1000}
+ENV GROUP_ID ${GROUP_ID:-1000}
+
+# add our user and group first to make sure their IDs get assigned consistently, regardless of whatever dependencies get added
+RUN addgroup --gid ${GROUP_ID} --system lnd
+
+RUN adduser --uid ${USER_ID} --ingroup lnd --disabled-password --gecos --shell --home /lnd lnd
+
+USER root
+
+RUN chmod -R a+rwx /lnd/
+
+# Copy the compiled binaries from the builder image.
+#COPY --from=builder /usr/local/bin /bin/
+#RUN lnd --version
+
+
+# Create a volume to house btcd data
+VOLUME ["/data"]
+
+# Expose p2p port
+EXPOSE 9735
+#for external lncli connection
+EXPOSE 8080
+# Expose grpc port
+EXPOSE 10009
+# Expose p2p port
+EXPOSE 853
+#for external lncli connection
+EXPOSE 29088
+# Expose grpc port
+EXPOSE 29099
+
+
+
+ENV POSTGRES_DB db
+ENV POSTGRES_USER user
+ENV POSTGRES_PASSWORD password
+
+ENV LND_PASSPHRASE passprhase
+ENV LND_PASSWORD password
+ENV LND_EXTERNALIP externalip
+ENV LND_ALIAS alias
+ENV LND_RPCUSER rpcuser
+ENV LND_RPCPASS rpcpass
+ENV LND_RPCHOST rpchost
+ENV LND_PODNAME tlnd3
+ENV LND_NETWORK testnet
+ENV LND_BITCOIND false
+
+WORKDIR /root/python
+
+COPY lnd_config.py .
+COPY run_lnd.py .
+COPY checkdb.py .
+COPY configdb.py .
+COPY connect_db.py .
+COPY check_lock.py .
+COPY secret.key .
+
+COPY lnd_cmd.sh /usr/local/bin/
+COPY entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/lnd_cmd.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
+
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+WORKDIR /data/v3
+CMD ["/usr/local/bin/lnd_cmd.sh", "$POSTGRES_DB", "$POSTGRES_USER", "$POSTGRES_PASSWORD", "$LND_PASSWORD", "$LND_PASSPHRASE", "$LND_EXTERNALIP", "$LND_ALIAS", "$LND_RPCUSER", "$LND_RPCPASS", "$LND_RPCHOST", "$LND_PODNAME", "$LND_NETWORK", "$LND_BITCOIND"]
+
+

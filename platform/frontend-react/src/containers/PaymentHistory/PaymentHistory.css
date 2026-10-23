@@ -1,0 +1,52 @@
+.payment-history-container{
+    display: flex;
+    flex-direction: column;
+    row-gap: 40px;
+    padding-left: 5.5%;
+    padding-right: 5.8%;
+}
+
+.payment-history-header{
+    display: flex;
+    flex-direction: row;
+    /* Header 1 */
+
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 32px;
+    /* identical to box height, or 133% */
+
+    display: flex;
+    align-items: center;
+
+    color: #000000;
+    padding-top: 40px;
+}
+
+.payment-history-col{
+    display: flex;
+    flex-direction: column;
+}
+
+.payment-history-row{
+    display: flex;
+    flex-direction: row;
+}
+
+
+.payment-history-year-dropdown{
+    display: flex;
+    flex-direction: row;
+    padding-bottom: 40px;
+}
+
+.payment-history-year-dropdown >> select {
+    background: #F3F5F9;
+    border-radius: 8px;
+}
+
+.payment-history-month {
+    row-gap: 40px;
+}

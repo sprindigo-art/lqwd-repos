@@ -1,0 +1,18 @@
+<div th:fragment="channel-general" class="widget widget-account-invoice-two">
+    <div class="widget-content">
+        <div class="account-box">
+            <div class="info">
+                <div class="inv-title">
+                    <h5 class="">Channel ID</h5>
+                </div>
+                <div class="inv-balance-info">
+                    <a th:href="'https://amboss.space/edge/'+${lndChannel.getChan_id()}">
+                        <p class="inv-balance" th:text="${lndChannel.getChan_id()}"></p>
+                    </a>
+                    <span class="inv-stats" th:if="${lndChannel.isActive()}">Status: Active</span>
+                    <span class="inv-stats-desc" th:unless="${lndChannel.isActive()}">Status: Inactive</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

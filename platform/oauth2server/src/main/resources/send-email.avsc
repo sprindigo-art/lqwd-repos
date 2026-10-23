@@ -1,0 +1,115 @@
+{
+  "type": "record",
+  "name": "EmailBody",
+  "namespace": "com.lqwd.messaging.schemas",
+  "fields": [
+    {
+      "name": "body",
+      "type": {
+        "type": "string",
+        "avro.java.string": "String"
+      },
+      "avro.java.string": "String"
+    },
+    {
+      "name": "subject",
+      "type": {
+        "type": "string",
+        "avro.java.string": "String"
+      },
+      "avro.java.string": "String"
+    },
+    {
+      "name": "sender",
+      "type": {
+        "type": "record",
+        "name": "EmailAddress",
+        "fields": [
+          {
+            "name": "displayName",
+            "type": {
+              "type": "string",
+              "avro.java.string": "String"
+            },
+            "avro.java.string": "String"
+          },
+          {
+            "name": "email",
+            "type": {
+              "type": "string",
+              "avro.java.string": "String"
+            },
+            "avro.java.string": "String"
+          },
+          {
+            "name": "recipientType",
+            "type": {
+              "type": "enum",
+              "name": "RecipientType",
+              "symbols": [
+                "BCC",
+                "CC",
+                "TO"
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "recipients",
+      "type": {
+        "type": "array",
+        "items": "EmailAddress"
+      }
+    },
+    {
+      "name": "attachments",
+      "type": {
+        "type": "array",
+        "items": {
+          "type": "record",
+          "name": "EmailAttachment",
+          "fields": [
+            {
+              "name": "cid",
+              "type": {
+                "type": "string",
+                "avro.java.string": "String"
+              },
+              "avro.java.string": "String"
+            },
+            {
+              "name": "mime",
+              "type": {
+                "type": "string",
+                "avro.java.string": "String"
+              },
+              "avro.java.string": "String"
+            },
+            {
+              "name": "content",
+              "type": {
+                "type": "string",
+                "avro.java.string": "String"
+              },
+              "avro.java.string": "String"
+            },
+            {
+              "name": "name",
+              "type": {
+                "type": "string",
+                "avro.java.string": "String"
+              },
+              "avro.java.string": "String"
+            },
+            {
+              "name": "inline",
+              "type": "boolean"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

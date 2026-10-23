@@ -1,0 +1,65 @@
+<div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-12 layout-spacing">
+    <div class="widget widget-one_hybrid widget-followers analytic-tile-cards">
+        <div class="widget-heading">
+            <div class="w-title">
+                <div class="w-icon">
+                    <img th:src="@{images/logo/LQwD-Q.png}" class="" alt="LND Node" style="border-radius: 10%; width: 30px; height: 33px;">
+                </div>
+                <div class="">
+                    <p class="w-value" th:text="${#numbers.formatCurrency(lightningStats.getNetworkcapacityusd())}"></p>
+                    <h4 class="tile-header">Network Capacity USD</h4>
+                    <h5 class="">Last Updated @ [[${lightningStats.getReabableLastUpdated()}]]</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-12 layout-spacing">
+    <div class="widget widget-one_hybrid widget-followers analytic-tile-cards">
+        <div class="widget-heading">
+            <div class="w-title">
+                <div class="w-icon">
+                    <img th:src="@{images/logo/LQwD-Q.png}" class="" alt="LND Node" style="border-radius: 10%; width: 30px; height: 30px;">
+                </div>
+                <div class="">
+                    <p class="w-value" th:text="${#numbers.formatCurrency(lightningStats.getAveragenodecapacityusd())}"></p>
+                    <h4 class="tile-header">Average Node Capacity USD</h4>
+                    <h5 class="">Last Updated @ [[${lightningStats.getReabableLastUpdated()}]]</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-12 layout-spacing">
+    <div class="widget widget-one_hybrid widget-followers analytic-tile-cards">
+        <div class="widget-heading">
+            <div class="w-title">
+                <div class="w-icon">
+                    <img th:src="@{images/logo/LQwD-Q.png}" class="" alt="LND Node" style="border-radius: 10%; width: 30px; height: 30px;">
+                </div>
+                <div class="">
+                    <p class="w-value" th:text="${#numbers.formatCurrency(lightningStats.getAveragechannelcapacityusd())}"></p>
+                    <h4 class="tile-header">Average Channel Capacity USD</h4>
+                    <h5 class="">Last Updated @ [[${lightningStats.getReabableLastUpdated()}]]</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-12 layout-spacing">
+    <div class="widget widget-one_hybrid widget-followers analytic-tile-cards">
+        <div class="widget-heading">
+            <div class="w-title">
+                <div class="w-icon">
+                    <img th:src="@{images/logo/LQwD-Q.png}" class="" alt="LND Node" style="border-radius: 10%; width: 30px; height: 30px;">
+                </div>
+                <div class="">
+                    <p class="w-value"><i class="fa fa-btc"></i>[[${#numbers.formatDecimal(lightningStats.getBtcCapacity(), 0, 3)}]]</p>
+                    <h4 class="tile-header">Network Capacity in BTC</h4>
+                    <h5 class="">Last Updated @ [[${lightningStats.getReabableLastUpdated()}]]</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

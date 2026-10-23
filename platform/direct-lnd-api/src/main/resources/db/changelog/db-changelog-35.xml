@@ -1,0 +1,79 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <changeSet author="djbabs (generated)" id="1649141144103-1">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists columnName="channel_id" tableName="lnd_channel" />
+            </not>
+        </preConditions>
+        <addColumn tableName="lnd_channel">
+            <column name="channel_id" type="varchar(255)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1649141144103-2">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists columnName="error" tableName="liquidity" />
+            </not>
+        </preConditions>
+        <addColumn tableName="liquidity">
+            <column name="error" type="TEXT"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1649141144103-3">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists columnName="fee_percentage" tableName="liquidity" />
+            </not>
+        </preConditions>
+        <addColumn tableName="liquidity">
+            <column name="fee_percentage" type="int4"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1649141144103-4">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists columnName="fee_to_pay" tableName="liquidity" />
+            </not>
+        </preConditions>
+        <addColumn tableName="liquidity">
+            <column name="fee_to_pay" type="int4"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1649141144103-5">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists columnName="requested_amt" tableName="liquidity" />
+            </not>
+        </preConditions>
+        <addColumn tableName="liquidity">
+            <column name="requested_amt" type="int4"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1649141144103-13">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+                <columnExists columnName="apikey" tableName="command_history" />
+        </preConditions>
+        <dropDefaultValue columnDataType="varchar(1024)" columnName="apikey" tableName="command_history"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1649141144103-14">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <columnExists columnName="apikey" tableName="lnd_access_uer" />
+        </preConditions>
+        <dropDefaultValue columnDataType="varchar(255)" columnName="apikey" tableName="lnd_access_uer"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1649141144103-15">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <columnExists columnName="command" tableName="command_history" />
+        </preConditions>
+        <dropDefaultValue columnDataType="varchar(2000)" columnName="command" tableName="command_history"/>
+    </changeSet>
+</databaseChangeLog>

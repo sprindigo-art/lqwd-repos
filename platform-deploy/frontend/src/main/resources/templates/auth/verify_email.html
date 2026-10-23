@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/head::header_main(~{::title}, ~{::link})">
+    <title>LQWD | Verify Email</title>
+    <!-- END GLOBAL MANDATORY STYLES -->
+    <link th:href="@{/assets/css/authentication/form-1.css}"  rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" type="text/css" th:href="@{/assets/css/forms/theme-checkbox-radio.css}" >
+    <link rel="stylesheet" type="text/css" th:href="@{/assets/css/forms/switches.css}" >
+    <link rel="stylesheet" type="text/css" th:href="@{/css/login.css}"/>
+</head>
+<body class="form">
+
+<div class="form-container">
+    <div class="form-form">
+        <div class="form-form-wrap">
+            <div class="form-container">
+                <div class="form-content">
+                            <h1 class="">Verify Email <a id="verify-email_a_profile" th:href="@{/profile}"><span class="brand-name">LQWD</span></a></h1>
+                            <form class="text-center" id="verify-email_frm_verify-email" name="verifyEmail" th:action="@{/email-verification}" method="POST">
+                                <div class="form">
+                                    <div class="d-sm-flex justify-content-center">
+                                        <div class="field-wrapper">
+                                            <input type="text" class="form-control" id="verify-email_txt_token" name="token" th:value="${token}" hidden>
+                                            <div class="d-flex justify-content-center pt-3">
+                                                <button type="submit" id="verify-email_btn_verify" class="btn btn-lg btn-primary">Verify Email</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                    <p class="terms-conditions">© 2021 All Rights Reserved. <a id="verify-email_a_lqwd" th:href="@{'/'}">LQwD Financial Corp</a>.
+                        <br>
+                        <a id="verify-email_a_cookie" href="javascript:void(0);">Cookie Preferences</a>,
+                        <a id="verify-email_a_privacy" href="javascript:void(0);">Privacy</a>, and
+                        <a id="verify-email_a_terms" href="javascript:void(0);">Terms</a>.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="form-image">
+        <div class="l-image">
+        </div>
+    </div>
+</div>
+
+
+<!-- END MAIN CONTAINER -->
+<div th:replace="layout/footer::footer_main(~{::script})">
+    <script th:src="@{assets/js/authentication/form-1.js}"></script>
+</div>
+
+</body>
+</html>
+
+

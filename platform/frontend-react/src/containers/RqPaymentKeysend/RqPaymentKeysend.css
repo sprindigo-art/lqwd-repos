@@ -1,0 +1,21 @@
+.rq-empty-title {
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 24px;
+    align-items: center;
+    text-align: center;
+}
+
+.rq-empty-desc {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 21px;
+    align-items: center;
+    text-align: center;
+    color: #4D4D4D
+}
+

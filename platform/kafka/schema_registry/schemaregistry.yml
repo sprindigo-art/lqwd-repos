@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: schemaregistry
+  namespace: kafka-v1
+  labels:
+    app: schemaregistry
+spec:
+  selector:
+    matchLabels:
+      app: schemaregistry
+  template:
+    metadata:
+      labels:
+        app: schemaregistry
+    spec:
+      containers:
+        - name: schemaregistry
+          image: '514063904685.dkr.ecr.us-west-2.amazonaws.com/schemaregistry'
+          ports:
+            - containerPort: 2181
+            - containerPort: 8081
+          env:
+            - name: ZOO_CONNECT
+              value: "zookeeper.kafka-v1"
+            - name: USERPASS
+              valueFrom:
+                secretKeyRef:
+                  name: zoosecret
+                  key: USERPASS
+            - name: ADMINPASS
+              valueFrom:
+                secretKeyRef:
+                  name: zoosecret
+                  key: ADMINPASS
+          resources:
+            requests:
+             
+            limits:
+             
+      volumes:
+        - name: zoosecret
+          secret:
+            secretName: zoosecret
+      imagePullSecrets:
+        - name: ecr-token

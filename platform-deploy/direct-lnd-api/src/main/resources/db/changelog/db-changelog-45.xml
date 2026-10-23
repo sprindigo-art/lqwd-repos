@@ -1,0 +1,109 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <changeSet author="djbabs (generated)" id="1654102751138-1">
+        <addColumn tableName="user_lnd_channel">
+            <column name="close_initiator" type="varchar(255)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1654102751138-2">
+        <addColumn tableName="user_lnd_channel">
+            <column name="open_initiator" type="varchar(255)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1654102751138-3">
+        <addColumn tableName="user_lnd_channel">
+            <column name="output_index" type="int4"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1654102751138-4">
+        <addColumn tableName="user_lnd_channel">
+            <column name="tx_id" type="varchar(255)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1654102751138-5">
+        <addColumn tableName="user_lnd_channel">
+            <column name="type" type="varchar(255)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1654102751138-6">
+        <addUniqueConstraint columnNames="channel_point, node_name" constraintName="UKtqjds3amvkgfcrykmsvgdamno" tableName="user_lnd_channel"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1654102751138-17">
+        <dropTable tableName="lsp_monitor_channel"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1654102751138-18">
+        <dropTable tableName="lsp_monitor_channel_point"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1654102751138-19">
+        <dropTable tableName="lsp_monitor_close_channel"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1654102751138-20">
+        <dropTable tableName="lsp_monitor_open_channel"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1654102751138-21">
+        <dropTable tableName="lsp_monitor_pending_update"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1654102751138-48">
+        <addNotNullConstraint columnDataType="varchar(255)" columnName="node_name" tableName="user_lnd_channel"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1654102751138-50">
+        <modifyDataType
+                columnName="unsettled_balance"
+                newDataType="varchar(100)"
+                tableName="user_lnd_channel"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1654102751138-51">
+        <modifyDataType
+                columnName="capacity"
+                newDataType="varchar(100)"
+                tableName="user_lnd_channel"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1654102751138-52">
+        <modifyDataType
+                columnName="local_balance"
+                newDataType="varchar(100)"
+                tableName="user_lnd_channel"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1654102751138-53">
+        <modifyDataType
+                columnName="remote_balance"
+                newDataType="varchar(100)"
+                tableName="user_lnd_channel"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1654102751138-54">
+        <modifyDataType
+                columnName="commit_fee"
+                newDataType="varchar(100)"
+                tableName="user_lnd_channel"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1654102751138-55">
+        <modifyDataType
+                columnName="commit_weight"
+                newDataType="varchar(100)"
+                tableName="user_lnd_channel"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1654102751138-56">
+        <modifyDataType
+                columnName="fee_per_kw"
+                newDataType="varchar(100)"
+                tableName="user_lnd_channel"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1654102751138-57">
+        <modifyDataType
+                columnName="total_satoshis_sent"
+                newDataType="varchar(100)"
+                tableName="user_lnd_channel"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1654102751138-58">
+        <modifyDataType
+                columnName="total_satoshis_received"
+                newDataType="varchar(100)"
+                tableName="user_lnd_channel"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1654102751138-59">
+        <modifyDataType
+                columnName="push_amount_sat"
+                newDataType="varchar(100)"
+                tableName="user_lnd_channel"/>
+    </changeSet>
+</databaseChangeLog>

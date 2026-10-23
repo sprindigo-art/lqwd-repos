@@ -1,0 +1,34 @@
+<div id="manage-node-details" class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 layout-spacing" th:fragment="manage-node-details(lndNode)">
+    <div id="manage-node-details-widget" class="widget">
+        <div class="widget-content widget-content-area justify-content-center text-center">
+            <h4>Failed to Load Info for LND Node [[${lndNode.getLndNodeName()}]] :(</h4>
+                <div id="manage-node-details-error_div_restart-unlock">
+                    <div class="row pt-2" th:if="${lndNode.getStatus()=='IS_AWAITING_WALLET_UNLOCK'}">
+                        <div class="col-12 pt-2" th:text="${lndNode.getErrorMessage()}"></div>
+                        <div class="col-12 pt-2">
+                            <button id="manage-node-details_btn_unlock-node" class="btn btn-outline-danger mb-2"
+                                    th:value="${lndNode.getLndNodeName()}"
+                                    th:attr="onclick=|openPasswordModalRestartUnlock('${lndNode.getLndNodeName()}', 'unlock', '${lndNode.getIsNonCustodial()}')|">Unlock Node
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row pt-2" th:if="${lndNode.getStatus()=='NEED_RESTART'}">
+                        <div class="col-12 pt-2" th:text="${lndNode.getErrorMessage()}"></div>
+                        <div class="col-12 pt-2">
+                            <button id="manage-node-details_btn_restart-node" class="btn btn-outline-danger mb-2"
+                                    th:value="${lndNode.getLndNodeName()}"
+                                    th:attr="onclick=|openPasswordModalRestartUnlock('${lndNode.getLndNodeName()}', 'restart', '${lndNode.getIsNonCustodial()}')|">Restart Node
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            <div class="row pt-5">
+                <div class="col col-12">
+                    <button id="manage-node-details_btn_destroy-node" class="btn btn-outline-danger mb-2"
+                            th:value="${lndNode.getLndNodeName()}" th:attr="onclick=|destroyLndNode('${lndNode.getLndNodeName()}', '${lndNode.getIsNonCustodial()}', true)|">Force Destroy and Clean up Node.
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

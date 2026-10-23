@@ -1,0 +1,147 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <changeSet author="djbabs (generated)" id="1654781520183-1">
+        <createTable tableName="htlc_attempt">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="htlc_attemptPK"/>
+            </column>
+            <column name="attempt_id" type="VARCHAR(255)"/>
+            <column name="attempt_time_ns" type="VARCHAR(100)"/>
+            <column name="failure" type="VARCHAR(255)"/>
+            <column name="preimage" type="VARCHAR(255)"/>
+            <column name="resolve_time_ns" type="VARCHAR(100)"/>
+            <column name="status" type="VARCHAR(255)"/>
+            <column name="route_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1654781520183-2">
+        <createTable tableName="lnd_payment">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="lnd_paymentPK"/>
+            </column>
+            <column name="creation_time_ns" type="VARCHAR(255)"/>
+            <column name="failure_reason" type="VARCHAR(255)"/>
+            <column name="fee_msat" type="VARCHAR(50)"/>
+            <column name="fee_sat" type="VARCHAR(50)"/>
+            <column name="node_name" type="VARCHAR(255)"/>
+            <column name="payment_hash" type="VARCHAR(255)"/>
+            <column name="payment_index" type="VARCHAR(255)"/>
+            <column name="payment_preimage" type="VARCHAR(255)"/>
+            <column name="payment_request" type="VARCHAR(255)"/>
+            <column name="status" type="VARCHAR(255)"/>
+            <column name="user_id" type="VARCHAR(255)"/>
+            <column name="value_msat" type="VARCHAR(50)"/>
+            <column name="value_sat" type="VARCHAR(50)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1654781520183-3">
+        <createTable tableName="lnd_payment_htlcs">
+            <column name="lnd_payment_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="htlcs_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1654781520183-4">
+        <createTable tableName="lnrpc_hop">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="lnrpc_hopPK"/>
+            </column>
+            <column name="amt_to_forward" type="VARCHAR(255)"/>
+            <column name="amt_to_forward_msat" type="VARCHAR(255)"/>
+            <column name="chan_capacity" type="VARCHAR(255)"/>
+            <column name="chan_id" type="VARCHAR(255)"/>
+            <column name="expiry" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="fee" type="VARCHAR(50)"/>
+            <column name="fee_msat" type="VARCHAR(100)"/>
+            <column name="metadata" type="VARCHAR(255)"/>
+            <column name="pub_key" type="VARCHAR(255)"/>
+            <column name="tlv_payload" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="amp_record_id" type="BIGINT"/>
+            <column name="mpp_record_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1654781520183-5">
+        <createTable tableName="lnrpc_route">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="lnrpc_routePK"/>
+            </column>
+            <column name="total_amt" type="VARCHAR(50)"/>
+            <column name="total_amt_msat" type="VARCHAR(50)"/>
+            <column name="total_fees" type="VARCHAR(50)"/>
+            <column name="total_fees_msat" type="VARCHAR(50)"/>
+            <column name="total_time_lock" type="INT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1654781520183-6">
+        <createTable tableName="lnrpc_route_hops">
+            <column name="lnrpc_route_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="hops_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1654781520183-7">
+        <createTable tableName="lnrpcamprecord">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="lnrpcamprecordPK"/>
+            </column>
+            <column name="child_index" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="root_share" type="VARCHAR(255)"/>
+            <column name="set_id" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1654781520183-8">
+        <createTable tableName="lnrpcmpprecord">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="lnrpcmpprecordPK"/>
+            </column>
+            <column name="payment_addr" type="VARCHAR(255)"/>
+            <column name="total_amt_msat" type="VARCHAR(100)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1654781520183-9">
+        <addUniqueConstraint columnNames="payment_hash" constraintName="UC_LND_PAYMENTPAYMENT_HASH_COL" tableName="lnd_payment"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1654781520183-10">
+        <addUniqueConstraint columnNames="htlcs_id" constraintName="UK_2wjenyqxs5acqv8bnkyqqbidt" tableName="lnd_payment_htlcs"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1654781520183-11">
+        <addUniqueConstraint columnNames="hops_id" constraintName="UK_d3ehq885l7gf7r3q1qcg9flvm" tableName="lnrpc_route_hops"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1654781520183-12">
+        <addForeignKeyConstraint baseColumnNames="htlcs_id" baseTableName="lnd_payment_htlcs" constraintName="FKd8ii47yta9c8t4mxtjt9h82ye" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="htlc_attempt"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1654781520183-13">
+        <addForeignKeyConstraint baseColumnNames="route_id" baseTableName="htlc_attempt" constraintName="FKg6uu6bmv9lsrkj7aoy0orkn3n" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="lnrpc_route"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1654781520183-14">
+        <addForeignKeyConstraint baseColumnNames="mpp_record_id" baseTableName="lnrpc_hop" constraintName="FKiqfumifmr3dia7y742gbrmlje" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="lnrpcmpprecord"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1654781520183-15">
+        <addForeignKeyConstraint baseColumnNames="lnd_payment_id" baseTableName="lnd_payment_htlcs" constraintName="FKn2kjxpui81tvahld66rpkryfm" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="lnd_payment"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1654781520183-16">
+        <addForeignKeyConstraint baseColumnNames="lnrpc_route_id" baseTableName="lnrpc_route_hops" constraintName="FKnc58xkeg0mhnils0bv47hpe15" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="lnrpc_route"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1654781520183-17">
+        <addForeignKeyConstraint baseColumnNames="amp_record_id" baseTableName="lnrpc_hop" constraintName="FKpiyjo7hb4xt6tf9h3q47xgqf8" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="lnrpcamprecord"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1654781520183-18">
+        <addForeignKeyConstraint baseColumnNames="hops_id" baseTableName="lnrpc_route_hops" constraintName="FKr2ab1rltlp8gjbrc1x1njkb6s" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="lnrpc_hop"/>
+    </changeSet>
+</databaseChangeLog>

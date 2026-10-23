@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout/app}" lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <title>LQwD | Create Invoice</title>
+    <link th:href="@{${pluginPath + '/apex/apexcharts.css'}}" rel="stylesheet" type="text/css">
+    <link th:href="@{${cssPath + '/widgets/modules-widgets.css'}}" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+<section layout:fragment="sub-header">
+    <span>Create Invoice</span>
+</section>
+<div layout:fragment="content-section">
+    <div class="layout-px-spacing">
+        <div class="container mw-100">
+            <div class="row layout-top-spacing">
+                <div  id="create-invoice_div_generate-invoice" class="col-xl-12 col-lg-12 col-md-12 col-sm-12 layout-spacing">
+                    <div class="row">
+                        <div class="col-6">
+                            <div th:replace="invoices/fragments/generate_invoice::generate-invoice"></div>
+                        </div>
+                         <div class="col-6">
+                         	<div th:replace="invoices/fragments/generate_btc::generate-btc"></div>
+                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div th:replace="auth/fragments/noncustodial_passphrase_modal"></div>
+</div>
+<div layout:fragment="scripts">
+    <script th:src="@{${pluginPath + '/apex/apexcharts.min.js'}}"></script>
+    <script th:src="@{${pluginPath + '/blockui/custom-blockui.js'}}"></script>
+    <script th:src="@{${pluginPath + '/blockui/jquery.blockUI.min.js'}}"></script>
+    <script th:src="@{/js/tools/tools.js}"></script>
+
+    <script th:src="@{/assets/js/widgets/modules-widgets.js}"></script>
+    <script th:src="@{/js/invoices/create-invoice.js}"></script>
+</div>
+</body>
+</html>

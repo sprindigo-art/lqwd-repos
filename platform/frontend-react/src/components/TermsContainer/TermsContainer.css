@@ -1,0 +1,300 @@
+.terms-container {
+    position: relative;
+    background: #FFFFFF;
+}
+
+.terms-container-header {
+    box-sizing: border-box;
+
+    position: absolute;
+    width: 100%;
+    height: 3.6%;
+    left: 0px;
+    top: 0px;
+
+    /* Border */
+    border-bottom: 1px solid #E6E7ED;
+}
+
+.terms-container-logo {
+    /* LQwD-Logo@4x */
+    position: absolute;
+    width: 8%;
+    height: 2.1%;
+    left: 5.5%;
+    top: 19px;
+}
+
+.terms-container-row {
+    display: flex;
+    flex-direction: row;
+    padding-bottom: 80px;
+}
+
+.terms-container-col {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    row-gap: 12px;
+    width: 30%;
+    top: 128px;
+    left: 5.5%;
+}
+
+.terms-container-col-text {
+    /* Auto layout */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 40px;
+
+    position: absolute;
+    left: 36.1%;
+    top: 131px;
+
+    padding: 0px;
+}
+
+.terms-container-title {
+    position: relative;
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 32px;
+    line-height: 40px;
+    color: #008BCE;
+}
+
+.terms-container-subtitle {
+    position: relative;
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    color: #7A7A7A;
+
+}
+
+.terms-container-value {
+    /* Auto layout */
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0px;
+    gap: 20px;
+
+    width: 95%;
+    /*height: 354px;*/
+}
+
+.terms-container-col-header {
+    width: 75%;
+    height: 32px;
+
+    /* Header 1 */
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 32px;
+
+    /* Text - Primary */
+    color: #111111;
+}
+
+.terms-container-col-subheader {
+    width: 58.3%;
+    height: 24px;
+
+    /* Title 1 */
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 24px;
+
+    /* Text - Primary */
+    color: #111111;
+}
+
+.terms-container-col-inner-text a {
+    text-decoration: none;
+    color: #009EE2;
+}
+
+/* Mobile CSS */
+.terms-container-mobile {
+    position: relative;
+    min-width: 390px;
+
+    background: #FFFFFF;
+}
+
+.terms-container-header-mobile {
+    box-sizing: border-box;
+
+    position: absolute;
+    width: 100%;
+    height: 56px;
+    left: 0px;
+    top: 0px;
+
+    background: #FFFFFF;
+    /* Border */
+
+    border-bottom: 1px solid #E6E7ED;
+}
+
+.terms-container-logo-mobile {
+    position: absolute;
+    width: 23.8%;
+    height: 32px;
+    left: 38.2%;
+    top: 14px;
+}
+
+.terms-container-row-mobile {
+    display: flex;
+    flex-direction: row;
+    padding-bottom: 80px;
+}
+
+.terms-container-col-mobile {
+    display: flex;
+    flex-direction: column;
+}
+
+.terms-container-title-mobile {
+    position: absolute;
+    width: 59%;
+    height: 32px;
+    left: 4.1%;
+    top: 84px;
+
+    /* Header 1 */
+
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 32px;
+    /* identical to box height, or 133% */
+
+
+    color: #008BCE;
+}
+
+.terms-container-subtitle-mobile {
+    position: absolute;
+    width: 40.3%;
+    height: 17px;
+    left: 4.1%;
+    top: 120px;
+
+    /* Label 2 */
+
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 17px;
+    /* Text - Tertiary */
+    color: #7A7A7A;
+}
+
+.terms-container-col-text-mobile {
+    /* Auto layout */
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0px;
+    gap: 40px;
+
+    position: absolute;
+    width: 91.8%;
+    height: 100%;
+    left: 4.1%;
+    top: 165px;
+
+}
+
+.terms-container-value-mobile {
+    /* Auto layout */
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0px;
+    gap: 20px;
+
+    width: 358px;
+    height: 559px;
+}
+
+.terms-container-col-header-mobile {
+    width: 358px;
+    height: 27px;
+
+    /* Header 2 */
+
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 27px;
+    /* identical to box height, or 135% */
+
+    text-transform: capitalize;
+
+    /* Text - Primary */
+
+    color: #111111;
+
+}
+
+.terms-container-col-subheader-mobile {
+    width: 358px;
+    height: 24px;
+
+    /* Title 1 */
+
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 24px;
+    /* identical to box height, or 133% */
+
+
+    /* Text - Primary */
+
+    color: #111111;
+
+}
+
+.terms-container-col-inner-text-mobile {
+    width: 358px;
+
+    /* Body 1 */
+
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 21px;
+    /* or 140% */
+
+
+    /* Text - Secondary */
+
+    color: #4D4D4D;
+
+}
+
+.terms-container-col-inner-text-mobile a {
+    text-decoration: none;
+    color: #009EE2;
+}

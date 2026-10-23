@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout/app}" lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <title>LQwD | Transaction History</title>
+
+    <link th:href="@{${cssPath + '/scrollspyNav.css'}}" rel="stylesheet" type="text/css" />
+    <link th:href="@{${cssPath + '/widgets/modules-widgets.css'}}" rel="stylesheet" type="text/css">
+    <link th:href="@{${cssPath + '/components/custom-modal.css'}}" rel="stylesheet" type="text/css">
+    <link th:href="@{${cssPath + '/elements/popover.css'}}" rel="stylesheet" type="text/css"/>
+    <link th:href="@{${cssPath + '/components/cards/card.css'}}" rel="stylesheet" type="text/css">
+
+    <link  th:href="@{${pluginPath + '/animate/animate.css'}}" rel="stylesheet" type="text/css">
+    <link th:href="@{${pluginPath + '/apex/apexcharts.css'}}" rel="stylesheet" type="text/css">
+    <link th:href="@{${cssPath + '/components/timeline/custom-timeline.css'}}" rel="stylesheet" type="text/css"/>
+
+    <link rel="stylesheet" type="text/css" th:href="@{${pluginPath + '/table/datatable/datatables.css'}}">
+    <link rel="stylesheet" type="text/css" th:href="@{${pluginPath + '/table/datatable/dt-global_style.css'}}">
+    <link rel="stylesheet" type="text/css" th:href="@{${cssPath + '/components/tabs-accordian/custom-tabs.css'}}">
+</head>
+<style layout:fragment="style">
+    .lnd-channel-card-glow:hover {
+        -webkit-box-shadow: 0px 0px 50px 0px rgb(67, 95, 229);
+        -moz-box-shadow: 0px 0px 50px 0px rgb(67, 95, 229);
+        box-shadow: 0px 0px 50px 0px rgb(67, 95, 229);
+        transition: .8s ease;
+        border-radius: 8px;
+    }
+
+    .progress-text-left{
+        width: 100%;
+        text-align: center;
+        justify-content: start !important;
+    }
+    .progress-text-right{
+        width: 100%;
+        text-align: center;
+        justify-content: end !important;
+    }
+
+    .nav-tabs .nav-link.active {
+        color: #009EE2 !important;
+    }
+
+    #sync-channels {
+        cursor: pointer;
+    }
+</style>
+
+<body>
+<!-- SUB HEADER TITLE -->
+<section layout:fragment="sub-header">
+    <span>LND Channels</span>
+</section>
+
+<!--  BEGIN CONTENT AREA  -->
+<div layout:fragment="content-section">
+    <div class="layout-px-spacing">
+        <div class="row layout-top-spacing">
+            <div class="col-xl-12 col-lg-12 col-sm-12  layout-spacing">
+                <ul class="nav nav-tabs mt-3" id="border-tabs" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="border-invoice-tab" data-toggle="tab" href="#border-invoice" role="tab" aria-controls="border-profile" aria-selected="false">
+                            Invoices
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="border-payment-tab" data-toggle="tab" href="#border-payment" role="tab" aria-controls="border-home" aria-selected="true">
+                            Payments
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="border-transaction-tab" data-toggle="tab" href="#border-transaction" role="tab" aria-controls="border-contact" aria-selected="false">
+                            On-Chain Transactions
+                        </a>
+                    </li>
+                    <li class="nav-item ml-auto btn-primary btn-rounded">
+                        <a class="nav-link" id="sync-channels" onclick="syncPayments()">
+                            Sync Payments
+                        </a>
+                    </li>
+                </ul>
+                <div class="tab-content mb-4" id="border-tabsContent">
+                    <div class="tab-pane fade show active" id="border-invoice" role="tabpanel" aria-labelledby="border-invoice-tab">
+                        <div th:replace="transaction_history/fragments/transaction-history-invoice-table::invoice-table(${invoiceList},${invoiceTotalPages},${invoicePageNumber},${invoiceTotalItems},${invoicePageSize})"></div>
+                    </div>
+                    <div class="tab-pane fade" id="border-payment" role="tabpanel" aria-labelledby="border-payment-tab">
+                        <div th:replace="transaction_history/fragments/transaction-history-payment-table::payment-table(${paymentList},${paymentTotalPages},${paymentPageNumber},${paymentTotalItems},${paymentPageSize})"></div>
+                    </div>
+                    <div class="tab-pane fade" id="border-transaction" role="tabpanel" aria-labelledby="border-transaction-tab">
+                        <div th:replace="transaction_history/fragments/transaction-history-transaction-table::transaction-table(${transactionList},${transactionTotalPages},${transactionPageNumber},${transactionTotalItems},${transactionPageSize})"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade text-left" id="transactionDetailsModal" tabindex="-1" role="dialog" aria-hidden="true" data-check="false" data-nodeName=""></div>
+    <div class="modal fade text-left" id="invoiceDetailsModal" tabindex="-1" role="dialog" aria-hidden="true" data-check="false" data-nodeName=""></div>
+    <div class="modal fade text-left" id="paymentDetailsModal" tabindex="-1" role="dialog" aria-hidden="true" data-check="false" data-nodeName=""></div>
+</div>
+
+<div layout:fragment="scripts">
+    <script th:src="@{assets/js/scrollspyNav.js}"></script>
+
+    <script th:src="@{${pluginPath + '/apex/apexcharts.min.js'}}"></script>
+    <script th:src="@{${pluginPath + '/blockui/custom-blockui.js'}}"></script>
+    <script th:src="@{${pluginPath + '/blockui/jquery.blockUI.min.js'}}"></script>
+    <script th:src="@{${pluginPath + '/table/datatable/datatables.js'}}"></script>
+
+    <script th:src="@{assets/js/widgets/modules-widgets.js}"></script>
+    <script th:src="@{assets/js/elements/popovers.js}"></script>
+    <script th:src="@{/js/tools/tools.js}"></script>
+    <script th:src="@{/js/transaction_history/transaction-history.js}"></script>
+</div>
+</body>
+</html>

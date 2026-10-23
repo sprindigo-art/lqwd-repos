@@ -1,0 +1,40 @@
+<div th:fragment="lndUpdateChannelModal" class="modal fade text-left" id="lndUpdateChannelModal" tabindex="-1" role="dialog" aria-hidden="true" data-check="false" data-nodeName="">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Update Channel Policy</h5>
+                <button id="modal-channel-update-popup_btn_close" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row layout-spacing">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 layout-spacing">
+                        <div class="col-12">
+                            <label for="update-channel_txt_channel_point">Channel Point</label>
+                            <input type="text" class="form-control" id="update-channel_txt_channel_point" name="channel_point" th:value="${lndChannel.getChannel_point()}" readonly>
+                        </div>
+                        <div class="col-12 pt-2">
+                            <input type="number" min="0" class="form-control" id="update-channel_txt_base_fee_msat" name="base_fee_msat" placeholder="Base Fee mSat">
+                        </div>
+                        <div class="col-12 pt-2">
+                            <input type="number" min="0" class="form-control" id="update-channel_txt_fee_rate_ppm" name="fee_rate_ppm" placeholder="Fee Rate PPM">
+                        </div>
+                        <div class="col-12 pt-2">
+                            <input type="number" min="0" class="form-control" id="update-channel_txt_min_htlc_msat" name="min_htlc_msat" placeholder="Minimunm HTLC mSAT Default: 1">
+                        </div>
+                        <div class="col-12 pt-2">
+                            <input type="number" min="0" class="form-control" id="update-channel_txt_max_htlc_msat" name="min_htlc_msat" placeholder="Maximum HTLC mSAT Default: Max Channel Size">
+                        </div>
+                        <div class="col-12 pt-2">
+                            <input type="number" min="40" class="form-control" id="update-channel_txt_time_lock_delta" name="time_lock_delta" placeholder="Time Lock Delta - Default: 40">
+                        </div>
+                        <div class="col-12 pt-2">
+                            <button class="btn btn-primary w-100" id="update-channel-btn" onclick="authorizeAction()">Update Channel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

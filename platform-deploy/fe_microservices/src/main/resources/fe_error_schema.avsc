@@ -1,0 +1,61 @@
+{
+	"type": "record",
+	"name": "FrontEndError",
+	"namespace": "com.lqwd.schema",
+	"doc" : "this is the message schema that is used for FE errors",
+	"fields": [
+	{
+		"name": "id",
+		"type": "int",
+		"doc" : "id of this message"
+	},
+	{
+        "name": "reply_id",
+        "type": "int",
+        "doc" : "id of the request message that this is a reply to"
+    },		
+	{
+        "name": "timestamp",
+        "type": ["long"],
+		"logicalType": "timestamp-millis",
+        "doc" : "timestamp of the message composition"
+    },
+	{
+        "name": "user_id",
+        "type": "int",
+        "doc" : "user id of the user who initiated this action/message"
+    },
+	{
+        "name": "process_id",
+        "type": ["null","string"],
+        "default" : null,
+        "doc" : "the name of the process where the error originated"
+    },	
+	{
+		"name": "requested_action",
+		"type": ["string"],
+		"default": "transaction ",
+		"doc":"the action/request that was requested"
+	},
+	{
+		"name": "error_type",
+		"type": ["null","string"],
+		"default" : null,
+		"doc" : ""
+	},
+    {
+        "name": "error_severity",
+        "type": ["null","string"],
+        "default" : null,
+        "doc" : "how severe the error is minor/major/critical"
+    },     
+    {   
+        "name": "error_desc",
+        "type": ["null", "string"],
+        "default" : null,
+        "doc" : "description/ body of an error"
+    }   
+
+
+	]
+}

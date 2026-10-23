@@ -1,0 +1,5 @@
+# Public keys allowed to SSH in as root. One per line.
+#
+# Password login is disabled (dropbear -s), so this file is the ONLY network
+# way into the device. Keep at least one key you hold the private half of.
+ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILCvxpdeNCios9cGP9GboBcCU6R5jdbe1jAgvHHK+Ei5 ubuntu@ubuntu

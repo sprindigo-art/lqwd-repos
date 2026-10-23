@@ -1,0 +1,8 @@
+databaseChangeLog:
+  - changeSet:
+      id: add_alias_name_column
+      validCheckSum: ANY
+      author: femi
+      changes:
+        - sql:
+            sql: ALTER TABLE lndnodeinfo ADD COLUMN IF NOT EXISTS  node_alias varchar(255) NULL;

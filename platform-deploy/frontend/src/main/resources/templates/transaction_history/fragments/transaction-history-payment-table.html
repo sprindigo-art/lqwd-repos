@@ -1,0 +1,64 @@
+<div class="widget-content widget-content-area br-6" th:fragment="payment-table(${paymentList},${paymentTotalPages},${paymentPageNumber},${paymentTotalItems},${paymentPageSize})">
+    <div th:if="${paymentTotalItems==0}" class="widget" id="list-payment_div_list-empty">
+        <div class="widget-content widget-content-area justify-content-center text-center">
+            <h3 style="padding: 20px;">You Do Not Have Any Payments</h3>
+        </div>
+    </div>
+    <div th:unless="${paymentTotalItems==0}" id="default-ordering_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4">
+        <div class="table-responsive">
+            <table role="grid" id="list-payment_tbl_list" class="table table-hover dataTable">
+                <thead>
+                    <tr role="row">
+                        <th class="" tabindex="0" aria-controls="default-ordering" rowspan="1" colspan="1">Payment Hash</th>
+                        <th class="sorting" tabindex="0" aria-controls="default-ordering" rowspan="1" colspan="1">Value</th>
+                        <th class="sorting" tabindex="0" aria-controls="default-ordering" rowspan="1" colspan="1">Fees Paid</th>
+
+                        <th class="" tabindex="0" aria-controls="default-ordering" rowspan="1" colspan="1">Payment Request</th>
+                        <th class="sorting" tabindex="0" aria-controls="default-ordering" rowspan="1" colspan="1">Status</th>
+                        <th class="sorting" tabindex="0" aria-controls="default-ordering" rowspan="1" colspan="1">Creation Date</th>
+
+                        <th class="dt-no-sorting text-center sorting" tabindex="0" aria-controls="default-ordering" rowspan="1" colspan="1" aria-label="View Payment Details"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="payment: ${paymentList}">
+                        <td th:text="${payment.getPayment_hash()}"></td>
+                        <td th:text="${#numbers.formatInteger(payment.getValue_sat(), 1, 'COMMA')} + ' Sats'"></td>
+                        <td th:text="${#numbers.formatInteger(payment.getFee_sat(), 1, 'COMMA')} + ' Sats'"></td>
+
+                        <td>
+                            [[${#strings.abbreviate(payment.getPayment_request(),50)}]]
+                            <svg style="cursor: pointer;" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-copy pr-1 pl-1"
+                                 th:attr="onclick=|copyToClipboard('${payment.getPayment_request()}')|">
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                            </svg>
+                        </td>
+                        <td>
+                            <span class="badge badge-danger" th:if="${payment.getStatus()} == 'FAILED'" th:text="${payment.getStatus()}"></span>
+                            <span class="badge badge-danger" th:if="${payment.getStatus()} == 'UNKNOWN'" th:text="${payment.getStatus()}"></span>
+                            <span class="badge badge-primary" th:if="${payment.getStatus()} == 'SUCCEEDED'" th:text="${payment.getStatus()}"></span>
+                            <span class="badge badge-warning" th:if="${payment.getStatus()} == 'IN_FLIGHT'" th:text="${payment.getStatus()}"></span>
+                        </td>
+                        <td th:text="${payment.getReadableCreationDate()}"></td>
+
+                        <td class="text-center">
+                            <button class="btn btn-primary btn-sm" th:attr="onclick=|getPaymentDetails('${payment.toJson()}')|">View</button>
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th>Payment Hash</th>
+                        <th>Value</th>
+                        <th>Fees Paid</th>
+                        <th>Payment Request</th>
+                        <th>Status</th>
+                        <th>Creation Date</th>
+                        <th class="invisible" rowspan="1" colspan="1"></th>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>

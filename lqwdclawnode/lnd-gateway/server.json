@@ -1,0 +1,26 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.lqwdtech/gateway",
+  "title": "LQWD Gateway",
+  "description": "Free Lightning faucet MCP — agents register, get an inbound channel, bootstrap an LDK node.",
+  "repository": {
+    "url": "https://github.com/lqwdtech/lqwdclawnode",
+    "source": "github"
+  },
+  "version": "3.0.0",
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://api.lqwdclaw.bot/v1/mcp",
+      "headers": [
+        {
+          "name": "Authorization",
+          "description": "Bearer <api_key>. Obtain via the lqwd_register tool (the only auth-free tool); the returned api_key has the form `lqwd_<random>` and is used on all subsequent MCP requests.",
+          "isRequired": false,
+          "format": "string",
+          "isSecret": true
+        }
+      ]
+    }
+  ]
+}

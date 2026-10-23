@@ -1,0 +1,42 @@
+.request-accounting-container {
+
+    padding-left: 40px;
+    padding-top: 40px;
+}
+
+.request-accounting-header {
+    /* Header 1 */
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 32px;
+
+    color: #000000;
+    padding-bottom: 20px;
+}
+
+.request-accounting-table {
+    padding-top: 20px;
+}
+
+.request-account-line {
+    /* Text - Placeholder */
+    border: 1px dashed #B2B2B2;
+}
+
+.request-accounting-header-container {
+    padding-bottom: 20px;
+}
+
+.request-accounting-table-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.request-accounting-table-header-row {
+    display: flex;
+    flex-direction: row;
+    column-gap: 16px;
+}

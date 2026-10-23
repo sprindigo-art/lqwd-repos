@@ -1,0 +1,8 @@
+databaseChangeLog:
+  - changeSet:
+      id: add_token_column
+      validCheckSum: ANY
+      author: femi
+      changes:
+        - sql:
+            sql: ALTER TABLE application ADD COLUMN IF NOT EXISTS  status varchar(255) NOT NULL DEFAULT 'NEW';

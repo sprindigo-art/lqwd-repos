@@ -1,0 +1,10 @@
+databaseChangeLog:
+        - changeSet:
+                  id: create_table_price_usd
+                  preConditions:
+                    - onFail: MARK_RAN
+                  validCheckSum: ANY
+                  author: aziz
+                  changes:
+                          - sql:
+                                    sql: CREATE TABLE IF NOT EXISTS public.price_usd_cad (cad double precision, last_updated timestamp with time zone, usd double precision);

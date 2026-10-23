@@ -1,0 +1,34 @@
+[Unit]
+Description=LND Static Channel Backup (SCB) Monitor
+Documentation=https://github.com/lqwdtech/lqwdclawnode
+After=lnd.service
+Requires=lnd.service
+
+[Service]
+Type=simple
+User=lndgateway
+Group=lndgateway
+
+ExecStart=/usr/local/bin/scb-backup.sh
+EnvironmentFile=/etc/lnd-gateway/scb-backup.env
+
+# Security
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=read-only
+PrivateTmp=yes
+PrivateDevices=yes
+
+# Needs read access to LND data and write to backup dir
+ReadOnlyPaths=/lnd/data/chain/bitcoin/mainnet
+ReadWritePaths=/var/lib/lnd-gateway/scb-backups
+
+Restart=on-failure
+RestartSec=10
+
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=scb-backup
+
+[Install]
+WantedBy=multi-user.target

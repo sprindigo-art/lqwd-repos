@@ -1,0 +1,16 @@
+#input-currency-ico {
+    color: #4D4D4D;
+}
+
+#input-currency-ico:hover {
+    color: #009EE2;
+}
+
+.input-currency {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 21px;
+    color: #4D4D4D;
+}

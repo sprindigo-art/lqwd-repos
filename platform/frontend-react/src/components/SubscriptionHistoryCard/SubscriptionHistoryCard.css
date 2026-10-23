@@ -1,0 +1,198 @@
+.subscription-modal {
+    background: #FFFFFF;
+    /* Overlay Shadow */
+    box-shadow: 0px 8px 24px rgba(96, 106, 139, 0.13);
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    max-width: 100%;
+    height: 186px;
+}
+
+.subscription-modal-container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.subscription-modal-status-running {
+    /* Auto layout */
+    display: flex;
+    flex-direction: row;
+    padding: 4px 14px;
+    gap: 8px;
+
+    align-self: flex-end;
+    position: relative;
+    width: 64px;
+    height: 23px;
+    right: 40px;
+    top: -4px;
+
+    background: #B7F6B6;
+    border-radius: 4px;
+}
+
+.subscription-modal-status-suspended {
+    /* Auto layout */
+    display: flex;
+    flex-direction: row;
+    padding: 4px 10px;
+    gap: 8px;
+
+    align-self: flex-end;
+
+    position: relative;
+    min-width: 64px;
+    height: 23px;
+    right: 40px;
+    top: -4px;
+
+    background: #F8A3A3;
+    border-radius: 4px;
+}
+
+.subscription-modal-status-text {
+    /* Label 3 */
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 10px;
+    line-height: 15px;
+
+    display: flex;
+    align-items: center;
+
+    /* Text - Primary */
+    color: #111111;
+}
+.subscription-modal-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 13px 40px 28px;
+    height: 100%;
+}
+
+.subscription-modal-col {
+    display: flex;
+    flex-direction: column;
+    align-content: space-between;
+    justify-content: space-between;
+}
+
+.subscription-modal-header {
+    display: flex;
+    flex-direction: column;
+}
+
+.subscription-modal-title {
+    /* Header 1 */
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 32px;
+    /* identical to box height, or 133% */
+
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    /* Text - Primary */
+
+    color: #111111;
+}
+
+.subscription-modal-subtitle {
+    /* Label 1 */
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    /* identical to box height, or 143% */
+    flex-direction: row;
+    display: flex;
+    align-items: center;
+
+    /* Secondary */
+
+    color: #4B545B;
+}
+
+.subscription-modal-balance {
+    display: flex;
+    flex-direction: column;
+    align-self: flex-end;
+    row-gap: 4px;
+}
+
+.subscription-modal-balance-title {
+    /* Label 2 */
+
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 17px;
+    /* identical to box height, or 142% */
+
+    display: flex;
+    align-items: center;
+    align-self: flex-end;
+    /* Text - Label */
+    color: #A5A5A5;
+}
+
+.subscription-modal-balance-value {
+    /* Header 1 */
+
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 32px;
+    /* identical to box height, or 133% */
+
+    display: flex;
+    align-items: center;
+
+    /* Text - Primary */
+
+    color: #111111;
+}
+
+.subscription-modal-date {
+    /* Title 2 */
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 22px;
+    /* or 138% */
+
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    color: #000000;
+}
+
+.subscription-modal-cancel-btn {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+}
+
+.subscription-modal-suspended-text {
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 22px;
+    display: flex;
+    align-items: center;
+    text-align: right;
+
+    /* Error */
+    color: #EB4D43;
+}

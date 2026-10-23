@@ -1,0 +1,47 @@
+<div th:fragment="qrcode">
+    <!-- Modal -->
+    <div class="modal fade profile-modal" id="qrcode-modal_div_qrCodeModal" tabindex="-1" role="dialog" aria-labelledby="profileModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <button type="button" id="qrcode-modal_btn_close" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+
+                <div class="modal-header justify-content-center" id="profileModalLabel">
+                    <div class="modal-profile mt-4">
+                        <img id="qrcodeimg" th:src="${qrurl}" alt="QR Code"/>
+                    </div>
+                </div>
+                <div class="modal-body text-center">
+                    <p class="mt-2">Google Authenticator QR Code - Please make sure to scan code as it is required for login.
+                        <br>Download Google Authenticator App for
+                        <a class="link-auth-app" id="qrcode-modal_a_android" href="https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2&hl=en_CA&gl=US">Android</a> or
+                        <a class="link-auth-app" id="qrcode-modal_a_ios" href="https://apps.apple.com/us/app/google-authenticator/id388497605">iOS</a>
+                    </p>
+
+                    <p class="mt-4">
+                        Set Up Manually Using This Code
+                    </p>
+                    <div class="row">
+                        <div class="col-10" style="text-align: right;">
+                            <p th:text="${qrurl}" id="qrcode-modal_text_code"></p>
+                        </div>
+                        <div class="col-2">
+                            <svg id="qrcode-modal_copy_code" style="cursor: pointer; color: #FFFFFF; position: static;" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-copy pr-1"
+                                 th:attr="onclick=|copyCode('${this}')|"
+                                 data-value="">
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer justify-content-center mb-4">
+                    <button type="button" class="btn btn-primary btn-lg" id="qrcode-modal_btn_doneQr">Continue</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

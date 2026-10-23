@@ -1,0 +1,47 @@
+.home-container{
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    max-width: 100vw;
+}
+.main-container-row{
+    height: 100%;
+}
+
+.dashboard-header-container {
+    border-bottom: 1px solid #E6E7ED;
+    min-height: 40px;
+}
+
+.header-container {
+    position: sticky;
+    top: 0;
+    background-color: white;
+    z-index: 20;
+}
+
+
+.sidenav-main-container{
+    background: #F3F5F9;
+    padding: 0;
+    margin: 0;
+}
+
+@media only screen and (max-width: 768px) {
+    .sidenav-main-container{
+        background: #F3F5F9;
+        padding: 0;
+        margin: 0;
+        max-height: 78px;
+        align-self: flex-end;
+        align-items: flex-end;
+        height: fit-content;
+    }
+
+}
+
+.main-container{
+    height: 100%;
+    flex-grow: 1;
+    max-width: 100vw;
+}

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="bcea951b-1aad-42d6-89b1-46b29006e17c" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/zookeeper/log4j.propertise" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/broker/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/broker/Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/broker/broker-deployment.yml" beforeDir="false" afterPath="$PROJECT_DIR$/broker/broker-deployment.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/broker/broker_init.sh" beforeDir="false" afterPath="$PROJECT_DIR$/broker/broker_init.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/broker/client.properties" beforeDir="false" afterPath="$PROJECT_DIR$/broker/client.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/postgres/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/postgres/Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/postgres/postgres-deployment.yml" beforeDir="false" afterPath="$PROJECT_DIR$/postgres/postgres-deployment.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schema_registry/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/schema_registry/Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schema_registry/schemaregistry_init.sh" beforeDir="false" afterPath="$PROJECT_DIR$/schema_registry/schemaregistry_init.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schema_registry/schemaregistry_service.yml" beforeDir="false" afterPath="$PROJECT_DIR$/schema_registry/schemaregistry_service.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/zookeeper/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/zookeeper/Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/zookeeper/zookeeper_init.sh" beforeDir="false" afterPath="$PROJECT_DIR$/zookeeper/zookeeper_init.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/zookeeper/zookeeperdeployment.yml" beforeDir="false" afterPath="$PROJECT_DIR$/zookeeper/zookeeperdeployment.yml" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="JupyterTrust" id="45b88b90-8c18-43de-b001-162127335983" />
+  <component name="ProjectId" id="1kR3QmHjlfHxm6BmzowVI19rPrX" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/postgres" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\LQWD\docker\dockerkafka\postgres" />
+    </key>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="bcea951b-1aad-42d6-89b1-46b29006e17c" name="Default Changelist" comment="" />
+      <created>1605649562592</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1605649562592</updated>
+      <workItem from="1605649563757" duration="1421000" />
+      <workItem from="1605721631437" duration="19259000" />
+      <workItem from="1605897340386" duration="912000" />
+      <workItem from="1606241804811" duration="1052000" />
+      <workItem from="1608056203377" duration="1229000" />
+      <workItem from="1608147082538" duration="22903000" />
+      <workItem from="1608307024424" duration="2473000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>

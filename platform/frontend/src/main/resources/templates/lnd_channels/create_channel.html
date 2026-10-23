@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout/app}" lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <title>LQwD | Channels</title>
+
+    <link th:href="@{${cssPath + '/scrollspyNav.css'}}" rel="stylesheet" type="text/css" />
+    <link th:href="@{${cssPath + '/widgets/modules-widgets.css'}}" rel="stylesheet" type="text/css">
+    <link th:href="@{${cssPath + '/components/custom-modal.css'}}" rel="stylesheet" type="text/css">
+    <link th:href="@{${cssPath + '/elements/popover.css'}}" rel="stylesheet" type="text/css"/>
+    <link th:href="@{${cssPath + '/components/cards/card.css'}}" rel="stylesheet" type="text/css">
+
+    <link  th:href="@{${pluginPath + '/animate/animate.css'}}" rel="stylesheet" type="text/css">
+    <link th:href="@{${pluginPath + '/apex/apexcharts.css'}}" rel="stylesheet" type="text/css">
+    <link th:href="@{${cssPath + '/forms/switches.css'}}" rel="stylesheet" type="text/css"/>
+    <link th:href="@{${cssPath + '/components/custom-counter.css'}}" rel="stylesheet" type="text/css">
+</head>
+<style layout:fragment="style">
+    .lnd-channel-card-glow:hover {
+        -webkit-box-shadow: 0px 0px 50px 0px rgb(67, 95, 229);
+        -moz-box-shadow: 0px 0px 50px 0px rgb(67, 95, 229);
+        box-shadow: 0px 0px 50px 0px rgb(67, 95, 229);
+        transition: .8s ease;
+        border-radius: 8px;
+    }
+</style>
+
+<body>
+<!-- SUB HEADER TITLE -->
+<section layout:fragment="sub-header">
+    <span>Open Channel</span>
+</section>
+
+<!--  BEGIN CONTENT AREA  -->
+<div layout:fragment="content-section">
+    <div class="layout-px-spacing">
+        <div id="create-channel_div_create-channel-area" class="row layout-spacing">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 layout-spacing pt-3">
+                <div class="widget-content widget-content-area">
+                    <div class="row justify-content-md-center">
+                        <div class="col-12 text-center">
+                            <h5>Create LND Channel</h5>
+                        </div>
+                    </div>
+
+                    <form class="select mt-4" novalidate action="javascript:void(0);">
+                        <!-- Create Channel Form -->
+                        <div class="row justify-content-md-center" >
+                            <div class="col-6">
+                                <div class="input-group mb-4" id="create-channel_div_inputs">
+                                    <div class="col-12">
+                                        <div class="row">
+                                            <div class="col-12 text-center" th:fragment="currency-switch" >
+                                                <span id="create-channel_span_node_info"  th:data-custodial="${lndNodeSession.getIsNonCustodial()}"
+                                                      th:text="'Available funds on the '+${lndNodeSession.getLndNodeName()}+' : '"></span>
+                                               <span th:if="${lndNodeSession.getWalletBalance()}!=null"
+                                                     id="create-channel_div_balance_total"
+                                                     th:text="${#numbers.formatInteger(lndNodeSession.getWalletBalance().getTotal_balance(), 1, 'COMMA')}+' SAT'" style="font-size: 1.3em;color: #FFFFFF;"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="row">
+                                            <div class="col-12 pt-3">
+                                                <select th:if="${lqwdNodes != null}" id="select-lqwd-routing-node" class="custom-select text-center">
+                                                    <option value="">Enter Custom Information or Select LQwD Routing Node</option>
+                                                    <option th:each="lqwdNode : ${lqwdNodes}" th:value="${lqwdNode.getNodepubkey()}+'@'+${lqwdNode.getExternalip()}+':'+${lqwdNode.getPort()}" th:text="${lqwdNode.getAlias()}"></option>
+                                                </select>
+                                                <hr style="border-top: 1px solid #009EE2">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 pt-2">
+                                        <input type="text" class="form-control" id="create-channel_txt_node_pubkey"
+                                               name="node_pubkey" placeholder="Remote LND Identity Key" required>
+                                    </div>
+                                    <div class="col-12 pt-2">
+                                    <input type="text" class="form-control" id="create-channel_txt_host" name="host"
+                                           placeholder="Remote Hostname">
+                                    </div>
+                                    <div class="col-12 pt-2">
+                                        <input type="text" class="form-control" id="create-channel_txt_port" name="port"
+                                               placeholder="Remote Port">
+                                    </div>
+                                    <div class="col-12 pt-2">
+                                        <input type="text" class="form-control" id="create-channel_txt_amount"
+                                               name="local_funding_amount" placeholder="Amount" required>
+                                    </div>
+                                    <div class="col-12 pt-2">
+                                        <input type="text" class="form-control" id="create-channel_txt_sat_per_vbyte"
+                                               name="sat_per_vbyte" placeholder="Sat Per vByte" required>
+                                    </div>
+                                </div>
+
+                                <div class="widget mx-3" style="background-color: #1b2e4b">
+                                    <div class="widget-heading text-center" >
+                                        Transaction Fee Rates
+                                    </div>
+                                    <div class="widget-content">
+                                        <div class="simple--counter-container">
+                                            <div class="counter-container">
+                                                <p class="s-counter-text text-center text-success bs-tooltip" title="Next ~9 Blocks">Low Priority</p>
+                                                <div class="counter-content">
+                                                    <h1 class="s-counter text-center" style="color: #009EE2" id="low-priority">---</h1>
+                                                </div>
+                                                <p class="s-counter-text text-center">Sat/vByte</p>
+                                            </div>
+
+                                            <div class="counter-container">
+                                                <p class="s-counter-text text-center text-warning bs-tooltip" title="Next ~4 Blocks">Med Priority</p>
+                                                <div class="counter-content">
+                                                    <h1 class="s-counter text-center" style="color: #009EE2" id="med-priority">---</h1>
+                                                </div>
+                                                <p class="s-counter-text text-center">Sat/vByte</p>
+                                            </div>
+
+                                            <div class="counter-container">
+                                                <p class="s-counter-text text-center text-danger bs-tooltip" title="Next ~1 Blocks">High Priority</p>
+                                                <div class="counter-content">
+                                                    <h1 class="s-counter text-center" style="color: #009EE2" id="high-priority">---</h1>
+                                                </div>
+                                                <p class="s-counter-text text-center">Sat/vByte</p>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div id="toggleAccordion">
+                                    <div class="card">
+                                        <div class="card-header" id="">
+                                            <div class="mb-0 mt-0">
+                                                <div role="menu" class="collapsed" data-toggle="collapse" data-target="#defaultAccordionOne" aria-expanded="true" aria-controls="defaultAccordionOne">
+                                                    Advanced Options
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div id="defaultAccordionOne" class="collapse" aria-labelledby="" data-parent="#toggleAccordion">
+                                            <div class="card-body">
+                                                <div class="input-group">
+                                                    <div class="w-100">
+                                                        <input type="text" class="form-control" id="create-channel_txt_min_htlc"
+                                                               name="min_htlc" placeholder="Minimum HTLC (mSat) Default: 1" required>
+                                                    </div>
+                                                    <div class="w-100 pt-2">
+                                                        <div class="row">
+                                                            <div class="col align-baseline text-left">
+                                                                <span class="justify-content-center w-100 h-auto">Set Channel to Private</span>
+                                                            </div>
+                                                            <div class="col">
+                                                                <label class="switch s-icons s-outline  s-outline-info  mb-4 mr-2">
+                                                                    <input type="checkbox" name="private" id="create_lnd_node_chk_private" class="custom-control-input passphraseType">
+                                                                    <span class="slider round"></span>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row pt-3">
+                                    <div class="col-12">
+                                        <div class="input-group justify-content-md-center">
+                                            <button th:unless="${user.isEmailstatus()}"
+                                                    class="btn btn-dark create-channel" disabled>Please Verify Account
+                                            </button>
+                                            <button class="btn btn-dark mr-2"
+                                                    id="create-channel_btn_clear-fields">Clear all fields
+                                            </button>
+                                            <button th:if="${user.isEmailstatus()}" type="submit"
+                                                    class="btn btn-primary create-channel"
+                                                    id="create-channel_btn_create-channel">Create New Channel
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!--  END CONTENT AREA  -->
+    </div>
+    <div th:replace="lnd_node/modal/authenticate-close-channel"></div>
+    <div th:replace="auth/fragments/noncustodial_passphrase_modal"></div>
+</div>
+
+<div layout:fragment="scripts">
+    <script th:src="@{assets/js/scrollspyNav.js}"></script>
+    <script th:src="@{${pluginPath + '/apex/apexcharts.min.js'}}"></script>
+    <script th:src="@{${pluginPath + '/blockui/custom-blockui.js'}}"></script>
+    <script th:src="@{${pluginPath + '/blockui/jquery.blockUI.min.js'}}"></script>
+    <script th:src="@{assets/js/widgets/modules-widgets.js}"></script>
+    <script th:src="@{assets/js/elements/popovers.js}"></script>
+    <script th:src="@{/js/tools/tools.js}"></script>
+    <script th:src="@{js/lnd_channels/open_channel.js}"></script>
+    <script>
+        $(document).ready(function(){
+           $("#select-lqwd-routing-node").on('change', function (){
+               var lqwdNode = $("#select-lqwd-routing-node :selected").attr('value');
+               pasteHostData(lqwdNode);
+           });
+
+           $(".bs-tooltip").tooltip();
+        });
+    </script>
+</div>
+</body>
+</html>

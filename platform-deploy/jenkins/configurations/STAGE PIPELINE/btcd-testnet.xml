@@ -1,0 +1,445 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<flow-definition plugin="workflow-job@2.41">
+  <actions>
+    <org.jenkinsci.plugins.pipeline.modeldefinition.actions.DeclarativeJobAction plugin="pipeline-model-definition@1.8.5"/>
+    <org.jenkinsci.plugins.pipeline.modeldefinition.actions.DeclarativeJobPropertyTrackerAction plugin="pipeline-model-definition@1.8.5">
+      <jobProperties/>
+      <triggers/>
+      <parameters/>
+      <options/>
+    </org.jenkinsci.plugins.pipeline.modeldefinition.actions.DeclarativeJobPropertyTrackerAction>
+  </actions>
+  <description>This pipeline builds and deploys btcd micro-service in the bitcoind-nodes namespaces of the staging k8s.</description>
+  <keepDependencies>false</keepDependencies>
+  <properties/>
+  <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps@2.92">
+    <script>pipeline {
+    agent none
+  //post { 
+  //      always { 
+  //          cleanWs()
+  //     }
+  // }
+    environment {
+       GIT_SSH_COMMAND = &quot;ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no&quot;
+       registry = &apos;514063904685.dkr.ecr.us-west-2.amazonaws.com/lnd&apos;
+       registryCredential = &apos;aws-ecr&apos;
+       gitUrl = &apos;git@github.com:lightningriders/dockerlnd.git&apos;
+       gitCredential = &apos;github-ssh&apos;
+       gitBranch = &apos;cicd&apos;
+       k8sNamespace = &apos;lqwd-lnd&apos;
+    }
+    
+    tools {
+    maven &apos;m3&apos;
+    }
+    
+  stages {
+      
+    stage(&apos;Checkout Source&apos;) {
+       agent {
+           label &quot;master&quot;
+        }
+        steps {
+            echo &quot;start git checkout&quot; 
+            cleanWs()
+            echo &quot;git command&quot; 
+            //sh &quot;ssh -o StrictHostKeyChecking=no git@github.com&quot;
+            git credentialsId: gitCredential, url: gitUrl, branch: gitBranch 
+            sh &quot;ls -la&quot;
+            echo &quot; end git &quot;
+        }
+    }
+    
+/*
+    stage(&apos;Build&apos;) {
+        agent {
+           label &quot;cicd&quot;
+        }
+        steps {
+          //sh &apos;mvn -version&apos;
+          sh &apos;mkdir build&apos;
+          sh &apos;cp pom.xml build/&apos;
+          sh &apos;cp -r src build/&apos;
+          sh &apos;&apos;&apos;
+                cd build
+                mvn clean package -Dmaven.test.skip=true
+            &apos;&apos;&apos;
+          sh &apos;ls -la build/&apos;
+        }
+    }
+      
+    stage (&apos;Test&apos;) {
+        agent {
+           label &quot;cicd&quot;
+        }1
+		
+        steps {
+          sh &apos;echo \&apos;Here we have to run tests\&apos;&apos;
+        }
+    }
+ */   
+    stage (&apos;Build Image&apos;) {
+        agent {
+           label &quot;master&quot;
+        }
+        steps {
+            dir(&quot;lndv2&quot;) {
+                script {
+                    dockerImage = docker.build registry + &quot;:tsb.$BUILD_NUMBER&quot;
+                }
+            }
+        }
+    }
+    
+    stage(&quot;Push image&quot;) {
+        agent {
+           label &quot;master&quot;
+        }
+        steps {
+            script {
+                    docker.withRegistry(&quot;https://&quot; + registry, &quot;ecr:us-west-2:&quot; + registryCredential) {
+                    dockerImage.push(&quot;tsb.$BUILD_NUMBER&quot;)
+                    dockerImage.push(&quot;${env.BUILD_ID}&quot;+100)
+                }
+            }
+        }
+    }
+
+    stage(&apos;Deploy App&apos;) {
+        agent {
+         kubernetes {
+        	cloud &apos;kubernetes&apos;
+      	    defaultContainer &apos;jnlp&apos;
+         }
+        }
+        steps {
+            git credentialsId: gitCredential, url: gitUrl, branch: gitBranch
+            script {
+                dir(&quot;lndv2&quot;) {
+                    kubernetesDeploy( kubeconfigId: &apos;stage-k8s-local&apos;,
+                                   configs: &quot;namespace.yml&quot;
+                                 )
+                    sleep(time:5,unit:&quot;SECONDS&quot;)
+                 
+                    kubernetesDeploy( kubeconfigId: &apos;stage-k8s-local&apos;,
+                                    configs: &quot;lnd_deployment-cicd-testnet.yml&quot;,
+                                    secretName: &apos;ecr-token&apos;,
+                                    dockerCredentials: [
+                                        [credentialsId: &apos;ecr:us-west-2:aws-ecr&apos;, url: registry]
+                                    ],
+                                    secretNamespace: k8sNamespace
+                                    )
+                    kubernetesDeploy( kubeconfigId: &apos;stage-k8s-local&apos;,
+                                    configs: &quot;lnd_service-testnet.yml&quot;
+                                    )
+                 /*kubernetesDeploy( kubeconfigId: &apos;stage-k8s-local&apos;,
+                                   configs: &quot;ingress.yml&quot;
+                                 )*/
+                }
+            }
+        }
+    }
+  }
+}</script>
+    <sandbox>true</sandbox>
+  </definition>
+  <triggers/>
+  <disabled>false</disabled>
+</flow-definition><?xml version='1.1' encoding='UTF-8'?>
+<flow-definition plugin="workflow-job@2.41">
+  <actions>
+    <org.jenkinsci.plugins.pipeline.modeldefinition.actions.DeclarativeJobAction plugin="pipeline-model-definition@1.8.5"/>
+    <org.jenkinsci.plugins.pipeline.modeldefinition.actions.DeclarativeJobPropertyTrackerAction plugin="pipeline-model-definition@1.8.5">
+      <jobProperties/>
+      <triggers/>
+      <parameters/>
+      <options/>
+    </org.jenkinsci.plugins.pipeline.modeldefinition.actions.DeclarativeJobPropertyTrackerAction>
+  </actions>
+  <description>This pipeline builds and deploys btcd micro-service in the bitcoind-nodes namespaces of the staging k8s.</description>
+  <keepDependencies>false</keepDependencies>
+  <properties/>
+  <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps@2.92">
+    <script>pipeline {
+    agent none
+  //post { 
+  //      always { 
+  //          cleanWs()
+  //     }
+  // }
+    environment {
+       GIT_SSH_COMMAND = &quot;ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no&quot;
+       registry = &apos;514063904685.dkr.ecr.us-west-2.amazonaws.com/lnd&apos;
+       registryCredential = &apos;aws-ecr&apos;
+       gitUrl = &apos;git@github.com:lightningriders/dockerlnd.git&apos;
+       gitCredential = &apos;github-ssh&apos;
+       gitBranch = &apos;cicd&apos;
+       k8sNamespace = &apos;lqwd-lnd&apos;
+    }
+    
+    tools {
+    maven &apos;m3&apos;
+    }
+    
+  stages {
+      
+    stage(&apos;Checkout Source&apos;) {
+       agent {
+           label &quot;master&quot;
+        }
+        steps {
+            echo &quot;start git checkout&quot; 
+            cleanWs()
+            echo &quot;git command&quot; 
+            //sh &quot;ssh -o StrictHostKeyChecking=no git@github.com&quot;
+            git credentialsId: gitCredential, url: gitUrl, branch: gitBranch 
+            sh &quot;ls -la&quot;
+            echo &quot; end git &quot;
+        }
+    }
+    
+/*
+    stage(&apos;Build&apos;) {
+        agent {
+           label &quot;cicd&quot;
+        }
+        steps {
+          //sh &apos;mvn -version&apos;
+          sh &apos;mkdir build&apos;
+          sh &apos;cp pom.xml build/&apos;
+          sh &apos;cp -r src build/&apos;
+          sh &apos;&apos;&apos;
+                cd build
+                mvn clean package -Dmaven.test.skip=true
+            &apos;&apos;&apos;
+          sh &apos;ls -la build/&apos;
+        }
+    }
+      
+    stage (&apos;Test&apos;) {
+        agent {
+           label &quot;cicd&quot;
+        }1
+		
+        steps {
+          sh &apos;echo \&apos;Here we have to run tests\&apos;&apos;
+        }
+    }
+ */   
+    stage (&apos;Build Image&apos;) {
+        agent {
+           label &quot;master&quot;
+        }
+        steps {
+            dir(&quot;lndv2&quot;) {
+                script {
+                    dockerImage = docker.build registry + &quot;:tsb.$BUILD_NUMBER&quot;
+                }
+            }
+        }
+    }
+    
+    stage(&quot;Push image&quot;) {
+        agent {
+           label &quot;master&quot;
+        }
+        steps {
+            script {
+                    docker.withRegistry(&quot;https://&quot; + registry, &quot;ecr:us-west-2:&quot; + registryCredential) {
+                    dockerImage.push(&quot;tsb.$BUILD_NUMBER&quot;)
+                    dockerImage.push(&quot;${env.BUILD_ID}&quot;+100)
+                }
+            }
+        }
+    }
+
+    stage(&apos;Deploy App&apos;) {
+        agent {
+         kubernetes {
+        	cloud &apos;kubernetes&apos;
+      	    defaultContainer &apos;jnlp&apos;
+         }
+        }
+        steps {
+            git credentialsId: gitCredential, url: gitUrl, branch: gitBranch
+            script {
+                dir(&quot;lndv2&quot;) {
+                    kubernetesDeploy( kubeconfigId: &apos;stage-k8s-local&apos;,
+                                   configs: &quot;namespace.yml&quot;
+                                 )
+                    sleep(time:5,unit:&quot;SECONDS&quot;)
+                 
+                    kubernetesDeploy( kubeconfigId: &apos;stage-k8s-local&apos;,
+                                    configs: &quot;lnd_deployment-cicd-testnet.yml&quot;,
+                                    secretName: &apos;ecr-token&apos;,
+                                    dockerCredentials: [
+                                        [credentialsId: &apos;ecr:us-west-2:aws-ecr&apos;, url: registry]
+                                    ],
+                                    secretNamespace: k8sNamespace
+                                    )
+                    kubernetesDeploy( kubeconfigId: &apos;stage-k8s-local&apos;,
+                                    configs: &quot;lnd_service-testnet.yml&quot;
+                                    )
+                 /*kubernetesDeploy( kubeconfigId: &apos;stage-k8s-local&apos;,
+                                   configs: &quot;ingress.yml&quot;
+                                 )*/
+                }
+            }
+        }
+    }
+  }
+}</script>
+    <sandbox>true</sandbox>
+  </definition>
+  <triggers/>
+  <disabled>false</disabled>
+</flow-definition><?xml version='1.1' encoding='UTF-8'?>
+<flow-definition plugin="workflow-job@2.41">
+  <actions>
+    <org.jenkinsci.plugins.pipeline.modeldefinition.actions.DeclarativeJobAction plugin="pipeline-model-definition@1.8.5"/>
+    <org.jenkinsci.plugins.pipeline.modeldefinition.actions.DeclarativeJobPropertyTrackerAction plugin="pipeline-model-definition@1.8.5">
+      <jobProperties/>
+      <triggers/>
+      <parameters/>
+      <options/>
+    </org.jenkinsci.plugins.pipeline.modeldefinition.actions.DeclarativeJobPropertyTrackerAction>
+  </actions>
+  <description>This pipeline builds and deploys btcd micro-service in the bitcoind-nodes namespaces of the staging k8s.</description>
+  <keepDependencies>false</keepDependencies>
+  <properties/>
+  <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps@2.92">
+    <script>pipeline {
+    agent none
+  //post { 
+  //      always { 
+  //          cleanWs()
+  //     }
+  // }
+    environment {
+       GIT_SSH_COMMAND = &quot;ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no&quot;
+       registry = &apos;514063904685.dkr.ecr.us-west-2.amazonaws.com/lnd&apos;
+       registryCredential = &apos;aws-ecr&apos;
+       gitUrl = &apos;git@github.com:lightningriders/dockerlnd.git&apos;
+       gitCredential = &apos;github-ssh&apos;
+       gitBranch = &apos;cicd&apos;
+       k8sNamespace = &apos;lqwd-lnd&apos;
+    }
+    
+    tools {
+    maven &apos;m3&apos;
+    }
+    
+  stages {
+      
+    stage(&apos;Checkout Source&apos;) {
+       agent {
+           label &quot;master&quot;
+        }
+        steps {
+            echo &quot;start git checkout&quot; 
+            cleanWs()
+            echo &quot;git command&quot; 
+            //sh &quot;ssh -o StrictHostKeyChecking=no git@github.com&quot;
+            git credentialsId: gitCredential, url: gitUrl, branch: gitBranch 
+            sh &quot;ls -la&quot;
+            echo &quot; end git &quot;
+        }
+    }
+    
+/*
+    stage(&apos;Build&apos;) {
+        agent {
+           label &quot;cicd&quot;
+        }
+        steps {
+          //sh &apos;mvn -version&apos;
+          sh &apos;mkdir build&apos;
+          sh &apos;cp pom.xml build/&apos;
+          sh &apos;cp -r src build/&apos;
+          sh &apos;&apos;&apos;
+                cd build
+                mvn clean package -Dmaven.test.skip=true
+            &apos;&apos;&apos;
+          sh &apos;ls -la build/&apos;
+        }
+    }
+      
+    stage (&apos;Test&apos;) {
+        agent {
+           label &quot;cicd&quot;
+        }1
+		
+        steps {
+          sh &apos;echo \&apos;Here we have to run tests\&apos;&apos;
+        }
+    }
+ */   
+    stage (&apos;Build Image&apos;) {
+        agent {
+           label &quot;master&quot;
+        }
+        steps {
+            dir(&quot;lndv2&quot;) {
+                script {
+                    dockerImage = docker.build registry + &quot;:tsb.$BUILD_NUMBER&quot;
+                }
+            }
+        }
+    }
+    
+    stage(&quot;Push image&quot;) {
+        agent {
+           label &quot;master&quot;
+        }
+        steps {
+            script {
+                    docker.withRegistry(&quot;https://&quot; + registry, &quot;ecr:us-west-2:&quot; + registryCredential) {
+                    dockerImage.push(&quot;tsb.$BUILD_NUMBER&quot;)
+                    dockerImage.push(&quot;${env.BUILD_ID}&quot;+100)
+                }
+            }
+        }
+    }
+
+    stage(&apos;Deploy App&apos;) {
+        agent {
+         kubernetes {
+        	cloud &apos;kubernetes&apos;
+      	    defaultContainer &apos;jnlp&apos;
+         }
+        }
+        steps {
+            git credentialsId: gitCredential, url: gitUrl, branch: gitBranch
+            script {
+                dir(&quot;lndv2&quot;) {
+                    kubernetesDeploy( kubeconfigId: &apos;stage-k8s-local&apos;,
+                                   configs: &quot;namespace.yml&quot;
+                                 )
+                    sleep(time:5,unit:&quot;SECONDS&quot;)
+                 
+                    kubernetesDeploy( kubeconfigId: &apos;stage-k8s-local&apos;,
+                                    configs: &quot;lnd_deployment-cicd-testnet.yml&quot;,
+                                    secretName: &apos;ecr-token&apos;,
+                                    dockerCredentials: [
+                                        [credentialsId: &apos;ecr:us-west-2:aws-ecr&apos;, url: registry]
+                                    ],
+                                    secretNamespace: k8sNamespace
+                                    )
+                    kubernetesDeploy( kubeconfigId: &apos;stage-k8s-local&apos;,
+                                    configs: &quot;lnd_service-testnet.yml&quot;
+                                    )
+                 /*kubernetesDeploy( kubeconfigId: &apos;stage-k8s-local&apos;,
+                                   configs: &quot;ingress.yml&quot;
+                                 )*/
+                }
+            }
+        }
+    }
+  }
+}</script>
+    <sandbox>true</sandbox>
+  </definition>
+  <triggers/>
+  <disabled>false</disabled>
+</flow-definition>

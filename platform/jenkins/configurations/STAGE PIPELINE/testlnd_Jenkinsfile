@@ -1,0 +1,373 @@
+pipeline {
+    agent none
+  //post { 
+  //      always { 
+  //          cleanWs()
+  //     }
+  // }
+    environment {
+       GIT_SSH_COMMAND = "ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
+       registry = '514063904685.dkr.ecr.us-west-2.amazonaws.com/lnd'
+       registryCredential = 'aws-ecr'
+       gitUrl = 'git@github.com:lightningriders/dockerlnd.git'
+       gitCredential = 'github-ssh'
+       gitBranch = 'cicd'
+       k8sNamespace = 'lqwd-lnd'
+    }
+    
+    tools {
+    maven 'm3'
+    }
+    
+  stages {
+      
+    stage('Checkout Source') {
+       agent {
+           label "master"
+        }
+        steps {
+            cleanWs()
+            //sh "ssh -o StrictHostKeyChecking=no git@github.com"
+            git credentialsId: gitCredential, url: gitUrl, branch: gitBranch 
+            sh "ls -la"
+        }
+    }
+    
+/*
+    stage('Build') {
+        agent {
+           label "master"
+        }
+        steps {
+          //sh 'mvn -version'
+          sh 'mkdir build'
+          sh 'cp pom.xml build/'
+          sh 'cp -r src build/'
+          sh '''
+                cd build
+                mvn clean package -Dmaven.test.skip=true
+            '''
+          sh 'ls -la build/'
+        }
+    }
+      
+    stage ('Test') {
+        agent {
+           label "master"
+        }
+        steps {
+          sh 'echo \'Here we have to run tests\''
+        }
+    }
+ */   
+    stage ('Build Image') {
+        agent {
+           label "master"
+        }
+        steps {
+            dir("lndv2") {
+                script {
+                    dockerImage = docker.build registry + ":tsl.$BUILD_NUMBER"
+                }
+            }
+        }
+    }
+    
+    stage("Push image") {
+        agent {
+           label "master"
+        }
+        steps {
+            script {
+                    docker.withRegistry("https://" + registry, "ecr:us-west-2:" + registryCredential) {
+                    dockerImage.push("tsl.$BUILD_NUMBER")
+                    dockerImage.push("${env.BUILD_ID}"+400)
+                }
+            }
+        }
+    }
+
+    stage('Deploy App') {
+        agent {
+         kubernetes {
+        	cloud 'kubernetes'
+      	    defaultContainer 'jnlp'
+         }
+        }
+        steps {
+            git credentialsId: gitCredential, url: gitUrl, branch: gitBranch
+            script {
+                dir("lndv2") {
+                    kubernetesDeploy( kubeconfigId: 'stage-k8s-local',
+                                   configs: "namespace.yml"
+                                 )
+                    sleep(time:5,unit:"SECONDS")
+                 
+                    kubernetesDeploy( kubeconfigId: 'stage-k8s-local',
+                                    configs: "lnd_deployment-cicd-testlnd.yml",
+                                    secretName: 'ecr-token',
+                                    dockerCredentials: [
+                                        [credentialsId: 'ecr:us-west-2:aws-ecr', url: registry]
+                                    ],
+                                    secretNamespace: k8sNamespace
+                                    )
+                    kubernetesDeploy( kubeconfigId: 'stage-k8s-local',
+                                    configs: "lnd_service-cicd-testlnd.yml"
+                                    )
+                 /*kubernetesDeploy( kubeconfigId: 'stage-k8s-local',
+                                   configs: "ingress.yml"
+                                 )*/
+                }
+            }
+        }
+    }
+  }
+}pipeline {
+    agent none
+  //post { 
+  //      always { 
+  //          cleanWs()
+  //     }
+  // }
+    environment {
+       GIT_SSH_COMMAND = "ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
+       registry = '514063904685.dkr.ecr.us-west-2.amazonaws.com/lnd'
+       registryCredential = 'aws-ecr'
+       gitUrl = 'git@github.com:lightningriders/dockerlnd.git'
+       gitCredential = 'github-ssh'
+       gitBranch = 'cicd'
+       k8sNamespace = 'lqwd-lnd'
+    }
+    
+    tools {
+    maven 'm3'
+    }
+    
+  stages {
+      
+    stage('Checkout Source') {
+       agent {
+           label "master"
+        }
+        steps {
+            cleanWs()
+            //sh "ssh -o StrictHostKeyChecking=no git@github.com"
+            git credentialsId: gitCredential, url: gitUrl, branch: gitBranch 
+            sh "ls -la"
+        }
+    }
+    
+/*
+    stage('Build') {
+        agent {
+           label "master"
+        }
+        steps {
+          //sh 'mvn -version'
+          sh 'mkdir build'
+          sh 'cp pom.xml build/'
+          sh 'cp -r src build/'
+          sh '''
+                cd build
+                mvn clean package -Dmaven.test.skip=true
+            '''
+          sh 'ls -la build/'
+        }
+    }
+      
+    stage ('Test') {
+        agent {
+           label "master"
+        }
+        steps {
+          sh 'echo \'Here we have to run tests\''
+        }
+    }
+ */   
+    stage ('Build Image') {
+        agent {
+           label "master"
+        }
+        steps {
+            dir("lndv2") {
+                script {
+                    dockerImage = docker.build registry + ":tsl.$BUILD_NUMBER"
+                }
+            }
+        }
+    }
+    
+    stage("Push image") {
+        agent {
+           label "master"
+        }
+        steps {
+            script {
+                    docker.withRegistry("https://" + registry, "ecr:us-west-2:" + registryCredential) {
+                    dockerImage.push("tsl.$BUILD_NUMBER")
+                    dockerImage.push("${env.BUILD_ID}"+400)
+                }
+            }
+        }
+    }
+
+    stage('Deploy App') {
+        agent {
+         kubernetes {
+        	cloud 'kubernetes'
+      	    defaultContainer 'jnlp'
+         }
+        }
+        steps {
+            git credentialsId: gitCredential, url: gitUrl, branch: gitBranch
+            script {
+                dir("lndv2") {
+                    kubernetesDeploy( kubeconfigId: 'stage-k8s-local',
+                                   configs: "namespace.yml"
+                                 )
+                    sleep(time:5,unit:"SECONDS")
+                 
+                    kubernetesDeploy( kubeconfigId: 'stage-k8s-local',
+                                    configs: "lnd_deployment-cicd-testlnd.yml",
+                                    secretName: 'ecr-token',
+                                    dockerCredentials: [
+                                        [credentialsId: 'ecr:us-west-2:aws-ecr', url: registry]
+                                    ],
+                                    secretNamespace: k8sNamespace
+                                    )
+                    kubernetesDeploy( kubeconfigId: 'stage-k8s-local',
+                                    configs: "lnd_service-cicd-testlnd.yml"
+                                    )
+                 /*kubernetesDeploy( kubeconfigId: 'stage-k8s-local',
+                                   configs: "ingress.yml"
+                                 )*/
+                }
+            }
+        }
+    }
+  }
+}pipeline {
+    agent none
+  //post { 
+  //      always { 
+  //          cleanWs()
+  //     }
+  // }
+    environment {
+       GIT_SSH_COMMAND = "ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
+       registry = '514063904685.dkr.ecr.us-west-2.amazonaws.com/lnd'
+       registryCredential = 'aws-ecr'
+       gitUrl = 'git@github.com:lightningriders/dockerlnd.git'
+       gitCredential = 'github-ssh'
+       gitBranch = 'cicd'
+       k8sNamespace = 'lqwd-lnd'
+    }
+    
+    tools {
+    maven 'm3'
+    }
+    
+  stages {
+      
+    stage('Checkout Source') {
+       agent {
+           label "master"
+        }
+        steps {
+            cleanWs()
+            //sh "ssh -o StrictHostKeyChecking=no git@github.com"
+            git credentialsId: gitCredential, url: gitUrl, branch: gitBranch 
+            sh "ls -la"
+        }
+    }
+    
+/*
+    stage('Build') {
+        agent {
+           label "master"
+        }
+        steps {
+          //sh 'mvn -version'
+          sh 'mkdir build'
+          sh 'cp pom.xml build/'
+          sh 'cp -r src build/'
+          sh '''
+                cd build
+                mvn clean package -Dmaven.test.skip=true
+            '''
+          sh 'ls -la build/'
+        }
+    }
+      
+    stage ('Test') {
+        agent {
+           label "master"
+        }
+        steps {
+          sh 'echo \'Here we have to run tests\''
+        }
+    }
+ */   
+    stage ('Build Image') {
+        agent {
+           label "master"
+        }
+        steps {
+            dir("lndv2") {
+                script {
+                    dockerImage = docker.build registry + ":tsl.$BUILD_NUMBER"
+                }
+            }
+        }
+    }
+    
+    stage("Push image") {
+        agent {
+           label "master"
+        }
+        steps {
+            script {
+                    docker.withRegistry("https://" + registry, "ecr:us-west-2:" + registryCredential) {
+                    dockerImage.push("tsl.$BUILD_NUMBER")
+                    dockerImage.push("${env.BUILD_ID}"+400)
+                }
+            }
+        }
+    }
+
+    stage('Deploy App') {
+        agent {
+         kubernetes {
+        	cloud 'kubernetes'
+      	    defaultContainer 'jnlp'
+         }
+        }
+        steps {
+            git credentialsId: gitCredential, url: gitUrl, branch: gitBranch
+            script {
+                dir("lndv2") {
+                    kubernetesDeploy( kubeconfigId: 'stage-k8s-local',
+                                   configs: "namespace.yml"
+                                 )
+                    sleep(time:5,unit:"SECONDS")
+                 
+                    kubernetesDeploy( kubeconfigId: 'stage-k8s-local',
+                                    configs: "lnd_deployment-cicd-testlnd.yml",
+                                    secretName: 'ecr-token',
+                                    dockerCredentials: [
+                                        [credentialsId: 'ecr:us-west-2:aws-ecr', url: registry]
+                                    ],
+                                    secretNamespace: k8sNamespace
+                                    )
+                    kubernetesDeploy( kubeconfigId: 'stage-k8s-local',
+                                    configs: "lnd_service-cicd-testlnd.yml"
+                                    )
+                 /*kubernetesDeploy( kubeconfigId: 'stage-k8s-local',
+                                   configs: "ingress.yml"
+                                 )*/
+                }
+            }
+        }
+    }
+  }
+}

@@ -1,0 +1,85 @@
+<html>
+<head th:include="fragment/headerfooter::header1"></head>
+<body onload="startTime()">
+<div id="containerMain">
+    <div th:include="fragment/headerfooter::top_menu('action')"></div>
+    <div id="titleMain">
+        <h1>Users</h1>
+    </div>
+
+    <div th:if="${message != null}" class="info_messages">
+        <p th:text="${message}"></p>
+    </div>
+    <div id="contentMain">
+        <div id="actionButtonMain">
+            <div style="float: right;">
+                <a id="a" th:href="@{/backend/add/user}">ADD NEW</a>
+            </div>
+        </div>
+        <div>
+
+        </div>
+        <table id="customers">
+            <tr>
+                <th>ID (EDIT)</th>
+                <th>User Name</th>
+                <th>First/last Name</th>
+                <th>Email</th>
+                <th>No. OF LND NODES</th>
+                <th>No. OF API KEYS</th>
+                <th>Created</th>
+                <th>Updated</th>
+
+                <th>LAST ACCESS</th>
+                <th>Account Type</th>
+                <th>Account Expired</th>
+                <th>Status</th>
+                <th>DELETE</th>
+            </tr>
+            <tr th:each="item, iItem : ${users}">
+                <td>
+                    <a th:href="@{/backend/edit/user(id=${item.id})}" th:text="${item.id}"></a>
+                    <td th:text="${item.username}" />
+
+                    <td th:text="${item.firstName}" />
+
+                    <td th:text="${item.email}" />
+
+                    <td th:text="${item.noOfLndNodes}" />
+
+                    <td th:text="${item.noOfApiKeys}" />
+
+                    <td th:text="${item.createdAt}" />
+
+                    <td th:text="${item.updatedAt}" />
+
+                    <td th:text="${item.lastAccess}" />
+
+                    <td   th:text="${item.accountTypeName}" />
+
+                    <td th:text="${item.accountExpired}" />
+
+                    <td th:text="${item.enabled}" />
+
+                    <td>
+                        <a th:href="@{/admin/delete/accounttype(accounttypeid=${item.id})}">DELETE</a>
+                    </td>
+            </tr>
+        </table>
+        <div id="paginationMain">
+            <div class="center">
+                <div class="pagination" th:each="pageNumber : ${pageNumbers}">
+                    <a th:class="${pageNumber == (currentPageNumber + 1)} ? 'current page-numbers' : 'page-numbers'"
+                       th:href="@{/backend/users(size=50, page=${pageNumber})}"
+                       th:text="${pageNumber}"> </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="footer">
+
+
+</div>
+</body>
+</html>

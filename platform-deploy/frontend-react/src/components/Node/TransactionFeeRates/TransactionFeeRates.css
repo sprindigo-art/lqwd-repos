@@ -1,0 +1,86 @@
+.transaction-fee-rates-container {
+    background: #F3F5F9;
+}
+
+.transaction-fee-rates-item.container {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+
+.transaction-fee-rates-item .title {
+    padding-left: .25rem;
+}
+
+.transaction-fee-rates-item .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 6px;
+    padding-left: .25rem;
+    padding-right: .25rem;
+}
+
+
+/* 6px for dot size and 2x0.25 for dot padding and 1x0.25 for title padding */
+
+.transaction-fee-rates-item .description {
+    padding-left: calc(6px + .75rem);
+}
+
+.transaction-fee-rates-item .rates {
+    padding-left: calc(6px + .75rem);
+    margin-top: 1rem;
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 22px;
+    color: #4D4D4D;
+}
+
+
+/* colors */
+
+
+/* background  */
+
+.transaction-fee-rates-item.container.low-priority {
+    background: rgba(183, 246, 182, 0.2);
+}
+
+.transaction-fee-rates-item.container.medium-priority {
+    background: rgba(254, 232, 199, 0.2);
+}
+
+.transaction-fee-rates-item.container.high-priority {
+    background: rgba(255, 203, 200, 0.2);
+}
+
+
+/* title */
+
+.transaction-fee-rates-item.low-priority .title {
+    color: #24AB20;
+}
+
+.transaction-fee-rates-item.medium-priority .title {
+    color: #FAA423;
+}
+
+.transaction-fee-rates-item.high-priority .title {
+    color: #EB4D43;
+}
+
+
+/* dot  */
+
+.transaction-fee-rates-item.low-priority .dot {
+    background: #24AB20;
+}
+
+.transaction-fee-rates-item.medium-priority .dot {
+    background: #FAA423;
+}
+
+.transaction-fee-rates-item.high-priority .dot {
+    background: #EB4D43;
+}

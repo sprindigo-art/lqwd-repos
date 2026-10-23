@@ -1,0 +1,38 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: btc1
+  namespace: lqwd-lnd
+  labels:
+    app: btc1
+
+spec:
+  selector:
+    app: btc1
+  ports:
+  - name: tcp-29088
+    protocol: TCP
+    port: 29088
+    targetPort: 29088
+
+  - name: tcp-29099
+    protocol: TCP
+    port: 29099
+    targetPort: 29099
+
+  - name: tcp-853
+    protocol: TCP
+    port: 853
+    targetPort: 853
+
+  - name: tcp-18333
+    protocol: TCP
+    port: 18333
+    targetPort: 18333
+  - name: tcp-8333
+    protocol: TCP
+    port: 8333
+    targetPort: 8333
+
+  type: NodePort
+

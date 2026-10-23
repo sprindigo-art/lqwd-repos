@@ -1,0 +1,4 @@
+Dockerfile merge=ours
+init.sh merge=ours
+frontend-deployment.yml merge=ours
+frontend-service.yml merge=ours

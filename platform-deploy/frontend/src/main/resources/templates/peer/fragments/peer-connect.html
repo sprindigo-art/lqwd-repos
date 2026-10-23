@@ -1,0 +1,37 @@
+<div id="connect-peer-fragment" class="widget-content widget-content-area">
+    <div class="row justify-content-md-center">
+    <!-- Connect to Peer -->
+        <div class="col-md-6 col-sm-12 col-xs-12 layout-spacing">
+            <div class="input-group mb-4" id="peer-connect_div_inputs">
+                <div class="col-12 pt-2">
+                    <input type="text" class="form-control" id="peer-connect_txt_node_pubkey"
+                           name="node_pubkey" placeholder="Remote LND Identity Key" required>
+                </div>
+                <div class="col-12 pt-2">
+                    <input type="text" class="form-control" id="peer-connect_txt_host" name="host"
+                           placeholder="Remote Hostname">
+                </div>
+                <div class="col-12 pt-2">
+                    <input type="text" class="form-control" id="peer-connect_txt_port" name="port"
+                           placeholder="Remote Port">
+                </div>
+            </div>
+            <div class="row pt-3 justify-content-md-center">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="input-group">
+                        <button th:unless="${user.isEmailstatus()}" class="btn btn-lg btn-primary connect-peer col-11" disabled>
+                            Please Verify Account
+                        </button>
+                        <button class="btn btn-dark col-5 offset-1 mr-2" id="peer-connect_btn_clear-fields">
+                            Clear all fields
+                        </button>
+                        <button th:if="${user.isEmailstatus()}" class="btn btn-primary connect-peer col-5 mr-2"
+                                id="peer-connect_btn_connect">
+                            Connect
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

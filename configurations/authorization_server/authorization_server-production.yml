@@ -1,0 +1,132 @@
+spring:
+  resource:
+    server:
+      config:
+        resource_id: resource-server-rest-api
+  datasource:
+    url: jdbc:postgresql://192.243.215.101:5432/oauth2
+    username: ${DBUSERNAME}
+    password: ${DBPASSWORD}
+    initialization-mode: always
+    hikari:
+      connection-timeout: 40000
+      minimum-idle: 50
+      maximum-pool-size: 70
+      idle-timeout: 20000
+      max-lifetime: 2000
+      auto-commit: true
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQL95Dialect
+        format_sql: true
+        id:
+          new_generator_mappings: true
+        jdbc:
+          lob:
+            non_contextual_creation: true
+  mail:
+    host: email-smtp.us-west-2.amazonaws.com
+    port: 587
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: false
+            required: false
+  http:
+    log-request-details: true
+  queries:
+    users-query: select user_name as email, password, enabled as active from user_ where user_name=?
+    email-query: select email, password, enabled as active from user_ where email=?
+    roles-query-user: select u.email as email, r.name as role from user_ u inner join user_role ur on(u.id=ur.user_id) inner join role_ r on(ur.role_id=r.id) where u.user_name=?
+    roles-query-email: select u.email as email, r.name as role from user_ u inner join user_role ur on(u.id=ur.user_id) inner join role_ r on(ur.role_id=r.id) where u.email=?
+  kafka:
+    bootstrap-servers: broker.kafka-v1:9092
+    group: group-1
+    enable:
+      auto:
+        commit: true
+    auto:
+      commit:
+        interval:
+          ms: 10000
+    session:
+      timeout:
+        ms: 30000
+    consumer:
+      timeout:
+        ms: 120000
+    jaas:
+      enabled: true
+    properties:
+      security:
+        protocol: SASL_PLAINTEXT
+      sasl:
+        mechanism: PLAIN
+        jaas:
+          config: ${SASL_CONFIG}
+  cloud:
+    stream:
+      default:
+        producer:
+          useNativeEncoding: true
+        consumer:
+          useNativeEncoding: true          
+kafka:
+  binder:
+      key-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
+      value-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
+      schema-registry-url: ${KAFKA_SCHEMA_REGISTRY:http://schemaregistry.kafka-v1:8081}
+      key-deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
+      value-deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
+
+logging:
+  level:
+    org:
+      springframework:
+        security:
+          oauth2: debug
+        web: DEBUG
+      hibernate:
+        SQL: debug
+        type:
+          descriptor:
+            sql: trace
+
+server:
+  ssl:
+    enabled: false
+    
+hibernate:
+  show_sql: true
+
+jwt:
+  secret: ${JWT_SECRET}
+  token:
+    validity: 18000
+
+app:
+  lnd_domain: ln.lqwd.tech
+  lnd_external_id: 192.168.123.252
+  mail_confirmation_link: https://lqwd.tech/confirm-password?token=
+  send_mail_from: info@lqwd.money
+  node_alert_email_to: aziz@lqwd.money, josh@lqwd.money
+  application_notification_to: aziz@lqwd.money
+  frontend_base_url: https://lqwd.tech
+  application_notification_email: clients@lqwd.money	
+  dla_base_url: ${DLA_BASE_URL:http://dla.microservice:8690}
+  dla_client_credentials:
+    username: py-backend
+    password: ${DLA_CLIENT_PASSWORD}
+
+log4j:
+  logger:
+    org:
+      hibernate:
+        type: trace

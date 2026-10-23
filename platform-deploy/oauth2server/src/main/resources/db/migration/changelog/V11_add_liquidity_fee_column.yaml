@@ -1,0 +1,20 @@
+databaseChangeLog:
+  - changeSet:
+      id: add_liquidity_fee_column
+      validCheckSum: ANY
+      author: femi
+      changes:
+        - sql:
+            sql: ALTER TABLE user_ ADD COLUMN IF NOT EXISTS  liquidity_fee numeric(3, 2) NULL;
+  - changeSet:
+      id: add_liquidity_role
+      validCheckSum: ANY
+      preConditions:
+        - onFail: MARK_RAN
+        - sqlCheck:
+            expectedResult: 0
+            sql: select count(*) from role_ where name = 'LIQUIDITY' and mservice_id = (select id from mservice where name = 'lnd-advanced-processing-send-message')
+      author: femi
+      changes:
+        - sql:
+            sql: insert into role_ (id, name, status, mservice_id) values(uuid_generate_v4(), 'LIQUIDITY', 'active', (select id from mservice where name = 'lnd-advanced-processing-send-message'))

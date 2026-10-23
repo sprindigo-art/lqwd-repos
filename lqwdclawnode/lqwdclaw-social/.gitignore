@@ -1,0 +1,27 @@
+# Secrets - never commit
+workspace/x/.x_secrets.env
+workspace/x/x_tokens.json
+workspace/x/x_credentials.json.save
+workspace/moltbook/.env
+
+# Runtime state
+workspace/x/auto/
+workspace/x/x_post.log
+workspace/x/x_reply.log
+workspace/x/draft.txt
+workspace/x/reply.txt
+workspace/x/quote_draft.txt
+workspace/x/__pycache__/
+workspace/moltbook/__pycache__/
+
+# Cached feed data
+workspace/*.json
+workspace/moltbook_post_log.json
+workspace/moltbook_state.json
+workspace/engagement_log.md
+workspace/post_log.md
+
+# Temp files from manual debugging
+workspace/*.py
+workspace/*.sh
+workspace/*.txt

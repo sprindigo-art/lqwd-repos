@@ -1,0 +1,36 @@
+.create-node
+    .create-node-step-1,.create-node-step-2,.create-node-step-3,.create-node-step-4
+        display: none
+
+.create-node-active-step-1
+    .create-node-step-1
+        display: block
+.create-node-active-step-2
+    .create-node-step-2
+        display: block
+.create-node-active-step-3
+    .create-node-step-3
+        display: block
+.create-node-active-step-4
+    .create-node-step-4
+        display: block
+
+.subscription-payment-item
+    width: 40%
+    min-height: 200px
+    display: flex
+    flex-direction: column
+    border-radius: 16px
+    border: 1px solid rgba(217, 217, 217, 1)
+    position: relative
+    text-align: center
+    .selected-image
+        display: none
+
+.subscription-payment-item-selected
+    border: 1px solid rgba(0, 158, 226, 1)
+    .selected-image
+        display: block
+        position: absolute
+        top: -10px
+        right: -10px

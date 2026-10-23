@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/head::header_main(~{::title}, ~{::link})">
+    <title>LQWD | Privacy policy</title>
+    <!-- END GLOBAL MANDATORY STYLES -->
+    <link th:href="@{/assets/css/authentication/form-1.css}" rel="stylesheet" type="text/css"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/assets/css/forms/theme-checkbox-radio.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/assets/css/forms/switches.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/login.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/assets/css/components/custom-modal.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/policy.css}">
+</head>
+<body>
+<div class="main-content">
+    <h2>Privacy Policy</h2>
+    <p>Last updated: July 09, 2021</p>
+    <div class="widget-content">
+        <div th:each="privacyPolicy: ${privacyPolicies}">
+            <h4 th:text="${privacyPolicy.getHeader()}"></h4>
+            <h5 th:text="${privacyPolicy.getSubheader()}"></h5>
+            <h6 th:text="${privacyPolicy.getSubsubheader()}"></h6>
+            <p th:each="description:${privacyPolicy.getDescription()}" th:text="${description}"></p></p>
+            <ul>
+                <li th:each="list:${privacyPolicy.getList()}" th:text="${list}">
+                </li>
+            </ul>
+        </div>
+    </div>
+    <h5>Contact Us</h5>
+    <p>If you have any questions about this Privacy Policy, You can contact us by email: <a href="info@lqwd.money">info@lqwd.money</a>.
+    </p>
+
+</div>
+</body>
+</html>

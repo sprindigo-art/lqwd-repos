@@ -1,0 +1,247 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<flow-definition plugin="workflow-job@2.40">
+  <actions>
+    <org.jenkinsci.plugins.pipeline.modeldefinition.actions.DeclarativeJobAction plugin="pipeline-model-definition@1.8.4"/>
+    <org.jenkinsci.plugins.pipeline.modeldefinition.actions.DeclarativeJobPropertyTrackerAction plugin="pipeline-model-definition@1.8.4">
+      <jobProperties/>
+      <triggers/>
+      <parameters/>
+      <options/>
+    </org.jenkinsci.plugins.pipeline.modeldefinition.actions.DeclarativeJobPropertyTrackerAction>
+  </actions>
+  <description>This is the Test pipeline 01</description>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+    <com.coravy.hudson.plugins.github.GithubProjectProperty plugin="github@1.32.0">
+      <projectUrl>https://github.com/lightningriders/cicd-test.git/</projectUrl>
+      <displayName></displayName>
+    </com.coravy.hudson.plugins.github.GithubProjectProperty>
+    <org.jenkinsci.plugins.workflow.job.properties.PipelineTriggersJobProperty>
+      <triggers>
+        <com.cloudbees.jenkins.GitHubPushTrigger plugin="github@1.32.0">
+          <spec></spec>
+        </com.cloudbees.jenkins.GitHubPushTrigger>
+      </triggers>
+    </org.jenkinsci.plugins.workflow.job.properties.PipelineTriggersJobProperty>
+  </properties>
+  <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps@2.88">
+    <script>pipeline {
+  agent {
+    kubernetes {
+      	cloud &apos;kubernetes&apos;
+      	defaultContainer &apos;jnlp&apos;
+      }
+    }
+  
+  environment {
+
+       GIT_SSH_COMMAND = &quot;ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no&quot;
+
+       registry = &apos;514063904685.dkr.ecr.us-west-2.amazonaws.com/helloworld&apos;
+       registryCredential = &apos;aws-ecr&apos;
+   }
+
+  stages {
+    
+    
+    stage(&apos;Checkout Source&apos;) {
+        steps {
+            //sh &quot;ssh -o StrictHostKeyChecking=no git@github.com&quot;
+            git credentialsId: &apos;github-ssh&apos;, url:&apos;git@github.com:lightningriders/cicd-test.git&apos;, branch:&apos;main&apos;
+            sh &quot;pwd&quot;
+            sh &quot;ls -la&quot;
+        }
+    }
+
+    stage(&apos;Deploy App&apos;) {
+        steps {
+            script {
+                 //kubernetesDeploy( kubeconfigId: &apos;stage-k8s-local&apos;,
+                 //                  configs: &quot;namespace.yml&quot;
+                 //                )
+                 //sleep(time:5,unit:&quot;SECONDS&quot;)
+                 //kubernetesDeploy( kubeconfigId: &apos;stage-k8s-local&apos;,
+                 //                  configs: &quot;helloworld.yml&quot;,
+                 //                  dockerCredentials: [
+                 //                      [credentialsId: &apos;ecr:us-west-2:aws-ecr&apos;, url: &apos;https://514063904685.dkr.ecr.us-west-2.amazonaws.com/helloworld&apos;]
+                 //                  ],
+                 //                  secretNamespace: &apos;cicdtest&apos;
+                 //                )
+                 //sleep(time:10,unit:&quot;SECONDS&quot;)
+                 kubernetesDeploy( kubeconfigId: &apos;stage-k8s-local&apos;,
+                                   configs: &quot;ingress.yml&quot;
+                                 )
+            }
+        }
+    }
+  }
+}</script>
+    <sandbox>true</sandbox>
+  </definition>
+  <triggers/>
+  <disabled>false</disabled>
+</flow-definition><?xml version='1.1' encoding='UTF-8'?>
+<flow-definition plugin="workflow-job@2.40">
+  <actions>
+    <org.jenkinsci.plugins.pipeline.modeldefinition.actions.DeclarativeJobAction plugin="pipeline-model-definition@1.8.4"/>
+    <org.jenkinsci.plugins.pipeline.modeldefinition.actions.DeclarativeJobPropertyTrackerAction plugin="pipeline-model-definition@1.8.4">
+      <jobProperties/>
+      <triggers/>
+      <parameters/>
+      <options/>
+    </org.jenkinsci.plugins.pipeline.modeldefinition.actions.DeclarativeJobPropertyTrackerAction>
+  </actions>
+  <description>This is the Test pipeline 01</description>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+    <com.coravy.hudson.plugins.github.GithubProjectProperty plugin="github@1.32.0">
+      <projectUrl>https://github.com/lightningriders/cicd-test.git/</projectUrl>
+      <displayName></displayName>
+    </com.coravy.hudson.plugins.github.GithubProjectProperty>
+    <org.jenkinsci.plugins.workflow.job.properties.PipelineTriggersJobProperty>
+      <triggers>
+        <com.cloudbees.jenkins.GitHubPushTrigger plugin="github@1.32.0">
+          <spec></spec>
+        </com.cloudbees.jenkins.GitHubPushTrigger>
+      </triggers>
+    </org.jenkinsci.plugins.workflow.job.properties.PipelineTriggersJobProperty>
+  </properties>
+  <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps@2.88">
+    <script>pipeline {
+  agent {
+    kubernetes {
+      	cloud &apos;kubernetes&apos;
+      	defaultContainer &apos;jnlp&apos;
+      }
+    }
+  
+  environment {
+
+       GIT_SSH_COMMAND = &quot;ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no&quot;
+
+       registry = &apos;514063904685.dkr.ecr.us-west-2.amazonaws.com/helloworld&apos;
+       registryCredential = &apos;aws-ecr&apos;
+   }
+
+  stages {
+    
+    
+    stage(&apos;Checkout Source&apos;) {
+        steps {
+            //sh &quot;ssh -o StrictHostKeyChecking=no git@github.com&quot;
+            git credentialsId: &apos;github-ssh&apos;, url:&apos;git@github.com:lightningriders/cicd-test.git&apos;, branch:&apos;main&apos;
+            sh &quot;pwd&quot;
+            sh &quot;ls -la&quot;
+        }
+    }
+
+    stage(&apos;Deploy App&apos;) {
+        steps {
+            script {
+                 //kubernetesDeploy( kubeconfigId: &apos;stage-k8s-local&apos;,
+                 //                  configs: &quot;namespace.yml&quot;
+                 //                )
+                 //sleep(time:5,unit:&quot;SECONDS&quot;)
+                 //kubernetesDeploy( kubeconfigId: &apos;stage-k8s-local&apos;,
+                 //                  configs: &quot;helloworld.yml&quot;,
+                 //                  dockerCredentials: [
+                 //                      [credentialsId: &apos;ecr:us-west-2:aws-ecr&apos;, url: &apos;https://514063904685.dkr.ecr.us-west-2.amazonaws.com/helloworld&apos;]
+                 //                  ],
+                 //                  secretNamespace: &apos;cicdtest&apos;
+                 //                )
+                 //sleep(time:10,unit:&quot;SECONDS&quot;)
+                 kubernetesDeploy( kubeconfigId: &apos;stage-k8s-local&apos;,
+                                   configs: &quot;ingress.yml&quot;
+                                 )
+            }
+        }
+    }
+  }
+}</script>
+    <sandbox>true</sandbox>
+  </definition>
+  <triggers/>
+  <disabled>false</disabled>
+</flow-definition><?xml version='1.1' encoding='UTF-8'?>
+<flow-definition plugin="workflow-job@2.40">
+  <actions>
+    <org.jenkinsci.plugins.pipeline.modeldefinition.actions.DeclarativeJobAction plugin="pipeline-model-definition@1.8.4"/>
+    <org.jenkinsci.plugins.pipeline.modeldefinition.actions.DeclarativeJobPropertyTrackerAction plugin="pipeline-model-definition@1.8.4">
+      <jobProperties/>
+      <triggers/>
+      <parameters/>
+      <options/>
+    </org.jenkinsci.plugins.pipeline.modeldefinition.actions.DeclarativeJobPropertyTrackerAction>
+  </actions>
+  <description>This is the Test pipeline 01</description>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+    <com.coravy.hudson.plugins.github.GithubProjectProperty plugin="github@1.32.0">
+      <projectUrl>https://github.com/lightningriders/cicd-test.git/</projectUrl>
+      <displayName></displayName>
+    </com.coravy.hudson.plugins.github.GithubProjectProperty>
+    <org.jenkinsci.plugins.workflow.job.properties.PipelineTriggersJobProperty>
+      <triggers>
+        <com.cloudbees.jenkins.GitHubPushTrigger plugin="github@1.32.0">
+          <spec></spec>
+        </com.cloudbees.jenkins.GitHubPushTrigger>
+      </triggers>
+    </org.jenkinsci.plugins.workflow.job.properties.PipelineTriggersJobProperty>
+  </properties>
+  <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps@2.88">
+    <script>pipeline {
+  agent {
+    kubernetes {
+      	cloud &apos;kubernetes&apos;
+      	defaultContainer &apos;jnlp&apos;
+      }
+    }
+  
+  environment {
+
+       GIT_SSH_COMMAND = &quot;ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no&quot;
+
+       registry = &apos;514063904685.dkr.ecr.us-west-2.amazonaws.com/helloworld&apos;
+       registryCredential = &apos;aws-ecr&apos;
+   }
+
+  stages {
+    
+    
+    stage(&apos;Checkout Source&apos;) {
+        steps {
+            //sh &quot;ssh -o StrictHostKeyChecking=no git@github.com&quot;
+            git credentialsId: &apos;github-ssh&apos;, url:&apos;git@github.com:lightningriders/cicd-test.git&apos;, branch:&apos;main&apos;
+            sh &quot;pwd&quot;
+            sh &quot;ls -la&quot;
+        }
+    }
+
+    stage(&apos;Deploy App&apos;) {
+        steps {
+            script {
+                 //kubernetesDeploy( kubeconfigId: &apos;stage-k8s-local&apos;,
+                 //                  configs: &quot;namespace.yml&quot;
+                 //                )
+                 //sleep(time:5,unit:&quot;SECONDS&quot;)
+                 //kubernetesDeploy( kubeconfigId: &apos;stage-k8s-local&apos;,
+                 //                  configs: &quot;helloworld.yml&quot;,
+                 //                  dockerCredentials: [
+                 //                      [credentialsId: &apos;ecr:us-west-2:aws-ecr&apos;, url: &apos;https://514063904685.dkr.ecr.us-west-2.amazonaws.com/helloworld&apos;]
+                 //                  ],
+                 //                  secretNamespace: &apos;cicdtest&apos;
+                 //                )
+                 //sleep(time:10,unit:&quot;SECONDS&quot;)
+                 kubernetesDeploy( kubeconfigId: &apos;stage-k8s-local&apos;,
+                                   configs: &quot;ingress.yml&quot;
+                                 )
+            }
+        }
+    }
+  }
+}</script>
+    <sandbox>true</sandbox>
+  </definition>
+  <triggers/>
+  <disabled>false</disabled>
+</flow-definition>

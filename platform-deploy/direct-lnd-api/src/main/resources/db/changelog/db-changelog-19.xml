@@ -1,0 +1,27 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <changeSet author="femi" id="1632908445580-1">
+        <dropUniqueConstraint constraintName="UC_INVOICEADD_INDEX_COL" tableName="invoice"/>
+    </changeSet>
+
+    <changeSet author="femi" id="1632908445580-2">
+        <dropUniqueConstraint constraintName="UC_INVOICESETTLED_INDEX_COL" tableName="invoice"/>
+    </changeSet>
+
+    <changeSet author="femi" id="1632908445580-3">
+        <addColumn tableName="invoice">
+            <column name="node_name" type="TEXT" defaultValue="lnd">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="femi" id="1632908445580-4">
+        <addUniqueConstraint columnNames="add_index,node_name" constraintName="UC_INVOICEADD_INDEX_COL" tableName="invoice"/>
+    </changeSet>
+
+    <changeSet author="femi" id="1632908445580-5">
+        <addUniqueConstraint columnNames="settled_index,node_name" constraintName="UC_INVOICESETTLED_INDEX_COL" tableName="invoice"/>
+    </changeSet>
+
+</databaseChangeLog>

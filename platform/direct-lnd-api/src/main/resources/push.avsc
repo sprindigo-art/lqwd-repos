@@ -1,0 +1,42 @@
+{
+  "namespace": "com.lqwd.messaging.schemas",
+  "type": "record",
+  "name": "PushNotification",
+  "fields": [
+    {
+      "name": "userId",
+      "type": "string",
+      "avro.java.string": "String"
+    },
+    {
+      "name": "data",
+      "type": {
+        "type": "record",
+        "name": "PushData",
+        "fields": [
+          {
+            "name": "messageType",
+            "type": "string",
+            "avro.java.string": "String"
+          },
+          {
+            "name": "eventType",
+            "type": "string",
+            "avro.java.string": "String"
+          },
+          {
+            "name": "timestamp",
+            "type": "long",
+            "avro.java.string": "long"
+          },
+          {
+            "name": "data",
+            "type": "string",
+            "avro.java.string": "String"
+          }
+        ]
+      }
+    }
+
+  ]
+}

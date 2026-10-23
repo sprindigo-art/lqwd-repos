@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout/app}" lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <title>LQWD | Subscriptions</title>
+    <link th:href="@{${cssPath + '/widgets/modules-widgets.css'}}" rel="stylesheet" type="text/css">
+    <link th:href="@{${cssPath + '/scrollspyNav.css'}}" rel="stylesheet" type="text/css" />
+    <link th:href="@{${cssPath + '/components/custom-modal.css'}}" rel="stylesheet" type="text/css">
+    <link th:href="@{${cssPath + '/elements/popover.css'}}" rel="stylesheet" type="text/css" />
+    <link th:href="@{${cssPath + '/forms/switches.css'}}" rel="stylesheet" type="text/css"/>
+
+    <link th:href="@{${pluginPath + '/apex/apexcharts.css'}}" rel="stylesheet" type="text/css">
+    <link th:href="@{${pluginPath + '/pricing-table/css/component.css'}}" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+<section layout:fragment="sub-header">
+    <span>Subscriptions</span>
+</section>
+
+<div layout:fragment="content-section">
+    <div class="layout-px-spacing">
+        <div class="row justify-content-center">
+            <div class="col-lg-11 layout-spacing">
+                <!-- Billing Cycle  -->
+                <div class="billing-cycle-radios mt-5">
+                    <div class="radio billed-yearly-radio">
+                        <div class="d-flex justify-content-center">
+                            <span class="txt-monthly">Monthly</span>
+                            <label class="switch s-icons s-outline  s-outline-success">
+                                <input type="checkbox" id="subscription_chk_radio">
+                                <span class="slider round"></span>
+                            </label>
+                            <span class="txt-yearly">Yearly</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pricing Plans Container -->
+                <div class="pricing-plans-container mt-5 d-md-flex d-block">
+                    <!-- Plan -->
+                    <div th:each="subscription: ${subscriptions}" class="pricing-plan mb-5"
+                         th:classappend="${#strings.toLowerCase(user.getAccountInfo().getPlan()) == #strings.toLowerCase(subscription.getTier())} ? 'mt-md-0 recommended'">
+                        <h3 th:text="${subscription.getTier()}"></h3>
+                        <p class="margin-top-10" th:text="${subscription.getTagline()}"></p>
+                        <div th:if="${#strings.toLowerCase(subscription.getTier()) == 'free'} OR ${#strings.toLowerCase(subscription.getTier()) == 'enterprise'}"
+                             class="pricing-plan-label billed-monthly-label"><strong
+                                th:text="${subscription.getPriceMonth()}"></span></strong></div>
+                        <div th:unless="${#strings.toLowerCase(subscription.getTier()) == 'free'} OR ${#strings.toLowerCase(subscription.getTier()) == 'enterprise'}"
+                             class="pricing-plan-label billed-monthly-label"><strong
+                                th:text="'$' + ${subscription.getPriceMonth()}"></span></strong>/ monthly
+                        </div>
+
+                        <div th:if="${#strings.toLowerCase(subscription.getTier()) == 'free'} OR ${#strings.toLowerCase(subscription.getTier()) == 'enterprise'}"
+                             class="pricing-plan-label billed-yearly-label"><strong
+                                th:text="${subscription.getPriceYear()}"></strong></div>
+                        <div th:unless="${#strings.toLowerCase(subscription.getTier()) == 'free'} OR ${#strings.toLowerCase(subscription.getTier()) == 'enterprise'}"
+                             class="pricing-plan-label billed-yearly-label"><strong
+                                th:text="'$'+${subscription.getPriceYear()}"></strong>/ monthly <br>billed annually
+                        </div>
+
+                        <div class="pricing-plan-features mb-4">
+                            <strong th:text="${subscription.getTier()} + ' Plan Features'"></strong>
+                            <ul>
+                                <li th:each="feature: ${subscription.getDescription()}" th:text="${feature}"></li>
+                            </ul>
+                        </div>
+                        <br>
+                        <a id="subscription_a_buy-now"
+                           th:unless="${#strings.toLowerCase(user.getAccountInfo().getPlan()) == #strings.toLowerCase(subscription.getTier())}"
+                           href="javascript:void(0);" class="button btn btn-dark btn-block margin-top-20">Buy Now</a>
+                        <a id="subscription_a_selected"
+                           th:if="${#strings.toLowerCase(user.getAccountInfo().getPlan()) == #strings.toLowerCase(subscription.getTier())}"
+                           href="javascript:void(0);" style="pointer-events: none;"
+                           class="button btn btn-dark btn-block margin-top-20">Selected</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div layout:fragment="scripts">
+    <script th:src="@{assets/js/scrollspyNav.js}"></script>
+
+    <script th:src="@{${pluginPath + '/apex/apexcharts.min.js'}}"></script>
+    <script th:src="@{${pluginPath + '/blockui/custom-blockui.js'}}"></script>
+    <script th:src="@{${pluginPath + '/blockui/jquery.blockUI.min.js'}}"></script>
+    <script th:src="@{assets/js/widgets/modules-widgets.js}"></script>
+    <script th:src="@{assets/js/elements/popovers.js}"></script>
+    <script th:src="@{/js/subscription/subscription.js}"></script>
+</div>
+</body>
+</html>

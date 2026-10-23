@@ -1,0 +1,42 @@
+<div th:fragment="num_of_days_modal" class="modal fade text-left"
+     id="num_of_days_modal-div-modal" tabindex="-1" role="dialog"
+     aria-labelledby="exampleModalLabel" aria-hidden="true" data-check="false">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" id="num_of_days_modal_div_modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="num_of_days_modal_h5_title">Please provide a number of days you would like to extend the request and password</h5>
+                <button id="num_of_days_modal_btn_close" type="button" class="close" data-dismiss="modal"
+                        aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="num_of_days_modal_frm_days">
+                        <div class="form-group col-md-12">
+                            <select id="num_of_days_modal_slct_days" class="form-control">
+                                <option selected value="">Number of days</option>
+                                <option th:value="30" th:text="30"></option>
+                                <option th:value="90" th:text="90"></option>
+                                <option th:value="180" th:text="180"></option>
+                                <option th:value="360" th:text="360"></option>
+                            </select>
+                        </div>
+                    <div class="form-group col-md-12">
+                        <label for="num_of_days_txt_password">Password</label>
+                        <input type="password" class="form-control" placeholder="Password"
+                               id="num_of_days_txt_password">
+                    </div>
+                    <input type="hidden" id="num_of_days_modal_input_payment_request" value="">
+                    <input type="hidden" id="num_of_days_modal_input_request_type" value="">
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button id="num_of_days_modal_btn_modal-dismiss" type="button" class="btn" data-dismiss="modal">Close
+                </button>
+                <button id="num_of_days_modal_btn_modal-blockui" type="button" class="btn btn-primary" data-email="true"
+                        onclick="renewStakingRequest()" >Renew
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

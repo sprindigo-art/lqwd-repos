@@ -1,0 +1,255 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <changeSet author="djbabs (generated)" id="1668559847850-1">
+        <createSequence sequenceName="hibernate_sequence"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1668559847850-2">
+        <createTable tableName="btc_payment_address">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="btc_payment_addressPK"/>
+            </column>
+            <column name="amount" type="BIGINT"/>
+            <column name="created" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="number_of_conf" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="used" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="wallet_address" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1668559847850-3">
+        <createTable tableName="currency">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="currencyPK"/>
+            </column>
+            <column name="currency_code" type="VARCHAR(3)"/>
+            <column name="currency_id" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="currency_name" type="VARCHAR(255)"/>
+            <column name="date_created" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="date_modified" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="multiplier" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="symbol" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1668559847850-4">
+        <createTable tableName="discount">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="discountPK"/>
+            </column>
+            <column name="amount" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date_created" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="date_modified" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="duration_in_hrs" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="is_percentage" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="stackable" type="BOOLEAN"/>
+            <column name="subscription_plan_id" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="validity" type="TIMESTAMP WITHOUT TIME ZONE"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1668559847850-5">
+        <createTable tableName="invoice">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="invoicePK"/>
+            </column>
+            <column name="amount" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date_created" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="date_modified" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="discount_applied" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="payment_method" type="VARCHAR(255)"/>
+            <column name="payment_method_id" type="VARCHAR(255)"/>
+            <column name="status" type="VARCHAR(255)"/>
+            <column name="user_id" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1668559847850-6">
+        <createTable tableName="invoice_subscriptions">
+            <column name="invoice_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="subscriptions_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1668559847850-7">
+        <createTable tableName="lnd_invoice">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="lnd_invoicePK"/>
+            </column>
+            <column name="add_index" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="amt" type="BIGINT"/>
+            <column name="date_created" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="date_modified" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="hash_str" type="TEXT"/>
+            <column name="paid" type="BOOLEAN"/>
+            <column name="payment_address" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="payment_date" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="payment_request" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="settled_index" type="VARCHAR(255)"/>
+            <column name="uniqueid" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1668559847850-8">
+        <createTable tableName="product">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="productPK"/>
+            </column>
+            <column name="allowed_dp_type" type="VARCHAR(255)"/>
+            <column name="date_created" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="date_modified" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="description" type="TEXT"/>
+            <column name="product_id" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="product_name" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1668559847850-9">
+        <createTable tableName="subscription">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="subscriptionPK"/>
+            </column>
+            <column name="date_created" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="date_modified" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="email" type="VARCHAR(255)"/>
+            <column name="expiry" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="first_name" type="VARCHAR(255)"/>
+            <column name="invoice_created" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_name" type="VARCHAR(255)"/>
+            <column name="node_id" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="VARCHAR(255)"/>
+            <column name="user_id" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="discount_id" type="BIGINT"/>
+            <column name="product_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="subscription_plan_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1668559847850-10">
+        <createTable tableName="subscription_plan">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="subscription_planPK"/>
+            </column>
+            <column name="date_created" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="date_modified" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="frequency" type="VARCHAR(255)"/>
+            <column name="price" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="product_id" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="subscription_plan_id" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="currency_currency_id" type="VARCHAR(255)"/>
+            <column name="discount_subscription_plan_id" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1668559847850-11">
+        <createTable tableName="subscription_request">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="subscription_requestPK"/>
+            </column>
+            <column name="date_created" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="date_modified" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="discount_id" type="BIGINT"/>
+            <column name="email" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="first_name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="lnd_invoice_id" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="method" type="VARCHAR(255)"/>
+            <column name="node" type="VARCHAR(255)"/>
+            <column name="plan_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="product_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1668559847850-12">
+        <addUniqueConstraint columnNames="product_id" constraintName="UC_PRODUCTPRODUCT_ID_COL" tableName="product"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1668559847850-13">
+        <addUniqueConstraint columnNames="node_id" constraintName="UC_SUBSCRIPTIONNODE_ID_COL" tableName="subscription"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1668559847850-14">
+        <addUniqueConstraint columnNames="subscriptions_id" constraintName="UK_4dnxxbvmumbj0ogtxyvqcuqi3" tableName="invoice_subscriptions"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1668559847850-15">
+        <addUniqueConstraint columnNames="subscription_plan_id" constraintName="UK_gb6p5ua3hkyjhjnk2mx5749t2" tableName="discount"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1668559847850-16">
+        <addUniqueConstraint columnNames="currency_id" constraintName="UK_lce6y0sqdofhqirattt9bsd2d" tableName="currency"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1668559847850-17">
+        <addForeignKeyConstraint baseColumnNames="currency_currency_id" baseTableName="subscription_plan" constraintName="FKdt989wrbf2kswvly8n3lp2pa1" deferrable="false" initiallyDeferred="false" referencedColumnNames="currency_id" referencedTableName="currency"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1668559847850-18">
+        <addForeignKeyConstraint baseColumnNames="product_id" baseTableName="subscription" constraintName="FKg40gg635cui0m07vh433dri4x" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="product"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1668559847850-19">
+        <addForeignKeyConstraint baseColumnNames="subscription_plan_id" baseTableName="subscription" constraintName="FKhn8hnxbdoi29nb4m7ojkocqfm" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="subscription_plan"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1668559847850-20">
+        <addForeignKeyConstraint baseColumnNames="invoice_id" baseTableName="invoice_subscriptions" constraintName="FKitj8jwvocpv4gtm67v8y2ex7s" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="invoice"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1668559847850-21">
+        <addForeignKeyConstraint baseColumnNames="discount_subscription_plan_id" baseTableName="subscription_plan" constraintName="FKjv1el08chen0pssyomf6oxwyc" deferrable="false" initiallyDeferred="false" referencedColumnNames="subscription_plan_id" referencedTableName="discount"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1668559847850-22">
+        <addForeignKeyConstraint baseColumnNames="subscriptions_id" baseTableName="invoice_subscriptions" constraintName="FKli2pcyuq59ialht0ij0dg11k4" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="subscription"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1668559847850-23">
+        <addForeignKeyConstraint baseColumnNames="discount_id" baseTableName="subscription" constraintName="FKsai8b0led122dakggo4cpr9lf" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="discount"/>
+    </changeSet>
+</databaseChangeLog>

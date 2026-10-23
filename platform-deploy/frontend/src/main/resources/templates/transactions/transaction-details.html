@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout/app}" lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+  <head>
+    <title>LQwD | Transaction Details</title>
+    <link th:href="@{${cssPath + '/scrollspyNav.css'}}" rel="stylesheet" type="text/css" />
+    <link th:href="@{${cssPath + '/components/custom-modal.css'}}" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" th:href="@{${pluginPath + '/animate/animate.css'}}">
+
+    <link th:href="@{${pluginPath + '/apex/apexcharts.css'}}" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" th:href="@{${cssPath + '/widgets/modules-widgets.css'}}">
+    <link th:href="@{${cssPath + '/elements/popover.css'}}" rel="stylesheet" type="text/css" />
+  </head>
+
+  <body>
+    <section layout:fragment="sub-header">
+      <span>Transaction Details</span>
+    </section>
+
+    <div layout:fragment="content-section">
+      <div class="layout-px-spacing">
+        <div class="row layout-spacing">
+          <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 layout-spacing">
+            <form class="select mt-4" novalidate action="javascript:void(0);" id="transaction-details_frm_transaction-details">
+              <div class="form-row">
+                <h5>Transaction Details</h5>
+                <div class="col-md-12">
+                  <div id="transaction-details_div_lnd-select" class="form-group">
+                    <select th:unless="${user.isEmailstatus()}" id="transaction-details_slct_verify" class="custom-select" required disabled>
+                      <option value="">Please Verify Account</option>
+                    </select>
+                    <select th:if="${user.isEmailstatus()}" id="transaction-details_slct_lnd-select" class="custom-select" required>
+                      <option value="">Select LND</option>
+                      <option th:each="lndNodes : ${user.getLndNodes()}" th:value="${lndNodes.getLndNodeName()}" th:text="${lndNodes.getLndNodeName()}" th:selected="${param.lnd_name != null and param.lnd_name[0] == lndNodes.getLndNodeName()}"></option>
+                    </select>
+                    <div th:if="${user.isEmailstatus()}" id="transaction-details_div_transaction-select" class="form-group pt-2">
+                      <select id="transaction-details_slct_transaction-select" class="custom-select" required>
+                        <option value="">Select Transaction</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+        <!--      DO List Group With Accordion style drop down on each hash pernode (update transaction list when node selected) paginate transactions by block heights-->
+        <div th:if="${transaction} == null">
+          <div id="transaction-details_div_transaction-detail-content"></div>
+        </div>
+        <div th:unless="${transaction} == null">
+            <div th:replace="transactions/fragments/transaction-details-content"></div>
+        </div>
+      </div>
+    </div>
+    <div layout:fragment="scripts">
+      <script th:src="@{assets/js/scrollspyNav.js}"></script>
+
+      <script th:src="@{${pluginPath + '/apex/apexcharts.min.js'}}"></script>
+      <script th:src="@{${pluginPath + '/blockui/custom-blockui.js'}}"></script>
+      <script th:src="@{${pluginPath + '/blockui/jquery.blockUI.min.js'}}"></script>
+
+      <script th:src="@{/js/transactions/transaction-details.js}"></script>
+      <script th:src="@{assets/js/widgets/modules-widgets.js}"></script>
+      <script th:src="@{assets/js/elements/popovers.js}"></script>
+      <script th:inline="javascript">
+        /*<![CDATA[*/
+        $(document).ready(function() {
+          var tx_hash = /*[[${param.tx_hash}]]*/'';
+          if (tx_hash != null || tx_hash != ''){
+            var lnd_name = $("#transaction-details_slct_lnd-select :selected").attr('value');
+            if (lnd_name != null || lnd_name != '') {
+              updateTransactionSelectList(lnd_name, tx_hash[0]);
+            }
+          }
+          $('#transaction-details_slct_lnd-select').on('change', function (){
+            var lnd_name = $("#transaction-details_slct_lnd-select :selected").attr('value');
+
+          });
+
+          $('#transaction-details_slct_transaction-select').on('change', function (){
+            var transaction_hash = $("#transaction-details_slct_transaction-select :selected").attr('value');
+            var lnd_name = $("#transaction-details_slct_lnd-select :selected").attr('value');
+            getTransactionDetails(lnd_name, transaction_hash);
+          });
+        });
+        /*]]>*/
+      </script>
+    </div>
+  </body>
+</html>

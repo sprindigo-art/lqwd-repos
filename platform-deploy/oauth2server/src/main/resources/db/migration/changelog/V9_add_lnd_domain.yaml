@@ -1,0 +1,21 @@
+databaseChangeLog:
+  - changeSet:
+      id: V9_add_lnd_domain
+      validCheckSum: ANY
+      author: femi
+      preConditions:
+        onFail: MARK_RAN
+        not:
+          columnExists:
+            tableName: lndnodeinfo
+            columnName: domain
+      changes:
+        - addColumn:
+            tableName: lndnodeinfo
+            columns:
+              - column:
+                  name: domain
+                  type: varchar(255)
+                  defaultValue: 'ln.lqwd.tech'
+                  constraints:
+                    nullable: false

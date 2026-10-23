@@ -1,0 +1,495 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <changeSet author="djbabs (generated)" id="1648852400633-1">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <not>
+               <tableExists tableName="btc_transaction_hash" />
+            </not>
+        </preConditions>
+        <createTable tableName="btc_transaction_hash">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="btc_transaction_hashPK"/>
+            </column>
+            <column name="amount_sat" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="lnd_network" type="INT"/>
+            <column name="node_name" type="VARCHAR(255)"/>
+            <column name="trx_hash" type="VARCHAR(255)"/>
+            <column name="wallet_address" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1648852400633-2">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <foreignKeyConstraintExists foreignKeyName="FK2hhj0iylri3r3xtm8y4ihft6k" />
+            </not>
+        </preConditions>
+        <addForeignKeyConstraint baseColumnNames="pending_open_channel_id" baseTableName="lsp_monitor_channel" constraintName="FK2hhj0iylri3r3xtm8y4ihft6k" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="lsp_monitor_pending_update"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1648852400633-3">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <foreignKeyConstraintExists foreignKeyName="FK6rlkuq9lgqv1wb9fiscwcof49" />
+            </not>
+        </preConditions>
+        <addForeignKeyConstraint baseColumnNames="active_channel_id" baseTableName="lsp_monitor_channel" constraintName="FK6rlkuq9lgqv1wb9fiscwcof49" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="lsp_monitor_channel_point"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1648852400633-4">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <foreignKeyConstraintExists foreignKeyName="FK80d2gwetjyjq5ebikib428v12" />
+            </not>
+        </preConditions>
+        <addForeignKeyConstraint baseColumnNames="open_channel_id" baseTableName="lsp_monitor_channel" constraintName="FK80d2gwetjyjq5ebikib428v12" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="lsp_monitor_open_channel"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1648852400633-5">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <foreignKeyConstraintExists foreignKeyName="FK9wm44i28dp4mok38lrw0s5qga" />
+            </not>
+        </preConditions>
+        <addForeignKeyConstraint baseColumnNames="fully_resolved_channel_id" baseTableName="lsp_monitor_channel" constraintName="FK9wm44i28dp4mok38lrw0s5qga" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="lsp_monitor_channel_point"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1648852400633-6">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <foreignKeyConstraintExists foreignKeyName="FKlcgmiqtbirjo15adavbaex3bx" />
+            </not>
+        </preConditions>
+        <addForeignKeyConstraint baseColumnNames="inactive_channel_id" baseTableName="lsp_monitor_channel" constraintName="FKlcgmiqtbirjo15adavbaex3bx" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="lsp_monitor_channel_point"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1648852400633-7">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <foreignKeyConstraintExists foreignKeyName="FKmy4vqrsfrvtp2ipw5mdptsxtr" />
+            </not>
+        </preConditions>
+        <addForeignKeyConstraint baseColumnNames="closed_channel_id" baseTableName="lsp_monitor_channel" constraintName="FKmy4vqrsfrvtp2ipw5mdptsxtr" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="lsp_monitor_close_channel"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1648852400633-8">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <foreignKeyConstraintExists foreignKeyName="FKq9yeioy43ba74a4260ye5j9c3" />
+            </not>
+        </preConditions>
+        <addForeignKeyConstraint baseColumnNames="lsp_transaction_id" baseTableName="lsp_transaction_address" constraintName="FKq9yeioy43ba74a4260ye5j9c3" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="lsp_transaction"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1648852400633-9">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="1">
+                SELECT count(c.conname) FROM pg_catalog.pg_constraint c JOIN pg_class t ON t.oid = c.conrelid WHERE t.relname ='forwarding_events' and c.conname='forwarding_events_chan_id_in_timestamp_ns_key' and c.contype='u'
+            </sqlCheck>
+        </preConditions>
+        <dropUniqueConstraint constraintName="forwarding_events_chan_id_in_timestamp_ns_key" tableName="forwarding_events"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1648852400633-10">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="1">
+                SELECT count(c.conname) FROM pg_catalog.pg_constraint c JOIN pg_class t ON t.oid = c.conrelid WHERE t.relname ='invoice' and c.conname='uc_invoiceadd_index_col' and c.contype='u'
+            </sqlCheck>
+        </preConditions>
+        <dropUniqueConstraint constraintName="uc_invoiceadd_index_col" tableName="invoice"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1648852400633-11">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="1">
+                SELECT count(c.conname) FROM pg_catalog.pg_constraint c JOIN pg_class t ON t.oid = c.conrelid WHERE t.relname ='invoice' and c.conname='uc_invoicesettled_index_col' and c.contype='u'
+            </sqlCheck>
+        </preConditions>
+        <dropUniqueConstraint constraintName="uc_invoicesettled_index_col" tableName="invoice"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1648852400633-12">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="1">
+                SELECT count(c.conname) FROM pg_catalog.pg_constraint c JOIN pg_class t ON t.oid = c.conrelid WHERE t.relname ='lnd_restore_seed_detail' and c.conname='uc_lnd_restore_seed_detailnode_name_col' and c.contype='u'
+            </sqlCheck>
+        </preConditions>
+        <dropUniqueConstraint constraintName="uc_lnd_restore_seed_detailnode_name_col" tableName="lnd_restore_seed_detail"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1648852400633-13">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="beta"/>
+        </preConditions>
+        <dropTable tableName="beta"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1648852400633-14">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="channel_age"/>
+        </preConditions>
+        <dropTable tableName="channel_age"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1648852400633-15">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="channel_info"/>
+        </preConditions>
+        <dropTable tableName="channel_info"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1648852400633-18">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="forwarding_events"/>
+        </preConditions>
+        <dropTable tableName="forwarding_events"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1648852400633-19">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="lnd_invoice"/>
+        </preConditions>
+        <dropTable tableName="lnd_invoice"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1648852400633-20">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="lnd_main"/>
+        </preConditions>
+        <dropTable tableName="lnd_main"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1648852400633-21">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="lnd_restore_seed_detail"/>
+        </preConditions>
+        <dropTable tableName="lnd_restore_seed_detail"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1648852400633-22">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="ml_stats_daily"/>
+        </preConditions>
+        <dropTable tableName="ml_stats_daily"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1648852400633-23">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="price_usd_cad"/>
+        </preConditions>
+        <dropTable tableName="price_usd_cad"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1648852400633-40">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <columnExists tableName="invoice" columnName="r_hash_str" />
+        </preConditions>
+        <dropColumn columnName="r_hash_str" tableName="invoice"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1648852400633-58">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <sequenceExists sequenceName="id_lnd_main_sequence" />
+        </preConditions>
+        <dropSequence sequenceName="id_lnd_main_sequence"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1648852400633-59">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <sequenceExists sequenceName="id_lnd_main_v2_sequence" />
+        </preConditions>
+        <dropSequence sequenceName="id_lnd_main_v2_sequence"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1648852400633-60">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <columnExists columnName="active" tableName="lsp_monitor_open_channel" />
+        </preConditions>
+        <addNotNullConstraint columnDataType="boolean" columnName="active" tableName="lsp_monitor_open_channel"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1648852400633-61">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <columnExists columnName="address" tableName="lsp_transaction_address" />
+        </preConditions>
+        <dropNotNullConstraint columnDataType="varchar(255)" columnName="address" tableName="lsp_transaction_address"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1648852400633-62">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <columnExists columnName="apikey" tableName="command_history" />
+        </preConditions>
+        <dropDefaultValue columnDataType="varchar(1024)" columnName="apikey" tableName="command_history"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1648852400633-63">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <columnExists columnName="apikey" tableName="lnd_access_uer" />
+        </preConditions>
+        <dropDefaultValue columnDataType="varchar(255)" columnName="apikey" tableName="lnd_access_uer"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1648852400633-64">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <columnExists columnName="block_hash" tableName="lsp_transaction" />
+        </preConditions>
+        <dropNotNullConstraint columnDataType="varchar(255)" columnName="block_hash" tableName="lsp_transaction"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1648852400633-65">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <columnExists columnName="close_height" tableName="lsp_monitor_close_channel" />
+        </preConditions>
+        <addNotNullConstraint columnDataType="int" columnName="close_height" tableName="lsp_monitor_close_channel"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1648852400633-66">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <columnExists columnName="command" tableName="command_history" />
+        </preConditions>
+        <dropDefaultValue columnDataType="varchar(2000)" columnName="command" tableName="command_history"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1648852400633-67">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <columnExists columnName="csv_delay" tableName="lsp_monitor_open_channel" />
+        </preConditions>
+        <addNotNullConstraint columnDataType="int" columnName="csv_delay" tableName="lsp_monitor_open_channel"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1648852400633-68">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <columnExists columnName="fee" tableName="liquidity" />
+        </preConditions>
+        <dropNotNullConstraint columnDataType="int" columnName="fee" tableName="liquidity"/>
+        <dropDefaultValue columnDataType="int" columnName="fee" tableName="liquidity"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1648852400633-69">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <columnExists columnName="fee_rate" tableName="lsp_monitor_pending_update" />
+        </preConditions>
+        <addNotNullConstraint columnDataType="float8" columnName="fee_rate" tableName="lsp_monitor_pending_update"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1648852400633-70">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <columnExists columnName="global" tableName="lsp_monitor_pending_update" />
+        </preConditions>
+        <addNotNullConstraint columnDataType="boolean" columnName="global" tableName="lsp_monitor_pending_update"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1648852400633-85">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <columnExists columnName="initiator" tableName="lsp_monitor_open_channel" />
+        </preConditions>
+        <addNotNullConstraint columnDataType="boolean" columnName="initiator" tableName="lsp_monitor_open_channel"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1648852400633-86">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <columnExists columnName="is_amp" tableName="lsp_monitor_invoice" />
+        </preConditions>
+        <addNotNullConstraint columnDataType="boolean" columnName="is_amp" tableName="lsp_monitor_invoice"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1648852400633-87">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <columnExists columnName="is_keysend" tableName="lsp_monitor_invoice" />
+        </preConditions>
+        <addNotNullConstraint columnDataType="boolean" columnName="is_keysend" tableName="lsp_monitor_invoice"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1648852400633-88">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <columnExists columnName="is_private" tableName="lsp_monitor_invoice" />
+        </preConditions>
+        <addNotNullConstraint columnDataType="boolean" columnName="is_private" tableName="lsp_monitor_invoice"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1648852400633-89">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <columnExists columnName="is_private" tableName="lsp_monitor_open_channel" />
+        </preConditions>
+        <addNotNullConstraint columnDataType="boolean" columnName="is_private" tableName="lsp_monitor_open_channel"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1648852400633-90">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <columnExists columnName="label" tableName="lsp_transaction" />
+        </preConditions>
+        <dropNotNullConstraint columnDataType="varchar(255)" columnName="label" tableName="lsp_transaction"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1648852400633-91">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <columnExists columnName="lsp_transaction_id" tableName="lsp_transaction_address" />
+        </preConditions>
+        <dropNotNullConstraint columnDataType="bigint" columnName="lsp_transaction_id" tableName="lsp_transaction_address"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1648852400633-92">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <columnExists columnName="min_htlc_msat_specified" tableName="lsp_monitor_pending_update" />
+        </preConditions>
+        <addNotNullConstraint columnDataType="boolean" columnName="min_htlc_msat_specified" tableName="lsp_monitor_pending_update"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1648852400633-93">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <columnExists columnName="node_name" tableName="invoice" />
+        </preConditions>
+        <dropDefaultValue columnDataType="varchar(255)" columnName="node_name" tableName="invoice"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1648852400633-94">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <columnExists columnName="node_name" tableName="lnd_creation_state_check_queue" />
+        </preConditions>
+        <dropNotNullConstraint columnDataType="varchar(255)" columnName="node_name" tableName="lnd_creation_state_check_queue"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1648852400633-95">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <columnExists columnName="node_name" tableName="lnd_creation_status_log" />
+        </preConditions>
+        <dropNotNullConstraint columnDataType="varchar(255)" columnName="node_name" tableName="lnd_creation_status_log"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1648852400633-96">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <columnExists columnName="node_name" tableName="lsp_staking" />
+        </preConditions>
+        <dropNotNullConstraint columnDataType="varchar(255)" columnName="node_name" tableName="lsp_staking"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1648852400633-97">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <columnExists columnName="node_name" tableName="lsp_transaction" />
+        </preConditions>
+        <dropNotNullConstraint columnDataType="varchar(255)" columnName="node_name" tableName="lsp_transaction"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1648852400633-98">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <columnExists columnName="output_index" tableName="lsp_monitor_channel_point" />
+        </preConditions>
+        <addNotNullConstraint columnDataType="int" columnName="output_index" tableName="lsp_monitor_channel_point"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1648852400633-99">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <columnExists columnName="raw_transaction_hex" tableName="lsp_transaction" />
+        </preConditions>
+        <dropNotNullConstraint columnDataType="varchar(255)" columnName="raw_transaction_hex" tableName="lsp_transaction"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1648852400633-100">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <columnExists columnName="running_state" tableName="lnd_creation_state_check_queue" />
+        </preConditions>
+        <dropNotNullConstraint columnDataType="varchar(255)" columnName="running_state" tableName="lnd_creation_state_check_queue"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1648852400633-101">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <columnExists columnName="settled" tableName="lsp_monitor_invoice" />
+        </preConditions>
+        <addNotNullConstraint columnDataType="boolean" columnName="settled" tableName="lsp_monitor_invoice"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1648852400633-102">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <columnExists columnName="staking_reference" tableName="lsp_staking" />
+        </preConditions>
+        <dropNotNullConstraint columnDataType="bigint" columnName="staking_reference" tableName="lsp_staking"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1648852400633-103">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <columnExists columnName="staking_type" tableName="lsp_staking" />
+        </preConditions>
+        <dropNotNullConstraint columnDataType="varchar(255)" columnName="staking_type" tableName="lsp_staking"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1648852400633-104">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <columnExists columnName="static_remote_key" tableName="lsp_monitor_open_channel" />
+        </preConditions>
+        <addNotNullConstraint columnDataType="boolean" columnName="static_remote_key" tableName="lsp_monitor_open_channel"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1648852400633-105">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <columnExists columnName="status" tableName="lnd_creation_status_log" />
+        </preConditions>
+        <dropNotNullConstraint columnDataType="varchar(255)" columnName="status" tableName="lnd_creation_status_log"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1648852400633-106">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <columnExists columnName="status" tableName="lsp_staking" />
+        </preConditions>
+        <dropNotNullConstraint columnDataType="varchar(255)" columnName="status" tableName="lsp_staking"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1648852400633-107">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <columnExists columnName="thaw_height" tableName="lsp_monitor_open_channel" />
+        </preConditions>
+        <addNotNullConstraint columnDataType="int" columnName="thaw_height" tableName="lsp_monitor_open_channel"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1648852400633-108">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <columnExists columnName="time_lock_delta" tableName="lsp_monitor_pending_update" />
+        </preConditions>
+        <addNotNullConstraint columnDataType="int" columnName="time_lock_delta" tableName="lsp_monitor_pending_update"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1648852400633-109">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <columnExists columnName="time_stamp" tableName="lsp_transaction" />
+        </preConditions>
+        <dropNotNullConstraint columnDataType="varchar(255)" columnName="time_stamp" tableName="lsp_transaction"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1648852400633-110">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <columnExists columnName="transaction_hash" tableName="lsp_transaction" />
+        </preConditions>
+        <dropNotNullConstraint columnDataType="varchar(255)" columnName="transaction_hash" tableName="lsp_transaction"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1648852400633-111">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <columnExists columnName="type" tableName="lsp_monitor_channel" />
+        </preConditions>
+        <dropNotNullConstraint columnDataType="varchar(255)" columnName="type" tableName="lsp_monitor_channel"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1648852400633-112">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <columnExists columnName="user_email" tableName="liquidity" />
+        </preConditions>
+        <addNotNullConstraint columnDataType="varchar(255)" columnName="user_email" tableName="liquidity"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1648852400633-113">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <columnExists columnName="user_id" tableName="lsp_staking" />
+        </preConditions>
+        <dropNotNullConstraint columnDataType="varchar(255)" columnName="user_id" tableName="lsp_staking"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1648852400633-114">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <columnExists columnName="wallet_address" tableName="btc_payment_address" />
+        </preConditions>
+        <dropNotNullConstraint columnDataType="varchar(255)" columnName="wallet_address" tableName="btc_payment_address"/>
+    </changeSet>
+</databaseChangeLog>

@@ -1,0 +1,151 @@
+pipeline {
+  agent {
+    kubernetes {
+      	cloud 'kubernetes'
+      	defaultContainer 'jnlp'
+      }
+    }
+  
+  environment {
+
+       GIT_SSH_COMMAND = "ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
+
+       registry = '514063904685.dkr.ecr.us-west-2.amazonaws.com/helloworld'
+       registryCredential = 'aws-ecr'
+   }
+
+  stages {
+    
+    
+    stage('Checkout Source') {
+        steps {
+            //sh "ssh -o StrictHostKeyChecking=no git@github.com"
+            git credentialsId: 'github-ssh', url:'git@github.com:lightningriders/cicd-test.git', branch:'main'
+            sh "pwd"
+            sh "ls -la"
+        }
+    }
+
+    stage('Deploy App') {
+        steps {
+            script {
+                 //kubernetesDeploy( kubeconfigId: 'stage-k8s-local',
+                 //                  configs: "namespace.yml"
+                 //                )
+                 //sleep(time:5,unit:"SECONDS")
+                 //kubernetesDeploy( kubeconfigId: 'stage-k8s-local',
+                 //                  configs: "helloworld.yml",
+                 //                  dockerCredentials: [
+                 //                      [credentialsId: 'ecr:us-west-2:aws-ecr', url: 'https://514063904685.dkr.ecr.us-west-2.amazonaws.com/helloworld']
+                 //                  ],
+                 //                  secretNamespace: 'cicdtest'
+                 //                )
+                 //sleep(time:10,unit:"SECONDS")
+                 kubernetesDeploy( kubeconfigId: 'stage-k8s-local',
+                                   configs: "ingress.yml"
+                                 )
+            }
+        }
+    }
+  }
+}pipeline {
+  agent {
+    kubernetes {
+      	cloud 'kubernetes'
+      	defaultContainer 'jnlp'
+      }
+    }
+  
+  environment {
+
+       GIT_SSH_COMMAND = "ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
+
+       registry = '514063904685.dkr.ecr.us-west-2.amazonaws.com/helloworld'
+       registryCredential = 'aws-ecr'
+   }
+
+  stages {
+    
+    
+    stage('Checkout Source') {
+        steps {
+            //sh "ssh -o StrictHostKeyChecking=no git@github.com"
+            git credentialsId: 'github-ssh', url:'git@github.com:lightningriders/cicd-test.git', branch:'main'
+            sh "pwd"
+            sh "ls -la"
+        }
+    }
+
+    stage('Deploy App') {
+        steps {
+            script {
+                 //kubernetesDeploy( kubeconfigId: 'stage-k8s-local',
+                 //                  configs: "namespace.yml"
+                 //                )
+                 //sleep(time:5,unit:"SECONDS")
+                 //kubernetesDeploy( kubeconfigId: 'stage-k8s-local',
+                 //                  configs: "helloworld.yml",
+                 //                  dockerCredentials: [
+                 //                      [credentialsId: 'ecr:us-west-2:aws-ecr', url: 'https://514063904685.dkr.ecr.us-west-2.amazonaws.com/helloworld']
+                 //                  ],
+                 //                  secretNamespace: 'cicdtest'
+                 //                )
+                 //sleep(time:10,unit:"SECONDS")
+                 kubernetesDeploy( kubeconfigId: 'stage-k8s-local',
+                                   configs: "ingress.yml"
+                                 )
+            }
+        }
+    }
+  }
+}pipeline {
+  agent {
+    kubernetes {
+      	cloud 'kubernetes'
+      	defaultContainer 'jnlp'
+      }
+    }
+  
+  environment {
+
+       GIT_SSH_COMMAND = "ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
+
+       registry = '514063904685.dkr.ecr.us-west-2.amazonaws.com/helloworld'
+       registryCredential = 'aws-ecr'
+   }
+
+  stages {
+    
+    
+    stage('Checkout Source') {
+        steps {
+            //sh "ssh -o StrictHostKeyChecking=no git@github.com"
+            git credentialsId: 'github-ssh', url:'git@github.com:lightningriders/cicd-test.git', branch:'main'
+            sh "pwd"
+            sh "ls -la"
+        }
+    }
+
+    stage('Deploy App') {
+        steps {
+            script {
+                 //kubernetesDeploy( kubeconfigId: 'stage-k8s-local',
+                 //                  configs: "namespace.yml"
+                 //                )
+                 //sleep(time:5,unit:"SECONDS")
+                 //kubernetesDeploy( kubeconfigId: 'stage-k8s-local',
+                 //                  configs: "helloworld.yml",
+                 //                  dockerCredentials: [
+                 //                      [credentialsId: 'ecr:us-west-2:aws-ecr', url: 'https://514063904685.dkr.ecr.us-west-2.amazonaws.com/helloworld']
+                 //                  ],
+                 //                  secretNamespace: 'cicdtest'
+                 //                )
+                 //sleep(time:10,unit:"SECONDS")
+                 kubernetesDeploy( kubeconfigId: 'stage-k8s-local',
+                                   configs: "ingress.yml"
+                                 )
+            }
+        }
+    }
+  }
+}

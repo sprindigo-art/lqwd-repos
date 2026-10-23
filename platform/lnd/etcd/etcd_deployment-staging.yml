@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: etcd
+  namespace: lqwd-lnd
+  labels:
+    app: etcd
+spec:
+  selector:
+    matchLabels:
+      app: etcd
+  template:
+    metadata:
+      labels:
+        app: etcd
+    spec:
+      containers:
+        - name: etcd
+          image: '514063904685.dkr.ecr.us-west-2.amazonaws.com/etcd:$ETCD_IMAGE_TAG'
+          command: [ "etcd" ]
+          ports:
+            - containerPort: 2379
+              name: client
+              protocol: TCP
+            - containerPort: 2380
+              name: server
+              protocol: TCP
+status: {}

@@ -1,0 +1,10 @@
+databaseChangeLog:
+  - changeSet:
+      id: add_version_column
+      validCheckSum: ANY
+      author: chris
+      changes:
+        - sql:
+            sql: ALTER TABLE lndnodeinfo ADD COLUMN IF NOT EXISTS lnd_version varchar(50);
+        - sql:
+            sql: ALTER TABLE lndnodeinfo ADD COLUMN IF NOT EXISTS script_version varchar(50);

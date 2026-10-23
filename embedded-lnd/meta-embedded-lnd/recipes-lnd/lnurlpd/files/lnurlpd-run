@@ -1,0 +1,63 @@
+#!/bin/sh
+# Wait for what lnurlpd needs, then run it as the lnurlpd user.
+#
+# Started by /etc/init.d/lnurlpd, which backgrounds this and records ITS pid.
+# The exec at the end keeps that pid, so the init script's pidfile stays
+# correct.
+#
+# Three things have to be true before lnurlpd can start, and none of them is
+# true at boot:
+#
+#   1. tun0 is up, because it binds the VPN address and nothing else;
+#   2. lnd has been through wallet creation, because macaroons only exist
+#      after that;
+#   3. this device has been unlocked at least once, for the same reason.
+#
+# Waiting is the right behaviour rather than failing: on a device with no
+# auto-unlock, "not yet" can last until someone runs lncli unlock.
+set -eu
+
+. /etc/default/lnurlpd
+
+MACAROON="$LND_DIR/data/chain/bitcoin/$LND_NETWORK/invoice.macaroon"
+BIND_IP="${LISTEN%%:*}"
+
+log() { echo "lnurlpd-run: $*"; }
+
+log "waiting for $BIND_IP"
+while ! ip -4 addr show 2>/dev/null | grep -qw "$BIND_IP"; do
+    sleep 5
+done
+
+log "waiting for $MACAROON"
+while [ ! -f "$MACAROON" ] || [ ! -f "$LND_DIR/tls.cert" ]; do
+    sleep 5
+done
+
+# lnurlpd runs as its own user and cannot read lnd's data directory, which is
+# 0700 and owned by lnd. That separation is the point: this is the one process
+# on the appliance that anything outside ever reaches, and it should not be
+# able to read the admin macaroon sitting next to the invoice one.
+#
+# So the two files it does need are copied here, as root, on every start. A
+# copy can go stale if lnd regenerates its certificate; restarting the service
+# refreshes it.
+log "copying credentials into $CRED_DIR"
+mkdir -p "$CRED_DIR"
+cp "$MACAROON" "$CRED_DIR/invoice.macaroon"
+cp "$LND_DIR/tls.cert" "$CRED_DIR/tls.cert"
+chown -R lnurlpd:lnurlpd "$CRED_DIR"
+chmod 0700 "$CRED_DIR"
+chmod 0400 "$CRED_DIR/invoice.macaroon" "$CRED_DIR/tls.cert"
+
+log "starting lnurlpd on $LISTEN for $NAME at $BASE_URL"
+exec start-stop-daemon --start --chuid lnurlpd:lnurlpd \
+    --exec /usr/bin/lnurlpd -- \
+    -listen="$LISTEN" \
+    -base-url="$BASE_URL" \
+    -name="$NAME" \
+    -lnd-rest="$LND_REST" \
+    -lnd-tls-cert="$CRED_DIR/tls.cert" \
+    -lnd-macaroon="$CRED_DIR/invoice.macaroon" \
+    -min-sat="$MIN_SAT" \
+    -max-sat="$MAX_SAT"

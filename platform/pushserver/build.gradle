@@ -1,0 +1,66 @@
+apply plugin: 'groovy'
+apply plugin: "java"
+apply plugin: 'application'
+//apply plugin: 'distribution'
+
+dependencies {
+
+    implementation 'com.netflix.zuul:zuul-guice:2.3.0'
+    implementation 'com.netflix.zuul:zuul-groovy:2.3.0'
+    implementation 'com.netflix.zuul:zuul-core:2.3.0'
+    implementation 'commons-configuration:commons-configuration:1.10'
+    implementation 'redis.clients:jedis:4.2.0'
+    runtimeOnly 'org.apache.logging.log4j:log4j-core:2.17.2'
+    runtimeOnly 'org.apache.logging.log4j:log4j-slf4j-impl:2.17.2'
+
+}
+
+group 'zuul-push-server'
+version '1.0-SNAPSHOT'
+
+mainClassName = "com.lqwd.zuul.push.Bootstrap"
+
+jar {
+    from sourceSets.main.allGroovy
+
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+
+    manifest {
+        attributes "Main-Class": "$mainClassName"
+    }
+
+    zip64 = true
+
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+
+            {
+                exclude "META-INF/*.SF"
+                exclude "META-INF/*.DSA"
+                exclude "META-INF/*.RSA"
+            }
+}
+
+/*
+ * Run regular:   ./gradlew run
+ * Run benchmark: ./gradlew run -Pbench
+ */
+run {
+    applicationDefaultJvmArgs = ["-DTZ=GMT",
+                                 "-Darchaius.deployment.environment=test",
+                                 "-Dcom.sun.management.jmxremote",
+                                 "-Dcom.sun.management.jmxremote.local.only=false",
+                                 "-Deureka.validateInstanceId=false",
+                                 "-Deureka.mt.num_retries=1"]
+
+    if (project.hasProperty('bench')) {
+        println 'Running benchmark configuration...'
+        jvmArgs "-Darchaius.deployment.environment=benchmark"
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+

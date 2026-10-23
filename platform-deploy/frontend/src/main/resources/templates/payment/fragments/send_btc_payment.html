@@ -1,0 +1,26 @@
+<div th:fragment="send-btc-payment" class="widget widget-activity-four" style="height: 100%;">
+    <div class="widget-heading">
+        <h5 class="">Send BTC</h5>
+    </div>
+    <div class="widget-content">
+        <form class="select mt-4" novalidate action="javascript:void(0);">
+            <div class="row-12">
+                <div class="col-12">
+                    <div class="row">
+                        <input type="text" class="form-control mb-2" id="send-btc-payment_txt_request" placeholder="BTC Address" th:data-custodial="${lndNodeSession.getIsNonCustodial()}">
+                    </div>
+                    <div class="row">
+                        <input type="number" class="form-control" th:min="0" th:step="1" id="send-btc-payment_txt_amount" placeholder="Amount in Satoshi" >
+                    </div>
+                </div>
+            </div>
+            <div class="row" id="send-btc-payment_div_send-request">
+                <div class="col-12" >
+                    <button th:unless="${user.isEmailstatus()}" class="btn btn-primary mb-2 mt-2" type="submit" style="width: 100%;" disabled>Please Verify Account</button>
+                    <button th:if="${user.isEmailstatus()}" class="btn btn-primary mb-2 mt-2" id="send-btc-payment_btn_submit" style="width: 100%;" type="submit">Send Payment</button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+</div>

@@ -1,0 +1,54 @@
+<div th:fragment="send-payment" class="widget widget-activity-four">
+    <div class="widget-heading">
+        <h5 class="">Send Payment</h5>
+    </div>
+
+    <div class="widget-content">
+
+        <form class="select mt-4" novalidate action="javascript:void(0);">
+            <div class="form-row">
+                <div class="col-md-12">
+                    <div id="select_menu" class="form-group mb-4">
+                        <select id="create-payment_slct_lnd" class="form-control" required>
+                            <option value="">Select LND</option>
+                            <option th:each="lndNodes : ${user.getLndNodes()}" th:if="${lndNodes.getStatus()} == 'RUNNING'"
+                                    th:value="${lndNodes.getLndNodeName()}" th:data-custodial="${lndNodes.getIsNonCustodial()}">
+                                <span>[[${lndNodes.getLndNodeName()}]] </span>
+                                <span th:if="${lndNodes.getWalletBalance()!=null}">(Total balance: [[ ${#numbers.formatDecimal(lndNodes.getWalletBalance().getTotal_balance(), 0, 'COMMA', 0, 'POINT')} ]] SAT)</span>
+                            </option>
+
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col-md-12">
+                    <div id="payment_type_menu" class="form-group mb-4">
+                        <select id="create-payment_slct_type" class="form-control" required>
+                            <option value="LND">LND Payment</option>
+                            <option value="BTC">BTC Payment</option>
+                         </select>
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col-md-4">
+                    <label class="sr-only" for="create-payment_txt_amount">Amount</label>
+                    <div class="input-group mb-2">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">$</div>
+                        </div>
+                        <input type="number" class="form-control" th:min="0" th:step="1" id="create-payment_txt_amount" placeholder="Amount in Satoshi" disabled="false" >
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <label class="sr-only" for="create-payment_txt_request">Payment Request</label>
+                    <input type="text" class="form-control mb-2" id="create-payment_txt_request" placeholder="Payment Request">
+                </div>
+            </div>
+            <button th:unless="${user.isEmailstatus()}" class="btn btn-primary mb-2 mt-2" type="submit" disabled>Plesase Verify Account</button>
+            <button th:if="${user.isEmailstatus()}" class="col-12 btn btn-primary mb-2 mt-2" id="create-payment_btn_submit" type="submit">Send Payment</button>
+        </form>
+
+    </div>
+</div>

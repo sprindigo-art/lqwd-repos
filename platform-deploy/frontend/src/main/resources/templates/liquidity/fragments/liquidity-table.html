@@ -1,0 +1,106 @@
+<div id="request-liquidity_div_lists"
+     style="width: 100%; display: block; margin: 15px;"
+     th:fragment="liquidity-table(${liquidityInvoices},${totalPages},${curentPage},${totalItems},${startPageIndex},${endPageIndex})">
+<div class="col-12">
+<div class="widget-content widget-content-area">
+    <div th:if="${totalItems==0}" class="widget" id="liquidity-table_div_list-empty">
+        <div class="widget-content widget-content-area justify-content-center text-center">
+            <h3 style="padding: 20px;">You do not have any requests</h3>
+        </div>
+    </div>
+        <div  th:unless="${totalItems==0}" class="table-responsive mb-4 col-12" >
+            <div class="widget-heading pt-1" style="margin: 20px;">
+                <div class="">
+                    <h5> Liquidity Invoices</h5>
+                </div>
+            </div>
+            <table class="table table-hover custom-table-color">
+                <thead>
+                <tr>
+                    <th>Type</th>
+                    <th>Requested Amount</th>
+                    <th>Fee to pay</th>
+                    <th>Date created</th>
+                    <th>Date expired</th>
+                    <th>Status</th>
+                </tr>
+                </thead>
+                <tbody>
+                     <tr  th:each="invoice:${liquidityInvoices}">
+                         <td class="invoice-link" th:text="${invoice.getType()}"
+                             th:attr="onclick=|openLiquidityInvoiceDetails('${invoice.getPaymentOptionId()}', '${curentPage}')|"></td>
+                         <td th:text="${invoice.getRequestedAmt()}"></td>
+                         <td th:text="${invoice.getFeeToPay()}"></td>
+                         <td th:text="${#dates.format(invoice.getDateCreated(),'MMMM d, YYYY')}"></td>
+                         <td th:text="${#dates.format(invoice.getChannelExpiryDate(),'MMMM d, YYYY')}"></td>
+                         <td>
+                             <span class="badge outline-badge-success" th:if="${invoice.getPaid()}" th:text="'PAID'"></span>
+                             <span class="badge outline-badge-warning" th:unless="${invoice.getPaid()}" th:text="'NOT PAID'"></span>
+                         </td>
+                     </tr>
+                </tbody>
+                <tfoot>
+                <tr>
+                    <th>Type</th>
+                    <th>Requested Amount</th>
+                    <th>Fee to pay</th>
+                    <th>Date created</th>
+                    <th>Date expired</th>
+                    <th>Status</th>
+                </tr>
+                </tfoot>
+            </table>
+            <div class="row">
+                <div class="col-sm-12 col-md-5">
+                    <div class="dataTables_info" th:text="|Total number of invoices: ${totalItems}|"></div>
+                </div>
+                <div class="col-sm-12 col-md-7" th:if="${totalPages > 1}">
+                    <div class="dataTables_paginate paging_simple_numbers center">
+                        <ul class="pagination">
+                            <li class="paginate_button page-item">
+                                <button class="page-link"
+                                        th:unless="${startPageIndex==1}"
+                                        th:attr="onclick=|updatePage('${startPageIndex-5},${startPageIndex-5},${startPageIndex-1}','true')|">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                                         fill="none"
+                                         stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                         stroke-linejoin="round"
+                                         class="feather feather-chevron-left">
+                                        <line x1="19" y1="12" x2="5" y2="12"></line>
+                                        <polyline points="12 19 5 12 12 5"></polyline>
+                                    </svg>
+                                </button>
+                            </li>
+                            <span th:each="i: ${#numbers.sequence(startPageIndex,endPageIndex)}">
+                            <li class="paginate_button page-item"
+                                th:classappend="${curentPage==i} ? active">
+                                <button
+                                        class="page-link"
+                                        th:attr="onclick=|updatePage('${i}',${startPageIndex},${endPageIndex},'false')|">[[${i}]]
+                                </button>
+                            </li>
+                        </span>
+                            <li class="paginate_button page-item next">
+                                <button
+                                        class="page-link"
+                                        th:unless="${endPageIndex == totalPages}"
+                                        th:attr="onclick=|updatePage(${endPageIndex+1},${endPageIndex+1},${endPageIndex+5},'true')|">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                                         fill="none"
+                                         stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                         stroke-linejoin="round"
+                                         class="feather feather-chevron-right">
+                                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                                        <polyline points="12 5 19 12 12 19"></polyline>
+                                    </svg>
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+    </div>
+</div>
+</div>
+
+</div>

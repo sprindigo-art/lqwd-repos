@@ -1,0 +1,350 @@
+<!doctype html>
+<html lang="en" class="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sketch 003 — Console Panels</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Saira+Semi+Condensed:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../themes/light.css">
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--color-bg); color: var(--color-text);
+    font-family: var(--font-body); font-size: var(--text-sm);
+    padding-top: 46px; -webkit-font-smoothing: antialiased;
+  }
+  button { font: inherit; cursor: pointer; }
+  :focus-visible { outline: 2px solid var(--color-navy-bright); outline-offset: 2px; }
+  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition: none !important; } }
+
+  #variant-nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 9998;
+    background: var(--color-surface); border-bottom: 1px solid var(--color-border);
+    padding: 8px 16px; display: flex; gap: 8px; align-items: center;
+    font-family: var(--font-mono); font-size: var(--text-xs);
+  }
+  #variant-nav .sketch-id { color: var(--color-text-faint); margin-right: 8px; }
+  .variant-tab {
+    background: transparent; color: var(--color-text-muted);
+    border: 1px solid var(--color-border); border-radius: var(--radius-sm);
+    padding: 5px 12px; transition: all .15s ease;
+  }
+  .variant-tab:hover { color: var(--color-text); border-color: var(--color-border-strong); }
+  .variant-tab.active { background: var(--color-navy); border-color: var(--color-navy-bright); color: #fff; }
+
+  .page { max-width: 1180px; margin: 0 auto; padding: var(--space-6); }
+  .variant { display: none; }
+  .variant.active { display: block; }
+  .mono { font-family: var(--font-mono); }
+  .muted { color: var(--color-text-muted); }
+  .faint { color: var(--color-text-faint); }
+  .backend { font-family: var(--font-mono); font-size: var(--text-xs); border: 1px solid var(--color-border-strong); border-radius: var(--radius-sm); padding: 1px 6px; color: var(--color-text-muted); }
+  .breach { font-family: var(--font-mono); font-size: var(--text-xs); font-weight: 600; color: var(--color-critical); text-transform: uppercase; letter-spacing: .06em; }
+  .outlier { font-family: var(--font-mono); font-size: var(--text-xs); font-weight: 600; color: var(--color-warn); text-transform: uppercase; letter-spacing: .06em; }
+
+  /* Tinted chip grade (sketch 002 winner) */
+  .chip {
+    font-family: var(--font-mono); font-weight: 600; display: inline-flex;
+    align-items: center; justify-content: center; border-radius: var(--radius-sm);
+    padding: .1em .45em; border: 1px solid;
+  }
+  .chip.ok { color: var(--color-ok); background: var(--color-ok-dim); border-color: rgba(61,214,140,.3); }
+  .chip.warn { color: var(--color-warn); background: var(--color-warn-dim); border-color: rgba(255,178,36,.3); }
+  .chip.critical { color: var(--color-critical); background: var(--color-critical-dim); border-color: rgba(255,77,94,.35); }
+  .chip.nodata { color: var(--color-stale); background: var(--color-stale-dim); border-color: rgba(92,103,128,.3); }
+
+  .panel { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); box-shadow: var(--shadow-panel); }
+  .panel-head {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: var(--space-3) var(--space-4); border-bottom: 1px solid var(--color-border);
+    font-family: var(--font-display); text-transform: uppercase; letter-spacing: .08em;
+    font-size: var(--text-xs); color: var(--color-text-muted);
+  }
+
+  /* Console header — identity / composite / freshness each own a fixed slot */
+  .console-head {
+    display: grid; grid-template-columns: 1fr auto auto; gap: var(--space-6);
+    align-items: center; padding: var(--space-4);
+    background: var(--color-surface); border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg); margin-bottom: var(--space-3);
+  }
+  .console-head .id h2 { margin: 0; font-family: var(--font-display); font-size: var(--text-2xl); font-weight: 600; letter-spacing: .02em; }
+  .console-head .id .sub { font-family: var(--font-mono); font-size: var(--text-xs); color: var(--color-text-faint); margin-top: 4px; display: flex; gap: var(--space-2); align-items: center; }
+  .console-head .composite { display: flex; align-items: center; gap: var(--space-3); }
+  .console-head .composite .pct { font-family: var(--font-mono); font-size: var(--text-xs); color: var(--color-text-muted); }
+  .console-head .fresh {
+    font-family: var(--font-mono); font-size: var(--text-xs); color: var(--color-text-faint);
+    border-left: 1px solid var(--color-border); padding-left: var(--space-4); text-align: right; white-space: nowrap;
+  }
+
+  /* Tab bar */
+  .tabbar { display: flex; gap: 2px; margin-bottom: var(--space-4); border-bottom: 1px solid var(--color-border); }
+  .tabbar a {
+    font-family: var(--font-mono); font-size: var(--text-xs); text-transform: uppercase; letter-spacing: .06em;
+    color: var(--color-text-muted); text-decoration: none; padding: var(--space-2) var(--space-3);
+    border-bottom: 2px solid transparent; transition: color .15s ease;
+  }
+  .tabbar a:hover { color: var(--color-text); }
+  .tabbar a.active { color: #fff; border-bottom-color: var(--color-navy-bright); }
+  .tabbar a .cnt { color: var(--color-navy-bright); }
+
+  /* Signals panel — visually distinct from grade panels */
+  .signals { border-color: rgba(255,77,94,.4); margin-bottom: var(--space-4); }
+  .signals .panel-head { color: var(--color-critical); border-bottom-color: rgba(255,77,94,.25); }
+  .signal-row { display: flex; gap: var(--space-4); align-items: baseline; padding: var(--space-3) var(--space-4); }
+  .signal-row + .signal-row { border-top: 1px solid var(--color-border); }
+  .signal-row .what { min-width: 130px; }
+  .signal-row .detail { font-family: var(--font-mono); font-size: var(--text-xs); color: var(--color-text-muted); }
+  .signal-row .go { margin-left: auto; font-family: var(--font-mono); font-size: var(--text-xs); color: var(--color-navy-bright); text-decoration: none; white-space: nowrap; }
+  .signal-row .go:hover { text-decoration: underline; }
+
+  /* A: dimension panel grid */
+  .dimgrid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-3); }
+  .dimpanel { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--space-4); display: flex; flex-direction: column; gap: var(--space-2); transition: border-color .15s ease; cursor: pointer; position: relative; }
+  .dimpanel:hover { border-color: var(--color-navy-bright); }
+  .dimpanel.nodata { opacity: .55; cursor: default; }
+  .dimpanel.nodata:hover { border-color: var(--color-border); }
+  .dimpanel .top { display: flex; justify-content: space-between; align-items: center; }
+  .dimpanel .k { font-family: var(--font-mono); font-size: var(--text-xs); color: var(--color-text-muted); text-transform: uppercase; letter-spacing: .08em; }
+  .dimpanel .ev { font-family: var(--font-mono); font-size: var(--text-xs); color: var(--color-text-faint); }
+  .dimpanel .marks { display: flex; gap: var(--space-2); min-height: 14px; }
+  .dimpanel .go { position: absolute; right: var(--space-3); bottom: var(--space-2); font-family: var(--font-mono); font-size: var(--text-xs); color: var(--color-navy-bright); opacity: 0; transition: opacity .15s ease; }
+  .dimpanel:hover .go { opacity: 1; }
+
+  /* B: rail + evidence */
+  .railwrap { display: grid; grid-template-columns: 280px 1fr; gap: var(--space-4); align-items: start; }
+  .rail { position: sticky; top: 60px; display: flex; flex-direction: column; gap: var(--space-3); }
+  .rail .panel { padding: var(--space-4); }
+  .rail-dim { display: flex; justify-content: space-between; align-items: center; padding: var(--space-2) 0; border-bottom: 1px solid var(--color-border); cursor: pointer; transition: color .15s; }
+  .rail-dim:last-child { border-bottom: 0; }
+  .rail-dim:hover .k { color: var(--color-text); }
+  .rail-dim .k { font-family: var(--font-mono); font-size: var(--text-xs); color: var(--color-text-muted); text-transform: uppercase; letter-spacing: .06em; transition: color .15s; }
+  .evpanel { margin-bottom: var(--space-3); }
+  .evbody { padding: var(--space-4); display: grid; grid-template-columns: 1fr auto; gap: var(--space-4); align-items: center; }
+  .evbody .detail { font-family: var(--font-mono); font-size: var(--text-xs); color: var(--color-text-muted); line-height: 1.7; }
+  .spark { width: 160px; height: 40px; opacity: .9; }
+  .spark polyline { fill: none; stroke: var(--color-navy-bright); stroke-width: 1.5; }
+
+  /* C: stacked severity rows */
+  .dimrow { display: grid; grid-template-columns: 4px 150px auto 1fr auto; gap: var(--space-4); align-items: center; padding: var(--space-3) var(--space-4); cursor: pointer; transition: background .15s ease; }
+  .dimrow:hover { background: var(--color-surface-2); }
+  .dimrow + .dimrow { border-top: 1px solid var(--color-border); }
+  .dimrow .edge { width: 4px; height: 24px; border-radius: 2px; background: transparent; }
+  .dimrow.critical .edge { background: var(--color-critical); }
+  .dimrow.warn .edge { background: var(--color-warn); }
+  .dimrow .k { font-family: var(--font-mono); font-size: var(--text-xs); color: var(--color-text-muted); text-transform: uppercase; letter-spacing: .08em; }
+  .dimrow .ev { font-family: var(--font-mono); font-size: var(--text-xs); color: var(--color-text-faint); }
+  .dimrow .go { font-family: var(--font-mono); font-size: var(--text-xs); color: var(--color-navy-bright); }
+  .dimrow.nodata { opacity: .5; cursor: default; }
+
+  #sketch-tools {
+    position: fixed; bottom: 12px; right: 12px; z-index: 9999;
+    font-family: system-ui; font-size: 12px; background: rgba(0,0,0,.75); color: #fff;
+    padding: 8px 12px; border-radius: 8px; opacity: .35; transition: opacity .2s; display: flex; gap: 8px;
+  }
+  #sketch-tools:hover { opacity: 1; }
+  #sketch-tools button { background: #222; color: #fff; border: 1px solid #444; border-radius: 4px; font-size: 11px; padding: 2px 6px; }
+</style>
+</head>
+<body>
+
+<div id="variant-nav">
+  <span class="sketch-id">SKETCH 003 · CONSOLE PANELS</span>
+  <button class="variant-tab active" data-v="a" onclick="showVariant('a', this)">A: Panel Grid</button>
+  <button class="variant-tab" data-v="b" onclick="showVariant('b', this)">B: Summary Rail</button>
+  <button class="variant-tab" data-v="c" onclick="showVariant('c', this)">C: Severity Rows</button>
+  <button class="variant-tab" data-v="s" onclick="showVariant('s', this)">Synthesis: B + top signals ★ Selected</button>
+</div>
+
+<div class="page" id="root"></div>
+
+<div id="sketch-tools">
+  <select onchange="document.querySelector('link[href*=themes]').href='../themes/'+this.value+'.css'">
+    <option value="light">NOC Light (default)</option>
+    <option value="default">NOC Navy (dark)</option>
+  </select>
+  <button onclick="setNode(0)">Brazil (critical)</button>
+  <button onclick="setNode(1)">Vancouver (healthy)</button>
+</div>
+
+<script>
+const NODES = [
+  {
+    alias: "LQWD-Brazil", backend: "lnd", pubkey: "027a8d…f43c19", composite: ["C", "warn", 71], fresh: "2m",
+    breaches: [
+      { label: "close storm", detail: "4 force closes in the last hour · max hourly 4", tab: "Closes" },
+    ],
+    outliers: [
+      { label: "fleet outlier", detail: "revenue 3.1 MAD below fleet median", tab: "Fees" },
+    ],
+    pending: 11,
+    dims: [
+      { k: "force close", g: ["F","critical"], ev: "4 closes / 1h · 11 in limbo", tab: "Closes", spark: "0,38 20,36 40,37 60,30 80,34 100,18 120,12 140,6 160,4" },
+      { k: "revenue", g: ["C","warn"], ev: "1,204 sats / 7d · down 38% vs median", tab: "Fees", spark: "0,12 20,14 40,12 60,18 80,22 100,26 120,30 140,32 160,34" },
+      { k: "routing", g: ["B","ok"], ev: "18,402 forwards / 7d · 96.2% success", tab: "Forwards", spark: "0,22 20,18 40,24 60,20 80,16 100,22 120,18 140,20 160,16" },
+      { k: "liquidity", g: ["B","ok"], ev: "47% local · 12 of 38 channels balanced", tab: "Liquidity", spark: "0,20 20,22 40,18 60,20 80,24 100,20 120,22 140,18 160,20" },
+      { k: "channel health", g: ["B","ok"], ev: "38 active · 2 inactive 24h", tab: "Channels", spark: "0,18 20,18 40,20 60,18 80,18 100,20 120,18 140,18 160,18" },
+      { k: "restart", g: ["A","ok"], ev: "0 restarts / 30d", tab: "Channels", spark: "0,20 20,20 40,20 60,20 80,20 100,20 120,20 140,20 160,20" },
+      { k: "peer", g: ["B","ok"], ev: "41 connected · 2 flapping", tab: "Peers", spark: "0,16 20,18 40,16 60,20 80,18 100,16 120,18 140,16 160,18" },
+      { k: "stability", g: [null,"nodata"], ev: "needs log ingestion", tab: null },
+      { k: "pg health", g: [null,"nodata"], ev: "needs pg_stat ingestion", tab: null },
+      { k: "visibility", g: [null,"nodata"], ev: "needs graph metadata", tab: null },
+    ],
+  },
+  {
+    alias: "LQWD-Vancouver", backend: "lnd", pubkey: "03c41e…a90b77", composite: ["A", "ok", 94], fresh: "2m",
+    breaches: [], outliers: [], pending: 1,
+    dims: [
+      { k: "routing", g: ["A","ok"], ev: "31,008 forwards / 7d · 98.8% success", tab: "Forwards", spark: "0,10 20,12 40,8 60,10 80,9 100,11 120,8 140,10 160,8" },
+      { k: "revenue", g: ["A","ok"], ev: "8,911 sats / 7d · top quartile", tab: "Fees", spark: "0,18 20,16 40,14 60,12 80,12 100,10 120,8 140,8 160,6" },
+      { k: "liquidity", g: ["A","ok"], ev: "52% local · 30 of 42 balanced", tab: "Liquidity", spark: "0,20 20,18 40,20 60,18 80,20 100,18 120,20 140,18 160,20" },
+      { k: "channel health", g: ["A","ok"], ev: "42 active · 0 inactive", tab: "Channels", spark: "0,18 20,18 40,18 60,18 80,18 100,18 120,18 140,18 160,18" },
+      { k: "force close", g: ["A","ok"], ev: "0 closes / 30d", tab: "Closes", spark: "0,20 20,20 40,20 60,20 80,20 100,20 120,20 140,20 160,20" },
+      { k: "restart", g: ["A","ok"], ev: "0 restarts / 30d", tab: "Channels", spark: "0,20 20,20 40,20 60,20 80,20 100,20 120,20 140,20 160,20" },
+      { k: "peer", g: ["B","ok"], ev: "44 connected · 0 flapping", tab: "Peers", spark: "0,16 20,16 40,14 60,16 80,14 100,16 120,14 140,16 160,14" },
+      { k: "stability", g: [null,"nodata"], ev: "needs log ingestion", tab: null },
+      { k: "pg health", g: [null,"nodata"], ev: "needs pg_stat ingestion", tab: null },
+      { k: "visibility", g: [null,"nodata"], ev: "needs graph metadata", tab: null },
+    ],
+  },
+];
+let nodeIdx = 0, variant = "a";
+const TABS = ["Scorecard","Channels","Fees","Liquidity","Peers","Forwards","Closes","Pending"];
+const chip = (g, extra) => g[0]
+  ? `<span class="chip ${g[1]}" ${extra||""}>${g[0]}</span>`
+  : `<span class="chip nodata" ${extra||""}>–</span>`;
+const SEV = { critical: 0, warn: 1, ok: 2, nodata: 3 };
+
+function header(n) {
+  return `
+  <div class="console-head">
+    <div class="id">
+      <h2>${n.alias}</h2>
+      <div class="sub"><span class="backend">${n.backend}</span><span>${n.pubkey}</span></div>
+    </div>
+    <div class="composite">
+      ${chip(n.composite, `style="font-size:26px" title="${n.composite[2]}% composite"`)}
+      <span class="pct">${n.composite[2]}% composite</span>
+    </div>
+    <div class="fresh">routing_vm<br>fresh ${n.fresh}</div>
+  </div>
+  <div class="tabbar">
+    ${TABS.map(t => `<a href="#" onclick="return false" class="${t === 'Scorecard' ? 'active' : ''}">${t}${t === 'Pending' && n.pending ? ` <span class="cnt">${n.pending}</span>` : ''}</a>`).join("")}
+  </div>`;
+}
+
+function signalsPanel(n) {
+  const rows = [
+    ...n.breaches.map(b => `<div class="signal-row"><span class="what breach">${b.label}</span><span class="detail">${b.detail}</span><a class="go" href="#" onclick="return false">open ${b.tab.toLowerCase()} →</a></div>`),
+    ...n.outliers.map(o => `<div class="signal-row"><span class="what outlier">${o.label}</span><span class="detail">${o.detail}</span><a class="go" href="#" onclick="return false">open ${o.tab.toLowerCase()} →</a></div>`),
+  ];
+  if (!rows.length) return "";
+  return `<div class="panel signals"><div class="panel-head"><span>Active signals</span><span>${rows.length}</span></div>${rows.join("")}</div>`;
+}
+
+// A: panel grid
+function renderA(n) {
+  const dims = [...n.dims].sort((x, y) => SEV[x.g[1]] - SEV[y.g[1]]);
+  return header(n) + signalsPanel(n) + `
+  <div class="dimgrid">
+    ${dims.map(d => `
+      <div class="dimpanel ${d.g[1] === 'nodata' ? 'nodata' : ''}" tabindex="${d.tab ? 0 : -1}">
+        <div class="top"><span class="k">${d.k}</span>${chip(d.g, `style="font-size:15px"`)}</div>
+        <div class="ev">${d.ev}</div>
+        ${d.tab ? `<span class="go">open ${d.tab.toLowerCase()} →</span>` : ""}
+      </div>`).join("")}
+  </div>`;
+}
+
+// B: summary rail + evidence panels
+function renderB(n) {
+  const dims = [...n.dims].sort((x, y) => SEV[x.g[1]] - SEV[y.g[1]]);
+  const graded = dims.filter(d => d.g[0]);
+  return header(n) + `
+  <div class="railwrap">
+    <div class="rail">
+      <div class="panel">
+        <div style="display:flex;align-items:center;gap:var(--space-3);margin-bottom:var(--space-3)">
+          ${chip(n.composite, `style="font-size:24px" title="${n.composite[2]}%"`)}
+          <span class="mono muted" style="font-size:var(--text-xs)">${n.composite[2]}% composite</span>
+        </div>
+        ${dims.map(d => `<div class="rail-dim"><span class="k">${d.k}</span>${chip(d.g)}</div>`).join("")}
+      </div>
+      ${signalsPanel(n)}
+    </div>
+    <div>
+      ${graded.map(d => `
+        <div class="panel evpanel">
+          <div class="panel-head"><span>${d.k}</span><span style="display:flex;gap:var(--space-3);align-items:center">${chip(d.g)}<a class="go mono" style="color:var(--color-navy-bright);font-size:var(--text-xs);text-decoration:none" href="#" onclick="return false">open ${d.tab.toLowerCase()} →</a></span></div>
+          <div class="evbody">
+            <div class="detail">${d.ev}</div>
+            <svg class="spark" viewBox="0 0 160 40" aria-hidden="true"><polyline points="${d.spark}"/></svg>
+          </div>
+        </div>`).join("")}
+    </div>
+  </div>`;
+}
+
+// C: severity rows
+function renderC(n) {
+  const dims = [...n.dims].sort((x, y) => SEV[x.g[1]] - SEV[y.g[1]]);
+  return header(n) + signalsPanel(n) + `
+  <div class="panel">
+    <div class="panel-head"><span>Dimensions</span><span>worst first</span></div>
+    ${dims.map(d => `
+      <div class="dimrow ${d.g[1]}" tabindex="${d.tab ? 0 : -1}">
+        <span class="edge"></span>
+        <span class="k">${d.k}</span>
+        ${chip(d.g, `style="font-size:15px"`)}
+        <span class="ev">${d.ev}</span>
+        ${d.tab ? `<span class="go">open ${d.tab.toLowerCase()} →</span>` : "<span></span>"}
+      </div>`).join("")}
+  </div>`;
+}
+
+// Synthesis: B's rail+evidence, but signals as the full-width top panel (A/C placement)
+function renderS(n) {
+  const dims = [...n.dims].sort((x, y) => SEV[x.g[1]] - SEV[y.g[1]]);
+  const graded = dims.filter(d => d.g[0]);
+  return header(n) + signalsPanel(n) + `
+  <div class="railwrap">
+    <div class="rail">
+      <div class="panel">
+        <div style="display:flex;align-items:center;gap:var(--space-3);margin-bottom:var(--space-3)">
+          ${chip(n.composite, `style="font-size:24px" title="${n.composite[2]}%"`)}
+          <span class="mono muted" style="font-size:var(--text-xs)">${n.composite[2]}% composite</span>
+        </div>
+        ${dims.map(d => `<div class="rail-dim"><span class="k">${d.k}</span>${chip(d.g)}</div>`).join("")}
+      </div>
+    </div>
+    <div>
+      ${graded.map(d => `
+        <div class="panel evpanel">
+          <div class="panel-head"><span>${d.k}</span><span style="display:flex;gap:var(--space-3);align-items:center">${chip(d.g)}<a class="go mono" style="color:var(--color-navy-bright);font-size:var(--text-xs);text-decoration:none" href="#" onclick="return false">open ${d.tab.toLowerCase()} →</a></span></div>
+          <div class="evbody">
+            <div class="detail">${d.ev}</div>
+            <svg class="spark" viewBox="0 0 160 40" aria-hidden="true"><polyline points="${d.spark}"/></svg>
+          </div>
+        </div>`).join("")}
+    </div>
+  </div>`;
+}
+
+function render() {
+  const n = NODES[nodeIdx];
+  document.getElementById("root").innerHTML =
+    variant === "a" ? renderA(n) : variant === "b" ? renderB(n) : variant === "c" ? renderC(n) : renderS(n);
+}
+function showVariant(v, btn) {
+  variant = v;
+  document.querySelectorAll(".variant-tab[data-v]").forEach(t => t.classList.remove("active"));
+  btn.classList.add("active");
+  render();
+}
+function setNode(i) { nodeIdx = i; render(); }
+render();
+</script>
+</body>
+</html>

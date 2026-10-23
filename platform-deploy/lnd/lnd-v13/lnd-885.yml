@@ -1,0 +1,188 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: lnd-885
+  namespace: lqwd-lnd
+  labels:
+    app: lnd-885
+  annotations:
+    deployment.kubernetes.io/revision: '3'
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: lnd-885
+  template:
+    metadata:
+      labels:
+        app: lnd-885
+    spec:
+      volumes:
+        - name: lnd
+          persistentVolumeClaim:
+            claimName: pv03-claim
+        - name: secret
+          secret:
+            secretName: secret
+            defaultMode: 420
+      containers:
+        - name: lnd-885
+          image: '514063904685.dkr.ecr.us-west-2.amazonaws.com/lnd-v12:prod-latest'
+          ports:
+            - containerPort: 29099
+              protocol: TCP
+          env:
+            - name: WENV
+              value: production
+            - name: LND_PASSPHRASE
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: LND_PASSPHRASE
+            - name: LND_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: LND_PASSWORD
+            - name: LND_EXTERNALIP
+              value: 35.162.250.128
+            - name: LND_ID
+              value: '885'
+            - name: LND_PODNAME
+              value: lnd-885
+            - name: LND_NON_CUSTODIAL_VALUE
+              value: '0'
+            - name: SCENARIO
+              value: lnd
+            - name: USE_POSTGRES
+              value: '0'
+            - name: LND_BITCOIND
+              value: 'false'
+            - name: LIT_UI_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: LIT_UI_PASSWORD
+            - name: WATCHTOWER
+              value: 'false'
+            - name: LND_NETWORK
+              value: mainnet
+            - name: LND_ALIAS
+              value: lqwd-lnd
+            - name: ALIAS
+              value: LQwD-US-West
+            - name: LND_RPCUSER
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: LND_RPCUSER
+            - name: LND_RPCPASS
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: LND_RPCPASS
+            - name: CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: CLIENT_SECRET
+            - name: CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: CLIENT_ID
+            - name: CIPHER_BASE_URL
+              value: 'http://cipher-service.microservice:8790'
+            - name: OAUTH_BASE_URL
+              value: 'http://oauth2.oauth2:8187'
+            - name: LND_RPCHOST
+              value: btc1
+            - name: SCHEMA_HOST
+              value: 'http://schemaregistry.kafka-v1:8081'
+            - name: KAFKA_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: LND_KAFKA_PASSWORD
+            - name: KAFKA_USER
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: LND_KAFKA_USER
+            - name: LND_DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: LND_DB_USER
+            - name: LND_DB_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: LND_DB_PASS
+            - name: LND_DB_HOST
+              value: lqwd-lnd-pods.csvn42eedrmo.us-west-2.rds.amazonaws.com
+            - name: LND_DB_PORT
+              value: '5432'
+            - name: KAFKA_HOST
+              value: 'broker.kafka-v1:9092'
+            - name: KAFKA_CO_TOPIC
+              value: request
+            - name: KAFKA_CO_GROUP_ID
+              value: '334'
+            - name: KAFKA_PRO_TOPIC
+              value: reply
+            - name: NOTIFICATION_EMAILS
+              value: 'albert@lqwd.money,aziz@lqwd.money'
+            - name: OWNER
+              value: albert@lqwd.money
+            - name: DEBUG
+              value: 'true'
+            - name: REDIS_HOST
+              value: redis-master.redis
+            - name: REDIS_PORT
+              value: '6379'
+            - name: LND_SEED_EXP_SECONDS
+              value: '600'
+            - name: REDIS_CRED
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: REDIS_CRED
+          resources:
+            limits:
+              memory: 3000Mi
+            requests:
+              memory: 400Mi
+          volumeMounts:
+            - name: lnd
+              mountPath: /data
+          readinessProbe:
+            exec:
+              command:
+                - python3
+                - /root/python/lnd_readiness_probe.py
+            initialDelaySeconds: 120
+            timeoutSeconds: 10
+            periodSeconds: 30
+            successThreshold: 1
+            failureThreshold: 5
+          lifecycle:
+            preStop:
+              exec:
+                command:
+                  - /bin/sh
+                  - '-c'
+                  - python3 /root/python/signal_handler.py >> /proc/1/fd/1
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          imagePullPolicy: Always
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+      securityContext: {}
+      imagePullSecrets:
+        - name: dla-token
+      schedulerName: default-scheduler
+
+

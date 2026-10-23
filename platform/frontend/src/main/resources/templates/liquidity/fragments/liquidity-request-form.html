@@ -1,0 +1,81 @@
+<div th:fragment="request-liquidity-form" id="request-liquidity-form_div_liquidity-form" style="width: 100%;margin: 15px;">
+    <div class="col-12">
+    <div id="request-liquidity-form" class="widget-content widget-content-area pb-1">
+            <div class="widget-heading" style="margin: 20px;">
+                <h4>Request Liquidity Form</h4>
+            </div>
+
+            <form class="form-vertical" style="padding: 20px;">
+                <div class="form-row mb-4">
+                    <div class="form-group col-md-6">
+                        <input placeholder="Amount in Satoshi" type="number" class="form-control" id="request-liquidity-form_txt_amount">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <input placeholder="Number of weeks" type="number" class="form-control" id="request-liquidity-form_txt_weeks">
+                    </div>
+                </div>
+                <div class="form-group mb-4">
+                    <label class="control-label">Payment type:</label>
+                    <div class="row">
+                        <div class="form-check mb-2 col-1" >
+                            <div class="custom-control custom-radio classic-radio-info" >
+                                <input type="radio" name="radio" id="liquidity-request-form_txt_payment-type1" th:value="BTC_ADDRESS" class="custom-control-input">
+                                <label class="custom-control-label" for="liquidity-request-form_txt_payment-type1" th:value="BTC_ADDRESS">BTC</label>
+                            </div>
+                        </div>
+                        <div class="form-check mb-2 col" >
+                            <div class="custom-control custom-radio classic-radio-info">
+                                <input type="radio" name="radio" id="liquidity-request-form_txt_payment-type2" th:value="INVOICE" class="custom-control-input">
+                                <label class="custom-control-label" for="liquidity-request-form_txt_payment-type2" th:value="INVOICE">LN Invoice</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row mb-4">
+                    <div class="form-group col-md-6">
+                        <input placeholder="Pubkey" type="text" autocomplete="off" class="form-control" id="request-liquidity-form_txt_pubkey">
+                    </div>
+                    <div class="form-group col-md-6">
+                        <input placeholder="Node Address" autocomplete="off" type="text" class="form-control" id="request-liquidity-form_txt_ip">
+                    </div>
+                </div>
+                <button  th:if="${user.isEmailstatus()}" id="request-liquidity-form_btn_submit" class="btn btn-lg btn-primary mt-3 mt-3">Calculate Fee</button>
+            </form>
+            <div class="row" style="padding: 20px;">
+                <label class="col-2" for="request-liquidity_input_invoice">Payment Request</label>
+                <div class="col">
+                  <textarea type="text" style="display: inline-block;" class="form-control" id="request-liquidity_input_invoice" name="address"
+                             placeholder="Payment Request Invoice" readonly></textarea>
+                </div>
+                <div class="col-md-auto">
+                    <button class="btn btn-primary" id="request-liquidity_btn_copy">
+                        <svg style="cursor: pointer;" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-copy pr-1">
+                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                        </svg>
+                    </button>
+                    <button class="btn btn-dark" id="request-liquidity_btn_getQr" >
+                        <i data-feather="grid"></i>
+                    </button>
+                </div>
+            </div>
+        <div class="row" style="padding: 20px;">
+                <label class="col-2" for="request-liquidity-form_txt_fee">Fee to pay (SAT)</label>
+                <div class="col">
+                    <input type="text" disabled class="form-control" id="request-liquidity-form_txt_fee">
+                </div>
+            <div class="col-auto">
+                <button class="btn btn-primary" id="request-liquidity-form_btn_copy-fee">
+                    <svg style="cursor: pointer;" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-copy pr-1">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                    </svg>
+                </button>
+            </div>
+
+        </div>
+    </div>
+    </div>
+</div>

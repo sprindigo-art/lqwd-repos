@@ -1,0 +1,16 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: {0}
+  namespace: lqwd-lnd
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+    - host: {0}.{1}.lqwd.tech
+      http:
+        paths:
+        - path: /
+          backend:
+            serviceName: {0}
+            servicePort: 9735

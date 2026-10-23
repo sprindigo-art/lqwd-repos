@@ -1,0 +1,105 @@
+<html>
+<head th:include="fragment/headerfooter::header1"></head>
+<body onload="startTime()">
+<div id="containerMain">
+    <div th:include="fragment/headerfooter::top_menu('action')"></div>
+    <div id="titleMain">
+        <h1>Application Details </h1>
+    </div>
+    <div th:if="${message != null}" class="info_messages">
+        <p th:text="${message}"></p>
+    </div>
+    <div id="contentMain">
+            <div class="row">
+                <div class="col-25">
+                    <label>Company Name</label>
+                </div>
+                <div class="col-75">
+                    <label th:text="${app.companyName}" />
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-25">
+                    <label>Contact Name</label>
+                </div>
+                <div class="col-75">
+                    <label th:text="${app.contactName}" />
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-25">
+                    <label>Contact Email</label>
+                </div>
+                <div class="col-75">
+                    <label th:text="${app.contactEmail}" />
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-25">
+                    <label>Contact Phone</label>
+                </div>
+                <div class="col-75">
+                    <label th:text="${app.contactPhone}" />
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-25">
+                    <label>Company Address</label>
+                </div>
+                <div class="col-75">
+                    <label th:text="${app.companyAddress}" />
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-25">
+                    <label>Current Solution</label>
+                </div>
+                <div class="col-75">
+                    <label th:text="${app.currentSolution}" />
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-25">
+                    <label>Goal</label>
+                </div>
+                <div class="col-75">
+                    <label th:text="${app.goal}" />
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-25">
+                    <label>Product Info</label>
+                </div>
+                <div class="col-75">
+                    <label th:text="${app.productInfo}" />
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-25">
+                    <label>Status</label>
+                </div>
+                <div class="col-75">
+                    <label th:text="${app.status}" />
+                </div>
+            </div>
+
+
+
+            <div class="row" th:if="${app.status == 'NEW'}">
+                <a th:href="@{/backend/applications/accept(id=${app.id})}" class="button">Accept</a>
+                <a th:href="@{/backend/applications/reject(id=${app.id})}" class="button buttonWarn">Reject</a>
+            </div>
+
+    </div>
+</div>
+</body>
+</html>

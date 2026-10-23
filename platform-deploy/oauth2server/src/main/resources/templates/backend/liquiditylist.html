@@ -1,0 +1,92 @@
+<html>
+<head th:include="fragment/headerfooter::header1"></head>
+<body onload="startTime()">
+<div id="containerMain">
+    <div th:include="fragment/headerfooter::top_menu('action')"></div>
+    <div id="titleMain">
+        <h1>Liquidity Request</h1>
+    </div>
+
+    <div id="contentMain">
+        <table id="customers">
+            <tr>
+                <th>ID</th>
+                <th>UserId</th>
+                <th>Amt</th>
+                <th>Requested amt</th>
+                <th>Fee</th>
+                <th>Fee paid</th>
+                <th>Paid</th>
+                <th>Expired</th>
+                <th>Expiry</th>
+                <th>Type</th>
+                <th>Reason</th>
+                <th>ChannelId</th>
+            </tr>
+            <tr th:each="item, iItem : ${content}">
+
+                <td th:text="${item.id}"/>
+                <td>
+                    <a th:href="@{/backend/edit/user(id=${item.userId})}" th:text="${item.userId}"/>
+                </td>
+                <td th:text="${item.amt} ?: 'NA'"/>
+                <td th:text="${item.requestedAmt}"/>
+                <td th:text="${item.fee} ?: 'NA'"/>
+                <td th:text="${item.feeToPay}"/>
+                <td th:text="${item.paid}"/>
+                <td th:text="${item.expired} ?: 'NA'"/>
+                <td th:text="${item.channelExpiryDate}"/>
+                <td th:text="${item.type}"/>
+                <td th:text="${item.error} ?: 'NA'"/>
+                <td>
+                    <span th:if="${item.channelId != null}" th:text="${item.channelId}"/>
+                    <div th:if="${item.channelId == null && true != item.expired}" id="actionButtonMain">
+                        <button th:onclick="openChannel([[${item.id}]])" id="a">Open Channel</button>
+                    </div>
+                </td>
+            </tr>
+        </table>
+        <div id="paginationMain">
+            <div class="center">
+                <div class="pagination" th:each="i: ${#numbers.sequence(0, pages)}">
+                    <a th:class="${i == (pageNumber)} ? 'current page-numbers' : 'page-numbers'"
+                       th:href="@{/backend/liquidity(pageSize=10, pageNumber=${i})}"
+                       th:text="${i}"> </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function openChannel(liquidityId) {
+
+        fetch('/backend/create_channel', {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: new URLSearchParams({
+                'liquidityId': liquidityId
+            })
+        })
+            .then(response => response.json())
+            .then(data => {
+                if(data['status'] != 200){
+                    alert(data['message']);
+                    return;
+                }
+                window.location.reload();
+            })
+            .catch((error) => {
+                alert(error)
+                console.error('Error:', error);
+
+            });
+
+
+    }
+</script>
+</body>
+</html>

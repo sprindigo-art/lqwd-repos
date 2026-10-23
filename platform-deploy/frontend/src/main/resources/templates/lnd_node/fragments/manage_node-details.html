@@ -1,0 +1,284 @@
+<div id="manage-node-details" class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 layout-spacing"
+    th:fragment="manage-node-details(lndNode)">
+    <div id="manage-node-details-widget" class="widget">
+        <div class="widget-heading row justify-content-between">
+            <h5 class="">
+                <span th:text="'LND Node: '+${lndNode.getLndNodeName()}"></span>
+            </h5>
+            <div th:if="${lndNode.getStatus()!='NEED_UNLOCK'}">
+                <button id="manage-node-details_btn_restart-node" class="btn btn-outline-danger mb-2"
+                        th:value="${lndNode.getLndNodeName()}"
+                        th:attr="onclick=|openPasswordModalRestartUnlock('${lndNode.getLndNodeName()}', 'restart', '${lndNode.getIsNonCustodial()}')|">Restart
+                    Node
+                </button>
+            </div>
+        </div>
+        <div class="widget-content widget-content-area">
+            <div class="row pt-2" th:if="${lndNode.getStatus()=='NEED_UNLOCK'}">
+                <div class="col-9" th:text="${lndNode.getErrorMessage()}"></div>
+                <div class="col-3">
+                    <button id="manage-node-details_btn_unlock-node" class="btn btn-outline-danger mb-2"
+                        th:value="${lndNode.getLndNodeName()}"
+                        th:attr="onclick=|openPasswordModalRestartUnlock('${lndNode.getLndNodeName()}', 'unlock', '${lndNode.getIsNonCustodial()}')|">Unlock
+                        Node
+                    </button>
+                </div>
+            </div>
+<!--            <div class="row pt-2" th:if="${lndNode.getStatus()!='NEED_UNLOCK'}">-->
+<!--                <div class="col-9" th:text="${lndNode.getErrorMessage()}"></div>-->
+<!--                <div class="col-3">-->
+<!--                    <button id="manage-node-details_btn_restart-node" class="btn btn-outline-danger mb-2"-->
+<!--                        th:value="${lndNode.getLndNodeName()}"-->
+<!--                        th:attr="onclick=|openPasswordModalRestartUnlock('${lndNode.getLndNodeName()}', 'restart', '${lndNode.getIsNonCustodial()}')|">Restart-->
+<!--                        Node-->
+<!--                    </button>-->
+<!--                </div>-->
+<!--            </div>-->
+            <div class="row pt-2">
+                <div class="col-6">
+                    Status
+                </div>
+                <div class="col-6">
+                    <span class="badge badge-success" th:text="${lndNode.getStatus()}"></span>
+                </div>
+            </div>
+            <div class="row pt-2">
+                <div class="col-6">
+                    Alias
+                </div>
+                <div class="col-6">
+                    <span class="" th:text="${lndNode.getLndNodeInfo().getAlias()}"></span>
+                </div>
+            </div>
+            <div class="row pt-2">
+                <div class="col-6">
+                    Type
+                </div>
+                <div class="col-6">
+                    <span th:if="${lndNode.getIsNonCustodial()}">Self managed node</span>
+                    <span th:unless="${lndNode.getIsNonCustodial()}">Managed node</span>
+                </div>
+            </div>
+            <div class="row pt-2">
+                <div class="col-6">
+                    Identity Pubkey
+                </div>
+                <div class="col-6">
+                    <span class=""
+                        th:text="${#strings.abbreviate(lndNode.getLndNodeInfo().getIdentity_pubkey(),25)}"></span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="feather feather-copy"
+                        th:attr="onclick=|copyToClipboard('${lndNode.getLndNodeInfo().getIdentity_pubkey()}')|">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                    </svg>
+                </div>
+            </div>
+            <div class="row pt-2">
+                <div class="col-6">
+                    Commit Hash
+                </div>
+                <div class="col-6">
+                    <span class=""
+                        th:text="${#strings.abbreviate(lndNode.getLndNodeInfo().getCommit_hash(), 25)}"></span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="feather feather-copy"
+                        th:attr="onclick=|copyToClipboard('${lndNode.getLndNodeInfo().getCommit_hash()}')|">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                    </svg>
+                </div>
+            </div>
+            <div class="row pt-2">
+                <div class="col-6">
+                    Version
+                </div>
+                <div class="col-6">
+                    <span class="" th:text="${lndNode.getLndNodeInfo().getVersion()}"></span>
+                </div>
+            </div>
+            <div class="row pt-2">
+                <div class="col-6">
+                    Number of Pending Channels
+                </div>
+                <div class="col-6">
+                    <a id="lnd-node-details_a_channels" th:text="${lndNode.getLndNodeInfo().getNum_pending_channels()}"
+                        th:href="@{/lnd-channels}"></a>
+                </div>
+            </div>
+
+            <div class="row pt-2">
+                <div class="col-6">
+                    Number of Active Channels
+                </div>
+                <div class="col-6">
+                    <a id="lnd-node-details_a_link-channel"
+                        th:text="${lndNode.getLndNodeInfo().getNum_active_channels()}" th:href="@{/lnd-channels}"></a>
+                </div>
+            </div>
+            <div class="row pt-2">
+                <div class="col-6">
+                    Number of Inactive Channels
+                </div>
+                <div class="col-6">
+                    <a id="lnd-node-details_a_channel-page"
+                        th:text="${lndNode.getLndNodeInfo().getNum_inactive_channels()}" th:href="@{/lnd-channels}"></a>
+                </div>
+            </div>
+            <div class="row pt-2">
+                <div class="col-6">
+                    Number of Peers
+                </div>
+                <div class="col-6">
+                    <a id="lnd-node-details_a_peer-page" th:text="${lndNode.getLndNodeInfo().getNum_peers()}"
+                        th:href="@{/peers}"></a>
+                </div>
+            </div>
+            <div class="row pt-2">
+                <div class="col-6">
+                    Block Height
+                </div>
+                <div class="col-6">
+                    <span class="" th:text="${lndNode.getLndNodeInfo().getBlock_height()}"></span>
+                </div>
+            </div>
+            <div class="row pt-2">
+                <div class="col-6">
+                    Block Hash
+                </div>
+                <div class="col-6">
+                    <span class="" th:text="${#strings.abbreviate(lndNode.getLndNodeInfo().getBlock_hash(),25)}"></span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="feather feather-copy"
+                        th:attr="onclick=|copyToClipboard('${lndNode.getLndNodeInfo().getBlock_hash()}')|">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                    </svg>
+                </div>
+            </div>
+            <div class="row pt-2">
+                <div class="col-6">
+                    Watchtower
+                </div>
+                <div class="col-6">
+                    <span class="" th:text="${lndNode.isWatchtower()}"></span>
+                </div>
+            </div>
+
+
+            <div class="row pt-2" >
+                <div class="col-6">
+                    Total Balance
+                </div>
+                <div class="col-6"  th:if="${lndNode.getWalletBalance()} != null">
+                    <th:block th:if="${lndNode.getWalletBalance()} != null" th:switch="${user.getCurrency()}">
+                        <div th:case="'satoshi'">
+                            <i class="fak fa-satoshisymbol-outline"></i><span class=""
+                               th:text="${#numbers.formatDecimal(lndNode.getWalletBalance().getTotal_balance(), 1, 'COMMA', 2, 'POINT')}"></span>
+                        </div>
+                        <div th:case="'bitcoin'">
+                            <span>&#8383;</span><span class=""
+                                th:text="|${#numbers.formatDecimal(lndNode.getWalletBalance().getTotal_balance(), 1, 'COMMA', 2, 'POINT')} BTC|"></span>
+                        </div>
+                        <div th:case="'USD'">
+                            <span class="w-currency"
+                                th:text="|${#numbers.formatDecimal(lndNode.getWalletBalance().getTotal_balance(), 1, 'COMMA', 2, 'POINT')} USD|"></span>
+                        </div>
+                        <div th:case="'CAD'">
+                            <span class="w-currency"
+                                th:text="|${#numbers.formatDecimal(lndNode.getWalletBalance().getTotal_balance(), 1, 'COMMA', 2, 'POINT')} CAD|"></span>
+                        </div>
+                        <div th:case="'*'">
+                            <i class="fak fa-satoshisymbol-outline"></i><span class="w-currency"
+                                th:text="${#numbers.formatDecimal(lndNode.getWalletBalance().getTotal_balance(),1, 'COMMA', 2, 'POINT')}"></span>
+                        </div>
+                    </th:block>
+                </div>
+                <div class="col-6" th:if="${lndNode.getWalletBalance()} == null">
+                    <span>Not Available</span>
+                </div>
+            </div>
+            <div th:if="${lndNode.getWalletBalance()} != null" class="row pt-2">
+                <div class="col-6">
+                    Confirmed Balance
+                </div>
+                <div class="col-6">
+                    <th:block th:switch="${user.getCurrency()}">
+                        <div th:case="'satoshi'">
+                            <i class="fak fa-satoshisymbol-outline"></i><span class=""
+                                th:text="${#numbers.formatDecimal(lndNode.getWalletBalance().getConfirmed_balance(), 1, 'COMMA', 2, 'POINT')}"></span>
+                        </div>
+                        <div th:case="'bitcoin'">
+                            <span>&#8383;</span><span class=""
+                                th:text="|${#numbers.formatDecimal(lndNode.getWalletBalance().getConfirmed_balance(), 1, 'COMMA', 2, 'POINT')} BTC|"></span>
+                        </div>
+                        <div th:case="'USD'">
+                            <span class="w-currency"
+                                th:text="|${#numbers.formatDecimal(lndNode.getWalletBalance().getConfirmed_balance(), 1, 'COMMA', 2, 'POINT')} USD|"></span>
+                        </div>
+                        <div th:case="'CAD'">
+                            <span class="w-currency"
+                                th:text="|${#numbers.formatDecimal(lndNode.getWalletBalance().getConfirmed_balance(), 1, 'COMMA', 2, 'POINT')} CAD|"></span>
+                        </div>
+                        <div th:case="'*'">
+                            <i class="fak fa-satoshisymbol-outline"></i><span class="w-currency"
+                                th:text="${#numbers.formatDecimal(lndNode.getWalletBalance().getConfirmed_balance(), 1, 'COMMA', 2, 'POINT')}"></span>
+                        </div>
+                    </th:block>
+                </div>
+            </div>
+            <div th:if="${lndNode.getWalletBalance()} != null" class="row pt-2">
+                <div class="col-6">
+                    Unconfirmed Balance
+                </div>
+                <div class="col-6">
+                    <th:block th:switch="${user.getCurrency()}">
+                        <div th:case="'satoshi'">
+                            <i class="fak fa-satoshisymbol-outline"></i><span class=""
+                                th:text="${#numbers.formatDecimal(lndNode.getWalletBalance().getUnconfirmed_balance(),1, 'COMMA', 2, 'POINT')}"></span>
+                        </div>
+                        <div th:case="'bitcoin'">
+                            <span>&#8383;</span><span class=""
+                                th:text="|${#numbers.formatDecimal(lndNode.getWalletBalance().getUnconfirmed_balance(), 1, 'COMMA', 2, 'POINT')} BTC|"></span>
+                        </div>
+                        <div th:case="'USD'">
+                            <span class="w-currency"
+                                th:text="|${#numbers.formatDecimal(lndNode.getWalletBalance().getUnconfirmed_balance(), 1, 'COMMA', 2, 'POINT')} USD|"></span>
+                        </div>
+                        <div th:case="'CAD'">
+                            <span class="w-currency"
+                                th:text="|${#numbers.formatDecimal(lndNode.getWalletBalance().getUnconfirmed_balance(), 1, 'COMMA', 2, 'POINT')} CAD|"></span>
+                        </div>
+                        <div th:case="'*'">
+                            <i class="fak fa-satoshisymbol-outline"></i><span class="w-currency"
+                                th:text="${#numbers.formatDecimal(lndNode.getWalletBalance().getUnconfirmed_balance(), 1, 'COMMA', 2, 'POINT')}"></span>
+                        </div>
+                    </th:block>
+                </div>
+            </div>
+            <div class="row pt-5">
+                <div class="col col-6">
+                    <button id="manage-node-details_btn_destroy-node" class="btn btn-outline-danger mb-2"
+                        th:value="${lndNode.getLndNodeName()}"
+                        th:attr="onclick=|destroyLndNode('${lndNode.getLndNodeName()}', '${lndNode.getIsNonCustodial()}', false)|">Destroy
+                        Node - This
+                        Action
+                        Cannot Be Undone!
+                    </button>
+                </div>
+                <div class="col col-6">
+                    <button id="manage-node-details_btn_destroy-node-force" class="btn btn-outline-danger mb-2"
+                        th:value="${lndNode.getLndNodeName()}"
+                        th:attr="onclick=|destroyLndNode('${lndNode.getLndNodeName()}', '${lndNode.getIsNonCustodial()}', true)|">Force Destroy
+                        Node - This
+                        Action
+                        Cannot Be Undone!
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

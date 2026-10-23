@@ -1,0 +1,24 @@
+<div th:fragment="qrcode_settings">
+    <!-- Modal -->
+    <div class="modal fade profile-modal" id="qrCodeModal" tabindex="-1" role="dialog" aria-labelledby="profileModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <button id="qrcode-setting-modal_btn_close-modal-qr" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+
+                <div class="modal-header justify-content-center" id="profileModalLabel">
+                    <div class="modal-profile mt-4">
+                        <img id="qrcodeimg" th:src="${qrurl}" alt="QR Code"/>
+                    </div>
+                </div>
+                <div class="modal-body text-center">
+                    <p class="mt-2">Google Authenticator QR Code</p>
+                </div>
+                <div class="modal-footer justify-content-center mb-4">
+                    <button type="button" class="btn" id="qrcode-setting-modal_btn_doneQr">Continue</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

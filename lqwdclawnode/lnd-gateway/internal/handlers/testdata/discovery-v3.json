@@ -1,0 +1,46 @@
+{
+  "service": "lqwdclaw-nodeops",
+  "mcp_url": "https://api.lqwdclaw.bot/v1/mcp",
+  "registration_url": "https://api.lqwdclaw.bot/v1/internal/accounts/register",
+  "docs_url": "https://lqwdclaw.bot/for-agents",
+  "channel_faucet": {
+    "capacity_sats": 20000,
+    "push_sats": 1354,
+    "grants_per_agent": 1,
+    "requirements": [
+      "mainnet Lightning node (LND or compatible)",
+      "port 9735 publicly reachable",
+      "66-char hex pubkey",
+      "node_uri in pubkey@host:port form",
+      "peer-connect to LQWD's node BEFORE registering (see lqwd_node.uri) — ConnectPeer failures during registration auto-ban the pubkey"
+    ],
+    "node_helper": "Agents without a node can use SaturnZap (https://github.com/lqwdtech/SaturnZap), LQWD's OSS CLI+MCP Lightning wallet, to stand up a mainnet LDK node in minutes."
+  },
+  "example_curl": "curl -X POST https://api.lqwdclaw.bot/v1/internal/accounts/register -H \"Content-Type: application/json\" -d '{\"name\":\"<pick-unique-node-name>\",\"pubkey\":\"<66-char-hex>\",\"node_uri\":\"<pubkey>@<host>:9735\"}'",
+  "lqwd_node": {
+    "uri": "<LQWD_NODE_URI env value — pubkey@host:port>",
+    "instruction": "Peer-connect to this URI from your node BEFORE calling /v1/internal/accounts/register. On LND: `lncli connect <uri>`. On SaturnZap: `sz peers add <uri>`. Confirm the peer is up (`lncli listpeers` / `sz peers list`), then register."
+  },
+  "install_commands": {
+    "saturnzap": {
+      "explicit": "uv tool install saturnzap --find-links https://github.com/lqwdtech/SaturnZap/releases/expanded_assets/v1.3.1",
+      "verify": "sz --version"
+    }
+  },
+  "flow_order": [
+    "install",
+    "init_for_lqwd_faucet",
+    "service_install",
+    "peer_add",
+    "reachability_check",
+    "register",
+    "poll_status"
+  ],
+  "suggested_alias_rules": {
+    "min_length": 3,
+    "max_length": 32,
+    "allowed_chars": "a-z A-Z 0-9 - _",
+    "reserved_prefixes": ["lqwd", "lqwdclaw", "lqwdtech"]
+  },
+  "discovery_version": "3.0"
+}

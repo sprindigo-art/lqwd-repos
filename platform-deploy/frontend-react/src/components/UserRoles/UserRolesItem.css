@@ -1,0 +1,62 @@
+.user-role-item-container {
+    display: flex;
+    justify-content: space-between;
+    background: #FFFFFF;
+    border-radius: 8px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+}
+
+.user-role-item-row {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-between;
+    align-items: start;
+}
+
+.user-role-item-col {
+    display: flex;
+    flex-direction: column;
+    align-self: center;
+}
+
+.user-role-item-node {
+    display: flex;
+    flex-direction: row;
+    justify-self: start;
+    padding: 4px 12px;
+    gap: 10px;
+    background: #D7F0FF;
+    border-radius: 8px;
+}
+
+.user-role-item-status {
+    padding: 4px 12px;
+    gap: 10px;
+    background: #D7F0FF;
+    border-radius: 8px;
+    width: fit-content;
+}
+
+.user-role-item-status-active{
+    background: rgba(183, 246, 182, 0.5);
+}
+.user-role-item-status-inactive{
+    background: rgba(255, 203, 200, 0.5);
+}
+.user-role-item-status-pending{
+    background: #FBCE8B;
+}
+
+.user-role-item-status-toggle .label{
+    padding: 4px 12px;
+    gap: 10px;
+    background: #D7F0FF;
+    border-radius: 8px;
+    width: fit-content;
+}
+
+.user-role-item-action{
+    padding: 4px 12px;
+}

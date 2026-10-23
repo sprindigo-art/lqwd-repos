@@ -1,0 +1,14 @@
+.status-banner {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    /* height: 10px; */
+    /* opacity: 20%; */
+    background-color: black;
+    z-index: 1000;
+    display: flex;
+    color: white;
+    justify-content: center;
+    font-size: x-small;
+}

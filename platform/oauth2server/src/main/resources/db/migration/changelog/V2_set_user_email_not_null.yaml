@@ -1,0 +1,10 @@
+databaseChangeLog:
+  - changeSet:
+      validCheckSum: ANY
+      id: set_user_email_not_null
+      author: femi
+      changes:
+        - addNotNullConstraint:
+            columnName: email
+            tableName: user_
+            defaultNullValue: testuser__@lqwd.money

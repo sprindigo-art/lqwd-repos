@@ -1,0 +1,14 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: pv008-claim
+spec:
+  storageClassName: local-storage
+  selector:
+    matchLabels:
+      volume-id: pv008
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 30Gi

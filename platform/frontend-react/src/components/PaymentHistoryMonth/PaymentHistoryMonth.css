@@ -1,0 +1,78 @@
+.payment-history-month-container {
+
+    display: flex;
+    flex-direction: column;
+
+    background: #FFFFFF;
+    /* Overlay Shadow */
+
+    box-shadow: 0px 8px 24px rgba(96, 106, 139, 0.13);
+    border-radius: 8px;
+
+    max-width: 196px;
+    padding: 20px 20px 14px;
+    row-gap: 8px;
+}
+
+.payment-history-month-header {
+    display: flex;
+    flex-direction: row;
+
+    /* Header 1 */
+
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 32px;
+    /* identical to box height, or 133% */
+
+    display: flex;
+    align-items: center;
+    color: #000000;
+
+    padding-bottom: 12px;
+
+}
+
+.shadow-text-color {
+    color: #B2B2B2 !important;
+}
+
+.payment-history-month-subheader {
+    display: flex;
+    flex-direction: row;
+
+    /* Title 1 */
+
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 24px;
+    /* identical to box height, or 133% */
+
+    display: flex;
+    align-items: center;
+
+    /* Text - Secondary */
+    color: #4D4D4D;
+}
+
+.payment-history-month-view-detail {
+    display: flex;
+    flex-direction: row;
+
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 22px;
+    /* identical to box height, or 147% */
+
+    display: flex;
+    align-items: center;
+
+    /* Primary */
+    color: #009EE2;
+}

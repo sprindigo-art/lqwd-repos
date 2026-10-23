@@ -1,0 +1,51 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: react-swagger-conf
+  namespace: microservice
+data:
+  swagger.json: |
+    {
+      swagger: '2.0',
+      info: {
+        description:
+          'This documentation shows how to use DLA through command line use for a user. See Lightning Network Documentation for available paths.',
+        version: '1.0.6',
+        title: 'DIA Usage',
+        termsOfService: '/terms-service',
+        contact: { email: 'apiteam@lqwd.tech' },
+      },
+      basePath: '/api',
+      tags: [
+        {
+          name: 'LND',
+          description: 'Everything about your LND Nodes',
+        },
+      ],
+      paths: {
+        '/lnd/v1/getinfo': {
+          get: {
+            tags: ['LND'],
+            summary: 'get list of all LNDs',
+            description: '',
+            produces: ['application/json'],
+            parameters: [
+              in: header,
+              name: lndname,
+              schema: {
+                type: string,
+              },
+              required: true
+            ],
+            responses: {
+              200: {
+                description: 'successful operation',
+              },
+            },
+          },
+        },
+      },
+    }
+
+
+

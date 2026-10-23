@@ -1,0 +1,469 @@
+[
+  {
+    "schemaVersion": 1,
+    "id": "ap11_close_storm:02a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1:node",
+    "severity": "critical",
+    "node": {
+      "pubkey": "02a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
+      "alias": "lqwd-canada",
+      "backend": "lnd"
+    },
+    "target": { "kind": "node" },
+    "signal": "ap11_close_storm",
+    "evidence": {
+      "metric": "maxHourlySelfCloses",
+      "observed": 57,
+      "threshold": 50,
+      "unit": "closes/hr",
+      "window": "24h",
+      "asOf": "2026-06-01T12:00:00.000Z",
+      "deepLink": "/02a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1/closes?window=24h"
+    },
+    "suggestedAction": { "type": "investigate", "params": {} },
+    "suppressed": { "active": false, "reason": null },
+    "provenance": "deterministic",
+    "rateLimitGuidance": null
+  },
+  {
+    "schemaVersion": 1,
+    "id": "ap12a_conn_exhaustion:02b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2:node",
+    "severity": "info",
+    "node": {
+      "pubkey": "02b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2",
+      "alias": "lqwd-japan",
+      "backend": "lnd"
+    },
+    "target": { "kind": "node" },
+    "signal": "ap12a_conn_exhaustion",
+    "evidence": {
+      "metric": "channelCount",
+      "observed": 194,
+      "threshold": 150,
+      "unit": "channels",
+      "window": "latest",
+      "asOf": "2026-06-01T12:00:00.000Z",
+      "deepLink": "/02b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2/channels?window=24h",
+      "detail": { "note": "LLM inference — no warehouse data for connection exhaustion" }
+    },
+    "suggestedAction": null,
+    "suppressed": { "active": false, "reason": null },
+    "provenance": "llm-inference",
+    "rateLimitGuidance": null
+  },
+  {
+    "schemaVersion": 1,
+    "id": "ap12b_serialization:02b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2:node",
+    "severity": "info",
+    "node": {
+      "pubkey": "02b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2",
+      "alias": "lqwd-japan",
+      "backend": "lnd"
+    },
+    "target": { "kind": "node" },
+    "signal": "ap12b_serialization",
+    "evidence": {
+      "metric": "remoteForceCloseShare",
+      "observed": 0.65,
+      "threshold": 0.5,
+      "unit": "ratio",
+      "window": "90d",
+      "asOf": "2026-06-01T12:00:00.000Z",
+      "deepLink": "/02b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2/closes?window=90d",
+      "detail": { "note": "LLM inference — no warehouse data for serialization storms" }
+    },
+    "suggestedAction": null,
+    "suppressed": { "active": false, "reason": null },
+    "provenance": "llm-inference",
+    "rateLimitGuidance": null
+  },
+  {
+    "schemaVersion": 1,
+    "id": "htlc_timeout_fc:02a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1:node",
+    "severity": "warn",
+    "node": {
+      "pubkey": "02a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
+      "alias": "lqwd-canada",
+      "backend": "lnd"
+    },
+    "target": { "kind": "node" },
+    "signal": "htlc_timeout_fc",
+    "evidence": {
+      "metric": "htlcTimeoutSignedCloses",
+      "observed": 3,
+      "threshold": 2,
+      "unit": "closes",
+      "window": "30d",
+      "asOf": "2026-06-01T12:00:00.000Z",
+      "deepLink": "/02a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1/closes?window=30d",
+      "detail": { "avgSettledRatio": 0.65, "timeLockedSat": 1250000 }
+    },
+    "suggestedAction": { "type": "investigate", "params": {} },
+    "suppressed": { "active": false, "reason": null },
+    "provenance": "deterministic",
+    "rateLimitGuidance": null
+  },
+  {
+    "schemaVersion": 1,
+    "id": "fee_raise:02a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1:987654321098765432",
+    "severity": "warn",
+    "node": {
+      "pubkey": "02a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
+      "alias": "lqwd-canada",
+      "backend": "lnd"
+    },
+    "target": {
+      "kind": "channel",
+      "chanId": "987654321098765432",
+      "channelPoint": "e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5:1",
+      "remotePubkey": "03c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3"
+    },
+    "signal": "fee_raise",
+    "evidence": {
+      "metric": "outboundRatio7d",
+      "observed": 0.92,
+      "threshold": 0.85,
+      "unit": "ratio",
+      "window": "7d",
+      "asOf": "2026-06-01T12:00:00.000Z",
+      "deepLink": "/02a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1/fees?window=7d"
+    },
+    "suggestedAction": {
+      "type": "update_fee",
+      "params": {
+        "chanId": "987654321098765432",
+        "channelPoint": "e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5:1",
+        "currentPpm": 120,
+        "suggestedPpm": 180,
+        "baseFeeMsat": 1000,
+        "timeLockDelta": 80
+      }
+    },
+    "suppressed": {
+      "active": true,
+      "reason": "AP-11 close storm active on node — write actions suppressed"
+    },
+    "provenance": "deterministic",
+    "rateLimitGuidance": "Apply at most one fee update per channel per 24h window."
+  },
+  {
+    "schemaVersion": 1,
+    "id": "fee_lower:02b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2:123456789012345678",
+    "severity": "info",
+    "node": {
+      "pubkey": "02b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2",
+      "alias": "lqwd-japan",
+      "backend": "lnd"
+    },
+    "target": {
+      "kind": "channel",
+      "chanId": "123456789012345678",
+      "channelPoint": "d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4:0",
+      "remotePubkey": "03c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3"
+    },
+    "signal": "fee_lower",
+    "evidence": {
+      "metric": "forwardCount7d",
+      "observed": 0,
+      "threshold": 5,
+      "unit": "attempts",
+      "window": "7d",
+      "asOf": "2026-06-01T12:00:00.000Z",
+      "deepLink": "/02b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2/fees?window=7d"
+    },
+    "suggestedAction": {
+      "type": "update_fee",
+      "params": {
+        "chanId": "123456789012345678",
+        "channelPoint": "d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4:0",
+        "currentPpm": 450,
+        "suggestedPpm": 250,
+        "baseFeeMsat": 1000,
+        "timeLockDelta": 80
+      }
+    },
+    "suppressed": { "active": false, "reason": null },
+    "provenance": "deterministic",
+    "rateLimitGuidance": "Apply at most one fee update per channel per 24h window."
+  },
+  {
+    "schemaVersion": 1,
+    "id": "channel_close_candidate:02a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1:555666777888999000",
+    "severity": "warn",
+    "node": {
+      "pubkey": "02a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
+      "alias": "lqwd-canada",
+      "backend": "lnd"
+    },
+    "target": {
+      "kind": "channel",
+      "chanId": "555666777888999000",
+      "channelPoint": "e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5:2",
+      "remotePubkey": "03c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3"
+    },
+    "signal": "channel_close_candidate",
+    "evidence": {
+      "metric": "inactiveDays",
+      "observed": 90,
+      "threshold": 60,
+      "unit": "hours",
+      "window": "90d",
+      "asOf": "2026-06-01T12:00:00.000Z",
+      "deepLink": "/02a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1/channels?window=90d"
+    },
+    "suggestedAction": {
+      "type": "close_channel",
+      "params": {
+        "chanId": "555666777888999000",
+        "channelPoint": "e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5:2",
+        "force": false
+      }
+    },
+    "suppressed": { "active": false, "reason": null },
+    "provenance": "deterministic",
+    "rateLimitGuidance": "Exported command — human review required before running close."
+  },
+  {
+    "schemaVersion": 1,
+    "id": "rebalance_partner_failure:02a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1:111222333444555666",
+    "severity": "warn",
+    "node": {
+      "pubkey": "02a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
+      "alias": "lqwd-canada",
+      "backend": "lnd"
+    },
+    "target": {
+      "kind": "channel",
+      "chanId": "111222333444555666",
+      "channelPoint": "e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5:3",
+      "remotePubkey": "03c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3"
+    },
+    "signal": "rebalance_partner_failure",
+    "evidence": {
+      "metric": "rebalanceSuccessRate",
+      "observed": 0.05,
+      "threshold": 0.3,
+      "unit": "ratio",
+      "window": "7d",
+      "asOf": "2026-06-01T12:00:00.000Z",
+      "deepLink": "/02a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1/liquidity?window=7d",
+      "detail": { "attempts": 40, "successes": 2 }
+    },
+    "suggestedAction": {
+      "type": "rebalance",
+      "params": {
+        "partnerPubkey": "03c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3",
+        "amountSat": 500000,
+        "direction": "out"
+      }
+    },
+    "suppressed": { "active": false, "reason": null },
+    "provenance": "deterministic",
+    "rateLimitGuidance": "Exported command — run at most one rebalance per partner per day."
+  },
+  {
+    "schemaVersion": 1,
+    "id": "rebalance_degraded:02b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2:222333444555666777",
+    "severity": "info",
+    "node": {
+      "pubkey": "02b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2",
+      "alias": "lqwd-japan",
+      "backend": "lnd"
+    },
+    "target": {
+      "kind": "channel",
+      "chanId": "222333444555666777",
+      "channelPoint": "d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4:4",
+      "remotePubkey": "03c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3"
+    },
+    "signal": "rebalance_degraded",
+    "evidence": {
+      "metric": "rebalanceSuccessRate",
+      "observed": 0.45,
+      "threshold": 0.6,
+      "unit": "ratio",
+      "window": "7d",
+      "asOf": "2026-06-01T12:00:00.000Z",
+      "deepLink": "/02b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2/liquidity?window=7d"
+    },
+    "suggestedAction": {
+      "type": "rebalance",
+      "params": {
+        "partnerPubkey": "03c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3",
+        "amountSat": 250000,
+        "direction": "in"
+      }
+    },
+    "suppressed": { "active": false, "reason": null },
+    "provenance": "deterministic",
+    "rateLimitGuidance": "Exported command — run at most one rebalance per partner per day."
+  },
+  {
+    "schemaVersion": 1,
+    "id": "fee_stepdown:02a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1:node",
+    "severity": "warn",
+    "node": {
+      "pubkey": "02a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
+      "alias": "lqwd-canada",
+      "backend": "lnd"
+    },
+    "target": { "kind": "node" },
+    "signal": "fee_stepdown",
+    "evidence": {
+      "metric": "ppm7dVsBaseline",
+      "observed": 0.35,
+      "threshold": 0.5,
+      "unit": "ratio",
+      "window": "7d vs 28d-prior",
+      "asOf": "2026-06-01T12:00:00.000Z",
+      "deepLink": "/02a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1/fees?window=28d",
+      "detail": { "baselinePpm": 400, "currentPpm": 140 }
+    },
+    "suggestedAction": { "type": "investigate", "params": {} },
+    "suppressed": { "active": false, "reason": null },
+    "provenance": "deterministic",
+    "rateLimitGuidance": null
+  },
+  {
+    "schemaVersion": 1,
+    "id": "fleet_close_cluster:fleet:02a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1+02b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2:2026-06-01T11",
+    "severity": "critical",
+    "node": null,
+    "target": {
+      "kind": "fleet",
+      "pubkeys": [
+        "02a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
+        "02b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2"
+      ]
+    },
+    "signal": "fleet_close_cluster",
+    "evidence": {
+      "metric": "correlatedSelfClosesPerHour",
+      "observed": 12,
+      "threshold": 5,
+      "unit": "closes/hr",
+      "window": "24h",
+      "asOf": "2026-06-01T12:00:00.000Z",
+      "deepLink": "/?window=24h",
+      "detail": { "clusterHour": "2026-06-01T11", "nodesAffected": 2 }
+    },
+    "suggestedAction": { "type": "investigate", "params": {} },
+    "suppressed": { "active": false, "reason": null },
+    "provenance": "deterministic",
+    "rateLimitGuidance": null
+  },
+  {
+    "schemaVersion": 1,
+    "id": "stuck_fc_past_maturity:02a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1:e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5:5",
+    "severity": "warn",
+    "node": {
+      "pubkey": "02a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
+      "alias": "lqwd-canada",
+      "backend": "lnd"
+    },
+    "target": {
+      "kind": "channel",
+      "chanId": null,
+      "channelPoint": "e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5:5",
+      "remotePubkey": null
+    },
+    "signal": "stuck_fc_past_maturity",
+    "evidence": {
+      "metric": "blocksPastMaturity",
+      "observed": 220,
+      "threshold": 0,
+      "unit": "blocks",
+      "window": "latest",
+      "asOf": "2026-06-01T12:00:00.000Z",
+      "deepLink": "/02a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1/pending?window=24h",
+      "detail": { "limboSat": 2100000 }
+    },
+    "suggestedAction": {
+      "type": "remediate_pending",
+      "params": {
+        "case": "restart_procedure",
+        "channelPoint": "e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5:5",
+        "outpointTxid": null,
+        "suggestedSatPerVbyte": null
+      }
+    },
+    "suppressed": { "active": false, "reason": null },
+    "provenance": "deterministic",
+    "rateLimitGuidance": null
+  },
+  {
+    "schemaVersion": 1,
+    "id": "stuck_sweep:02a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1:d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4:0",
+    "severity": "warn",
+    "node": {
+      "pubkey": "02a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
+      "alias": "lqwd-canada",
+      "backend": "lnd"
+    },
+    "target": {
+      "kind": "sweep",
+      "outpointTxid": "d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4",
+      "outpointOutputIndex": 0
+    },
+    "signal": "stuck_sweep",
+    "evidence": {
+      "metric": "sweepAgeHours",
+      "observed": 72,
+      "threshold": 24,
+      "unit": "hours",
+      "window": "latest",
+      "asOf": "2026-06-01T12:00:00.000Z",
+      "deepLink": "/02a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1/pending?window=24h",
+      "detail": { "amountSat": 850000 }
+    },
+    "suggestedAction": {
+      "type": "remediate_pending",
+      "params": {
+        "case": "bump_fee",
+        "channelPoint": null,
+        "outpointTxid": "d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4",
+        "suggestedSatPerVbyte": 25
+      }
+    },
+    "suppressed": { "active": false, "reason": null },
+    "provenance": "deterministic",
+    "rateLimitGuidance": "Exported command — verify mempool fee environment before bumping."
+  },
+  {
+    "schemaVersion": 1,
+    "id": "stuck_open:02b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2:e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5:6",
+    "severity": "warn",
+    "node": {
+      "pubkey": "02b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2",
+      "alias": "lqwd-japan",
+      "backend": "lnd"
+    },
+    "target": {
+      "kind": "channel",
+      "chanId": null,
+      "channelPoint": "e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5:6",
+      "remotePubkey": "03c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3"
+    },
+    "signal": "stuck_open",
+    "evidence": {
+      "metric": "fundingAgeHours",
+      "observed": 96,
+      "threshold": 48,
+      "unit": "hours",
+      "window": "latest",
+      "asOf": "2026-06-01T12:00:00.000Z",
+      "deepLink": "/02b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2/pending?window=24h"
+    },
+    "suggestedAction": {
+      "type": "remediate_pending",
+      "params": {
+        "case": "aged_funding",
+        "channelPoint": "e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5:6",
+        "outpointTxid": null,
+        "suggestedSatPerVbyte": null
+      }
+    },
+    "suppressed": { "active": false, "reason": null },
+    "provenance": "deterministic",
+    "rateLimitGuidance": null
+  }
+]

@@ -1,0 +1,72 @@
+.sidenav-item {
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 25px;
+    line-height: 21px;
+    position: relative;
+    color: #4B545B;
+    cursor: pointer;
+    border-radius: 15px;
+    transition: all 1s ease;
+}
+
+.sidenav-item:hover {
+    background-color: #E9EDF3;
+}
+
+.nav-title{
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 15px;
+    line-height: 21px;
+    /* identical to box height, or 140% */
+    display: flex;
+    align-items: center;
+    color: #111111;
+}
+@media screen and (max-width: 1200px){
+    .sidenav-item {
+        justify-content: center;
+    }
+}
+
+
+
+
+
+/* to get filter #009EE2 => https://codepen.io/sosuke/pen/Pjoqqp */
+.sidenav-item-active {
+
+    background-color: #E9EDF3;
+    color: black;
+}
+
+.sidenav-item-active > div > img {
+    filter: invert(47%) sepia(77%) saturate(2529%) hue-rotate(168deg) brightness(95%) contrast(101%);
+}
+
+.sidenav-item-container{
+    position: relative;
+    padding: 0;
+    margin: 0;
+}
+
+.sidenav-item-container-active:after {
+    content: "";
+    height: 30px;
+    width: 2px;
+    background: #0087ca;
+    position: absolute;
+    right: 0;
+    margin: auto 0;
+    top: 0;
+    bottom: 0;
+    border-radius: 10px;
+    border: solid 2px #0087ca;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 10px;
+  }

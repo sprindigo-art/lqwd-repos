@@ -1,0 +1,35 @@
+<div id="example-basic" role="application" class="pill wizard clearfix">
+        <h3 id="example-basic-h-0" tabindex="-1" class="title current">Copy & Store Seed</h3>
+        <section id="example-basic-p-0" role="tabpanel" aria-labelledby="example-basic-h-0" class="body current" aria-hidden="false" style="display: block;">
+            <div class="row">
+                <ul class="mnemonic-seed-list" id="mnemonic-seed-list" style="list-style: none !important;"></ul>
+            </div>
+            <div class="row pt-1 text-center">
+                <button id="mnemonic-seed-btn" class="btn btn-primary col-6" onclick="printSeed();">Click Here to Print</button>
+                <button id="mnemonic-seed-cpy-btn" class="btn btn-primary col-6" data-seed="" onclick="copySeed(this);">Copy Seed to Clipboard</button>
+            </div>
+        </section>
+        <h3 id="example-basic-h-1" tabindex="-1" class="title">Confirm Seed</h3>
+        <section id="example-basic-p-1" role="tabpanel" aria-labelledby="example-basic-h-1" class="body" aria-hidden="true" style="display: none;">
+            <h4 class="text-center pb-4">Please Input and Confirm the Words from Mnemonic Seed</h4>
+            <form>
+                <div class="form-row align-items-center justify-content-center">
+                    <div class="col-auto">
+                        <label for="word1" id="labelWord1" data-value="">Number Word</label>
+                        <input id="word1" class="form-control form-control-sm" type="text" placeholder="Enter Word">
+                    </div>
+                    <div class="col-auto">
+                        <label for="word2" id="labelWord2" data-value="">Number Word</label>
+                        <input id="word2" class="form-control form-control-sm" type="text" placeholder="Enter Word">
+                    </div>
+                    <div class="col-auto">
+                        <label for="word3" id="labelWord3" data-value="">Number Word</label>
+                        <input id="word3" class="form-control form-control-sm" type="text" placeholder="Enter Word">
+                    </div>
+                </div>
+<!--                <div id="list-words-buttons" class="form-row ">-->
+<!--                    <button class="btn btn-primary btn-sm btn-rounded">example</button>-->
+<!--                </div>-->
+            </form>
+        </section>
+</div>

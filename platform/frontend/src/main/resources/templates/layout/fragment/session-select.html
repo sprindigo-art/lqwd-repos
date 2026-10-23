@@ -1,0 +1,9 @@
+<div id="select-picker-div">
+    <select th:if="${user.getLndNodes()} != null" id="lnd-node-session-select" class="selectpicker">
+        <option>Select LND to Get Started</option>
+        <option th:each="lndNodes : ${user.getLndNodes()}" th:value="${lndNodes.getLndNodeName()}"
+                th:text="${lndNodes.getLndNodeName()}" th:data-custodial="${lndNodes.getIsNonCustodial()}">
+        </option>
+    </select>
+    <input type="hidden" th:value="${is_non_custodial}" id="select_node_custodial_state" th:if="${is_non_custodial != null}" />
+</div>

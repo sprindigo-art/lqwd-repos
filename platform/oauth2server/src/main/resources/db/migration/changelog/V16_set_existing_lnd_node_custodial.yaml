@@ -1,0 +1,8 @@
+databaseChangeLog:
+  - changeSet:
+      id: set_existing_node_as_custodial
+      validCheckSum: ANY
+      author: femi
+      changes:
+        - sql:
+            sql: UPDATE lndnodeinfo SET is_non_custodial = false;

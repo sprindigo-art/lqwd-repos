@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout/app}" lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <title>LQWD | Request History</title>
+
+    <link rel="stylesheet" type="text/css" th:href="@{${pluginPath + '/table/datatable/datatables.css'}}">
+    <link rel="stylesheet" type="text/css" th:href="@{${pluginPath + '/table/datatable/dt-global_style.css'}}">
+</head>
+
+<body>
+<section layout:fragment="sub-header">
+    <span>Request History</span>
+</section>
+
+<div layout:fragment="content-section">
+    <div class="layout-px-spacing">
+        <div class="row layout-top-spacing">
+            <div class="col-xl-12 col-lg-12 col-sm-12 layout-spacing">
+                <div class="widget-heading pt-1">
+                    <div class="">
+                        <h5 class="">Select API Key</h5>
+                    </div>
+                </div>
+                <div class="widget-content widget-content-area br-6">
+
+                    <select th:unless="${user.isEmailstatus()}" id="request-history_slct_verify"
+                            class="col-12 selectpicker form-control" aria-label="API Key" disabled>
+                        <option disabled selected>Please Verify Account</option>
+                    </select>
+
+                    <select th:if="${user.isEmailstatus()}" id="request-history_slct_apikey-select"
+                            class="col-12 selectpicker form-control" aria-label="API Key">
+                        <option disabled selected>Select API Key</option>
+                        <option th:each="apiKey_dropdown : ${user.getApiKeyList()}"
+                                th:value="${apiKey_dropdown.getApikey()}"
+                                th:text="${#strings.abbreviate(apiKey_dropdown.getApikey(),100)}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-xl-12 col-lg-12 col-sm-12 layout-spacing">
+                <div class="widget-heading pt-1">
+                    <div class="">
+                        <h5 class="">Request History</h5>
+                    </div>
+                </div>
+                <div class="widget-content widget-content-area br-6">
+                    <div class="table-responsive mb-4 col-12">
+                        <table id="request-history_tbl_zero-config" class="table table-hover" style="width:100%">
+                            <thead>
+                            <tr>
+                                <th>Username</th>
+                                <th>API Key</th>
+                                <th>Request Topic</th>
+                                <th>Creation Date</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="request, num : ${apiKey.getRequests()}">
+                                <td th:text="${user.getUsername()}">FakeUsername</td>
+                                <td th:text="${#strings.abbreviate(request.getApikey(),50)}">
+                                    API KEY
+                                </td>
+                                <td th:text="${request.getCommand()}">REQUEST TOPIC</td>
+                                <td th:text="${request.getDate()}">DATE</td>
+                            </tr>
+                            </tbody>
+                            <tfoot>
+                            <tr>
+                                <th>Username</th>
+                                <th>API Key</th>
+                                <th>Request Topic</th>
+                                <th>Creation Date</th>
+                            </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div layout:fragment="scripts">
+    <script th:src="@{${pluginPath + '/table/datatable/datatables.js'}}"></script>
+    <script th:src="@{/js/requests/request_history.js}"></script>
+
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        $(document).ready(function () {
+
+            if (/*[[${apiKey}]]*/'' != null) {
+                let apiKey = /*[[${apiKey.getApikey()}]]*/'';
+                if (apiKey != '') {
+                    $("#request-history_slct_apikey-select").val(apiKey);
+                }
+            }
+
+
+            $("#request-history_slct_apikey-select").on('change', function (e) {
+                var apiPubkey = $("#request-history_slct_apikey-select :selected").attr('value');
+                window.location = "/request-accounting?apikey=" + apiPubkey;
+            });
+        });
+        /*]]>*/
+    </script>
+</div>
+</body>
+</html>

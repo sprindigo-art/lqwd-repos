@@ -1,0 +1,50 @@
+[Unit]
+Description=LND Gateway — HTTP/JSON wrapper for LND gRPC
+Documentation=https://github.com/lqwdtech/lqwdclawnode
+After=lnd.service network-online.target
+Wants=network-online.target
+Requires=lnd.service
+
+[Service]
+Type=simple
+User=lndgateway
+Group=lndgateway
+
+# Binary
+ExecStart=/usr/local/bin/lnd-gateway
+
+# Environment
+EnvironmentFile=/etc/lnd-gateway/env
+
+# Security hardening
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+PrivateDevices=yes
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectControlGroups=yes
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+RestrictNamespaces=yes
+RestrictSUIDSGID=yes
+MemoryDenyWriteExecute=yes
+LockPersonality=yes
+
+# Writable paths
+ReadWritePaths=/var/lib/lnd-gateway
+ReadOnlyPaths=/etc/lnd-gateway /lnd
+
+# Restart policy
+Restart=on-failure
+RestartSec=5
+StartLimitIntervalSec=60
+StartLimitBurst=5
+
+# Logging
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=lnd-gateway
+
+[Install]
+WantedBy=multi-user.target

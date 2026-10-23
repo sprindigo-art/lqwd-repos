@@ -1,0 +1,57 @@
+<div id="invoices" th:fragment="invoicesFrag(invoices, user)" class="timeline-line">
+    <div th:if="${invoices} != null or not ${#lists.isEmpty(invoices)}" th:each="invoice : ${invoices}">
+        <div class="item-timeline timeline-primary clickable-link" style="padding: 10px !important;" th:attr="onclick=|openLink('${invoice.getR_hash()}', '${invoice.getLndNode().getLndNodeName()}')|" th:if="${invoice.getState()} == 'SETTLED'">
+            <div class="t-dot" data-original-title="" title="">
+            </div>
+            <div class="t-text">
+                <p><span th:text="${invoice.getR_hash()}">R Hash</span></p>
+                <div style="min-width: 25%;">
+                    <p class="t-time" style="min-width: 100%;" th:if="${invoice.getReadableSettleDate() != null}" th:text="${invoice.getReadableSettleDate()}">Just Now</p>
+                    <p class="t-time" style="min-width: 100%;" th:unless="${invoice.getReadableSettleDate() != null}" th:text="${invoice.getReadableCreationDate()}">Just Now</p>
+                    <span class="badge" style="min-width: inherit;" th:text="${invoice.getState()}">UNKNOWN</span>
+                </div>
+            </div>
+        </div>
+        <div class="item-timeline timeline-primary clickable-link" style="padding: 10px !important;" th:attr="onclick=|openLink('${invoice.getR_hash()}', '${invoice.getLndNode().getLndNodeName()}')|" th:if="${invoice.getState()} == 'ACCEPTED'">
+            <div class="t-dot" data-original-title="" title="">
+            </div>
+            <div class="t-text">
+                <p><span th:text="${invoice.getR_hash()}">R Hash</span></p>
+                <div style="min-width: 25%;">
+                    <p class="t-time" style="min-width: 100%;" th:if="${invoice.getReadableSettleDate() != null}" th:text="${invoice.getReadableSettleDate()}">Just Now</p>
+                    <p class="t-time" style="min-width: 100%;" th:unless="${invoice.getReadableSettleDate() != null}" th:text="${invoice.getReadableCreationDate()}">Just Now</p>
+                    <span class="badge" style="min-width: inherit;" th:text="${invoice.getState()}">UNKNOWN</span>
+                </div>
+            </div>
+        </div>
+        <div class="item-timeline timeline-danger clickable-link" style="padding: 10px !important;" th:attr="onclick=|openLink('${invoice.getR_hash()}', '${invoice.getLndNode().getLndNodeName()}')|" th:if="${invoice.getState()} == 'CANCELED'">
+            <div class="t-dot" data-original-title="" title="">
+            </div>
+            <div class="t-text">
+                <p><span th:text="${invoice.getR_hash()}">R Hash</span></p>
+                <div style="min-width: 25%;">
+                    <p class="t-time" style="min-width: 100%;" th:if="${invoice.getReadableSettleDate() != null}" th:text="${invoice.getReadableSettleDate()}">Just Now</p>
+                    <p class="t-time" style="min-width: 100%;" th:unless="${invoice.getReadableSettleDate() != null}" th:text="${invoice.getReadableCreationDate()}">Just Now</p>
+                    <span class="badge" style="min-width: inherit;" th:text="${invoice.getState()}">UNKNOWN</span>
+                </div>
+            </div>
+        </div>
+        <div class="item-timeline timeline-warning clickable-link" style="padding: 10px !important;" th:attr="onclick=|openLink('${invoice.getR_hash()}', '${invoice.getLndNode().getLndNodeName()}')|" th:if="${invoice.getState()} == 'OPEN'">
+            <div class="t-dot" data-original-title="" title="">
+            </div>
+            <div class="t-text">
+                <p><span th:text="${invoice.getR_hash()}">R Hash</span></p>
+                <div style="min-width: 25%;">
+                    <p class="t-time" style="min-width: 100%;" th:if="${invoice.getReadableSettleDate() != null}" th:text="${invoice.getReadableSettleDate()}">Just Now</p>
+                    <p class="t-time" style="min-width: 100%;" th:unless="${invoice.getReadableSettleDate() != null}" th:text="${invoice.getReadableCreationDate()}">Just Now</p>
+                    <span class="badge" style="min-width: inherit;" th:text="${invoice.getState()}">UNKNOWN</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div th:if="${invoices} == null or ${#lists.isEmpty(invoices)}">
+        <div class="text-center pb-5 pt-5">
+            <h4>No Invoices Found.</h4>
+        </div>
+    </div>
+</div>

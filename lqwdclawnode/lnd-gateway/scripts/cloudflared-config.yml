@@ -1,0 +1,20 @@
+# Cloudflare Tunnel configuration for lnd-gateway
+# Deploy to: /etc/cloudflared/config.yml on the VM
+#
+# Prerequisites:
+#   1. cloudflared tunnel login
+#   2. cloudflared tunnel create lqwd-gateway
+#   3. Copy tunnel credentials to /etc/cloudflared/<TUNNEL-UUID>.json
+#   4. Replace <TUNNEL-UUID> below with the actual tunnel UUID
+#   5. sudo cloudflared service install
+#   6. sudo systemctl enable --now cloudflared
+
+tunnel: <TUNNEL-UUID>
+credentials-file: /etc/cloudflared/<TUNNEL-UUID>.json
+
+ingress:
+  # All API traffic routes to the gateway (per D-12)
+  - hostname: api.lqwdclaw.bot
+    service: http://localhost:7778
+  # Catch-all (required by cloudflared)
+  - service: http_status:404

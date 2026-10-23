@@ -1,0 +1,77 @@
+spring:
+  mail:
+    host: email-smtp.us-west-2.amazonaws.com
+    port: 587
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: false
+            required: false
+  kafka:
+    bootstrap-servers: broker.kafka-v1:9092
+    enable:
+      auto:
+        commit: true
+    auto:
+      commit:
+        interval:
+          ms: 1000
+    session:
+      timeout:
+        ms: 30000
+    consumer:
+      timeout:
+        ms: 120000
+    jaas:
+      enabled: true
+    properties:
+      security:
+        protocol: SASL_PLAINTEXT
+      sasl:
+        mechanism: PLAIN
+        jaas:
+          config: ${SASL_CONFIG}
+  cloud:
+    stream:
+      default:
+        producer:
+          useNativeEncoding: true
+        consumer:
+          useNativeEncoding: true
+      bindings:
+        springCloudBusOutput:
+          consumer:
+            useNativeDecoding: false
+          producer:
+            useNativeEncoding: false
+        springCloudBusInput:
+          consumer:
+            useNativeDecoding: false
+          producer:
+            useNativeEncoding: false
+        input:
+          destination: send-email
+          content-type: application/*+avro
+          group: group_id
+          concurrency: 3
+        output:
+          destination: send-email
+          content-type: application/*+avro
+kafka:
+  binder:
+      key-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
+      value-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
+      schema-registry-url: http://schemaregistry.kafka-v1:8081
+      key-deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
+      value-deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
+
+log4j:
+  logger:
+    org:
+      hibernate:
+        type: trace
+

@@ -1,0 +1,29 @@
+{
+	"type": "record",
+	"name": "Tmessage",
+	"namespace": "com.lqwd.schema",
+	"fields": [
+	{
+		"name": "id",
+		"type": "int"
+	},
+	{
+		"name": "tmess",
+		"type": "string"
+	},
+	{
+		"name": "tdescription",
+		"type": "string"
+	},
+	{
+		"name": "taction",
+		"type": "string",
+		"default": "transaction "
+	},
+	{
+		"name": "tdesignation",
+		"type": "string",
+		"default": "test"
+	}
+	]
+}

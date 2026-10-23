@@ -1,0 +1,271 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: slnd-4
+  namespace: lqwd-lnd
+  labels:
+    app: slnd-4
+  annotations:
+    deployment.kubernetes.io/revision: '3'
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: slnd-4
+  template:
+    metadata:
+      labels:
+        app: slnd-4
+    spec:
+      volumes:
+        - name: lnd
+          persistentVolumeClaim:
+            claimName: pv03-claim
+        - name: secret
+          secret:
+            secretName: secret
+            defaultMode: 420
+      containers:
+        - name: slnd-4
+          image: localhost:32000/lndv13
+          ports:
+            - containerPort: 29099
+              protocol: TCP
+          env:
+            - name: WENV
+              value: development
+            - name: LND_DB_USER
+              value: lnd_db_user
+            - name: LND_DB_PASS
+              value: lnddbuser1
+            - name: LND_DB_HOST
+              value: 192.168.123.252
+            - name: LND_DB_PORT
+              value: '5433'
+            - name: LND_PASSPHRASE
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: LND_PASSPHRASE
+            - name: LND_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: LND_PASSWORD
+            - name: LND_EXTERNALIP
+              value: 192.168.123.252
+            - name: LND_PODNAME
+              value: slnd-4
+            - name: SCENARIO
+              value: lnd
+            - name: USE_EXTERNAL_DB
+              value: '0'
+            - name: LND_BITCOIND
+              value: 'false'
+            - name: WATCHTOWER
+              value: 'false'
+            - name: LND_NETWORK
+              value: regtest
+            - name: LND_ALIAS
+              value: lqwd-lnd
+            - name: ALIAS
+              value: lqwd-lnd
+            - name: LND_RPCUSER
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: LND_RPCUSER
+            - name: LND_RPCPASS
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: LND_RPCPASS
+            - name: CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: CLIENT_SECRET
+            - name: CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: CLIENT_ID
+            - name: CIPHER_BASE_URL
+              value: http://cipher-service.microservice:8790
+            - name: OAUTH_BASE_URL
+              value: http://oauth2.oauth2:8187
+            - name: LND_RPCHOST
+              value: regtest
+            - name: SCHEMA_HOST
+              value: http://schemaregistry.kafka-v1:8081
+            - name: KAFKA_USER
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: LND_KAFKA_USER
+            - name: KAFKA_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: LND_KAFKA_PASSWORD
+            - name: KAFKA_HOST
+              value: broker.kafka-v1:9092
+            - name: KAFKA_CO_TOPIC
+              value: request
+            - name: KAFKA_CO_GROUP_ID
+              value: '334'
+            - name: KAFKA_PRO_TOPIC
+              value: reply
+            - name: DEBUG
+              value: 'true'
+            - name: REDIS_HOST
+              value: 'test-redis-master.redis'
+            - name: REDIS_PORT
+              value: '6379'
+            - name: REDIS_CRED
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: REDIS_CRED
+          resources:
+            limits:
+              memory: 2000Mi
+            requests:
+              memory: 200Mi
+          volumeMounts:
+            - name: lnd
+              mountPath: /data
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          imagePullPolicy: Always
+      restartPolicy: Always
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: slnd-4
+  namespace: lqwd-lnd
+  labels:
+    app: slnd-4
+  annotations:
+    deployment.kubernetes.io/revision: '3'
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: slnd-4
+  template:
+    metadata:
+      labels:
+        app: slnd-4
+    spec:
+      volumes:
+        - name: lnd
+          persistentVolumeClaim:
+            claimName: pv03-claim
+        - name: secret
+          secret:
+            secretName: secret
+            defaultMode: 420
+      containers:
+        - name: slnd-4
+          image: localhost:32000/lnd_m
+          ports:
+            - containerPort: 29099
+              protocol: TCP
+          env:
+            - name: WENV
+              value: development
+            - name: LND_DB_USER
+              value: xxx
+            - name: LND_DB_PASS
+              value: xxxx
+            - name: LND_DB_HOST
+              value: 192.168.123.252
+            - name: LND_DB_PORT
+              value: '5433'
+            - name: LND_PASSPHRASE
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: LND_PASSPHRASE
+            - name: LND_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: LND_PASSWORD
+            - name: LND_EXTERNALIP
+              value: 192.168.123.252
+            - name: LND_PODNAME
+              value: slnd-4
+            - name: SCENARIO
+              value: lnd
+            - name: LND_BITCOIND
+              value: 'false'
+            - name: WATCHTOWER
+              value: 'false'
+            - name: LND_NETWORK
+              value: regtest
+            - name: LND_ALIAS
+              value: lqwd-lnd
+            - name: ALIAS
+              value: lqwd-lnd
+            - name: LND_RPCUSER
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: LND_RPCUSER
+            - name: LND_RPCPASS
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: LND_RPCPASS
+            - name: CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: CLIENT_SECRET
+            - name: CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: CLIENT_ID
+            - name: CIPHER_BASE_URL
+              value: http://cipher-service.microservice:8790
+            - name: TOKEN_URL
+              value: http://oauth2.oauth2:8187/oauth/token
+            - name: LND_RPCHOST
+              value: regtest
+            - name: SCHEMA_HOST
+              value: http://schemaregistry.kafka-v1:8081
+            - name: KAFKA_USER
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: LND_KAFKA_USER
+            - name: KAFKA_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: LND_KAFKA_PASSWORD
+            - name: KAFKA_HOST
+              value: broker.kafka-v1:9092
+            - name: KAFKA_CO_TOPIC
+              value: request
+            - name: KAFKA_CO_GROUP_ID
+              value: '334'
+            - name: KAFKA_PRO_TOPIC
+              value: reply
+            - name: DEBUG
+              value: 'true'
+          resources:
+            limits:
+              memory: 2000Mi
+            requests:
+              memory: 200Mi
+          volumeMounts:
+            - name: lnd
+              mountPath: /data
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          imagePullPolicy: Always
+      restartPolicy: Always

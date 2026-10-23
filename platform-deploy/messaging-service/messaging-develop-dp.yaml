@@ -1,0 +1,72 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: messaging
+  namespace: microservice
+  labels:
+    app: messaging
+  annotations:
+    deployment.kubernetes.io/revision: '3'
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: messaging
+  template:
+    metadata:
+      labels:
+        app: messaging
+    spec:
+      volumes:
+        - name: frontend-secret
+          secret:
+            secretName: frontend-secret
+            defaultMode: 420
+      imagePullSecrets:
+        - name: ecr-token
+      containers:
+        - name: config-server
+          image: '514063904685.dkr.ecr.us-west-2.amazonaws.com/messaging-service:dev-$BUILD_NUMBER'
+          ports:
+            - containerPort: 8589
+              protocol: TCP
+          env:
+            - name: MENV
+              value: develop
+            - name: CONFIG_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: frontend-secret
+                  key: CONFIG_PASSWORD
+            - name: CONFIG_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: frontend-secret
+                  key: CONFIG_USERNAME
+            - name: MAIL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: frontend-secret
+                  key: MAIL_PASSWORD
+            - name: MAIL_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: frontend-secret
+                  key: MAIL_USERNAME
+            - name: SASL_CONFIG
+              valueFrom:
+                secretKeyRef:
+                  name: frontend-secret
+                  key: SASL_CONFIG
+            - name: REDIS_CRED
+              valueFrom:
+                secretKeyRef:
+                  name: frontend-secret
+                  key: REDIS_CRED
+          resources:
+            limits:
+              cpu: 500m
+              memory: 512Mi
+            requests:
+              cpu: 500m
+              memory: 512Mi

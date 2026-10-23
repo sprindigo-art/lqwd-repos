@@ -1,0 +1,91 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dla
+  namespace: microservice
+  labels:
+    app: dla
+spec:
+  selector:
+    matchLabels:
+      app: dla
+  template:
+    metadata:
+      labels:
+        app: dla
+    spec:
+      containers:
+        - name: dla
+          image: '514063904685.dkr.ecr.us-west-2.amazonaws.com/dla'
+          ports:
+            - containerPort: 8690
+          env:
+            - name: WENV
+              value: "stage"
+            - name: KUSERPASS
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: KUSERPASS
+            - name: KADMINPASS
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: KADMINPASS
+            - name: APPUSERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: APPUSERNAME
+            - name: APPPASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: APPPASSWORD
+            - name: DBUSERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: DBUSERNAME
+            - name: DBPASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: DBPASSWORD
+            - name: KSSLKEY
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: KSSLKEYPASS
+            - name: KBTOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: KBTOKEN
+            - name: KBCET
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: KBCET
+            - name: AWSSECRET
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: AWSSECRET
+            - name: AWSACCESS
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: AWSACCESS
+
+          resources:
+            requests:
+
+            limits:
+
+      volumes:
+        - name: secret
+          secret:
+            secretName: secret
+      imagePullSecrets:
+        - name: ecr-token

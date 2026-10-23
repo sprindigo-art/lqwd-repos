@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Ops Center Overview — Redesign Sketch v1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Saira+Semi+Condensed:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --color-bg:#eef1f7; --color-surface:#ffffff; --color-surface-2:#f4f7fc;
+  --color-border:#d8dfeb; --color-border-strong:#b9c5da;
+  --color-navy:#1a3c79; --color-navy-bright:#2c5cb4; --color-navy-glow:rgba(26,60,121,.15);
+  --color-text:#0d1626; --color-text-muted:#34435e; --color-text-faint:#5a6880;
+  --color-critical:#d92638; --color-critical-dim:rgba(217,38,56,.08);
+  --color-warn:#8f5d00; --color-warn-dim:rgba(143,93,0,.09);
+  --color-ok:#0b8a51; --color-ok-dim:rgba(11,138,81,.08);
+  --color-stale:#5d6a80; --color-stale-dim:rgba(107,118,137,.10);
+  --color-watch:#2c5cb4; --color-watch-dim:rgba(44,92,180,.09);
+  --font-display:"Saira Semi Condensed","Archivo",system-ui,sans-serif;
+  --font-mono:"IBM Plex Mono","JetBrains Mono",monospace;
+  --font-body:"Inter",system-ui,sans-serif;
+  --radius-sm:3px; --radius-md:6px; --radius-lg:10px;
+  --shadow-panel:0 1px 2px rgba(22,32,47,.06),0 4px 16px rgba(22,32,47,.07);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--color-bg);color:var(--color-text);font-family:var(--font-body);font-size:14px;line-height:1.45;-webkit-font-smoothing:antialiased}
+.app{display:grid;grid-template-columns:60px 1fr;min-height:100vh}
+
+/* ── Left rail (app sections) ── */
+.rail{background:var(--color-navy);display:flex;flex-direction:column;align-items:center;gap:6px;padding:14px 0;position:sticky;top:0;height:100vh}
+.rail .mark{font-family:var(--font-display);font-weight:700;color:#fff;font-size:19px;letter-spacing:.02em;margin-bottom:14px}
+.rail a{width:38px;height:38px;display:grid;place-items:center;border-radius:9px;color:rgba(255,255,255,.6);text-decoration:none;transition:.15s}
+.rail a:hover{background:rgba(255,255,255,.10);color:#fff}
+.rail a.on{background:rgba(255,255,255,.16);color:#fff}
+.rail svg{width:19px;height:19px}
+
+/* ── Top bar ── */
+.topbar{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:22px;background:rgba(255,255,255,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--color-border);padding:0 30px;height:56px}
+.topbar .title{font-family:var(--font-display);text-transform:uppercase;letter-spacing:.02em;font-weight:700;font-size:17px}
+.topbar .title small{display:block;font-family:var(--font-body);text-transform:none;letter-spacing:0;font-weight:400;font-size:11px;color:var(--color-text-faint);margin-top:-2px}
+.nav{display:flex;gap:2px;margin-left:8px}
+.nav a{font-family:var(--font-mono);font-size:11.5px;text-transform:uppercase;letter-spacing:.07em;color:var(--color-text-muted);text-decoration:none;padding:7px 12px;border-radius:7px;transition:.15s;position:relative}
+.nav a:hover{background:var(--color-surface-2);color:var(--color-text)}
+.nav a.on{color:var(--color-navy);font-weight:600}
+.nav a.on::after{content:"";position:absolute;left:12px;right:12px;bottom:-1px;height:2px;background:var(--color-navy);border-radius:2px}
+.nav a .ct{color:var(--color-critical);font-weight:600;margin-left:5px}
+.age{margin-left:auto;display:flex;align-items:center;gap:8px;font-family:var(--font-mono);font-size:11px;color:var(--color-text-faint)}
+.age .dot{width:6px;height:6px;border-radius:50%;background:var(--color-stale)}
+.age b{color:var(--color-text-muted);font-weight:500}
+
+/* ── Main column ── */
+main{padding:24px 40px 60px;max-width:1520px;margin:0 auto}
+.kicker{font-family:var(--font-mono);font-size:10.5px;font-weight:600;text-transform:uppercase;letter-spacing:.11em;color:var(--color-text-faint);margin-bottom:10px}
+.panel{background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-lg);box-shadow:var(--shadow-panel)}
+section{margin-bottom:22px}
+
+/* ── HERO: Fleet Vitals (first thing) ── */
+.vitals{padding:18px 20px}
+.vitals .vhead{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:14px}
+.vitals h2{font-family:var(--font-display);text-transform:uppercase;letter-spacing:.02em;font-size:16px;font-weight:700}
+.vitals .vsub{font-family:var(--font-mono);font-size:11px;color:var(--color-text-faint)}
+.vrow{display:grid;grid-template-columns:118px minmax(0,1fr) 360px;align-items:center;gap:22px;padding:10px 0;border-top:1px solid var(--color-border)}
+.vrow:first-of-type{border-top:none}
+.vrow .vlayer{display:flex;align-items:center;gap:8px;font-family:var(--font-mono);font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--color-text-muted)}
+.vrow .vlayer svg{width:14px;height:14px;color:var(--color-text-faint)}
+.ramp{display:flex;height:12px;border-radius:3px;overflow:hidden;background:var(--color-surface-2)}
+.ramp span{display:block}
+.ramp .s-crit{background:var(--color-critical)} .ramp .s-warn{background:var(--color-warn)}
+.ramp .s-watch{background:var(--color-watch)} .ramp .s-ok{background:var(--color-ok)} .ramp .s-stale{background:var(--color-stale)}
+.tally{display:flex;gap:16px;justify-content:flex-end;align-items:baseline;font-family:var(--font-mono);font-size:11px;white-space:nowrap;flex-wrap:nowrap}
+.tally span{white-space:nowrap}
+.tally b{font-weight:600}
+.tally .t-crit{color:var(--color-critical)} .tally .t-warn{color:var(--color-warn)}
+.tally .t-watch{color:var(--color-watch)} .tally .t-ok{color:var(--color-ok)} .tally .t-stale{color:var(--color-stale)}
+.tally .muted{color:var(--color-text-faint)}
+
+/* ── AI advisory band ── */
+.aiband{padding:15px 20px;border-left:3px solid var(--color-navy)}
+.aiband .ahead{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.aiband .ahead .k{font-family:var(--font-mono);font-size:10.5px;font-weight:600;text-transform:uppercase;letter-spacing:.11em;color:var(--color-navy)}
+.aiband .ahead .badge{font-family:var(--font-mono);font-size:9.5px;text-transform:uppercase;letter-spacing:.08em;color:var(--color-text-faint);border:1px solid var(--color-border);border-radius:20px;padding:2px 8px}
+.airow{display:flex;gap:10px;align-items:baseline;padding:5px 0;font-size:13px}
+.airow .sev{width:6px;height:6px;border-radius:2px;flex:none;margin-top:6px}
+.airow .sev.crit{background:var(--color-critical)} .airow .sev.warn{background:var(--color-warn)} .airow .sev.watch{background:var(--color-watch)}
+.airow em{font-style:normal;color:var(--color-text-faint)}
+
+/* ── Queue ── */
+.qhead{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.filters{display:flex;gap:14px;align-items:center}
+.fgroup{display:flex;gap:4px}
+.chip{font-family:var(--font-mono);font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--color-text-muted);background:var(--color-surface);border:1px solid var(--color-border);border-radius:20px;padding:4px 11px;cursor:pointer;transition:.13s;user-select:none}
+.chip:hover{border-color:var(--color-border-strong)}
+.chip.on{background:var(--color-navy);border-color:var(--color-navy);color:#fff}
+.fsep{width:1px;height:18px;background:var(--color-border)}
+
+.queue{overflow:hidden}
+.card{border-top:1px solid var(--color-border)}
+.card:first-child{border-top:none}
+.crow{display:grid;grid-template-columns:4px 1fr;cursor:pointer}
+.crow .edge{margin:10px 0;border-radius:2px}
+.edge.crit{background:var(--color-critical)} .edge.warn{background:var(--color-warn)}
+.edge.watch{background:var(--color-watch)} .edge.stale{background:var(--color-stale)}
+.cbody{display:grid;grid-template-columns:230px 90px 1fr auto;gap:14px;align-items:center;padding:12px 16px;transition:background .13s}
+.crow:hover .cbody{background:var(--color-surface-2)}
+.calias{display:flex;align-items:center;gap:9px;min-width:0}
+.calias .chev{width:12px;height:12px;color:var(--color-text-faint);transition:transform .15s;flex:none}
+.card.open .chev{transform:rotate(90deg)}
+.calias .name{font-family:var(--font-mono);font-size:13.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.backend{font-family:var(--font-mono);font-size:9.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--color-text-faint);border:1px solid var(--color-border);border-radius:4px;padding:1px 5px}
+.gchip{justify-self:start;font-family:var(--font-mono);font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;border-radius:5px;padding:3px 8px}
+.gchip.crit{color:var(--color-critical);background:var(--color-critical-dim)}
+.gchip.warn{color:var(--color-warn);background:var(--color-warn-dim)}
+.gchip.watch{color:var(--color-watch);background:var(--color-watch-dim)}
+.gchip.stale{color:var(--color-stale);background:var(--color-stale-dim)}
+.cwhy{min-width:0;font-size:12.5px;color:var(--color-text-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cwhy .n{font-family:var(--font-mono);color:var(--color-text-faint);font-size:11.5px}
+.cmeta{display:flex;align-items:center;gap:12px;justify-self:end;font-family:var(--font-mono);font-size:11px;color:var(--color-text-faint);white-space:nowrap}
+.stalepill{color:var(--color-stale);background:var(--color-stale-dim);border:1px dashed var(--color-stale);border-radius:20px;padding:2px 9px;font-size:9.5px;text-transform:uppercase;letter-spacing:.05em}
+
+/* children */
+.children{display:none;padding:2px 16px 14px 20px}
+.card.open .children{display:block}
+.children .clabel{font-family:var(--font-mono);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:var(--color-text-faint);margin:6px 0 9px}
+.child{display:grid;grid-template-columns:16px 1fr auto;gap:10px;align-items:center;background:var(--color-surface);border:1px solid var(--color-border);border-radius:8px;padding:8px 12px;margin-bottom:7px;cursor:pointer;transition:.13s}
+.child:hover{border-color:var(--color-border-strong);background:var(--color-surface-2)}
+.child .ic{width:15px;height:15px;color:var(--color-text-faint)}
+.child .clab{font-family:var(--font-mono);font-size:12.5px;font-weight:500;color:var(--color-text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.child .cstat{font-family:var(--font-mono);font-size:11px;white-space:nowrap;display:flex;align-items:center;gap:6px}
+.cstat .dotmini{width:6px;height:6px;border-radius:2px}
+.cstat.crit{color:var(--color-critical)} .cstat.crit .dotmini{background:var(--color-critical)}
+.cstat.warn{color:var(--color-warn)} .cstat.warn .dotmini{background:var(--color-warn)}
+.cstat.watch{color:var(--color-watch)} .cstat.watch .dotmini{background:var(--color-watch)}
+.cstat.stale{color:var(--color-stale)} .cstat.stale .dotmini{background:var(--color-stale)}
+.cstat.fee{color:var(--color-navy);font-weight:600}
+.child.fee .clab{color:var(--color-text)}
+.showmore{font-family:var(--font-mono);font-size:11px;color:var(--color-navy);background:none;border:none;cursor:pointer;padding:6px 2px;text-transform:uppercase;letter-spacing:.05em}
+.showmore:hover{text-decoration:underline}
+.hidden-child{display:none}
+.card.showall .hidden-child{display:grid}
+
+/* healthy collapse */
+.healthy{padding:14px 18px;display:flex;align-items:center;justify-content:space-between;color:var(--color-text-muted)}
+.healthy .hl{font-family:var(--font-mono);font-size:12px}
+.healthy .hl b{color:var(--color-ok)}
+.healthy button{font-family:var(--font-mono);font-size:11px;color:var(--color-navy);background:none;border:none;cursor:pointer;text-transform:uppercase;letter-spacing:.05em}
+
+.note{margin:0 30px 40px;padding:14px 18px;border:1px dashed var(--color-border-strong);border-radius:10px;background:var(--color-surface-2);font-size:12.5px;color:var(--color-text-muted);max-width:1080px}
+.note b{color:var(--color-text)}
+.note code{font-family:var(--font-mono);font-size:11.5px;background:var(--color-surface);border:1px solid var(--color-border);border-radius:4px;padding:1px 5px}
+</style>
+</head>
+<body>
+<div class="app">
+  <!-- App-section rail -->
+  <nav class="rail">
+    <div class="mark">L</div>
+    <a class="on" title="Ops Center"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></a>
+    <a title="Nodes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></a>
+    <a title="Hosts"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/><path d="M6 6h.01M6 18h.01"/></svg></a>
+    <a title="Security"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></a>
+  </nav>
+
+  <div>
+    <!-- Top bar: title + operator nav + honest data age -->
+    <header class="topbar">
+      <div class="title">Ops Center<small>Full-stack attention queue</small></div>
+      <nav class="nav">
+        <a class="on">Ops Center</a>
+        <a>Inbox<span class="ct">3</span></a>
+        <a>Pending<span class="ct">7</span></a>
+        <a>Queue</a>
+      </nav>
+      <div class="age"><span class="dot"></span>data as of <b>14:32:07</b> · <b id="ago">18s ago</b></div>
+    </header>
+
+    <main>
+      <!-- ═══ HERO: FLEET VITALS FIRST ═══ -->
+      <section class="panel vitals">
+        <div class="vhead">
+          <h2>Fleet Vitals</h2>
+          <span class="vsub">24 live entities · dead &gt;30d dropped</span>
+        </div>
+        <div class="vrow">
+          <div class="vlayer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>Nodes</div>
+          <div class="ramp"><span class="s-crit" style="width:12%"></span><span class="s-warn" style="width:12%"></span><span class="s-watch" style="width:8%"></span><span class="s-stale" style="width:8%"></span><span class="s-ok" style="width:60%"></span></div>
+          <div class="tally"><span class="t-crit"><b>3</b> crit</span><span class="t-warn"><b>3</b> warn</span><span class="t-watch"><b>2</b> watch</span><span class="t-ok"><b>15</b> ok</span><span class="muted">/ 25</span></div>
+        </div>
+        <div class="vrow">
+          <div class="vlayer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/><path d="M6 6h.01M6 18h.01"/></svg>Hosts</div>
+          <div class="ramp"><span class="s-crit" style="width:9%"></span><span class="s-warn" style="width:9%"></span><span class="s-ok" style="width:82%"></span></div>
+          <div class="tally"><span class="t-crit"><b>1</b> crit</span><span class="t-warn"><b>1</b> warn</span><span class="t-ok"><b>9</b> ok</span><span class="muted">/ 11</span></div>
+        </div>
+        <div class="vrow">
+          <div class="vlayer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 8 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H2a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 3.6 8"/></svg>Services</div>
+          <div class="ramp"><span class="s-crit" style="width:11%"></span><span class="s-warn" style="width:15%"></span><span class="s-stale" style="width:7%"></span><span class="s-ok" style="width:67%"></span></div>
+          <div class="tally"><span class="t-crit"><b>3</b> crit</span><span class="t-warn"><b>4</b> warn</span><span class="t-stale"><b>2</b> stale</span><span class="t-ok"><b>18</b> ok</span><span class="muted">/ 27</span></div>
+        </div>
+        <div class="vrow">
+          <div class="vlayer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>Chain</div>
+          <div class="ramp"><span class="s-ok" style="width:100%"></span></div>
+          <div class="tally"><span class="t-ok"><b>2</b> ok</span><span class="muted">/ 2</span></div>
+        </div>
+        <div class="vrow">
+          <div class="vlayer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0 0 18 0V5"/><path d="M3 12a9 3 0 0 0 18 0"/></svg>Storage</div>
+          <div class="ramp"><span class="s-warn" style="width:18%"></span><span class="s-ok" style="width:82%"></span></div>
+          <div class="tally"><span class="t-warn"><b>2</b> warn</span><span class="t-ok"><b>9</b> ok</span><span class="muted">/ 11</span></div>
+        </div>
+      </section>
+
+      <!-- ═══ AI advisory band ═══ -->
+      <section class="panel aiband">
+        <div class="ahead"><span class="k">What needs you now</span><span class="badge">Advisory · read-only</span></div>
+        <div class="airow"><span class="sev crit"></span><span>LQWD-Australia is <b>critical and stale 5d</b> — 8 alerts rolled up; likely the host is gone. <em>Confirm before closing anything.</em></span></div>
+        <div class="airow"><span class="sev crit"></span><span>LQWD-Brazil shows a <b>close storm</b> — 4 force-closes in the last hour, 11 channels in limbo.</span></div>
+        <div class="airow"><span class="sev warn"></span><span><b>30 channels</b> across 6 nodes want fee moves (18 raise · 12 lower). <em>Routine — queue when ready.</em></span></div>
+      </section>
+
+      <!-- ═══ NEEDS ATTENTION QUEUE ═══ -->
+      <section>
+        <div class="qhead">
+          <div class="kicker" style="margin:0">Needs attention · 6 of 24</div>
+          <div class="filters">
+            <div class="fgroup" id="layerFilters">
+              <span class="chip" data-layer>Nodes</span>
+              <span class="chip" data-layer>Services</span>
+              <span class="chip" data-layer>Hosts</span>
+              <span class="chip" data-layer>Chain</span>
+            </div>
+            <span class="fsep"></span>
+            <div class="fgroup" id="sevFilters">
+              <span class="chip" data-sev>Crit</span>
+              <span class="chip" data-sev>Warn</span>
+              <span class="chip" data-sev>Watch</span>
+              <span class="chip" data-sev>Stale</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel queue">
+          <!-- CARD 1 — collapsed by default -->
+          <div class="card" data-layers="hosts services nodes" data-sev="crit stale">
+            <div class="crow" onclick="toggle(this)">
+              <div class="edge crit"></div>
+              <div class="cbody">
+                <div class="calias"><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M9 18l6-6-6-6"/></svg><span class="name">LQWD-Australia</span><span class="backend">host</span></div>
+                <span class="gchip crit">Critical</span>
+                <div class="cwhy">8 alerts roll up · host unreachable <span class="n">— last good 5d ago</span></div>
+                <div class="cmeta"><span class="stalepill">stale 5d</span></div>
+              </div>
+            </div>
+            <div class="children">
+              <div class="clabel">8 alerts · nested under this host</div>
+              <div class="child"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg><span class="clab">Node — fee engine crash</span><span class="cstat crit"><span class="dotmini"></span>critical</span></div>
+              <div class="child"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82 2 2 0 1 1-2.89 2.77 1.65 1.65 0 0 0-2.77 1.18 2 2 0 1 1-4 0 1.65 1.65 0 0 0-2.77-1.18 2 2 0 1 1-2.89-2.77 1.65 1.65 0 0 0 0-2.36 2 2 0 1 1 2.89-2.77 1.65 1.65 0 0 0 2.77-1.18 2 2 0 1 1 4 0 1.65 1.65 0 0 0 2.77 1.18 2 2 0 1 1 2.89 2.77 1.65 1.65 0 0 0-.33 1.54z"/></svg><span class="clab">Node Auditor</span><span class="cstat crit"><span class="dotmini"></span>down</span></div>
+              <div class="child"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82 2 2 0 1 1-2.89 2.77 1.65 1.65 0 0 0-2.77 1.18 2 2 0 1 1-4 0 1.65 1.65 0 0 0-2.77-1.18 2 2 0 1 1-2.89-2.77 1.65 1.65 0 0 0 0-2.36 2 2 0 1 1 2.89-2.77 1.65 1.65 0 0 0 2.77-1.18 2 2 0 1 1 4 0 1.65 1.65 0 0 0 2.77 1.18 2 2 0 1 1 2.89 2.77 1.65 1.65 0 0 0-.33 1.54z"/></svg><span class="clab">Address List Sync</span><span class="cstat stale"><span class="dotmini"></span>stale 6h</span></div>
+              <div class="child"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82 2 2 0 1 1-2.89 2.77 1.65 1.65 0 0 0-2.77 1.18 2 2 0 1 1-4 0 1.65 1.65 0 0 0-2.77-1.18 2 2 0 1 1-2.89-2.77 1.65 1.65 0 0 0 0-2.36 2 2 0 1 1 2.89-2.77 1.65 1.65 0 0 0 2.77-1.18 2 2 0 1 1 4 0 1.65 1.65 0 0 0 2.77 1.18 2 2 0 1 1 2.89 2.77 1.65 1.65 0 0 0-.33 1.54z"/></svg><span class="clab">Esplora</span><span class="cstat stale"><span class="dotmini"></span>no data</span></div>
+              <div class="child fee"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19V5M5 12l7-7 7 7"/></svg><span class="clab">18 channels need a fee raise</span><span class="cstat fee">fees →</span></div>
+              <div class="child fee hidden-child"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M19 12l-7 7-7-7"/></svg><span class="clab">12 channels need a fee lower</span><span class="cstat fee">fees →</span></div>
+              <div class="child hidden-child"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/></svg><span class="clab">Disk 92% on aus-host-1</span><span class="cstat warn"><span class="dotmini"></span>warn</span></div>
+              <div class="child hidden-child"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/></svg><span class="clab">Internal Rebalancer</span><span class="cstat watch"><span class="dotmini"></span>watch</span></div>
+              <button class="showmore" onclick="event.stopPropagation();showAll(this)">+ show 3 more (non-critical)</button>
+            </div>
+          </div>
+
+          <!-- CARD 2 — expanded to show interaction -->
+          <div class="card open" data-layers="nodes services" data-sev="crit warn">
+            <div class="crow" onclick="toggle(this)">
+              <div class="edge crit"></div>
+              <div class="cbody">
+                <div class="calias"><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M9 18l6-6-6-6"/></svg><span class="name">LQWD-Brazil</span><span class="backend">lnd</span></div>
+                <span class="gchip crit">Critical</span>
+                <div class="cwhy">close storm <span class="n">— 4 force-closes in the last hour · 11 in limbo</span></div>
+                <div class="cmeta">fresh 2m</div>
+              </div>
+            </div>
+            <div class="children">
+              <div class="clabel">5 alerts · nested under this node</div>
+              <div class="child"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg><span class="clab">Channel close storm</span><span class="cstat crit"><span class="dotmini"></span>critical</span></div>
+              <div class="child"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/></svg><span class="clab">AI Liquidity Manager</span><span class="cstat warn"><span class="dotmini"></span>degraded</span></div>
+              <div class="child fee"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19V5M5 12l7-7 7 7"/></svg><span class="clab">6 channels need a fee raise</span><span class="cstat fee">fees →</span></div>
+            </div>
+          </div>
+
+          <!-- CARD 3 — warn, collapsed, single-layer (fee-only node) -->
+          <div class="card" data-layers="nodes" data-sev="warn">
+            <div class="crow" onclick="toggle(this)">
+              <div class="edge warn"></div>
+              <div class="cbody">
+                <div class="calias"><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M9 18l6-6-6-6"/></svg><span class="name">LQWD-Singapore</span><span class="backend">ldk</span></div>
+                <span class="gchip warn">Warning</span>
+                <div class="cwhy">fee tuning <span class="n">— 9 channels want a raise, 4 a lower</span></div>
+                <div class="cmeta">fresh 40s</div>
+              </div>
+            </div>
+            <div class="children">
+              <div class="clabel">2 fee summaries</div>
+              <div class="child fee"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19V5M5 12l7-7 7 7"/></svg><span class="clab">9 channels need a fee raise</span><span class="cstat fee">fees →</span></div>
+              <div class="child fee"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M19 12l-7 7-7-7"/></svg><span class="clab">4 channels need a fee lower</span><span class="cstat fee">fees →</span></div>
+            </div>
+          </div>
+
+          <!-- CARD 4 — host warn -->
+          <div class="card" data-layers="hosts services" data-sev="warn stale">
+            <div class="crow" onclick="toggle(this)">
+              <div class="edge warn"></div>
+              <div class="cbody">
+                <div class="calias"><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M9 18l6-6-6-6"/></svg><span class="name">eu-host-3</span><span class="backend">host</span></div>
+                <span class="gchip warn">Warning</span>
+                <div class="cwhy">2 alerts roll up · elevated load <span class="n">— disk 88%</span></div>
+                <div class="cmeta"><span class="stalepill">stale 40m</span></div>
+              </div>
+            </div>
+            <div class="children">
+              <div class="clabel">2 alerts · nested under this host</div>
+              <div class="child"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/></svg><span class="clab">Disk 88% · eu-host-3</span><span class="cstat warn"><span class="dotmini"></span>warn</span></div>
+              <div class="child"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/></svg><span class="clab">Channel Acceptor</span><span class="cstat stale"><span class="dotmini"></span>stale 40m</span></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Healthy collapse -->
+      <section class="panel healthy">
+        <span class="hl"><b>18 nodes</b> · <b>9 hosts</b> healthy — nothing needs you</span>
+        <button>Show healthy ▸</button>
+      </section>
+    </main>
+
+    <div class="note">
+      <b>Sketch — throwaway, not the real page.</b> Fixes vs. the live build: (1) <b>Fleet Vitals moved to the top</b>, first thing you see. (2) <b>Services nested under their owner node/host, deduped</b> — no more floating "Address List Sync" orphans; one card per entity. (3) <b>Layer filters actually filter the tree</b> — try clicking <code>Services</code> or <code>Hosts</code> above; cards with a matching alert anywhere in their tree stay. (4) <b>Category icons</b> (node / service / host / chain / fee↑↓) say what each alert is; severity stays as tinted chips + edge bars (no severity icons, per locked brief). (5) <b>Collapsed one-liner cards</b>, criticals never capped, non-critical capped at 5 + "show more". (6) <b>Real nav</b> (Inbox / Pending / Queue) and an <b>honest, ticking data-age</b> in a top bar that now does something. Rows are click-through to detail / fees.
+    </div>
+  </div>
+</div>
+
+<script>
+function toggle(row){row.parentElement.classList.toggle('open')}
+function showAll(btn){btn.closest('.card').classList.add('showall');btn.style.display='none'}
+// layer/severity filter demo — a card survives if it matches ALL active groups (empty group = all)
+function applyFilters(){
+  const layers=[...document.querySelectorAll('#layerFilters .chip.on')].map(c=>c.textContent.toLowerCase());
+  const sevs=[...document.querySelectorAll('#sevFilters .chip.on')].map(c=>c.textContent.toLowerCase());
+  document.querySelectorAll('.card').forEach(card=>{
+    const cl=(card.dataset.layers||'').split(' ');
+    const cs=(card.dataset.sev||'').split(' ');
+    const okL=layers.length===0||layers.some(l=>cl.includes(l));
+    const okS=sevs.length===0||sevs.some(s=>cs.includes(s));
+    card.style.display=(okL&&okS)?'':'none';
+  });
+}
+document.querySelectorAll('.chip').forEach(c=>c.addEventListener('click',()=>{c.classList.toggle('on');applyFilters()}));
+// ticking honest age
+let s=18;setInterval(()=>{s++;document.getElementById('ago').textContent=s+'s ago'},1000);
+</script>
+</body>
+</html>

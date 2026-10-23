@@ -1,0 +1,18 @@
+.channel-status-container {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 10px;
+    line-height: 15px;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 4px;
+
+    border-radius: 0px 8px 0px 4px;
+    padding-bottom: 16px;
+    padding-top: 4px;
+    padding-left: 20px;
+
+}

@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: lndap
+  namespace: microservice
+  labels:
+    app: lndap
+
+spec:
+  selector:
+    app: lndap
+  ports:
+    - name: client
+      port: 8590
+      targetPort: 8590
+      protocol: TCP
+
+  type: NodePort
+

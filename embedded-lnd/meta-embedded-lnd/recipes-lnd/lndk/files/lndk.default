@@ -1,0 +1,17 @@
+# lndk - BOLT 12 offers for lnd.
+#
+# Read by /etc/init.d/lndk and /usr/libexec/lndk-run.
+
+LND_DIR=/data/lnd
+LND_NETWORK=regtest
+LND_RPC=127.0.0.1:10009
+
+# lndk's own state: the TLS material for its gRPC server, and its log.
+LNDK_DATA=/data/lndk
+
+# Its gRPC server. Loopback only and deliberately not in the firewall: reach
+# it with lndk-cli over SSH, the same way lncli is used.
+GRPC_HOST=127.0.0.1
+GRPC_PORT=7000
+
+LOG_LEVEL=info

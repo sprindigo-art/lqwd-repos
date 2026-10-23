@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout/app}" lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <title>LQwD | Peers</title>
+    <link th:href="@{${pluginPath + '/apex/apexcharts.css'}}" rel="stylesheet" type="text/css">
+    <link th:href="@{${cssPath + '/widgets/modules-widgets.css'}}" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+
+<section layout:fragment="sub-header">
+    <span>Peers</span>
+</section>
+
+<div layout:fragment="content-section">
+    <div class="layout-px-spacing">
+        <div class="row layout-spacing pt-2">
+            <div id="peer-connect-page_div" class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                <div id="peer-connect-widget-page_div" class="widget">
+                    <div class="widget-heading text-center">
+                        <h5>Connect to Peer</h5>
+                    </div>
+                    <div class="widget-content">
+                        <div id="connect-peer-fragment">
+                            <div th:replace="peer/fragments/peer-connect"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div th:replace="auth/fragments/noncustodial_passphrase_modal"></div>
+</div>
+<div layout:fragment="scripts">
+
+    <!-- END GLOBAL MANDATORY SCRIPTS -->
+    <script th:src="@{/js/tools/tools.js}"></script>
+    <script th:src="@{${pluginPath + '/apex/apexcharts.min.js'}}"></script>
+    <script th:src="@{assets/js/widgets/modules-widgets.js}"></script>
+    <script th:src="@{/js/peer/peer-page.js}"></script>
+    <script th:src="@{${pluginPath + '/blockui/custom-blockui.js'}}"></script>
+    <script th:src="@{${pluginPath + '/blockui/jquery.blockUI.min.js'}}"></script>
+    <script th:inline="javascript">
+
+        $(document).ready(function () {
+            $(".form-control").on({
+                paste(event) {
+                    const hostdata = event.originalEvent.clipboardData.getData('text').trim();
+                    if (hostdata.includes("@")) {
+                        event.preventDefault();
+                        pasteHostData(hostdata);
+                    }
+                }
+            });
+
+            $("#peer-connect_btn_connect").on('click', function (){
+                let non_custodial = $("#select_node_custodial_state").val();
+                $("#modal-passphrase-popup_txt_passphrase").val("");
+                $("#modal-passphrase-popup_txt_password").val("");
+                if (non_custodial==="1"){
+                    $("#passphrase-div-noncustodial-modal").prop('hidden', false);
+                    $("#passphraseModal").modal('show');
+                }else{
+                    $("#passphrase-div-noncustodial-modal").prop('hidden', true);
+                    $("#passphraseModal").modal('show');
+                }
+
+
+            });
+            $("#peer-connect_btn_clear-fields").on('click', function () {
+                $(".form-control").val("");
+            });
+            $("#passphraseModal").on('shown.bs.modal', function () {
+                $('#modal-passphrase-popup_txt_password').get(0).focus();
+            });
+            $("#modal-passphrase-popup_btn_modal-blockui").on('click', function (){
+                connectToPeer();
+            });
+            $('#modal-passphrase-popup_txt_password').on('keypress', function (e) {
+                if (e.which === 13) {
+                    e.preventDefault();
+                    if($("#passphrase-div-noncustodial-modal").prop('hidden')){
+                        connectToPeer();
+                    } else {
+                        $('#modal-passphrase-popup_txt_passphrase').get(0).focus();
+                    }
+                }
+            });
+            $('#modal-passphrase-popup_txt_passphrase').on('keypress', function (e) {
+                if (e.which === 13) {
+                    e.preventDefault();
+                    connectToPeer();
+                }
+            });
+        });
+
+    </script>
+</div>
+</body>
+</html>

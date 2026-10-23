@@ -1,0 +1,43 @@
+.credit-card-modal-form-container {
+    display: flex;
+    justify-content: flex-start;
+    height: 100%;
+}
+
+.credit-card-modal-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.credit-card-modal-form-row {
+    display: flex;
+    flex-direction: row;
+    padding-bottom: 16px;
+}
+
+.credit-card-modal-form-col {
+    display: flex;
+    flex-direction: column;
+    padding-right: 25px;
+}
+
+.credit-card-modal-form-label {
+    /* Label 1 */
+
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    /* identical to box height, or 143% */
+
+    display: flex;
+    align-items: center;
+
+    /* Text - Tertiary */
+    color: #7A7A7A;
+}
+
+.credit-card-modal-form-input {
+
+}

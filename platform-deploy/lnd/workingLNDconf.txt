@@ -1,0 +1,30 @@
+[Application Options]
+datadir=/root/.lnd/data
+logdir=/root/.lnd/logs
+debuglevel=info
+maxpendingchannels=10
+externalip=192.243.215.232
+alias=LND_Aziz
+
+
+[Bitcoin]
+bitcoin.active=1
+bitcoin.mainnet=1
+bitcoin.node=bitcoind
+bitcoin.defaultchanconfs=3
+
+[Bitcoind]
+# bitcoin service node address
+bitcoind.rpchost=192.168.123.252
+bitcoind.rpcuser=bitcoin
+bitcoind.rpcpass=bitcoin12coin11Andb7
+bitcoind.zmqpubrawblock=192.168.123.252:29000
+bitcoind.zmqpubrawtx=192.168.123.252:29001
+
+[autopilot]
+autopilot.active=1
+autopilot.maxchannels=16
+autopilot.allocation=0.1
+
+[Watchtower]
+watchtower.active=false

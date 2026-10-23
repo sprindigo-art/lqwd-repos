@@ -1,0 +1,80 @@
+<!-- Modal -->
+<div th:fragment="liquidity_invoice_details(${liquidityInvoiceDetails})" class="modal fade slideInUp modal" id="liquidity_invoice_details" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" >Liquidity Request Details</h5>
+                <button id="liquidity_invoice_details_btn_close" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" th:if="${liquidityInvoiceDetails} != null">
+                <div class="row pt-2">
+                    <div class="col-2">Payment Type</div>
+                    <div class="col-10"><span th:text="${liquidityInvoiceDetails.getType()}"></span></div>
+                </div>
+                <div class="row pt-2">
+                    <div class="col-2">Payment request</div>
+                    <div class="col-10"><span>
+                        [[${#strings.abbreviate(liquidityInvoiceDetails.getPaymentRequest(), 70)}]]
+                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-copy" th:attr="onclick=|copyToClipboard('${liquidityInvoiceDetails.getPaymentRequest()}')|">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                    </svg>
+                    </span></div>
+                </div>
+                <div class="row pt-2">
+                    <div class="col-2">Pubkey</div>
+                    <div class="col-10"><span>
+                        [[${#strings.abbreviate(liquidityInvoiceDetails.getPubkey(), 70)}]]
+                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-copy" th:attr="onclick=|copyToClipboard('${liquidityInvoiceDetails.getPubkey()}')|">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                    </svg>
+                    </span></div>
+                </div>
+                <div class="row pt-2">
+                    <div class="col-2">IP Address</div>
+                    <div class="col-10"><span th:text="${liquidityInvoiceDetails.getIpAddress()}"></span></div>
+                </div>
+                <div class="row pt-2">
+                    <div class="col-2">Amount</div>
+                    <div class="col-10"><span th:text="${liquidityInvoiceDetails.getAmt()}"></span></div>
+                </div>
+                <div class="row pt-2">
+                    <div class="col-2">Requested Amount</div>
+                    <div class="col-10"><span th:text="${liquidityInvoiceDetails.getRequestedAmt()}"></span></div>
+                </div>
+                <div class="row pt-2">
+                    <div class="col-2">Fee</div>
+                    <div class="col-10"><span th:text="${liquidityInvoiceDetails.getFee()}"></span></div>
+                </div>
+                <div class="row pt-2">
+                    <div class="col-2">Fee to pay</div>
+                    <div class="col-10"><span th:text="${liquidityInvoiceDetails.getFeeToPay()}"></span></div>
+                </div>
+                <div class="row pt-2">
+                    <div class="col-2">Date created</div>
+                    <div class="col-10"><span th:text="${#dates.format(liquidityInvoiceDetails.getDateCreated(),'MMMM d, YYYY')}"></span></div>
+                </div>
+                <div class="row pt-2">
+                    <div class="col-2">Expiry date</div>
+                    <div class="col-10"><span th:text="${#dates.format(liquidityInvoiceDetails.getChannelExpiryDate(),'MMMM d, YYYY')}"></span></div>
+                </div>
+                <div class="row pt-2">
+                    <div class="col-2">Number of weeks</div>
+                    <div class="col-10"><span th:text="${liquidityInvoiceDetails.getDurationInWeeks()}"></span></div>
+                </div>
+                <div class="row pt-2">
+                    <div class="col-2">Status</div>
+                    <div class="col-10">
+                        <span class="badge outline-badge-success" th:if="${liquidityInvoiceDetails.getPaid()}" th:text="'PAID'"></span>
+                        <span class="badge outline-badge-warning" th:unless="${liquidityInvoiceDetails.getPaid()}" th:text="'NOT PAID'"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

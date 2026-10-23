@@ -1,0 +1,92 @@
+{
+  "namespace": "com.lqwd.messaging.schemas",
+  "type": "record",
+  "name": "EmailBody",
+  "fields": [
+    {
+      "name": "body",
+      "type": "string",
+      "avro.java.string": "String"
+    },
+    {
+      "name": "subject",
+      "type": "string",
+      "avro.java.string": "String"
+    },
+    {
+      "name": "sender",
+      "type": {
+        "type": "record",
+        "name": "EmailAddress",
+        "fields": [
+          {
+            "name": "displayName",
+            "type": "string",
+            "avro.java.string": "String"
+          },
+          {
+            "name": "email",
+            "type": "string",
+            "avro.java.string": "String"
+          },
+          {
+            "name": "recipientType",
+            "type":{
+               "type": "enum",
+               "name": "RecipientType",
+                "symbols": [
+                             "BCC",
+                             "CC",
+                             "TO"
+                           ]
+            }
+
+          }
+        ]
+      }
+    },
+    {
+      "name": "recipients",
+      "type": {
+        "type": "array",
+        "items": "com.lqwd.messaging.schemas.EmailAddress"
+      }
+    },
+    {
+      "name": "attachments",
+      "type": {
+        "type": "array",
+        "items": {
+          "name": "EmailAttachment",
+          "type": "record",
+          "fields": [
+            {
+              "name": "cid",
+              "type": "string",
+              "avro.java.string": "String"
+            },
+            {
+              "name": "mime",
+              "type": "string",
+              "avro.java.string": "String"
+            },
+            {
+              "name": "content",
+              "type": "string",
+              "avro.java.string": "String"
+            },
+            {
+              "name": "name",
+              "type": "string",
+              "avro.java.string": "String"
+            },
+            {
+              "name": "inline",
+              "type": "boolean"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

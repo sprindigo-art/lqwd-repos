@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>LQWD | Beta Registration</title>
+
+    <meta charset="utf-8">
+    <!--    <meta http-equiv="X-UA-Compatible" content="IE=edge">-->
+    <meta http-equiv="Content-Type" content="text/html"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
+
+    <!--  favicon images  -->
+    <link rel="apple-touch-icon" sizes="180x180" th:href="@{/images/favicon_io/apple-touch-icon.png}">
+    <link rel="icon" type="image/png" sizes="32x32" th:href="@{/images/favicon_io/favicon-32x32.png}">
+    <link rel="icon" type="image/png" sizes="16x16" th:href="@{/images/favicon_io/favicon-16x16.png}">
+    <link rel="manifest" th:href="@{/images/favicon_io/site.webmanifest}">
+
+    <!-- BEGIN GLOBAL MANDATORY STYLES -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:400,600,700" rel="stylesheet">
+    <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet" type="text/css" />
+    <link th:href="@{/plugins/font-icons/fontawesome/css/fontawesome.css}" rel="stylesheet" type="text/css" />
+
+    <link rel="preconnect" th:href="@{https://fonts.gstatic.com}">
+    <link th:href="@{https://fonts.googleapis.com/css2?family=Roboto&display=swap}" rel="stylesheet">
+
+    <!-- END GLOBAL MANDATORY STYLES -->
+    <link th:href="@{/plugins/light/notification/snackbar/snackbar.min.css}" rel="stylesheet" type="text/css" />
+    <link th:href="@{/plugins/light/sweetalerts/sweetalert2.min.css}" rel="stylesheet" type="text/css">
+
+    <!--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>-->
+    <link rel="stylesheet" type="text/css" th:href="@{/assets/css/elements/alert.css}">
+    <link th:href="@{/assets/css/light/plugins.css}" rel="stylesheet" type="text/css" />
+    <!--  Satoshi Font Symbol  -->
+    <script src="https://kit.fontawesome.com/090ca49637.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" th:href="@{/assets/css/light/components/custom-modal.css}">
+    <script th:src='|https://www.google.com/recaptcha/api.js?render=${@captchaSettings.getSite()}|'></script>
+
+    <style>
+        @media (min-width: 1200px) and (max-width: 1400px) {
+            .form-col {
+                margin-left: 8.333333% !important;
+            }
+            .laptop-col {
+                margin-left: 8.333333% !important;
+            }
+        }
+        @media (min-width: 992px) and (max-width: 1199px) {
+            form{
+                max-width: 363px !important;
+            }
+            input{
+                max-width: 363px !important;
+            }
+            .form-col {
+                left: 50px;
+            }
+
+            .img-laptop{
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .custom-footer{
+                position: relative !important;
+            }
+        }
+        @media (max-height: 650px){
+            .custom-footer{
+                position: relative !important;
+            }
+        }
+        a {
+            color: #009EE2;
+        }
+        p{
+            color: #4B555B;
+        }
+        .modal-title {
+            color: #fff !important;
+        }
+
+        .modal-footer button{
+            background-color: #009EE2 !important;
+            border: #009EE2 !important;
+        }
+        .image-beta-registration {
+            width: 201px;
+            height: 66px;
+        }
+        .image-beta-registration-row {
+            padding-bottom: 140px;
+        }
+        .title-header {
+            font-family: Nunito Sans;
+            font-style: normal;
+            font-weight: 800;
+            font-size: 4rem;
+            line-height: 74px;
+
+            color: #4B545B;
+            width: 100%;
+            max-width: 632px;
+        }
+
+        .subtitle-header{
+            font-family: Nunito Sans;
+            font-style: normal;
+            font-weight: 500;
+            font-size: 1.5rem;
+            line-height: 30px;
+
+            color: #4B545B;
+            width: 100%;
+            max-width: 632px;
+        }
+
+        .beta-registration-title {
+            font-family: Nunito Sans;
+            font-style: normal;
+            font-weight: bold;
+            font-size: 36px;
+            line-height: 60px;
+            /* identical to box height, or 167% */
+
+            color: #4B545B;
+            padding-bottom: 40px;
+        }
+
+        .laptop-col {
+            right: 0px;
+            position: relative;
+            bottom: 0px;
+            padding-right: 0px;
+        }
+
+        .title-laptop-wrapper{
+            position: absolute;
+
+            right: 0px;
+            bottom: 0px;
+            top: 0;
+
+            padding-right: 0px;
+
+            min-height: 270px;
+            max-height: 425px;
+
+            max-width: 632px;
+
+            height: calc(100% - 570px);
+            width: 100%;
+        }
+
+        .title-laptop-row{
+            position: absolute;
+            bottom: 0px;
+            right: 0px;
+        }
+
+        .img-laptop-row{
+            max-width: calc(100% - 611px);
+            max-height: calc(100% - 425px);
+
+            object-position: right;
+            position: relative;
+        }
+
+        .img-laptop {
+            position: absolute;
+            vertical-align: bottom;
+            right: 0px !important;
+            bottom: 0px !important;
+
+            max-height: 510px;
+            max-width: 720px;
+
+            height: calc(100% - 270px);
+
+        }
+        .custom-footer {
+            position: fixed;
+            bottom: 0px;
+            z-index: 1030;
+        }
+
+        .form-footer-col {
+            padding-left: 140px;
+        }
+
+        ::placeholder{
+            font-family: Nunito Sans;
+            font-style: normal;
+            font-weight: normal;
+            font-size: 16px;
+            line-height: 23px;
+            /* identical to box height, or 144% */
+
+            color: #8F8F8F;
+
+        }
+
+        .custom-beta-registration-btn{
+
+            align-items: center;
+            padding: 12px 25px 11px;
+
+            height: 46px;
+
+            background: #439EDD;
+            border-radius: 50px;
+
+            font-family: Nunito Sans;
+            font-style: normal;
+            font-weight: 600;
+            font-size: 16px;
+            line-height: 23px;
+            /* identical to box height, or 144% */
+
+            text-align: center;
+            text-transform: uppercase;
+
+            color: #FFFFFF;
+        }
+
+        .custom-beta-registration-btn:hover{
+            background: #439EDD;
+            color: #FFFFFF;
+        }
+        .custom-beta-registration-btn-outline{
+
+            align-items: center;
+            padding: 12px 25px 11px;
+
+            height: 46px;
+
+            /*background: #439EDD;*/
+            border-radius: 50px;
+
+            font-family: Nunito Sans;
+            font-style: normal;
+            font-weight: 600;
+            font-size: 16px;
+            line-height: 23px;
+            /* identical to box height, or 144% */
+
+            text-align: center;
+            text-transform: uppercase;
+
+            color: #439EDD;
+            border: 1px solid #439EDD;
+        }
+
+        .custom-input{
+            background: rgba(202, 203, 205, 0.3) !important;
+            border: 0 !important;
+            border-radius: 0 !important;
+        }
+
+        .feather {
+            color: #888ea8;
+            fill: rgba(0, 23, 55, 0.08);
+
+            position: absolute;
+            top: 13px;
+            right: 5px;
+        }
+
+        .forgot-pass {
+
+            font-family: Nunito Sans;
+            font-style: normal;
+            font-weight: 500;
+            font-size: 14px;
+            line-height: 20px;
+            /* identical to box height, or 143% */
+
+            text-align: center;
+
+            color: #4B545B;
+        }
+
+        .no-account {
+            font-family: Nunito Sans;
+            font-style: normal;
+            font-weight: normal;
+            font-size: 14px;
+            line-height: 20px;
+            /* identical to box height, or 143% */
+
+            color: #4B545B;
+        }
+        .link-auth-app {
+            color: #009EE2 !important;
+        }
+        .swal2-popup .swal2-styled.swal2-confirm {
+            background-color: #009EE2 !important;
+        }
+    </style>
+</head>
+<body style="background-color: #FFFFFF; max-width: 1920px;">
+
+<div class="container-fluid">
+    <div class="row justify-content-center vh-100">
+
+        <!-- form and footer -->
+        <div class="form-col offset-xl-2 col-xl-4 col-lg-5 col-md-12 col-sm-12 text-black d-flex flex-column justify-content-center text-xl-left text-lg-left text-md-center text-sm-center">
+
+            <!-- logo -->
+            <div class="row justify-content-xl-start justify-content-lg-start justify-content-md-center justify-content-sm-center justify-content-center image-beta-registration-row">
+                <img class="image-beta-registration" src="/images/logo/LQwD-notext.png">
+            </div>
+
+            <!-- form -->
+            <div class="row justify-content-xl-start justify-content-lg-start justify-content-md-center justify-content-sm-center justify-content-center">
+                <form class="mw-100" style="max-width: 408px;">
+                    <h3 class="beta-registration-title pb-1">Sign Up for Beta Account</h3>
+                    <p id="beta-spots-available" class="pb-3">Beta Spots Available: [[${spotsAvailable}]]</p>
+                    <div class="alert alert-outline-primary mb-4" role="alert">
+                        <strong>Warning!</strong> We strongly recommend <strong>NOT</strong> using Safari or Mobile View<br>while using Beta as it may not be fully functional at this time.
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-6">
+                            <input id="beta-registration_txt_firstname" name="firstname" type="text" autocomplete="off" placeholder="First Name (Optional)" class="form-control custom-input">
+                        </div>
+                        <div class="form-group col-6">
+                            <input id="beta-registration_txt_lastname" name="lastname" type="text" autocomplete="off" placeholder="Last Name (Optional)" class="form-control custom-input">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-12">
+                            <input type="email" id="beta-registration_txt_email" class="form-control custom-input" placeholder="Email"/>
+                            <div class="input-group-prepend">
+                                <span id="beta-registration_txt_email-response"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group position-relative pb-2 col-12">
+                            <input type="password" id="beta-registration_txt_password" class="form-control custom-input" placeholder="Password"/>
+
+                            <!-- show password -->
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="toggle-password-open" class="feather feather-eye-off mr-2">
+                                <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                                <line x1="1" y1="1" x2="23" y2="23"></line>
+                            </svg>
+
+                            <!-- hide password -->
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="toggle-password-close" class="feather feather-eye d-none mr-2">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                <circle cx="12" cy="12" r="3"></circle>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="pt-1 mb-4">
+                        <button id="beta-registration_btn_signup" type="submit" class="btn w-100 btn-lg custom-beta-registration-btn" value="">SIGN UP</button>
+                    </div>
+                    <p class="no-account">Already have an account? <a th:href="@{/login}" id="beta-registration-light_a_signup-here-link" class="link-info" style="text-decoration: underline;">Login Here</a></p>
+                    <p class="no-account">Having issues? Email us at <a class="link-info" href="mailto:feedback@lqwd.money">feedback@lqwd.money</a></p>
+                </form>
+            </div>
+
+            <!-- footer -->
+            <div class="row pt-5 justify-content-xl-start justify-content-lg-start justify-content-sm-center justify-content-md-center justify-content-center">
+                <div class="pt-5 custom-footer">
+                    <p>
+                        © 2022 All Rights Reserved. <a id="registration_a_lqwd" href="https://lqwdfintech.com">LQwD FinTech Corp</a>.
+                    </p>
+                    <p>
+                        <a id="registration_a_cookie" class="terms-conditions-links" th:href="@{/cookies}">Cookie Preferences</a>
+                        <a id="registration_a_privacy" class="terms-conditions-links" th:href="@{/privacy}">Privacy</a>
+                        <a id="registration_a_terms" class="terms-conditions-links" th:href="@{/terms}">Terms</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- title/subtitle and laptop -->
+        <div class="col-xl-6 col-lg-7 d-none d-lg-block align-items-end laptop-col">
+
+            <div class="title-laptop-wrapper">
+
+                <div class="row justify-content-end title-laptop-row">
+                    <h1 class="title-header">Lightning Network Infrastructure For Global Scale</h1>
+                    <p class="subtitle-header">Usable anywhere in the world.</p>
+                </div>
+
+            </div>
+
+            <img class="img-laptop" src="/images/login-image-platform.png">
+
+        </div>
+    </div>
+    <div th:replace="auth/fragments/qrcode_modal::qrcode"></div>
+    <div th:replace="auth/fragments/qrcode_login_modal::qrcode_login"></div>
+</div>
+<!-- END MAIN CONTAINER -->
+<div th:replace="layout/footer::footer_main(~{::script})" >
+    <script th:src="@{plugins/blockui/jquery.blockUI.min.js}"></script>
+    <script th:src="@{assets/js/authentication/form-1.js}"></script>
+    <script th:src="@{assets/js/scrollspyNav.js}"></script>
+    <script th:src="@{/js/tools/tools.js}"></script>
+    <script th:src="@{/js/beta/beta-registration.js}"></script>
+    <script th:inline="javascript">
+        $(document).ready(function (){
+            /*<![CDATA[*/
+
+            getNumberRegistered();
+
+            $("#qrcode-login-modal_div_qrCodeLogin").modal({
+                backdrop: 'static',
+                keyboard: false,
+                show: false
+            });
+
+            $("#qrcode-modal_div_qrCodeModal").modal({
+                backdrop: 'static',
+                keyboard: false,
+                show: false
+            });
+
+
+            $("#beta-registration_txt_email").on('change', function (){
+                var email = $('#beta-registration_txt_email').val();
+                checkEmail(email, true);
+            });
+
+            //on registration submit check if user is wanting to use 2fa
+            $("#beta-registration_btn_signup").on('click', function (event){
+                event.preventDefault();
+                var secretKey = /*[[${@captchaSettings.getSite()}]]*/'';
+                grecaptcha.ready(function() {
+                    grecaptcha.execute(secretKey,
+                        {action: /*[[${T(lqwd.frontend.captcha.CaptchaServiceV3).REGISTER_ACTION}]]*/''})
+                        .then(function(response) {
+                            register(response);
+                        });
+                });
+            })
+
+            $("#qrcode-modal_btn_doneQr").on('click', function (){
+                $("#qrcode-modal_div_qrCodeModal").modal('hide');
+                clearInputs();
+                displayEnterCode();
+                setCursorFocusOnFirst();
+            });
+
+            $('#qrcode-login-modal_btn_OTPSubmit').on('click', function (event){
+                event.preventDefault();
+                submitcode2FA();
+            });
+
+            $('#qrcode-modal_copy_code').on('click', function (){
+                try {
+                    var value = $(this).data('value');
+                    navigator.clipboard.writeText(value);
+
+                    Snackbar.show({
+                        text: "Successfully Copied QR Code",
+                        pos: 'top-center',
+                        actionTextColor: '#fff',
+                        backgroundColor: '#8dbf42'
+                    });
+                } catch (err) {
+                    Snackbar.show({
+                        text: "Failed to Copy QR Code",
+                        pos: 'top-center',
+                        actionTextColor: '#fff',
+                        backgroundColor: '#e7515a'
+                    });
+                }
+
+            });
+
+            $("#toggle-password-open").on('click', function (){
+                $("#toggle-password-open").addClass("d-none");
+                $("#toggle-password-close").removeClass("d-none");
+
+                $("#beta-registration_txt_password").attr('type', 'text');
+            });
+
+            $("#toggle-password-close").on('click', function (){
+
+                $("#toggle-password-close").addClass("d-none");
+                $("#toggle-password-open").removeClass("d-none");
+
+                $("#beta-registration_txt_password").attr('type', 'password');
+
+            });
+
+        });
+        /*]]>*/
+    </script>
+</div>
+</body>
+</html>

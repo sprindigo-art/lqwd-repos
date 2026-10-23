@@ -1,0 +1,15 @@
+{
+	"dlarequests": [
+		{
+			"path":"api_host:api_port/lnd/{lnd_route}",
+			"headers": [
+				"content-type: application/x-www-form-urlencoded",
+				"apikey",
+				"lnd_name"
+			],
+			"params": [],
+			"response_success": "",
+			"responses_error": []
+		}
+	]
+}

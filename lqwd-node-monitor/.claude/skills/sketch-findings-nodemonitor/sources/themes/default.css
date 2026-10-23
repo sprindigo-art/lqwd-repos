@@ -1,0 +1,58 @@
+/* NOC Navy — NodeMonitor mission-control theme
+   LQWD navy is STRUCTURE (chrome, selection, focus).
+   Severity colors are STATE and appear nowhere else. */
+:root {
+  /* Surfaces */
+  --color-bg: #0a0e16;
+  --color-surface: #101624;
+  --color-surface-2: #161e30;
+  --color-border: #1f2a42;
+  --color-border-strong: #2c3b5e;
+
+  /* Brand (structural only) */
+  --color-navy: #1a3c79;
+  --color-navy-bright: #3e6fc4;
+  --color-navy-glow: rgba(62, 111, 196, 0.25);
+
+  /* Text */
+  --color-text: #e8edf6;
+  --color-text-muted: #8a96ac;
+  --color-text-faint: #5c6780;
+
+  /* Severity — state only, never decoration */
+  --color-critical: #ff4d5e;
+  --color-critical-dim: rgba(255, 77, 94, 0.12);
+  --color-warn: #ffb224;
+  --color-warn-dim: rgba(255, 178, 36, 0.10);
+  --color-ok: #3dd68c;
+  --color-ok-dim: rgba(61, 214, 140, 0.08);
+  --color-stale: #5c6780;
+  --color-stale-dim: rgba(92, 103, 128, 0.12);
+  --color-pending: #3e6fc4;
+
+  /* Typography */
+  --font-display: "Saira Semi Condensed", "Archivo", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", "JetBrains Mono", monospace;
+  --font-body: "Inter", system-ui, sans-serif;
+  --text-xs: 0.72rem;
+  --text-sm: 0.85rem;
+  --text-base: 1rem;
+  --text-lg: 1.15rem;
+  --text-xl: 1.35rem;
+  --text-2xl: 1.7rem;
+
+  /* Spacing */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+
+  /* Shape — tight radii: instruments, not bubbles */
+  --radius-sm: 3px;
+  --radius-md: 6px;
+  --radius-lg: 10px;
+
+  --shadow-panel: 0 1px 0 rgba(255, 255, 255, 0.03) inset, 0 8px 24px rgba(0, 0, 0, 0.35);
+}

@@ -1,0 +1,47 @@
+<div th:fragment="generate-invoice" class="widget widget-activity-four">
+
+    <div class="widget-heading">
+        <h5 class="">Offchain</h5>
+        <p>Load your wallet by generating an invoice payment request</p>
+    </div>
+
+    <div class="widget-content">
+
+        <form class="select" novalidate action="javascript:void(0);">
+
+            <div class="form-row generate_invoice_component hidden_div">
+                    <div class="form-group col-12">
+                        <input th:type="number" th:min="0" th:step="1" class="form-control" id="generate-invoice_txt_amount" placeholder="Amount in Satoshi (Optional)">
+                    </div>
+            </div>
+            
+            <div class="form-row generate_invoice_component hidden_div">
+                <div class="form-group col-12">
+                    <button th:unless="${user.isEmailstatus()}" class="col-12 btn btn-primary" disabled>Please Verify Account</button>
+                    <button th:if="${user.isEmailstatus()}" class="col-12 btn btn-primary" id="generate-invoice_btn_create">Create Invoice</button>
+                </div>
+            </div>
+
+            <div class="form-row show_invoice_component hidden_div">
+                <div class="form-group col-12">
+	                <div class="text-center">
+			          <img id="payReqQrCode" src="">
+			        </div>
+                </div>
+            </div>
+
+            <div class="form-row show_invoice_component hidden_div">
+                <div class="form-group col-12">
+                    <label class="sr-only" for="generate-invoice_txt_request">Payment Request Address</label>
+                    <textarea type="text" class="form-control mb-2" id="generate-invoice_txt_request" placeholder="Payment Request Address" readonly></textarea>
+                </div>
+            </div>
+            
+            <div class="form-row show_invoice_component hidden_div">
+                <div class="form-group col-12">
+                    <button class="btn btn-primary form-control" id="generate-invoice_btn_copy" onclick="copyToClipboard()">Copy Payment Request to Clipboard</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

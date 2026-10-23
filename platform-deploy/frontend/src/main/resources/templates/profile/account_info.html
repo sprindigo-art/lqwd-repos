@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout/app}" lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+    <head>
+        <title>LQWD | Account Info</title>
+        <link th:href="@{${pluginPath + '/apex/apexcharts.css'}}" rel="stylesheet" type="text/css">
+        <link th:href="@{${cssPath + '/widgets/modules-widgets.css'}}" rel="stylesheet" type="text/css">
+    </head>
+
+    <body>
+        <section layout:fragment="sub-header">
+            <span>Account Info</span>
+        </section>
+
+        <div layout:fragment="content-section">
+            <div class="layout-px-spacing">
+                <div class="row layout-top-spacing">
+                    <div class="col-12 layout-spacing">
+                        <div class="widget widget-account-invoice-two">
+                            <div class="widget-content">
+                                <div class="account-box">
+                                    <div class="info">
+                                        <div class="inv-title">
+                                            <h5 class="">Account Info: <span th:text=" ${user.getUsername()}"></span></h5>
+                                        </div>
+                                        <div class="inv-balance-info">
+
+                                            <p class="inv-balance">Subscription Plan: <span th:text="${#strings.capitalize(user.getAccountInfo().getPlan())}"></span></p>
+
+                                            <span class="inv-stats balance-credited">Role: <span th:text="${#strings.capitalize(user.getAccountInfo().getName())}"></span></span>
+                                            <span class="inv-stats balance-credited">Status: <span th:text="${#strings.capitalize(user.getAccountInfo().getStatus())}"></span></span>
+
+                                        </div>
+                                    </div>
+                                    <div class="acc-action">
+                                        <div class="">
+                                        </div>
+                                        <div>
+                                            <a id="accoubt-info_a_cancel-subscription" href="javascript:void(0);" class="btn-outline-danger box-shadow-none">Cancel Subscription</a>
+<!--                                            <a id="accoubt-info_a_upgrade-subscription" th:href="@{/subscription}">Upgrade Subscription</a>-->
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div layout:fragment="scripts">
+
+            <script th:src="@{${pluginPath + '/apex/apexcharts.min.js'}}"></script>
+            <script th:src="@{assets/js/widgets/modules-widgets.js}"></script>
+        </div>
+    </body>
+</html>

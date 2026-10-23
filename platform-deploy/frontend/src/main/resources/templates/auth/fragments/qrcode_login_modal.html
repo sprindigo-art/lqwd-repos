@@ -1,0 +1,27 @@
+<div th:fragment="qrcode_login">
+    <!-- Modal -->
+    <div class="modal fade profile-modal" id="qrcode-login-modal_div_qrCodeLogin" tabindex="-1" role="dialog" aria-labelledby="profileModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-sm" role="document" data-backdrop="static" data-keyboard="false">
+            <div class="modal-content">
+                <button id="qrcode-login-modal_btn_close" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+                <div class="modal-header border-0 justify-content-center">
+                    <h4 class="modal-title text-center" id="profileModalLabel">Enter Google Authenticator Code</h4>
+                </div>
+                <div class="modal-body text-center">
+                    <div class="row flex" id="qrcode-login-modal_div_OTPInput">
+                    </div>
+                    <input hidden id="qrcode-login-modal_txt_code" name="code" value="">
+                </div>
+                <div class="modal-footer border-0 justify-content-center mb-4">
+                    <button  id="qrcode-login-modal_btn_OTPSubmit"  class="btn btn-primary btn-lg">Continue</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,76 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: swap-service
+  namespace: microservice
+  labels:
+    app: swap-service
+  annotations:
+    deployment.kubernetes.io/revision: '3'
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: swap-service
+  template:
+    metadata:
+      labels:
+        app: swap-service
+    spec:
+      volumes:
+        - name: secret
+          secret:
+            secretName: swap-secret
+            defaultMode: 420
+      containers:
+        - name: swap-service
+          image: '514063904685.dkr.ecr.us-west-2.amazonaws.com/swap-service:prod-$BUILD_NUMBER'
+          terminationMessagePath: "/tmp/my-log"
+          ports:
+            - containerPort: 80
+          env:
+            - name: INVOICEMAC
+              valueFrom:
+                secretKeyRef:
+                  name: secret-swap
+                  key: INVOICEMAC
+            - name: ADMINMAC
+              valueFrom:
+                secretKeyRef:
+                  name: secret-swap
+                  key: ADMINMAC
+            - name: LNDENDPOINT
+              valueFrom:
+                secretKeyRef:
+                  name: secret-swap
+                  key: LNDENDPOINT
+            - name: MINAMOUNT
+              valueFrom:
+                secretKeyRef:
+                  name: secret-swap
+                  key: MINAMOUNT
+            - name: MAXAMOUNT
+              valueFrom:
+                secretKeyRef:
+                  name: secret-swap
+                  key: MAXAMOUNT
+            - name: FEETYPE
+              valueFrom:
+                secretKeyRef:
+                  name: secret-swap
+                  key: FEETYPE
+            - name: FEE
+              valueFrom:
+                secretKeyRef:
+                  name: secret-swap
+                  key: FEE
+          resources:
+            limits:
+              memory: 1000Mi
+            requests:
+              memory: 200Mi
+          terminationMessagePolicy: File
+          imagePullPolicy: Always
+      imagePullSecrets:
+        - name: ecr-token
+      restartPolicy: Always

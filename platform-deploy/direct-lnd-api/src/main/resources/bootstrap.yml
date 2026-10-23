@@ -1,0 +1,42 @@
+spring:
+  profiles:
+    active: ${WENV}
+  application:
+    name: dla
+  cloud:
+    bus:
+      enabled: true
+  liquibase:
+    change-log: classpath:/db/changelog/db.changelog-master.xml
+server:
+  port: 8690
+
+---
+spring:
+  profiles: development
+  cloud:
+    config:
+      uri: ${CONFIG_SERVER:http://config-server.microservice:8888}
+      label: develop
+      username: ${CONFIG_USERNAME}
+      password: ${CONFIG_PASSWORD}
+
+---
+spring:
+  profiles: stage
+  cloud:
+    config:
+      uri: http://config-server.microservice:8888
+      label: staging
+      username: ${CONFIG_USERNAME}
+      password: ${CONFIG_PASSWORD}
+
+---
+spring:
+  profiles: production
+  cloud:
+    config:
+      uri: http://config-server.microservice:8888
+      label: main
+      username: ${CONFIG_USERNAME}
+      password: ${CONFIG_PASSWORD}

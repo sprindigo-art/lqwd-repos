@@ -1,0 +1,143 @@
+
+
+#buld docker command
+
+docker build -t localhost:5000/lndv2:latest .
+
+#run docker when you are running with param: /bin/bash, means CMD command in Docker file will not work but /bin/bash will start
+
+docker exec -it localhost:5000/lndv2:latest /bin/bash
+
+#after this command you have to see command line like root@26aa8537b3d7:/root/.lnd#  
+#that means you are in docker image and you manually run your python script.
+
+#for finish image run CNTL+C
+#each run will begin from zero image point. if you updated python or other script don't forget update it on real local file and build image again befor run 
+
+ 
+___________________________________________________________
+#when docker is ready you need push it to remote repository(192.168.123.252) for this you:
+#tab image first. you need run build command first and see last message like:
+#Successfully built 003814dfeb3f
+#Successfully tagged localhost:5000/lndv2:latest
+#
+docker tag  003814dfeb3f 192.168.123.252:5000/lndv2:latest
+
+#and push command:
+
+docker push 192.168.123.252:5000/lndv2:latest
+#after this command you have to see how image files uploading to remote repository. 
+___________________________________________________________
+
+
+
+
+
+ docker build -t localhost:5000/:latest .
+
+ docker images
+
+ docker exec -it 743a29 /bin/bash
+
+ docker tag _ 192.168.123.252:5000/_
+ 
+ docker push 192.168.123.252:5000/_
+
+  docker run -it -e CONFPARAM="rpcallowip:0.0.0.0/0;rpcport:8332;externalip:192.243.215.232" localhost:5000/btcd:latest
+
+	docker push 192.168.123.252:5000/btcd:latest
+	docker tag 56d5fc127036 192.168.123.252:5000/btcd:latest 
+	docker build -t localhost:5000/btcd:latest .  
+
+	cd /c/LQWD/docker/dockerlnd/btcd
+
+
+curl --user bitcoin --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "getzmqnotifications", "params": [] }' -H 'content-type: text/plain;' http://192.168.123.252:8332/
+
+lsof -i -P -n | grep LISTEN --chekc listing port
+
+ps -aux
+ls -al
+
+
+
+rpcuser=bitcoinaziz
+rpcpassword=asdgfdfgsdffhwrtyfbg345dsfbdf34bvc@@dfgsdfg3433
+
+
+docker rmi $(docker images --filter “dangling=true” -q --no-trunc)    -- remove all none images
+
+docker volume rm $(docker volume ls -q)  -- remove all volume
+
+docker stop $(docker ps -aq)
+docker rm $(docker ps -aq)
+	
+
+sudo docker build -t localhost:5000/kafkan:latest .
+  229  sudo docker run -it localhost:5000/kafkan:latest /bin/bash
+sudo 
+
+
+CMD ["echo", "$MY_HOME"]
+
+
+
+
+FROM ubuntu:16.04
+
+env MY_HOME /opt
+ADD start.sh /start.sh
+ENTRYPOINT ["/start.sh"]
+CMD ["echo", "${MY_HOME}"]
+start.sh
+
+openssl s_client -debug -connect $IP:9093 -tls1
+
+#!/bin/bash
+
+/bin/bash -l -c "$*"
+
+
+sudo docker run -p 2181:2818 -p 2888:2888 -p 3888:3888 localhost:5000/kafkaz:latest
+
+
+  
+   96  	sudo docker build -t 192.168.123.252:5000/kafkaz:latest .
+   97  	sudo docker run -p 2181:2818 -p 2888:2888 -p 3888:3888 localhost:5000/kafkaz:latest
+   98  	sudo docker build -t 192.168.123.252:5000/kafkaz:latest .
+   99  	sudo docker run -p 2181:2818 -p 2888:2888 -p 3888:3888 localhost:5000/kafkaz:latest
+
+
+		sudo docker build -t 192.168.123.252:5000/kafkan:latest .
+  229  	sudo docker run -it localhost:5000/kafkan:latest /bin/bash
+  230  	sudo docker run -it 192.168.123.252:5000/kafkan:latest
+  231  	sudo docker run -d 192.168.123.252:5000/kafkatest:
+
+
+ 437   	sudo docker build -t 192.168.123.252:5000/schemareg:latest .
+  438  	sudo docker run -it 192.168.123.252:5000/schemareg:latest /bin/bash
+  439  	sudo docker run -it 192.168.123.252:5000/schemareg:latest
+
+
+ sudo docker network create --subnet=10.0.0.0/24 mynetwork1
+
+sudo docker run -d --net mynetwork1 --ip 10.0.0.15 -p 2288:2818 localhost:5000/kafkaz:latest
+
+
+docker run --name postgresdb1 -e POSTGRES_PASSWORD=docker12345  -p 5432:5432 -v /C:/LQWD/docker/postgres/postgres_db:/var/lib/postgresql/data -d 192.168.123.252:5000/postgres
+
+
+
+ docker build -t localhost:5000/postrgres:latest . --build-arg FILE=restore_database.sh --build-arg DBNAME=requestdb
+ 
+ 
+ 
+ docker tag 4eee80c4c4d0 192.168.123.252:5000/kafkaz:firsttry
+ docker push 192.168.123.252:5000/kafkaz
+ 
+ 
+ 
+ 
+ Token
+eyJhbGciOiJSUzI1NiIsImtpZCI6Im5ZdGIzZ0dTYmNCLXExLVA3VHhGR25IdGlEc0VkbHNkN1BidVNzck1aa1UifQ.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJkZWZhdWx0Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZWNyZXQubmFtZSI6ImNsdXN0ZXItYWRtaW4tZGFzaGJvYXJkLXNhLXRva2VuLTlzNTYyIiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZXJ2aWNlLWFjY291bnQubmFtZSI6ImNsdXN0ZXItYWRtaW4tZGFzaGJvYXJkLXNhIiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZXJ2aWNlLWFjY291bnQudWlkIjoiZTQ3ZmJhMjMtOTkzNC00NTgxLWExZTQtOGZhMzFhZGQ0ZTRkIiwic3ViIjoic3lzdGVtOnNlcnZpY2VhY2NvdW50OmRlZmF1bHQ6Y2x1c3Rlci1hZG1pbi1kYXNoYm9hcmQtc2EifQ.01ozQavPhBhsp8gfUxM6WVh6O3yBp3T-k8soCTPhC--obgj3RamixlPdZnmK9erFIg1MrjzTY6y7biK6GImyEzXsutwTRDl8T9FzD6FbZ4bFV2g5VlOHowCFibKJJUfMfGE4g0u2h6ROzyyBvETG8NXEW9UyB3Xabm_TVf1e2_AYHxUDuW3MfhhLSNOHU98hTkt4meh5_jKBv9jcJVjWeZnGyZEjIS49Gf7OalGewKy71fp6Sem9QmFaTQVNdo9iIqBYk8tm5VNi1gZYGLEmEP-Nmdh1LSpZ9QY2UsyrRYOY6pRaNzu1-CoYR8CrmlZAGL4cIKUrrW17fjQqxkLiog
+eyJhbGciOiJSUzI1NiIsImtpZCI6Im5ZdGIzZ0dTYmNCLXExLVA3VHhGR25IdGlEc0VkbHNkN1BidVNzck1aa1UifQ.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJkZWZhdWx0Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZWNyZXQubmFtZSI6ImRlZmF1bHQtdG9rZW4tdGp4cnMiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC5uYW1lIjoiZGVmYXVsdCIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VydmljZS1hY2NvdW50LnVpZCI6IjRmOWNjNzdlLWJiNzMtNDZiNi1hMjcwLWNlMzdhNDAxNTRlOSIsInN1YiI6InN5c3RlbTpzZXJ2aWNlYWNjb3VudDpkZWZhdWx0OmRlZmF1bHQifQ.XDOhaVhLHA9A6zyrlL8K-aZeIMqbc-3hQk6NFZ0UIIFhlDALoIv4p-Jq_CDimqUJrOL299V4IMCkV2a_tD4dG7mGzU9MZCqLFESy67c1i8ENGpFJt-k2cuIExDYm9ROnjisUMw91gVMz5588rfT5tBr31eOS-ke4kuzeGOLJam9lRyfj_I-zzejGvkpmz3z-dqcCsmYmFcU9n7MYfW4rHV-IkPkX3ZCsqYwsnoyDRP6xCsN3yhUfktohjkZxE6bfb8Cb2o9aao0aOX69JzBkTUSHzrX0eft7aY9TMXXzqy9ECDAeWOVOMFUiUtfj-0wUCWyo2CiOvsftVSim3Fttcg

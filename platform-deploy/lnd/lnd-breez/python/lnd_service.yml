@@ -1,0 +1,47 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: slnd-32678
+  namespace: lqwd-lnd
+  labels:
+    app: slnd-32678
+spec:
+  ports:
+    - name: tcp-9735
+      protocol: TCP
+      port: 32678
+      targetPort: 9735
+      nodePort: 31994
+    - name: tcp-10009
+      protocol: TCP
+      port: 10009
+      targetPort: 10009
+      nodePort: 30053
+    - name: tcp-8080
+      protocol: TCP
+      port: 8080
+      targetPort: 8080
+      nodePort: 32345
+    - name: tcp-29088
+      protocol: TCP
+      port: 29088
+      targetPort: 29088
+      nodePort: 30892
+    - name: tcp-29099
+      protocol: TCP
+      port: 29099
+      targetPort: 29099
+      nodePort: 30794
+    - name: tcp-853
+      protocol: TCP
+      port: 853
+      targetPort: 853
+      nodePort: 32711
+  selector:
+    app: slnd-32678
+  clusterIP: 10.233.9.199
+  clusterIPs:
+    - 10.233.9.199
+  type: NodePort
+  sessionAffinity: None
+  externalTrafficPolicy: Cluster

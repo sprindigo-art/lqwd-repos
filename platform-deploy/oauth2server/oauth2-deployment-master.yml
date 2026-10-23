@@ -1,0 +1,97 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+
+  name: oauth2
+  namespace: oauth2
+  labels:
+    app: oauth2
+spec:
+  selector:
+    matchLabels:
+      app: oauth2
+  template:
+    metadata:
+      labels:
+        app: oauth2
+    spec:
+    
+      containers:
+        - name: oauth2
+          image: '514063904685.dkr.ecr.us-west-2.amazonaws.com/oauth2server:prod-latest'
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8187
+          env:
+            - name: WENV
+              value: "production"
+            - name: ACTIVE_PROFILE
+              value: "production"
+            - name: KUSERPASS
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: KUSERPASS
+            - name: KADMINPASS
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: KADMINPASS
+            - name: APPUSERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: APPUSERNAME
+            - name: APPPASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: APPPASSWORD
+            - name: DBUSERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: DBUSERNAME
+            - name: DBPASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: DBPASSWORD
+            - name: KSSLKEY
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: KSSLKEYPASS
+            - name: MAIL_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: MAIL_USERNAME
+            - name: MAIL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: MAIL_PASSWORD
+            - name: SASL_CONFIG
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: SASL_CONFIG
+            - name: DLA_CLIENT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: DLA_CLIENT_PASSWORD
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: JWT_SECRET
+          resources:
+            
+
+      volumes:
+        - name: secret
+          secret:
+            secretName: secret
+     

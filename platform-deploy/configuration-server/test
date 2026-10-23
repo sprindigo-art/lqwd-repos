@@ -1,0 +1,921 @@
+diff --git a/authorization_server/authorization_server-develop.yml b/authorization_server/authorization_server-develop.yml
+index a4164aa..846e7ad 100644
+--- a/authorization_server/authorization_server-develop.yml
++++ b/authorization_server/authorization_server-develop.yml
+@@ -70,13 +70,6 @@
+         mechanism: PLAIN
+         jaas:
+           config: ${SASL_CONFIG}
+-kafka:
+-  binder:
+-      key-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
+-      value-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
+-      schema-registry-url: ${KAFKA_SCHEMA_REGISTRY:http://schemaregistry.kafka-v1:8081}
+-      key-deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
+-      value-deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
+ 
+ logging:
+   level:
+@@ -105,7 +98,6 @@
+ 
+ app:
+   mail_confirmation_link: http://192.168.123.252:8588
+-  node_alert_email_to: christian@lqwd.money,aziz@lqwd.money
+ 
+ log4j:
+   logger:
+diff --git a/authorization_server/authorization_server-production.yml b/authorization_server/authorization_server-production.yml
+index bd2c7b5..2b883bb 100644
+--- a/authorization_server/authorization_server-production.yml
++++ b/authorization_server/authorization_server-production.yml
+@@ -77,13 +77,7 @@
+           useNativeEncoding: true
+         consumer:
+           useNativeEncoding: true
+-kafka:
+-  binder:
+-      key-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
+-      value-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
+-      schema-registry-url: ${KAFKA_SCHEMA_REGISTRY:http://schemaregistry.kafka-v1:8081}
+-      key-deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
+-      value-deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
++
+ logging:
+   level:
+     org:
+@@ -111,7 +105,6 @@
+ 
+ app:
+   mail_confirmation_link: https://lqwd.tech
+-  node_alert_email_to: aziz@lqwd.money
+ 
+ log4j:
+   logger:
+diff --git a/authorization_server/authorization_server-staging.yml b/authorization_server/authorization_server-staging.yml
+index a180cd6..4af0705 100644
+--- a/authorization_server/authorization_server-staging.yml
++++ b/authorization_server/authorization_server-staging.yml
+@@ -4,7 +4,7 @@
+       config:
+         resource_id: resource-server-rest-api
+   datasource:
+-    url: jdbc:postgresql://oauth2.csxgoms2cude.us-east-2.rds.amazonaws.com:5433/oauth2
++    url: jdbc:postgresql://192.168.113.50:5433/oauth2
+     username: ${DBUSERNAME}
+     password: ${DBPASSWORD}
+     initialization-mode: always
+@@ -77,13 +77,7 @@
+           useNativeEncoding: true
+         consumer:
+           useNativeEncoding: true
+-kafka:
+-  binder:
+-      key-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
+-      value-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
+-      schema-registry-url: ${KAFKA_SCHEMA_REGISTRY:http://schemaregistry.kafka-v1:8081}
+-      key-deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
+-      value-deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
++  
+ logging:
+   level:
+     org:
+@@ -110,11 +104,10 @@
+     validity: 18000
+ 
+ app:
+-  mail_confirmation_link: http://stage.lqwd.tech
+-  node_alert_email_to: aziz@lqwd.money
++  mail_confirmation_link: http://stage.lqwd.tech:30100
+ 
+ log4j:
+   logger:
+     org:
+       hibernate:
+-        type: trace
++        type: trace
+\ No newline at end of file
+diff --git a/cipher-service/cipher-service-development.yml b/cipher-service/cipher-service-development.yml
+index 63e9795..73b5879 100644
+--- a/cipher-service/cipher-service-development.yml
++++ b/cipher-service/cipher-service-development.yml
+@@ -125,7 +125,6 @@
+   order_updates: true
+   jdbc:
+     batch_size: 30
+-    batch_versioned_data: true
+ 
+ log4j:
+   logger:
+@@ -147,7 +146,7 @@
+   auth_grant_type: password
+   encrypt_secret: ${ENCRYPT_SECRET}
+   resource_id: resource-server-rest-api
+-  cipher_asd: ${ENCRYPT_ASD}
++  cipher_asd: envelope_example
+ 
+ security:
+   oauth2:
+@@ -156,3 +155,43 @@
+     client:
+       client-id: ${APPUSERNAME}
+       client-secret: ${APPPASSWORD}
++
++  # routing_node_name: slnd1057
++  # routing_node_namespace: lqwd-lnd
++  # application_notification_to: albert@lqwd.money
++  # kubernetes:
++  #   config:
++  #     token: ${KBTOKEN}
++  #     cert_data: ${KBCET}
++
++  # truststore:
++  #   password: ${APP_TRUSTORE_PASSWORD}
++  # max_lnd_node: 2
++  # aws_region: us-west-2
++  # aws_access_key: ${AWSACCESS}
++  # aws_secret_key: ${AWSSECRET}
++  # image_path: localhost:32000/lnd
++  # lnd_namespace: lqwd-lnd
++  # lnd_node_request_mem:
++  #   default: 200Mi
++  #   routing: 400Mi
++  # lnd_node_limit_mem:
++  #   default: 2000Mi
++  #   routing: 3000Mi
++  # volume:
++  #   claim: pv001-claim
++  # logback:
++  #   producer: 192.168.123.252
++  #   consumer: 192.168.123.252
++  # lnd_rpc_port: 8080
++
++# grpc:
++#   client:
++#     target: ${GRPC_CLIENT_TARGET:tlnd3:8080}
++
++# twilio:
++#   account:
++#     sid: AC8a589f3871123cfb51b087b792f66e01
++#     auth-token: ${TWILIO_ACC_TOKEN}
++#   verify:
++#     service-sid: VAba335b7bbb352a3ba5853c09f56db91a
+diff --git a/cipher-service/cipher-service-production.yml b/cipher-service/cipher-service-production.yml
+index 0830f19..bb80f30 100644
+--- a/cipher-service/cipher-service-production.yml
++++ b/cipher-service/cipher-service-production.yml
+@@ -125,7 +125,6 @@
+   order_updates: true
+   jdbc:
+     batch_size: 30
+-    batch_versioned_data: true
+ 
+ log4j:
+   logger:
+@@ -135,8 +134,7 @@
+ 
+ server:
+   ssl:
+-    key-store-password: ${APP_TRUSTORE_PASSWORD}
+-    key-store: classpath:cipherkeystore.jks
++    enabled: false
+ 
+ app:
+   location: development
+@@ -148,7 +146,7 @@
+   auth_grant_type: password
+   encrypt_secret: ${ENCRYPT_SECRET}
+   resource_id: resource-server-rest-api
+-  cipher_asd: ${ENCRYPT_ASD}
++  cipher_asd: envelope_example
+ 
+ security:
+   oauth2:
+@@ -157,3 +155,43 @@
+     client:
+       client-id: ${APPUSERNAME}
+       client-secret: ${APPPASSWORD}
++
++  # routing_node_name: slnd1057
++  # routing_node_namespace: lqwd-lnd
++  # application_notification_to: albert@lqwd.money
++  # kubernetes:
++  #   config:
++  #     token: ${KBTOKEN}
++  #     cert_data: ${KBCET}
++
++  # truststore:
++  #   password: ${APP_TRUSTORE_PASSWORD}
++  # max_lnd_node: 2
++  # aws_region: us-west-2
++  # aws_access_key: ${AWSACCESS}
++  # aws_secret_key: ${AWSSECRET}
++  # image_path: localhost:32000/lnd
++  # lnd_namespace: lqwd-lnd
++  # lnd_node_request_mem:
++  #   default: 200Mi
++  #   routing: 400Mi
++  # lnd_node_limit_mem:
++  #   default: 2000Mi
++  #   routing: 3000Mi
++  # volume:
++  #   claim: pv001-claim
++  # logback:
++  #   producer: 192.168.123.252
++  #   consumer: 192.168.123.252
++  # lnd_rpc_port: 8080
++
++# grpc:
++#   client:
++#     target: ${GRPC_CLIENT_TARGET:tlnd3:8080}
++
++# twilio:
++#   account:
++#     sid: AC8a589f3871123cfb51b087b792f66e01
++#     auth-token: ${TWILIO_ACC_TOKEN}
++#   verify:
++#     service-sid: VAba335b7bbb352a3ba5853c09f56db91a
+diff --git a/cipher-service/cipher-service-stage.yml b/cipher-service/cipher-service-stage.yml
+index 69ebac9..5605abc 100644
+--- a/cipher-service/cipher-service-stage.yml
++++ b/cipher-service/cipher-service-stage.yml
+@@ -1,6 +1,6 @@
+ spring:
+   datasource:
+-    url: jdbc:postgresql://lnd.csxgoms2cude.us-east-2.rds.amazonaws.com:5433/lnd
++    url: jdbc:postgresql://192.168.113.50:5433/lnd
+     username: ${DBUSERNAME}
+     password: ${DBPASSWORD}
+     initialization-mode: always
+@@ -28,7 +28,7 @@
+             lob:
+               non_contextual_creation: true
+   kafka:
+-    bootstrap-servers: broker.kafka-v1:9092
++    bootstrap-servers: 192.168.123.252:9092
+     enable:
+       auto:
+         commit: true
+@@ -99,7 +99,7 @@
+   binder:
+       key-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
+       value-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
+-      schema-registry-url: http://schemaregistry.kafka-v1:8081
++      schema-registry-url: http://192.168.123.252:8081
+       key-deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
+       value-deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
+ 
+@@ -125,7 +125,6 @@
+   order_updates: true
+   jdbc:
+     batch_size: 30
+-    batch_versioned_data: true
+ 
+ log4j:
+   logger:
+@@ -135,8 +134,7 @@
+ 
+ server:
+   ssl:
+-    key-store-password: ${APP_TRUSTORE_PASSWORD}
+-    key-store: classpath:cipherkeystore.jks
++    enabled: false
+ 
+ app:
+   location: development
+@@ -148,7 +146,7 @@
+   auth_grant_type: password
+   encrypt_secret: ${ENCRYPT_SECRET}
+   resource_id: resource-server-rest-api
+-  cipher_asd: ${ENCRYPT_ASD}
++  cipher_asd: envelope_example
+ 
+ security:
+   oauth2:
+@@ -157,3 +155,43 @@
+     client:
+       client-id: ${APPUSERNAME}
+       client-secret: ${APPPASSWORD}
++
++  # routing_node_name: slnd1057
++  # routing_node_namespace: lqwd-lnd
++  # application_notification_to: albert@lqwd.money
++  # kubernetes:
++  #   config:
++  #     token: ${KBTOKEN}
++  #     cert_data: ${KBCET}
++
++  # truststore:
++  #   password: ${APP_TRUSTORE_PASSWORD}
++  # max_lnd_node: 2
++  # aws_region: us-west-2
++  # aws_access_key: ${AWSACCESS}
++  # aws_secret_key: ${AWSSECRET}
++  # image_path: localhost:32000/lnd
++  # lnd_namespace: lqwd-lnd
++  # lnd_node_request_mem:
++  #   default: 200Mi
++  #   routing: 400Mi
++  # lnd_node_limit_mem:
++  #   default: 2000Mi
++  #   routing: 3000Mi
++  # volume:
++  #   claim: pv001-claim
++  # logback:
++  #   producer: 192.168.123.252
++  #   consumer: 192.168.123.252
++  # lnd_rpc_port: 8080
++
++# grpc:
++#   client:
++#     target: ${GRPC_CLIENT_TARGET:tlnd3:8080}
++
++# twilio:
++#   account:
++#     sid: AC8a589f3871123cfb51b087b792f66e01
++#     auth-token: ${TWILIO_ACC_TOKEN}
++#   verify:
++#     service-sid: VAba335b7bbb352a3ba5853c09f56db91a
+diff --git a/cipher-service/cipher-service-staging.yml b/cipher-service/cipher-service-staging.yml
+deleted file mode 100644
+index 69ebac9..0000000
+--- a/cipher-service/cipher-service-staging.yml
++++ /dev/null
+@@ -1,159 +0,0 @@
+-spring:
+-  datasource:
+-    url: jdbc:postgresql://lnd.csxgoms2cude.us-east-2.rds.amazonaws.com:5433/lnd
+-    username: ${DBUSERNAME}
+-    password: ${DBPASSWORD}
+-    initialization-mode: always
+-    hikari:
+-      connection-timeout: 10000
+-      minimum-idle: 10
+-      maximum-pool-size: 50
+-      idle-timeout: 600000
+-      max-lifetime: 1800000
+-      auto-commit: true
+-      poolName: DLAJPAHikariCP
+-      testWhileIdle: true
+-      validationQuery: SELECT 1
+-      leak-detection-threshold: 150000
+-    jpa:
+-      hibernate:
+-        ddl-auto: update
+-      properties:
+-        hibernate:
+-          dialect: org.hibernate.dialect.PostgreSQL95Dialect
+-          format_sql: true
+-          id:
+-            new_generator_mappings: true
+-          jdbc:
+-            lob:
+-              non_contextual_creation: true
+-  kafka:
+-    bootstrap-servers: broker.kafka-v1:9092
+-    enable:
+-      auto:
+-        commit: true
+-    auto:
+-      commit:
+-        interval:
+-          ms: 10000
+-    session:
+-      timeout:
+-        ms: 30000
+-    consumer:
+-      timeout:
+-        ms: 120000
+-    jaas:
+-      enabled: true
+-    properties:
+-      security:
+-        protocol: SASL_PLAINTEXT
+-      sasl:
+-        mechanism: PLAIN
+-        jaas:
+-          config: ${SASL_CONFIG}
+-  cloud:
+-    stream:
+-      default:
+-        producer:
+-          useNativeEncoding: true
+-        consumer:
+-          useNativeEncoding: true
+-      bindings:
+-        springCloudBusOutput:
+-          consumer:
+-            useNativeDecoding: false
+-          producer:
+-            useNativeEncoding: false
+-        springCloudBusInput:
+-          consumer:
+-            useNativeDecoding: false
+-          producer:
+-            useNativeEncoding: false
+-        input:
+-          destination: tmessage-details
+-          content-type: application/*+avro
+-          group: group-1
+-          concurrency: 3
+-        output:
+-          destination: tmessage-details
+-          content-type: application/*+avro
+-      kafka:
+-        binder:
+-          consumer-properties:
+-            specific:
+-              avro:
+-                reader: true
+-  http:
+-    log-request-details: true
+-  tls:
+-    admin: src/main/resources/
+-  # security:
+-  #   oauth2:
+-  #     resource:
+-  #       token-info-uri: http://${AUTH_HOST:oauth2.oauth2}:8187/oauth/check_token
+-  #     client:
+-  #       client-id: ${APPUSERNAME}
+-  #       client-secret: ${APPPASSWORD}
+-
+-kafka:
+-  binder:
+-      key-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
+-      value-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
+-      schema-registry-url: http://schemaregistry.kafka-v1:8081
+-      key-deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
+-      value-deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
+-
+-logging:
+-  level:
+-    # com:
+-    #   zaxxer:
+-    #     hikari: debug
+-    org:
+-      springframework:
+-        security:
+-          oauth2: debug
+-        web: DEBUG
+-      hibernate:
+-        SQL: debug
+-        type:
+-          descriptor:
+-            sql: trace
+-
+-hibernate:
+-  show_sql: true
+-  order_inserts: true
+-  order_updates: true
+-  jdbc:
+-    batch_size: 30
+-    batch_versioned_data: true
+-
+-log4j:
+-  logger:
+-    org:
+-      hibernate:
+-        type: trace
+-
+-server:
+-  ssl:
+-    key-store-password: ${APP_TRUSTORE_PASSWORD}
+-    key-store: classpath:cipherkeystore.jks
+-
+-app:
+-  location: development
+-  wenv: development
+-  auth_post_url: ${AUTH_HOST:oauth2.oauth2}
+-  auth_post_port: 8187
+-  auth_user_name: ${APPUSERNAME}
+-  auth_password: ${APPPASSWORD}
+-  auth_grant_type: password
+-  encrypt_secret: ${ENCRYPT_SECRET}
+-  resource_id: resource-server-rest-api
+-  cipher_asd: ${ENCRYPT_ASD}
+-
+-security:
+-  oauth2:
+-    resource:
+-      token-info-uri: http://${AUTH_HOST:oauth2.oauth2}:8187/oauth/check_token
+-    client:
+-      client-id: ${APPUSERNAME}
+-      client-secret: ${APPPASSWORD}
+diff --git a/dla/dla-development.yml b/dla/dla-development.yml
+index a892bb6..38b6aa0 100644
+--- a/dla/dla-development.yml
++++ b/dla/dla-development.yml
+@@ -28,7 +28,7 @@
+             lob:
+               non_contextual_creation: true
+   kafka:
+-    bootstrap-servers: ${KAFKA_BROKER:broker.kafka-v1:9092}
++    bootstrap-servers: 192.168.123.252:9092
+     enable:
+       auto:
+         commit: true
+@@ -41,7 +41,7 @@
+         ms: 30000
+     consumer:
+       timeout:
+-        ms: 12000
++        ms: 120000
+     jaas:
+       enabled: true
+     properties:
+@@ -93,7 +93,7 @@
+   binder:
+       key-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
+       value-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
+-      schema-registry-url: http://schemaregistry.kafka-v1:8081
++      schema-registry-url: http://192.168.123.252:8081
+       key-deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
+       value-deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
+ 
+@@ -131,8 +131,6 @@
+   wenv: development
+   cipher_url: ${CIPHER_SERVICE_HOST:cipher-service.microservice}
+   cipher_port: 8790
+-  cipher_client_id: ${APPUSERNAME}
+-  cipher_client_secret: ${APPPASSWORD}
+   auth_post_url: ${AUTH_HOST:oauth2.oauth2}
+   auth_post_port: 8187
+   auth_user_name: ${APPUSERNAME}
+@@ -144,20 +142,6 @@
+   routing_node_name: slnd1057
+   routing_node_namespace: lqwd-lnd
+   application_notification_to: albert@lqwd.money
+-  lnd_kafka_user: ${LND_KAFKA_USER}
+-  lnd_kafka_password: ${LND_KAFKA_USER}
+-  lnd_kafka_co_topic: request
+-  lnd_kafka_co_group_id: 334
+-  lnd_kafka_pro_topic: reply
+-  lnd_debug: true
+-  lnd_notification_email: aziz@lqwd.money
+-  no_of_times_to_check_node_creation_state: 3
+-  no_of_lnd_nodes_to_check_state_in_batch: 10
+-  frontend_base_url: http://192.168.123.252:8588
+-  k8s_rpchost: mbtc1
+-  k8s_rpchost_testnet: tbtc1
+-  k8s_rpchost_regtest: regtest
+-  dla_base_url: http://dla.microservice:8690
+   kubernetes:
+     config:
+       token: ${KBTOKEN}
+@@ -180,8 +164,8 @@
+   volume:
+     claim: pv001-claim
+   logback:
+-    producer: broker.kafka-v1
+-    consumer: broker.kafka-v1
++    producer: 192.168.123.252
++    consumer: 192.168.123.252
+   lnd_rpc_port: 8080
+ 
+ grpc:
+diff --git a/dla/dla-production.yml b/dla/dla-production.yml
+index a3c4fa8..443c0af 100644
+--- a/dla/dla-production.yml
++++ b/dla/dla-production.yml
+@@ -41,7 +41,7 @@
+         ms: 30000
+     consumer:
+       timeout:
+-        ms: 12000
++        ms: 120000
+     jaas:
+       enabled: true
+     properties:
+@@ -88,7 +88,7 @@
+     log-request-details: true
+   tls:
+     admin: src/main/resources/
+-
++    
+ kafka:
+   binder:
+       key-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
+@@ -96,7 +96,7 @@
+       schema-registry-url: http://schemaregistry.kafka-v1:8081
+       key-deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
+       value-deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
+-
++      
+ logging:
+   level:
+     com:
+@@ -129,10 +129,6 @@
+ app:
+   location: production
+   wenv: production
+-  cipher_url: ${CIPHER_SERVICE_HOST:cipher-service.microservice}
+-  cipher_port: 8790
+-  cipher_client_id: ${APPUSERNAME}
+-  cipher_client_secret: ${APPPASSWORD}
+   auth_post_url: oauth2.oauth2
+   auth_post_port: 8187
+   auth_user_name: ${APPUSERNAME}
+@@ -142,22 +138,8 @@
+   encrypt_asd: ${ENCRYPT_ASD}
+   resource_id: resource-server-rest-api
+   routing_node_name: slnd1057
+-  routing_node_namespace: lqwd-lnd
++  routing_node_namespace: lqwd-lnd 
+   application_notification_to: albert@lqwd.money
+-  lnd_kafka_user: ${LND_KAFKA_USER}
+-  lnd_kafka_password: ${LND_KAFKA_USER}
+-  lnd_kafka_co_topic: request
+-  lnd_kafka_co_group_id: 334
+-  lnd_kafka_pro_topic: reply
+-  lnd_debug: true
+-  lnd_notification_email: aziz@lqwd.money
+-  no_of_times_to_check_node_creation_state: 3
+-  no_of_lnd_nodes_to_check_state_in_batch: 10
+-  frontend_base_url: https://lqwd.tech
+-  k8s_rpchost: btc1
+-  k8s_rpchost_testnet: tbtc1
+-  k8s_rpchost_regtest: regtest
+-  dla_base_url: http://dla.microservice:8690
+   kubernetes:
+     config:
+       token: ${KBTOKEN}
+@@ -169,13 +151,13 @@
+   aws_region: us-west-2
+   aws_access_key: ${AWSACCESS}
+   aws_secret_key: ${AWSSECRET}
+-  image_path: 514063904685.dkr.ecr.us-west-2.amazonaws.com/lnd:prod-latest
++  image_path: 514063904685.dkr.ecr.us-west-2.amazonaws.com/lnd:pl.48
+   lnd_namespace: lqwd-lnd
+   lnd_node_request_mem:
+-    default: 200Mi
++    default: 200Mi 
+     routing: 400Mi
+   lnd_node_limit_mem:
+-    default: 2000Mi
++    default: 2000Mi 
+     routing: 3000Mi
+   volume:
+     claim: pv03-claim
+diff --git a/dla/dla-stage.yml b/dla/dla-stage.yml
+index b8a4b49..d7f5908 100644
+--- a/dla/dla-stage.yml
++++ b/dla/dla-stage.yml
+@@ -1,6 +1,6 @@
+ spring:
+   datasource:
+-    url: jdbc:postgresql://lnd.csxgoms2cude.us-east-2.rds.amazonaws.com:5433/lnd
++    url: jdbc:postgresql://192.168.113.50:5433/lnd
+     username: ${DBUSERNAME}
+     password: ${DBPASSWORD}
+     initialization-mode: always
+@@ -88,7 +88,7 @@
+     log-request-details: true
+   tls:
+     admin: src/main/resources/
+-
++    
+ kafka:
+   binder:
+       key-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
+@@ -96,7 +96,7 @@
+       schema-registry-url: http://schemaregistry.kafka-v1:8081
+       key-deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
+       value-deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
+-
++      
+ logging:
+   level:
+     com:
+@@ -129,10 +129,6 @@
+ app:
+   location: stage
+   wenv: stage
+-  cipher_url: ${CIPHER_SERVICE_HOST:cipher-service.microservice}
+-  cipher_port: 8790
+-  cipher_client_id: ${APPUSERNAME}
+-  cipher_client_secret: ${APPPASSWORD}
+   auth_post_url: oauth2.oauth2
+   auth_post_port: 8187
+   auth_user_name: ${APPUSERNAME}
+@@ -142,22 +138,8 @@
+   encrypt_asd: ${ENCRYPT_ASD}
+   resource_id: resource-server-rest-api
+   routing_node_name: slnd1057
+-  routing_node_namespace: lqwd-lnd
++  routing_node_namespace: lqwd-lnd 
+   application_notification_to: albert@lqwd.money
+-  lnd_kafka_user: ${LND_KAFKA_USER}
+-  lnd_kafka_password: ${LND_KAFKA_USER}
+-  lnd_kafka_co_topic: request
+-  lnd_kafka_co_group_id: 334
+-  lnd_kafka_pro_topic: reply
+-  lnd_debug: true
+-  lnd_notification_email: aziz@lqwd.money
+-  no_of_times_to_check_node_creation_state: 3
+-  no_of_lnd_nodes_to_check_state_in_batch: 10
+-  frontend_base_url: https://stage.lqwd.tech
+-  k8s_rpchost: btc1
+-  k8s_rpchost_testnet: tbtc1
+-  k8s_rpchost_regtest: regtest
+-  dla_base_url: http://dla.microservice:8690
+   kubernetes:
+     config:
+       token: ${KBTOKEN}
+@@ -169,13 +151,13 @@
+   aws_region: us-west-2
+   aws_access_key: ${AWSACCESS}
+   aws_secret_key: ${AWSSECRET}
+-  image_path: 514063904685.dkr.ecr.us-west-2.amazonaws.com/lnd:staging-latest
++  image_path: 514063904685.dkr.ecr.us-west-2.amazonaws.com/lnd:sl.10
+   lnd_namespace: lqwd-lnd
+   lnd_node_request_mem:
+-    default: 200Mi
++    default: 200Mi 
+     routing: 400Mi
+   lnd_node_limit_mem:
+-    default: 2000Mi
++    default: 2000Mi 
+     routing: 3000Mi
+   volume:
+     claim: pv03-claim
+diff --git a/frontend/frontend-develop.yml b/frontend/frontend-develop.yml
+index 3e798ae..678a3d0 100644
+--- a/frontend/frontend-develop.yml
++++ b/frontend/frontend-develop.yml
+@@ -1,19 +1,10 @@
+-session:
++spring:
+   datasource:
+     generate-unique-name: false
+     driver-class-name: org.postgresql.Driver
+     url: ${DB_URLNAME:jdbc:postgresql://postgres-dev.postgres-v1:5433/frontend}
+-    username: ${FE_DB_USER}
+-    password: ${FE_DB_PSSWD}
+-primary:
+-  datasource:
+-    generate-unique-name: false
+-    driver-class-name: org.postgresql.Driver
+-    url: ${DB_URLNAME_STATS:jdbc:postgresql://postgres-dev.postgres-v1:5433/stats}
+-    username: ${STATS_DB_USER}
+-    password: ${STATS_DB_PSSWD}
+-    
+-spring:
++    username: ${DB_USERNAME}
++    password: ${DB_PASSWORD}
+   jpa:
+     hibernate:
+       ddl-auto: update
+diff --git a/frontend/frontend-local.yml b/frontend/frontend-local.yml
+index b54188f..449e202 100644
+--- a/frontend/frontend-local.yml
++++ b/frontend/frontend-local.yml
+@@ -1,19 +1,10 @@
+-session:
++spring:
+   datasource:
+     generate-unique-name: false
+     driver-class-name: org.postgresql.Driver
+-    url: ${DB_URLNAME:jdbc:postgresql://postgres-dev.postgres-v1:5433/frontend}
++    url: jdbc:postgresql://192.168.123.252:5433/sessiondb
+     username: ${DB_USERNAME}
+     password: ${DB_PASSWORD}
+-primary:
+-  datasource:
+-    generate-unique-name: false
+-    driver-class-name: org.postgresql.Driver
+-    url: ${DB_URLNAME_STATS:jdbc:postgresql://postgres-dev.postgres-v1:5433/stats}
+-    username: ${STATS_DB_USER}
+-    password: ${STATS_DB_PSSWD}
+-    
+-spring:
+   jpa:
+     hibernate:
+       ddl-auto: update
+@@ -50,8 +41,14 @@
+     stream:
+       kafka:
+         binder:
+-          brokers: ${KAFKA_BROKER:broker.kafka-v1:9092}
++          brokers: ${KAFKA_BROKER}
+ server:
++  ssl:
++    key-store: keystore/keystore.p12
++    key-store-password: ${KEYSTORE_PASSWORD}
++    key-store-type: PKCS12
++    key-alias: tomcat
++    key-password: ${KEY_PASSWORD}
+   session:
+     cookie:
+       http-only: true
+@@ -63,14 +60,14 @@
+         timeout: 30m
+         persistent: true
+ app:
+-  auth_post_url: ${AUTH_URL:dla.microservice}
+-  auth_post_port: 8690
++  auth_post_url: ${AUTH_URL}
++  auth_post_port: ${AUTH_PORT}
+   auth_user_name: lqwd-front-end-microservice2
+   auth_password: ${AUTH_PASSWORD}
+-  auth_grand_type: password
++  auth_grand_type: ${AUTH_GRANT_TYPE}
+   auth_client_id: ${AUTH_CLIENT_ID}
+-  lndap_url: ${LND_URL:lndap.microservice}
+-  lndap_port: ${LND_PORT:8590}
++  lndap_url: ${LND_URL}
++  lndap_port: ${LND_PORT}
+ 
+ features:
+   session_active: true
+@@ -82,5 +79,3 @@
+       site: ${CAPTCHA_SITE_KEY}
+       secret: ${CAPTCHA_SECRET}
+       threshold: 0.5
+-  places:
+-    key: ${GOOGLE_API_KEY}
+diff --git a/frontend/frontend-production.yml b/frontend/frontend-production.yml
+index 1d978d7..5570b54 100644
+--- a/frontend/frontend-production.yml
++++ b/frontend/frontend-production.yml
+@@ -1,18 +1,10 @@
+-session:
+-  datasource:
+-    generate-unique-name: false
+-    driver-class-name: org.postgresql.Driver
+-    url: ${DB_URLNAME:jdbc:postgresql://frontend.csvn42eedrmo.us-west-2.rds.amazonaws.com:5433/frontend}
+-    username: ${FE_DB_USER}
+-    password: ${FE_DB_PSSWD}
+-primary:
+-  datasource:
+-    generate-unique-name: false
+-    driver-class-name: org.postgresql.Driver
+-    url: ${STATS_DB_URLNAME:jdbc:postgresql://frontend.csvn42eedrmo.us-west-2.rds.amazonaws.com:5433/stats}
+-    username: ${STATS_DB_USER}
+-    password: ${STATS_DB_PSSWD}
+ spring:
++  datasource:
++    generate-unique-name: false
++    driver-class-name: org.postgresql.Driver
++    url: jdbc:postgresql://sessiondb.csvn42eedrmo.us-west-2.rds.amazonaws.com:5433/sessiondb
++    username: ${DB_USERNAME}
++    password: ${DB_PASSWORD}
+   jpa:
+     hibernate:
+       ddl-auto: update
+@@ -51,7 +43,13 @@
+         binder:
+           brokers: broker.kafka-v1:9092
+ server:
+-   session:
++  ssl:
++    key-store: keystore/keystore.p12
++    key-store-password: ${KEYSTORE_PASSWORD}
++    key-store-type: PKCS12
++    key-alias: tomcat
++    key-password: ${KEY_PASSWORD}
++  session:
+     cookie:
+       http-only: true
+     servlet:
+diff --git a/frontend/frontend-staging.yml b/frontend/frontend-staging.yml
+index afeae2b..e34b02f 100644
+--- a/frontend/frontend-staging.yml
++++ b/frontend/frontend-staging.yml
+@@ -1,18 +1,10 @@
+-session:
+-  datasource:
+-    generate-unique-name: false
+-    driver-class-name: org.postgresql.Driver
+-    url: ${DB_URLNAME:jdbc:postgresql://frontend.csxgoms2cude.us-east-2.rds.amazonaws.com:5433/frontend}
+-    username: ${FE_DB_USER}
+-    password: ${FE_DB_PSSWD}
+-primary:
+-  datasource:
+-    generate-unique-name: false
+-    driver-class-name: org.postgresql.Driver
+-    url: ${STATS_DB_URLNAME:jdbc:postgresql://frontend.csxgoms2cude.us-east-2.rds.amazonaws.com:5433/stats}
+-    username: ${STATS_DB_USER}
+-    password: ${STATS_DB_PSSWD}
+ spring:
++  datasource:
++    generate-unique-name: false
++    driver-class-name: org.postgresql.Driver
++    url: jdbc:postgresql://192.168.113.50:5433/frontend
++    username: ${DB_USERNAME}
++    password: ${DB_PASSWORD}
+   jpa:
+     hibernate:
+       ddl-auto: update
+@@ -51,7 +43,12 @@
+         binder:
+           brokers: broker.kafka-v1:9092
+ server:
+-  
++  ssl:
++    key-store: keystore/keystore.p12
++    key-store-password: ${KEYSTORE_PASSWORD}
++    key-store-type: PKCS12
++    key-alias: tomcat
++    key-password: ${KEY_PASSWORD}
+   session:
+     cookie:
+       http-only: true

@@ -1,0 +1,14 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: pv07-claim
+  namespace: kafka-v1
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 750Gi
+  volumeName: efs-pv7
+  storageClassName: efs-sc
+  volumeMode: Filesystem

@@ -1,0 +1,15 @@
+databaseChangeLog:
+  - changeSet:
+      id: add_token_column
+      validCheckSum: ANY
+      author: femi
+      changes:
+        - sql:
+            sql: ALTER TABLE application ADD COLUMN IF NOT EXISTS  invite_code varchar(255) NULL;
+  - changeSet:
+      id: add_network_column
+      validCheckSum: ANY
+      author: femi
+      changes:
+        - sql:
+            sql: ALTER TABLE application ADD COLUMN IF NOT EXISTS  usage_date TIMESTAMP WITHOUT TIME ZONE NULL;

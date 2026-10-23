@@ -1,0 +1,13 @@
+diff --git a/src/chainparams.cpp b/src/chainparams.cpp
+index 0a45b782b..6936ed231 100644
+--- a/src/chainparams.cpp
++++ b/src/chainparams.cpp
+@@ -381,7 +381,7 @@ public:
+         strNetworkID =  CBaseChainParams::REGTEST;
+         consensus.signet_blocks = false;
+         consensus.signet_challenge.clear();
+-        consensus.nSubsidyHalvingInterval = 150;
++        consensus.nSubsidyHalvingInterval = 1000000;
+         consensus.BIP16Exception = uint256();
+         consensus.BIP34Height = 500; // BIP34 activated on regtest (Used in functional tests)
+         consensus.BIP34Hash = uint256();

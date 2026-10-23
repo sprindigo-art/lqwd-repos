@@ -1,0 +1,189 @@
+<div id="staking-lists_div_lists"
+     th:fragment="lists-requested(${stakingList},${totalPages},${curentPage},${totalItems},${startPageIndex},${endPageIndex})"
+     class="widget-content widget-content-area br-6"
+     style="width: 100%;display: block;margin-left: 15px;margin-right: 15px;">
+    <div th:if="${totalItems==0}" class="widget" id="list-active_div_list-empty">
+        <div class="widget-content widget-content-area justify-content-center text-center">
+            <h3 style="padding: 20px;">You do not have any pending requests</h3>
+        </div>
+    </div>
+
+    <div th:unless="${totalItems==0}" class="table-responsive mb-4 col-12" id="list-requested_div_requested">
+        <div class="widget-heading pt-1">
+            <div class="">
+                <h5 class="">Pending Requests</h5>
+            </div>
+        </div>
+        <table id="list-requested_tbl_list-requested" class="table table-hover custom-table-color">
+            <thead>
+            <tr>
+                <th>Address/Invoice</th>
+                <th>Type</th>
+                <th>Amount</th>
+                <th>Status</th>
+                <th>Created date</th>
+                <th>Total Days</th>
+                <th>Left Days</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="staking: ${stakingList}"
+                th:if="${staking.getStatus().contains('REQUESTED')|| staking.getStatus().contains('APPROVED')}">
+
+                <!-- Address -->
+                <th th:if="${staking.getType() == 'INVOICE'}" style="text-align: left;">
+                    [[${#strings.abbreviate(staking.getPaymentRequest(), 30)}]]
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-copy" th:attr="onclick=|copyToClipboard('${staking.getPaymentRequest()}')|">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                    </svg>
+                </th>
+
+                <th th:unless="${staking.getType() == 'INVOICE'}" style="text-align: left;">
+                    [[${#strings.abbreviate(staking.getAddress(), 30)}]]
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-copy" th:attr="onclick=|copyToClipboard('${staking.getAddress()}')|">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                    </svg>
+                </th>
+
+                <!-- Type -->
+                <th th:if="${staking.getType() == 'INVOICE'}">
+                   <span th:attr="onclick=|openInvoiceDetails('${staking.getRhash()}')|"
+                         class="invoice-link">[[${staking.getType()}]]</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-copy"
+                         th:attr="onclick=|copyToClipboard('${staking.getRhash()}')|">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                    </svg>
+                </th>
+                <th th:unless="${staking.getType() == 'INVOICE'}" th:text="${staking.getType()}"></th>
+                <th th:text="${staking.getAmount()}"></th>
+                <th th:text="${staking.getStatus()}"></th>
+                <th th:text="${#dates.format(staking.getDateCreated(),'MMMM d, YYYY')}"></th>
+                <th th:text="${staking.getTotalDays()}"></th>
+                <th th:text="${staking.getDaysLeft()}"></th>
+
+                <!-- Action  -->
+                <th>
+                    <div class="col" th:if="${staking.getDaysLeft() == 0}">
+                        <div class="row-3">
+                            <div th:if="${staking.getType() == 'INVOICE'}">
+                                <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="1em"
+                                     th:attr="onclick=|setNumOfDaysToRenewRequest('${staking.getPaymentRequest()}','INVOICE')|"
+                                     class="feather feather-refresh-ccw"
+                                     height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24">
+                                    <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                                        <path d="M1 4v6h6m16 10v-6h-6"/><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"/>
+                                    </g></svg> <span>Renew</span>
+                            </div>
+                            <div  th:unless="${staking.getType() == 'INVOICE'}">
+                                <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="1em"
+                                     th:attr="onclick=|setNumOfDaysToRenewRequest('${staking.getAddress()}','BTCADDRESS')|"
+                                     class="feather feather-refresh-ccw"
+                                     height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24">
+                                    <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                                        <path d="M1 4v6h6m16 10v-6h-6"/><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"/>
+                                    </g></svg> <span>Renew</span>
+                            </div>
+                        </div>
+                        <div class="row-3">
+                            <div th:if="${staking.getType() == 'INVOICE'}">
+                                <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true"
+                                     class="feather feather-external-link"
+                                     th:attr="onclick=|withdrawPasswordModal('${staking.getPaymentRequest()}','INVOICE')|"
+                                     role="img" width="1em" height="1em"
+                                     preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24">
+                                    <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                          d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6m4-3h6v6m-11 5L21 3"/>
+                                </svg> <span>Withdraw</span>
+
+                            </div>
+                            <div  th:unless="${staking.getType() == 'INVOICE'}">
+                                <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true"
+                                     class="feather feather-external-link"
+                                     th:attr="onclick=|withdrawPasswordModal('${staking.getAddress()}','BTCADDRESS')|"
+                                     role="img" width="1em" height="1em"
+                                     preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24">
+                                    <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                          d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6m4-3h6v6m-11 5L21 3"/>
+                                </svg> <span>Withdraw</span>
+                            </div>
+                        </div>
+                        </div>
+                </th>
+            </tr>
+            </tbody>
+            <tfoot>
+            <tr>
+                <th>Address/Invoice</th>
+                <th>Type</th>
+                <th>Amount</th>
+                <th>Status</th>
+                <th>Created date</th>
+                <th>Total Days</th>
+                <th>Left Days</th>
+                <th></th>
+            </tr>
+            </tfoot>
+        </table>
+        <div class="row" style="height: 45px;">
+            <div class="col-sm-12 col-md-5">
+                <div class="dataTables_info" th:text="|Total number of requests: ${totalItems}|"></div>
+            </div>
+            <div class="col-sm-12 col-md-5" >
+                <div class="dataTables_paginate paging_simple_numbers" th:if="${totalPages > 1}">
+                    <ul class="pagination">
+                        <li class="paginate_button page-item">
+                            <button class="page-link"
+                                    th:unless="${startPageIndex==1}"
+                                    th:attr="onclick=|updatePage(${startPageIndex-5},'REQUESTED',${startPageIndex-5},${startPageIndex-1},'true')|">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                                     fill="none"
+                                     stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                     stroke-linejoin="round"
+                                     class="feather feather-chevron-left">
+                                    <line x1="19" y1="12" x2="5" y2="12"></line>
+                                    <polyline points="12 19 5 12 12 5"></polyline>
+                                </svg>
+                            </button>
+                        </li>
+                        <span th:each="i: ${#numbers.sequence(startPageIndex,endPageIndex)}">
+                            <li class="paginate_button page-item"
+                                th:classappend="${curentPage==i} ? active">
+                                <button
+                                        class="page-link"
+                                        th:attr="onclick=|updatePage('${i}','REQUESTED',${startPageIndex},${endPageIndex},'false')|">[[${i}]]
+                                </button>
+                            </li>
+                        </span>
+                        <li class="paginate_button page-item next">
+                            <button
+                                    class="page-link"
+                                    th:unless="${endPageIndex == totalPages}"
+                                    th:attr="onclick=|updatePage(${endPageIndex+1},'REQUESTED',${endPageIndex+1},${endPageIndex+5},'true')|">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                                     fill="none"
+                                     stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                     stroke-linejoin="round"
+                                     class="feather feather-chevron-right">
+                                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                                    <polyline points="12 5 19 12 12 19"></polyline>
+                                </svg>
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-2">
+                    <a type="button" class="btn btn-outline-primary btn-sm" th:href="@{|/staking-list-page-export-csv?page=${curentPage}&status=REQUESTED|}" th:text="CSV"></a>
+                    <a type="button" class="btn btn-outline-primary btn-sm" th:href="@{|/staking-list-page-export-pdf?page=${curentPage}&status=REQUESTED|}" th:text="PDF"></a>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

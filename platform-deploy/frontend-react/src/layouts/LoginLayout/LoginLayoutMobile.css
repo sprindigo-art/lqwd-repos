@@ -1,0 +1,227 @@
+.mobile-login-layout {
+    overflow: hidden;
+}
+
+.mobile-login-layout .background {
+    background: #0086BF;
+    width: 100vw;
+    height: 100%;
+    position: absolute;
+    z-index: 0;
+}
+
+.mobile-login-layout .background .mobile-logo {
+    position: absolute;
+    width: 32.3%;
+    height: 5.3%;
+    left: 33.85%;
+    top: 5%;
+
+    z-index: 3;
+}
+
+
+.mobile-login-layout .background .background-panel .balance-holder {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    z-index: 1;
+}
+
+.mobile-login-layout .background .background-panel .stats-container {
+    position: absolute;
+    opacity: 0.1;
+    height: 100%;
+    width: 100%;
+}
+
+.mobile-login-layout .background .background-panel .chart-holder {
+    margin: auto;
+    opacity: 0;
+}
+
+.mobile-login-layout .background  .background-panel .stats-container .stats-card {
+    position: absolute;
+    width: 240px;
+    height: 72px;
+    z-index: 1;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
+
+.mobile-login-layout .background  .background-panel .stats-container .stats-card:nth-child(1) {
+    left: 66.15% !important;
+    top: 10.78% !important;
+}
+
+.mobile-login-layout .background  .background-panel .stats-container .stats-card:nth-child(2) {
+    left: -12.56% !important;
+    top: 28.9% !important;
+}
+
+.mobile-login-layout .background .background-panel {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.mobile-login-layout .background .background-panel .shape {
+    position: absolute;
+    background: #007BB0;
+    border-radius: 58px;
+    width: 59.5%;
+    height: 72px;
+}
+
+.mobile-login-layout .background .background-panel .shape-1 {
+    left: -16.9%;
+    top: 7.6%;
+}
+
+.mobile-login-layout .background .background-panel .shape-2 {
+    left: 31.3%;
+    top: 9.8%;
+}
+
+.mobile-login-layout .background .background-panel .shape-3 {
+    left: 55.6%;
+    top: 26.9%;
+}
+
+.mobile-login-layout .background .background-panel .shape-4 {
+    left: 37.4%;
+    top: 30.2%;
+}
+
+.mobile-login-layout .background .background-panel .square-right {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    right: 6.87%;
+
+    background: #14ACED;
+    border: 1px solid #7AD4FB;
+    z-index: 1;
+    opacity: 0.7;
+}
+
+.mobile-login-layout .background .background-panel .square-left {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    left: 6.87%;
+
+    background: #14ACED;
+    border: 1px solid #7AD4FB;
+    z-index: 1;
+    opacity: 0.7;
+}
+
+.mobile-login-layout .background .background-panel .top{
+    top: 12.2%;
+}
+
+.mobile-login-layout .background .background-panel .bottom{
+    top: 32.11%;
+}
+
+.mobile-login-layout .background .background-panel .line{
+    position: absolute;
+    border: 1px solid #C1ECFF;
+    z-index: 0;
+    opacity: 0.2;
+}
+
+.mobile-login-layout .background .background-panel .line-1{
+    width: 84.1%;
+    height: 0px;
+    left: 7.7%;
+    top: 13.03%;
+}
+
+.mobile-login-layout .background .background-panel .line-2{
+    height: 19.91%;
+    width: 0px;
+    left: 7.7%;
+    top: 13.03%;
+}
+
+.mobile-login-layout .background .background-panel .line-3{
+    width: 84.1%;
+    height: 0px;
+    right: 7.7%;
+    top: 33.05%;
+}
+
+.mobile-login-layout .background .background-panel .line-4{
+    height: 19.91%;
+    width: 0px;
+    right: 7.7%;
+    top: 13.03%;
+}
+
+.mobile-login-layout .background .background-panel .welcome-text {
+    position: absolute;
+    width: 76.41%;
+    height: 13.86%;
+    left: 11.8%;
+    top: 14.81%;
+
+    display: flex;
+    align-items: center;
+    text-align: center;
+
+    flex-direction: column;
+}
+
+.mobile-login-layout .background .background-panel .welcome-text .welcome-text-header{
+    position: relative;
+
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 30px;
+    line-height: 39px;
+    /* or 130% */
+
+    /* White */
+    color: #FFFFFF;
+    z-index: 1;
+}
+
+.mobile-login-layout .background .background-panel .welcome-text .welcome-text-subheader{
+    position: relative;
+
+    /* Body 1 */
+    font-family: 'Inter';
+
+    font-style: normal;
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 21px;
+
+    padding-top: 4px;
+    /* White */
+    color: #FFFFFF;
+    z-index: 1;
+}
+
+.mobile-login-layout .input-panel {
+    position: absolute;
+    width: 98%;
+    height: 63.4%;
+    max-height: 65%;
+    min-height: 535px;
+    top: 100%;
+    transform: translateY(-100%);
+    bottom: 0;
+    left: 1%;
+
+    /* White */
+    background: #FFFFFF;
+    box-shadow: 0px 8px 44px rgba(2, 127, 182, 0.3);
+    border-radius: 20px;
+    z-index: 4;
+}
+

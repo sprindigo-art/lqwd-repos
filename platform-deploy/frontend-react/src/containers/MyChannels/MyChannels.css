@@ -1,0 +1,92 @@
+.my-channels-title-container {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin: 15px;
+}
+
+.my-channels-button {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    column-gap: 20px;
+}
+
+
+.my-channels-title{
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 32px;
+    display: flex;
+    align-items: center;
+    color: #111111;
+}
+
+.my-channels-total{
+    right: 1010px;
+    top: 148px;
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 20px;
+    /* Text - Tertiary */
+    color: #7A7A7A;
+
+}
+
+.closed-channel-link-container{
+    /* Auto layout */
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+
+    padding: 0px 8px 24px 0px;
+
+    width: 188px;
+    height: 30px;
+    right: 40px;
+    top: 200px;
+}
+
+.closed-channel-link{
+    /* Auto layout */
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.closed-channel-link-text{
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 22px;
+    display: flex;
+    align-items: center;
+
+    /* Text - Primary */
+    color: #111111;
+
+}
+
+.closed-channel-link-icon-container{
+    /* History */
+    width: 18px;
+    height: 18px;
+}
+
+.closed-channel-link-icon {
+    width: 18px;
+    height: 18px;
+    left: 8.33%;
+    right: 8.33%;
+    top: 8.33%;
+    bottom: 8.33%;
+}

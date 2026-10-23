@@ -1,0 +1,1 @@
+ALTER TYPE "public"."command_state" ADD VALUE 'withdrawn';

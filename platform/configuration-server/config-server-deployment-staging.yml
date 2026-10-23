@@ -1,0 +1,63 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: config-server
+  namespace: microservice
+  labels:
+    app: config-server
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: config-server
+  template:
+    metadata:
+      labels:
+        app: config-server
+    spec:
+      nodeSelector:
+        nodegroup: m5l
+      volumes:
+        - name: frontend-secret
+          secret:
+            secretName: frontend-secret
+            defaultMode: 420
+      imagePullSecrets:
+        - name: ecr-token
+      containers:
+        - name: config-server
+          image: '514063904685.dkr.ecr.us-west-2.amazonaws.com/configuration-server:staging-$BUILD_NUMBER'
+          ports:
+            - containerPort: 8888
+              protocol: TCP
+          env:
+            - name: GIT_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: GIT_USERNAME
+            - name: GIT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: GIT_PASSWORD
+            - name: CONFIG_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: frontend-secret
+                  key: CONFIG_USERNAME
+            - name: CONFIG_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: frontend-secret
+                  key: CONFIG_PASSWORD
+            - name: BROKERS
+              value: broker.kafka-v1:9092
+            - name: SASL_CONFIG
+              valueFrom:
+                secretKeyRef:
+                  name: frontend-secret
+                  key: SASL_CONFIG
+            - name: LABEL
+              value: staging

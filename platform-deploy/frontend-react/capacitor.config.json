@@ -1,0 +1,8 @@
+{
+    "appId": "money.lqwd.frontend",
+    "appName": "LQwD",
+    "bundledWebRuntime": false,
+    "npmClient": "npm",
+    "webDir": "build",
+    "cordova": {}
+}

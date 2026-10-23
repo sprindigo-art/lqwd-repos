@@ -1,0 +1,18 @@
+{
+  "namespace": "com.lqwd.messaging.schemas",
+  "type": "record",
+  "name": "SuccessSubscription",
+  "fields": [
+    {
+      "name": "userId",
+      "type": "string",
+      "avro.java.string": "String"
+    },
+    {
+      "name": "nodeId",
+      "type": "string",
+      "avro.java.string": "String"
+    }
+
+  ]
+}

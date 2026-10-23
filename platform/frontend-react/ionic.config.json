@@ -1,0 +1,7 @@
+{
+    "name": "LQwD",
+    "integrations": {
+        "capacitor": {}
+    },
+    "type": "react"
+}

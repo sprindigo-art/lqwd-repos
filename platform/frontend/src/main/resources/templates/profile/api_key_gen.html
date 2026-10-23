@@ -1,0 +1,27 @@
+<div th:fragment="generate_api_key">
+    <div class="widget-content widget-content-area pb-1">
+        <h3>Generate API Key</h3>
+        <div class="form-row" id="api-key-gen_div_api-key-gen">
+            <div class="col-md-12 mb-4">
+                <textarea type="text" class="form-control" id="api-key-gen_txt_apiKey" name="apiKey"
+                          placeholder="API-KEY" value="" readonly></textarea>
+                <input type="text" class="form-control" id="api-key-gen_txt_token" name="token" th:value="${token}"
+                       hidden disabled/>
+                <div class="row text-align-left">
+                    <div class="col-auto">
+                        <button id="api-key-gen_btn_api-key-gen" class="btn btn-primary submit-fn mt-3"
+                                th:disabled="${!user.isEmailstatus()}">
+                            <span th:if="${user.isEmailstatus()}">Generate API Key</span>
+                            <span th:unless="${user.isEmailstatus()}">Please Verify Account</span>
+                        </button>
+                    </div>
+                    <div class="col-auto">
+                        <button class="btn btn-primary submit-fn mt-3" id="api-key-gen_btn_copy-to-clipboard">Copy to
+                            Clipboard
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

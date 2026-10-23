@@ -1,0 +1,14 @@
+{
+	"type": "record",
+	"name": "TmessageKey",
+	"namespace": "com.lqwd.schema",
+	"fields": [
+	 {
+		"name": "id",
+		"type": "int"
+	},
+	{
+		"name": "tactionName",
+		"type": "string"
+	}]
+}

@@ -1,0 +1,36 @@
+<div id="watchtower-list" class="row d-flex justify-content-start" th:fragment="watchtower(lndNodes)">
+  <div th:each="lndNode : ${lndNodes}">
+    <div class="col-auto pb-3 ">
+      <div class="card component-card_4 lnd-node-card" style="cursor: pointer;">
+        <div class="card-body">
+          <div class="user-profile">
+            <img th:src="@{images/logo/LQwD-Q.png}" class="" alt="LND Node" style="border-radius: 10%; width: 70px; height: 70px;">
+          </div>
+          <div class="user-info">
+            <h5 class="card-user_name" th:text="${lndNode.getLndNodeName()}">LND Node Name</h5>
+            <span class="float-right detail-arrows" th:data-value="${lndNode.getLndNodeName()}">
+              Details
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </span>
+            <p class="card-user_occupation" th:text="${lndNode.getExternalip()}+':'+${lndNode.getPort()}">IP:PORT</p>
+            <div class="card-star_rating">
+              <span class="badge outline-badge-success" style="font-size: 12px;" th:if="${lndNode.getStatus()} == 'active'" th:text="${#strings.toUpperCase(lndNode.getStatus())}">STATUS</span>
+              <span class="badge outline-badge-warning" style="font-size: 12px;" th:unless="${lndNode.getStatus()} == 'active'" th:text="${#strings.toUpperCase(lndNode.getStatus())}">STATUS</span>
+            </div>
+            <p class="card-text">
+            <div class="btn-group">
+              <button id="watchower-cards_btn_create" class="btn btn-primary" th:if="${lndNode.getStatus()} == 'active'" th:href="@{/lnd-create-channel}">Create Channels</button>
+              <button class="btn btn-primary" th:unless="${lndNode.getStatus()} == 'active'" th:href="@{/lnd-create-channel}" disabled>Create Channels</button>
+              <button id="watchower-cards_btn_copy-info" class="btn btn-outline-primary copy-hostdata"
+                      th:data-value="${lndNode.getLndNodeName()}+'@'+${lndNode.getExternalip()}+':'+${lndNode.getPort()}">Copy Node Info</button>
+            </div>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

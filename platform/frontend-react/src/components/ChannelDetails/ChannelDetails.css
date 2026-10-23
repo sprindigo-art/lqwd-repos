@@ -1,0 +1,81 @@
+.channel-details-modal {
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 24px;
+}
+
+.channel-details-modal .table-title {
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+
+    /* Text - Tertiary */
+    color: #7A7A7A;
+}
+
+.channel-details-modal .table-value {
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+
+    /* Text - Primary */
+    color: #111111;
+}
+
+.channel-details-modal .channel-details-section {
+    border-radius: 10px;
+    background-color: #F3F5F9;
+}
+
+.channel-details-modal .copy-text-container {
+    width: 100%;
+}
+
+
+
+.channel-details-modal .modal-header {
+    border-bottom: unset;
+    padding-bottom: 0;
+}
+
+.channel-details-modal .modal-body {
+    padding-top: 0;
+}
+
+.channel-details-title {
+    height: 32px;
+
+    /* Header 1 */
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 32px;
+}
+
+#channel-connected-to-text,
+#channel-last-updated {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 17px;
+}
+
+.channel-details-modal .delete-icon {
+    position: relative;
+    /* #FF0000 */
+    filter: invert(12%) sepia(94%) saturate(7423%) hue-rotate(4deg) brightness(112%) contrast(113%);
+}
+
+.channel-details-modal .delete-icon img {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+}

@@ -1,0 +1,33 @@
+{
+  "manifest_version": "3.0",
+  "generated_at": "2026-04-23T00:00:00Z",
+  "issuer": "https://lqwdclaw.bot",
+  "service": "lqwdclaw-nodeops",
+  "contact": {
+    "operator": "ops@lqwdclaw.bot",
+    "security": "security@lqwdclaw.bot"
+  },
+  "discovery_url": "https://api.lqwdclaw.bot/v1/discovery",
+  "for_agents_url": "https://lqwdclaw.bot/for-agents",
+  "approved_packages": [
+    {
+      "ecosystem": "pypi",
+      "name": "saturnzap",
+      "source": "https://github.com/lqwdtech/SaturnZap",
+      "pin": "v1.3.1",
+      "install": "uv tool install saturnzap --find-links https://github.com/lqwdtech/SaturnZap/releases/expanded_assets/v1.3.1"
+    }
+  ],
+  "authoritative_endpoints": [
+    "https://api.lqwdclaw.bot/v1/discovery",
+    "https://api.lqwdclaw.bot/v1/internal/accounts/register",
+    "https://api.lqwdclaw.bot/v1/internal/accounts/reachability-check",
+    "https://api.lqwdclaw.bot/v1/internal/channel/status",
+    "https://api.lqwdclaw.bot/v1/internal/channel/retry",
+    "https://api.lqwdclaw.bot/v1/mcp"
+  ],
+  "channel_faucet": {
+    "capacity_sats": 20000,
+    "push_sats": 1354
+  }
+}

@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout/app}" lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+  <title>LQwD | Channels</title>
+
+  <link th:href="@{${cssPath + '/scrollspyNav.css'}}" rel="stylesheet" type="text/css" />
+  <link th:href="@{${cssPath + '/widgets/modules-widgets.css'}}" rel="stylesheet" type="text/css">
+  <link th:href="@{${cssPath + '/components/custom-modal.css'}}" rel="stylesheet" type="text/css">
+  <link th:href="@{${cssPath + '/elements/popover.css'}}" rel="stylesheet" type="text/css"/>
+  <link th:href="@{${cssPath + '/components/cards/card.css'}}" rel="stylesheet" type="text/css">
+
+  <link  th:href="@{${pluginPath + '/animate/animate.css'}}" rel="stylesheet" type="text/css">
+  <link th:href="@{${pluginPath + '/apex/apexcharts.css'}}" rel="stylesheet" type="text/css">
+</head>
+<style layout:fragment="style">
+  .lnd-channel-card-glow:hover {
+    -webkit-box-shadow: 0px 0px 50px 0px rgb(67, 95, 229);
+    -moz-box-shadow: 0px 0px 50px 0px rgb(67, 95, 229);
+    box-shadow: 0px 0px 50px 0px rgb(67, 95, 229);
+    transition: .8s ease;
+    border-radius: 8px;
+  }
+</style>
+
+<body>
+<!-- SUB HEADER TITLE -->
+<section layout:fragment="sub-header">
+  <span>LND Channels</span>
+</section>
+
+<!--  BEGIN CONTENT AREA  -->
+<div layout:fragment="content-section">
+  <div class="layout-px-spacing">
+    <div id="lnd-channels_div_create-channel-area" class="row layout-spacing">
+      <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 layout-spacing pt-3">
+        <div class="widget-content widget-content-area">
+          <h5>Create LND Channel</h5>
+          <form class="select mt-4" novalidate action="javascript:void(0);">
+            <div class="row pt-2">
+              <div class="col-12">
+                <div id="lnd-select-div" class="form-group">
+                  <select th:unless="${user.isEmailstatus()}" class="custom-select" required disabled>
+                    <option value="">Please Verify Account</option>
+                  </select>
+                  <select th:if="${user.isEmailstatus()}" id="lnd-channels_slct_lnd-select"
+                          class="custom-select" required>
+                    <option value="">Select LND</option>
+                    <option th:each="lndNode : ${user.getLndNodes()}"
+                            th:data-custodial="${lndNode.getIsNonCustodial()}"
+                            th:value="${lndNode.getLndNodeName()}"
+                            th:if="${lndNode.getStatus()} == 'RUNNING'">
+                      <span>[[${lndNode.getLndNodeName()}]] </span>
+                      <span th:if="${lndNode.getWalletBalance()!=null}">(Total balance: [[ ${#numbers.formatDecimal(lndNode.getWalletBalance().getTotal_balance(), 0, 'COMMA', 0, 'POINT')} ]] SAT)</span>
+                    </option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <!-- Create Channel Form -->
+            <div class="row">
+              <div class="col-8">
+                <div class="input-group" id="lnd-channels_div_inputs">
+                  <input type="text" class="form-control" id="lnd-channels_txt_node_pubkey"
+                         name="node_pubkey" placeholder="LND Identity Key" required>
+
+                  <div class="input-group-append">
+                    <div class="input-group-text">@</div>
+                  </div>
+                  <input type="text" class="form-control" id="lnd-channels_txt_host" name="host"
+                         placeholder="Hostname">
+                  <div class="input-group-append">
+                    <div class="input-group-text">:</div>
+                  </div>
+                  <input type="text" class="form-control" id="lnd-channels_txt_port" name="port"
+                         placeholder="Port">
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <div class="input-group-text">$</div>
+                  </div>
+                  <input type="text" class="form-control" id="local_funding_amount"
+                         name="local_funding_amount" placeholder="Local Funding Amount" required>
+                </div>
+              </div>
+            </div>
+
+            <div class="row pt-3">
+              <div class="col-12">
+                <div class="input-group justify-content-end">
+                  <button th:unless="${user.isEmailstatus()}"
+                          class="btn btn-lg btn-primary create-channel" disabled>Please Verify Account
+                  </button>
+                  <button class="btn btn-lg btn-primary mr-2"
+                          id="lnd-channels_btn_clear-fields">Clear all fields
+                  </button>
+                  <button th:if="${user.isEmailstatus()}" type="submit"
+                          class="btn btn-lg btn-primary create-channel"
+                          id="lnd-channels_btn_create-channel">Create New Channel
+                  </button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="row layout-spacingo">
+      <!-- Active Channels -->
+      <div class="col-xl-12 col-lg-12 col-md-12 layout-spacing">
+        <div id="activeChannels">
+          <div class="widget widget-table-three">
+            <div class="widget-heading">
+              <h5 class="">Active LND Channels</h5>
+            </div>
+            <div class="widget-content">
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Pending Channels -->
+      <div class="col-xl-12 col-lg-12 col-md-12 layout-spacing">
+        <div id="pendingChannels">
+          <div class="widget widget-table-three">
+            <div class="widget-heading">
+            </div>
+            <div class="widget-content">
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Inactive Channels -->
+      <div class="col-xl-12 col-lg-12 col-md-12 layout-spacing">
+        <div id="inactiveChannels">
+          <div class="widget widget-table-three">
+            <div class="widget-heading">
+              <h5 class="">Inactive LND Channels</h5>
+            </div>
+            <div class="widget-content">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--  END CONTENT AREA  -->
+  </div>
+  <div th:replace="lnd_node/modal/authenticate-close-channel"></div>
+  <div th:replace="lnd_channels/modals/close-channel-popup"></div>
+  <div th:replace="auth/fragments/noncustodial_passphrase_modal"></div>
+</div>
+
+<div layout:fragment="scripts">
+  <script th:src="@{assets/js/scrollspyNav.js}"></script>
+
+  <script th:src="@{${pluginPath + '/apex/apexcharts.min.js'}}"></script>
+  <script th:src="@{${pluginPath + '/blockui/custom-blockui.js'}}"></script>
+  <script th:src="@{${pluginPath + '/blockui/jquery.blockUI.min.js'}}"></script>
+
+  <script th:src="@{assets/js/widgets/modules-widgets.js}"></script>
+  <script th:src="@{assets/js/elements/popovers.js}"></script>
+  <script th:src="@{/js/tools/tools.js}"></script>
+  <script th:src="@{js/lnd_channels/lnd_channels.js}"></script>
+
+  <script th:inline="javascript">
+    $(document).ready(function () {
+      $(".form-control").on({
+        paste(event) {
+          const hostdata = event.originalEvent.clipboardData.getData('text').trim();
+          if (hostdata.includes("@")) {
+            event.preventDefault();
+            pasteHostData(hostdata);
+          }
+        }
+      });
+      $(".clickable-link").click(function () {
+        window.open($(this).attr('href'), '_blank');
+      });
+      $('#channelCloseAuth_txt_password').on('keypress', function (e) {
+        if (e.which === 13) {
+          e.preventDefault();
+          var password = $('#channelCloseAuth_txt_password').val();
+          var channel_point = $(this).attr("data-channelpoint");
+          var lnd_name = $(this).attr("data-lnd");
+          closeChannel(channel_point, lnd_name, password);
+        }
+      });
+    });
+  </script>
+</div>
+</body>
+</html>

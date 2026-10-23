@@ -1,0 +1,178 @@
+pipeline {
+    agent none
+  //post { 
+  //      always { 
+  //          cleanWs()
+  //     }
+  // }
+    parameters {
+        
+        booleanParam(name: 'checkDataChange', defaultValue: true, description: 'check data change before running the pipeline')
+        
+    }
+    environment {
+       GIT_SSH_COMMAND = "ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
+       registry = '514063904685.dkr.ecr.us-west-2.amazonaws.com/oauth2server'
+       gitUrl = 'git@github.com:lightningriders/platform.git'
+       registryCredential = 'aws-ecr'
+       gitCredential = 'github-ssh'
+       gitBranch = 'main'
+       PROJECT_FOLDER = 'oauth2server'
+       KUBE_CONFIG_ID = "kubeconfig-aws1-jenkins"
+       environment = 'prod'
+    }
+    
+    tools {
+    maven 'm3'
+    }
+    
+  stages {
+      
+    stage('Checkout Source') {
+       agent {
+           label "master"
+        }
+        steps {
+            cleanWs()
+            //sh "ssh -o StrictHostKeyChecking=no git@github.com"
+            git credentialsId: gitCredential , url: gitUrl , branch: gitBranch
+            sh "ls -la"
+        }
+    }
+    
+
+    stage('Build') {
+        when {
+            anyOf{ 
+                changeset "**/${env.PROJECT_FOLDER}/**"
+                expression{params.checkDataChange == false}
+            }
+        }
+        agent {
+           label "master"
+        }
+        steps {
+          dir("${env.PROJECT_FOLDER}") {
+            //sh 'mvn -version'
+            sh 'mkdir build'
+            sh 'cp pom.xml build/'
+            sh 'cp -r src build/'
+            sh '''
+                  cd build
+                  mvn clean package -Dmaven.test.skip=true
+              '''
+            sh 'ls -la build/'
+          }
+        }
+    }
+      
+    stage ('Test') {
+        when {
+            anyOf{ 
+                changeset "**/${env.PROJECT_FOLDER}/**"
+                expression{params.checkDataChange == false}
+            }
+        }
+        agent {
+           label "master"
+        }
+        steps {
+          dir("${env.PROJECT_FOLDER}") {
+            sh 'echo \'Here we have to run tests\''
+          }
+        }
+    }
+    
+    stage ('Build Image') {
+        when {
+            anyOf{ 
+                changeset "**/${env.PROJECT_FOLDER}/**"
+                expression{params.checkDataChange == false}
+            }
+        }
+        agent {
+           label "master"
+        }
+        steps {
+          dir("${env.PROJECT_FOLDER}") {
+            script {
+                dockerImage = docker.build registry + ":" + "$environment-$BUILD_NUMBER"
+            }
+          }
+        }
+    }
+    
+    stage("Push image") {
+        when {
+            anyOf{ 
+                changeset "**/${env.PROJECT_FOLDER}/**"
+                expression{params.checkDataChange == false}
+            }
+        }
+        agent {
+           label "master"
+        }
+        steps {
+          dir("${env.PROJECT_FOLDER}") {
+            script {
+                    docker.withRegistry("https://" + registry, "ecr:us-west-2:" + registryCredential) {
+                    dockerImage.push("${env.environment}-latest")
+                    dockerImage.push("${env.environment}-$BUILD_NUMBER")
+                }
+            }
+          }
+        }
+    }
+
+    stage('Deploy App') {
+        when {
+            anyOf{ 
+                changeset "**/${env.PROJECT_FOLDER}/**"
+                expression{params.checkDataChange == false}
+            }
+        }
+        agent {
+         kubernetes {
+        	cloud 'kubernetes-aws'
+      	    defaultContainer 'jnlp'
+         }
+        }
+        steps {
+            git credentialsId: gitCredential, url: gitUrl, branch: gitBranch
+            dir("${env.PROJECT_FOLDER}") {
+              script {
+                 kubernetesDeploy( kubeconfigId: "${env.KUBE_CONFIG_ID}",
+                                   configs: "namespace.yml"
+                                 )
+                 sleep(time:5,unit:"SECONDS")
+                 kubernetesDeploy( kubeconfigId: "${env.KUBE_CONFIG_ID}",
+                                   configs: "oauth2-deployment-master.yml",
+                                   secretName: 'ecr-token',
+                                   dockerCredentials: [
+                                       [credentialsId: 'ecr:us-west-2:aws-ecr', url: registry]
+                                   ],
+                                   secretNamespace: 'oauth2'
+                                 )
+                 kubernetesDeploy( kubeconfigId: "${env.KUBE_CONFIG_ID}",
+                                   configs: "oauth2-service-master.yml"
+                                 )
+              }
+            }
+        }
+    }
+    stage('Remove Unused docker image') {
+      when {
+            anyOf{ 
+                changeset "**/${env.PROJECT_FOLDER}/**"
+                expression{params.checkDataChange == false}
+            }
+      }
+      agent {
+           label "master"
+      }
+      steps{
+        sh "docker rmi $registry:$environment-$BUILD_NUMBER"
+      }
+    }
+  }
+}

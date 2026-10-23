@@ -1,0 +1,68 @@
+.invoice-input-holder {
+    box-sizing: border-box;
+    background: #F3F5F9;
+    border-radius: 16px;
+}
+
+.payment-detail-holder {
+    box-sizing: border-box;
+    background: #FFFFFF;
+    border: 1px solid #E5E6EB;
+    border-radius: 16px;
+}
+
+.confirm-detail-container {
+    background: #F3F5F9;
+    border-radius: 0px 0px 16px 16px;
+}
+
+
+.confirm-detail-holder {
+    border-width: 1px 0px 1px 1px;
+    border-style: solid;
+    border-color: #EBEEF5;
+    border-radius: 16px 16px 0px 0px;
+}
+
+.channel-form{
+    background: #FFFFFF;
+    border-radius: 8px;
+}
+
+.payment-detail{
+    background: #009EE2;
+    box-shadow: 0px 8px 24px rgba(96, 106, 139, 0.13);
+    border-radius: 16px;
+}
+
+
+.wave-bottom {
+    position: relative;
+}
+
+.wave-bottom::before,
+.wave-bottom::after {
+    border-top: 5px solid #F3F5F9;
+}
+
+.wave-bottom::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 10px;
+    background-size: 20px 40px;
+    background-image: radial-gradient(circle at 10px -15px, transparent 20px, #fff 21px);
+}
+
+.wave-bottom::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 15px;
+    background-size: 40px 40px;
+    background-image: radial-gradient(circle at 10px 26px, #fff 20px, transparent 21px);
+}

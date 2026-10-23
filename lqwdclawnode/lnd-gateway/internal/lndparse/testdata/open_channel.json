@@ -1,0 +1,26 @@
+{
+  "data": {
+    "channels": [
+      {
+        "chan_id": "850000000000000001",
+        "channel_point": "0000111122223333444455556677889900001111222233334444555566778899:0",
+        "remote_pubkey": "03abc0000000000000000000000000000000000000000000000000000000000001",
+        "capacity": 20000,
+        "local_balance": 18646,
+        "remote_balance": 1354,
+        "active": true,
+        "private": false,
+        "initiator": true,
+        "total_satoshis_sent": 0,
+        "total_satoshis_received": 0,
+        "num_updates": 0,
+        "pending_htlcs": 0,
+        "unsettled_balance": 0,
+        "uptime": 0,
+        "lifetime": 0
+      }
+    ],
+    "count": 1
+  },
+  "ok": true
+}

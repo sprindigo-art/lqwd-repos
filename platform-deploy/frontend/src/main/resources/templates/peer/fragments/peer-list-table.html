@@ -1,0 +1,48 @@
+<div th:fragment="peer-list(${peersList},${totalPages},${curentPage},${totalItems},${startPageIndex},${endPageIndex})"
+     id="list_div_list" class="widget-content widget-content-area br-6"
+     style="width: 100%;display: block;margin-left: 15px;margin-right: 15px;">
+    <div th:if="${totalItems==0}" class="widget" id="list-active_div_list-empty">
+        <div class="widget-content widget-content-area justify-content-center text-center">
+            <h3 style="padding: 20px;">You do not have any peers</h3>
+        </div>
+    </div>
+    <div th:unless="${totalItems==0}" class="table-responsive mb-4 col-12" id="list_div_list-widget">
+        <div class="widget-heading pt-3">
+            <div class="">
+                <h5 class="">Peers</h5>
+            </div>
+        </div>
+        <table id="list_tbl_list" class="table table-hover custom-table-color">
+            <thead>
+            <tr>
+                <th>Pubkey</th>
+                <th>Address</th>
+                <th>Bytes Sent</th>
+                <th>Bytes Received</th>
+                <th>Ping Time</th>
+                <th>Inbound</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="peer: ${peersList}">
+                <th th:text="${peer.getPub_key()}"></th>
+                <th th:text="${peer.getAddress()}"></th>
+                <th th:text="${peer.getBytes_sent()}"></th>
+                <th th:text="${peer.getBytes_recv()}"></th>
+                <th th:text="${peer.getPing_time()}"></th>
+                <th th:text="${peer.getInbound()}"></th>
+            </tr>
+            </tbody>
+            <tfoot>
+            <tr>
+                <th>Pubkey</th>
+                <th>Address</th>
+                <th>Bytes Sent</th>
+                <th>Bytes Received</th>
+                <th>Ping Time</th>
+                <th>Inbound</th>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>

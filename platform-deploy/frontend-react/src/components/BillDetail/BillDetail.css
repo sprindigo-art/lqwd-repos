@@ -1,0 +1,267 @@
+.bill-detail-container {
+    /* White */
+    background: #FFFFFF;
+    /* Modal */
+    box-shadow: 0px 8px 44px rgba(176, 186, 199, 0.26);
+    border-radius: 8px;
+
+    padding: 28px 28px 36px;
+
+    width: 321px;
+    height: 542px;
+}
+
+.bill-detail-info-panel {
+    padding-bottom: 24px;
+}
+
+.bill-detail-current-balance {
+    display: flex;
+    flex-direction: column;
+    row-gap: 8px;
+}
+
+.bill-detail-current-balance-header {
+    /* Header 2 */
+
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 27px;
+    /* identical to box height, or 135% */
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    text-transform: capitalize;
+
+    /* Text - Primary */
+    color: #111111;
+}
+
+.bill-detail-current-balance-value {
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 36px;
+    line-height: 32px;
+    /* identical to box height, or 89% */
+
+    display: flex;
+    align-items: center;
+}
+
+.bill-detail-current-balance-value.active{
+    color: #009EE2;
+}
+
+.bill-detail-current-balance-value.late{
+    /* Primary */
+    color: #EB4D43;
+}
+
+.bill-detail-current-balance-due {
+    /* Label 1 */
+
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    /* identical to box height, or 143% */
+
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    width: 100%;
+
+    /* Secondary */
+
+    color: #4B545B;
+}
+
+.bill-detail-late-due {
+    /* Label 1 */
+
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    /* Secondary */
+
+    color: #EB4D43;
+    padding-left: 6px;
+}
+.bill-detail-current-balance-breakdown {
+    display: flex;
+    flex-direction: column;
+    row-gap: 8px;
+}
+
+.bill-detail-original-balance {
+    /* Label 1 */
+
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    /* identical to box height, or 143% */
+
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+
+    /* Text - Primary */
+    color: #111111;
+
+    padding-top: 22px;
+    justify-content: space-between;
+}
+
+.bill-detail-applied-credits-key {
+    display: flex;
+    flex-direction: column;
+}
+
+.bill-detail-original-balance-value {
+    /* Title 1 */
+
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 24px;
+    /* identical to box height, or 133% */
+
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+
+    /* Text - Secondary */
+
+    color: #4D4D4D;
+    color: #4D4D4D;
+}
+.bill-detail-applied-credits {
+    /* Label 1 */
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    /* identical to box height, or 143% */
+
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: space-between;
+
+    /* Text - Primary */
+
+    color: #111111;
+}
+
+.bill-detail-applied-credits-value {
+    /* Title 1 */
+
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 24px;
+    /* identical to box height, or 133% */
+
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+
+
+    /* Success */
+    color: #24AB20;
+}
+.bill-detail-renew-button {
+    padding-top: 14px;
+    display: flex;
+    flex-direction: row;
+}
+
+.bill-detail-previous-payment {
+    display: flex;
+    flex-direction: column;
+    padding-top: 40px;
+    row-gap: 4px;
+}
+
+.bill-detail-previous-payment-header {
+    /* Title 2 */
+
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 22px;
+    /* identical to box height, or 138% */
+
+    display: flex;
+    align-items: center;
+}
+
+.bill-detail-previous-payment-value {
+    /* Title 1 */
+
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 24px;
+    /* identical to box height, or 133% */
+
+    display: flex;
+    align-items: center;
+
+    /* Secondary */
+
+    color: #4B545B;
+}
+
+.bill-detail-previous-payment-date {
+    /* Label 2 */
+
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 17px;
+    /* identical to box height, or 142% */
+
+    display: flex;
+    align-items: center;
+
+    /* Secondary */
+
+    color: #4B545B;
+}
+
+.bill-detail-history-link {
+
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 22px;
+    /* identical to box height, or 147% */
+
+    display: flex;
+    align-items: center;
+    /* Primary */
+    color: #009EE2;
+    padding-top: 28px;
+}
+
+.bill-detail-history-link a {
+    text-decoration: none;
+    color: #009EE2;
+}

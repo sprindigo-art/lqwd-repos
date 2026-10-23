@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/head::header_main(~{::title}, ~{::link})">
+    <title>LQWD | Error 503</title>
+    <link th:href="@{/assets/css/pages/error/style-503.css}" rel="stylesheet" type="text/css" />
+    <!-- END GLOBAL MANDATORY STYLES -->
+</head>
+<body class="error503 text-center">
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-4 mr-auto mt-5 text-md-left text-center">
+            <a id="503_a_image" th:href="@{/login}" class="ml-md-5">
+                <img alt="image-503" th:src="@{/images/logo/LQwD-notext.png}" class="theme-logo">
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid error-content">
+    <div class="">
+        <h1 class="error-number">503</h1>
+        <p class="mini-text">Ooops!</p>
+        <p class="error-text">Service Unavailable!</p>
+        <a id="503_a_goback" th:href="@{/login}" class="btn btn-secondary mt-5">Go Back</a>
+    </div>
+</div>
+<div th:replace="layout/footer::footer_main(~{::script})">
+    <script></script>
+</div>
+</body>
+</html>

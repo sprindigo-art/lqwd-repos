@@ -1,0 +1,80 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <changeSet author="femi" id="1653456165712-1">
+        <createTable tableName="user_lnd_channel">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="user_lnd_channel_pkey"/>
+            </column>
+            <column name="active" type="BOOLEAN">
+                <constraints nullable="true"/>
+            </column>
+            <column name="node_name" type="VARCHAR(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="user_id" type="VARCHAR(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="remote_pub_key" type="text">
+                <constraints nullable="true" />
+            </column>
+            <column name="channel_point" type="text">
+                <constraints nullable="true" />
+            </column>
+            <column name="channel_id" type="text">
+                <constraints nullable="true" />
+            </column>
+            <column name="capacity" type="numeric(19, 2)">
+                <constraints nullable="true" />
+            </column>
+            <column name="local_balance" type="numeric(19, 2)">
+                <constraints nullable="true" />
+            </column>
+            <column name="remote_balance" type="numeric(19, 2)">
+                <constraints nullable="true" />
+            </column>
+            <column name="commit_fee" type="numeric(19, 2)">
+                <constraints nullable="true" />
+            </column>
+            <column name="commit_weight" type="numeric(19, 2)">
+                <constraints nullable="true" />
+            </column>
+            <column name="fee_per_kw" type="numeric(19, 2)">
+                <constraints nullable="true" />
+            </column>
+            <column name="unsettled_balance" type="numeric(19, 2)">
+                <constraints nullable="true" />
+            </column>
+            <column name="total_satoshis_sent" type="numeric(19, 2)">
+                <constraints nullable="true" />
+            </column>
+            <column name="total_satoshis_received" type="numeric(19, 2)">
+                <constraints nullable="true" />
+            </column>
+            <column name="initiator" type="BOOLEAN">
+                <constraints nullable="true"/>
+            </column>
+            <column name="is_private" type="BOOLEAN">
+                <constraints nullable="true"/>
+            </column>
+            <column name="num_updates" type="text">
+                <constraints nullable="true" />
+            </column>
+            <column name="chan_status_flag" type="text">
+                <constraints nullable="true" />
+            </column>
+            <column name="thaw_height" type="text">
+                <constraints nullable="true" />
+            </column>
+            <column name="push_amount_sat" type="numeric(19, 2)">
+                <constraints nullable="true" />
+            </column>
+            <column name="close_address" type="text">
+                <constraints nullable="true" />
+            </column>
+            <column name="date_created" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="date_modified" type="TIMESTAMP WITHOUT TIME ZONE"/>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>

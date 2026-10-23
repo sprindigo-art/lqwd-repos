@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout/app}" lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <title>LQWD | LN Stats</title>
+
+    <link th:href="@{${pluginPath + '/apex/apexcharts.css'}}" rel="stylesheet" type="text/css">
+    <link th:href="@{${cssPath + '/dashboard/dash_1.css'}}" rel="stylesheet" type="text/css"/>
+    <link th:href="@{${cssPath + '/widgets/modules-widgets.css'}}" rel="stylesheet" type="text/css">
+</head>
+<style layout:fragment="style">
+    .analytic-tile-cards:hover {
+        -webkit-box-shadow: 0px 0px 50px 0px rgb(67, 95, 229);
+        -moz-box-shadow: 0px 0px 50px 0px rgb(67, 95, 229);
+        box-shadow: 0px 0px 50px 0px rgb(67, 95, 229);
+        transition: .8s ease;
+    }
+
+    .analytic-tile-cards {
+        height: 155px !important;
+    }
+
+    .w-icon img {
+        border-radius: 10% !important;
+        width: 30px !important;
+        height: 33px !important;
+    }
+
+    .tile-header {
+        font-size: 18px !important;
+        padding-top: 10px !important;
+        padding-right: 10px !important;
+    }
+</style>
+<body>
+
+<section layout:fragment="sub-header">
+    <span>Analytics</span>
+</section>
+
+<!--  BEGIN CONTENT AREA  -->
+<div layout:fragment="content-section">
+    <div class="layout-px-spacing">
+        <div class="row layout-top-spacing">
+            <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12 col-12 layout-spacing">
+                <div class="widget-three">
+                    <div class="widget-heading">
+                        <h5 class="">Total Number of Nodes</h5>
+                    </div>
+                    <div class="widget-content">
+                        <!-- Total Number of Nodes -->
+                        <div id="chart_div_1"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12 col-12 layout-spacing">
+                <div class="widget-three">
+                    <div class="widget-heading">
+                        <h5 class="">Total Number of Channels</h5>
+                    </div>
+                    <div class="widget-content">
+                        <!-- Total Number of Nodes -->
+                        <div id="chart_div_2"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12 col-12 layout-spacing">
+                <div class="widget-three">
+                    <div class="widget-heading">
+                        <h5 class="">Network Capacity in BTC</h5>
+                    </div>
+                    <div class="widget-content">
+                        <!-- Network Capacity BTC -->
+                        <div id="chart_div_3"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12 col-12 layout-spacing">
+                <div class="widget-three">
+                    <div class="widget-heading">
+                        <h5 class="">Number of Public IP Nodes</h5>
+                    </div>
+                    <div class="widget-content">
+                        <!-- Network Capacity BTC -->
+                        <div id="chart_div_4"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div th:replace="analytics/fragments/analytic-tiles_1"></div>
+            <div th:replace="analytics/fragments/analytic-tiles_2"></div>
+
+        </div>
+        <div class="row layout-top-spacing text-center justify-content-center">
+            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 layout-spacing">
+                <div class="nomics-ticker-widget" data-name="Bitcoin" data-base="BTC" data-quote="CAD"></div>
+                <script src="https://widget.nomics.com/embed.js"></script>
+            </div>
+        </div>
+    </div>
+    <!--  END CONTENT AREA  -->
+</div>
+<div layout:fragment="scripts">
+    <script th:src="@{/js/tools/tools.js}"></script>
+    <script th:src="@{${pluginPath + '/blockui/custom-blockui.js'}}"></script>
+    <script th:src="@{${pluginPath + '/apex/apexcharts.min.js'}}"></script>
+    <script th:src="@{/assets/js/dashboard/dash_1.js}"></script>
+    <!--  <script th:src="@{/assets/js/widgets/modules-widgets.js}"></script>-->
+    <!-- Total Nodes -->
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        var row_data = /*[[${lightningStatsArray}]]*/'';
+
+        var data_array = [];
+        var categories_array = [];
+
+        for (let i = 0; i < row_data.length; i++) {
+            data_array.push(row_data[i].numberofnodes);
+            categories_array.push(new Date(row_data[i].lastupdated).toDateString());
+        }
+
+        var options = {
+            series: [{
+                name: 'Number of Nodes',
+                data: data_array
+            }],
+            chart: {
+                type: 'line',
+                background: '#fff',
+                height: '380',
+                width: '100%'
+            },
+            dataLabels: {
+                enabled: false
+            },
+            stroke: {
+                show: true,
+                width: 2,
+            },
+            xaxis: {
+                type: 'datetime',
+                categories: categories_array,
+                labels: {
+                    datetimeFormatter: {
+                        year: 'yyyy',
+                        month: "MMM yyyy",
+                        day: 'dd MMM yyyy',
+                        hour: 'HH:mm',
+                    },
+                }
+            },
+            yaxis: {
+                title: {
+                    text: 'Number of Nodes'
+                }
+            },
+            fill: {
+                opacity: 1
+            },
+            tooltip: {
+                x: {
+                    show: true,
+                    format: 'dd MMM yyyy',
+                },
+                y: {
+                    formatter: function (val) {
+                        return val
+                    }
+                }
+            },
+            //this will be needed based on chart for mobile display
+            responsive: [
+                {
+                    breakpoint: 1000,
+                    options: {
+                        plotOptions: {
+                            bar: {
+                                horizontal: false
+                            }
+                        },
+                        legend: {
+                            position: "bottom"
+                        }
+                    }
+                }
+            ]
+        };
+
+        var chart = new ApexCharts(document.querySelector("#chart_div_1"), options);
+        chart.render();
+        /*]]>*/
+    </script>
+    <!-- Total Channels -->
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        var row_data = /*[[${lightningStatsArray}]]*/'';
+
+        var data_array = [];
+        var categories_array = [];
+
+        for (let i = 0; i < row_data.length; i++) {
+            data_array.push(row_data[i].numberofchannels);
+            categories_array.push(new Date(row_data[i].lastupdated).toDateString());
+        }
+
+        var options = {
+            series: [{
+                name: 'Number of Channels',
+                data: data_array
+            }],
+            chart: {
+                type: 'line',
+                background: '#fff',
+                height: '380',
+                width: '100%'
+            },
+            dataLabels: {
+                enabled: false
+            },
+            stroke: {
+                show: true,
+                width: 2,
+            },
+            xaxis: {
+                type: 'datetime',
+                categories: categories_array,
+                labels: {
+                    datetimeFormatter: {
+                        year: 'yyyy',
+                        month: "MMM yyyy",
+                        day: 'dd MMM yyyy',
+                        hour: 'HH:mm',
+                    },
+                }
+            },
+            yaxis: {
+                title: {
+                    text: 'Number of Channels'
+                }
+            },
+            fill: {
+                opacity: 1
+            },
+            tooltip: {
+                x: {
+                    show: true,
+                    format: 'dd MMM yyyy',
+                },
+                y: {
+                    formatter: function (val) {
+                        return val
+                    }
+                }
+            },
+            //this will be needed based on chart for mobile display
+            responsive: [
+                {
+                    breakpoint: 1000,
+                    options: {
+                        plotOptions: {
+                            bar: {
+                                horizontal: false
+                            }
+                        },
+                        legend: {
+                            position: "bottom"
+                        }
+                    }
+                }
+            ]
+        };
+
+        var chart = new ApexCharts(document.querySelector("#chart_div_2"), options);
+        chart.render();
+        /*]]>*/
+    </script>
+
+    <!-- Netwrok Capacity BTC -->
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        var row_data = /*[[${lightningStatsArray}]]*/'';
+
+        var data_array = [];
+        var categories_array = [];
+
+        for (let i = 0; i < row_data.length; i++) {
+            data_array.push(Number(row_data[i].networkcapacity / 100000000).toFixed(2));
+            categories_array.push(new Date(row_data[i].lastupdated).toDateString());
+        }
+
+        var options = {
+            series: [{
+                name: 'Network Capacity BTC',
+                data: data_array
+            }],
+            chart: {
+                type: 'line',
+                background: '#fff',
+                height: '380',
+                width: '100%'
+            },
+            dataLabels: {
+                enabled: false
+            },
+            stroke: {
+                show: true,
+                width: 2,
+            },
+            xaxis: {
+                type: 'datetime',
+                categories: categories_array,
+                labels: {
+                    datetimeFormatter: {
+                        year: 'yyyy',
+                        month: "MMM yyyy",
+                        day: 'dd MMM yyyy',
+                        hour: 'HH:mm',
+                    },
+                }
+            },
+            yaxis: {
+                title: {
+                    text: 'Network Capacity BTC'
+                }
+            },
+            fill: {
+                opacity: 1
+            },
+            tooltip: {
+                x: {
+                    show: true,
+                    format: 'dd MMM yyyy',
+                },
+                y: {
+                    formatter: function (val) {
+                        return val
+                    }
+                }
+            },
+            //this will be needed based on chart for mobile display
+            responsive: [
+                {
+                    breakpoint: 1000,
+                    options: {
+                        plotOptions: {
+                            bar: {
+                                horizontal: false
+                            }
+                        },
+                        legend: {
+                            position: "bottom"
+                        }
+                    }
+                }
+            ]
+        };
+
+        var chart = new ApexCharts(document.querySelector("#chart_div_3"), options);
+        chart.render();
+        /*]]>*/
+    </script>
+
+    <!-- Number of Public IP Nodes -->
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        var row_data = /*[[${lightningStatsArray}]]*/'';
+        var data_array = [];
+        var categories_array = [];
+
+        for (let i = 0; i < row_data.length; i++) {
+            data_array.push(row_data[i].publicipnodes);
+            categories_array.push(new Date(row_data[i].lastupdated).toDateString());
+        }
+
+        var options = {
+            series: [{
+                name: 'Number of Public IP Nodes',
+                data: data_array
+            }],
+            chart: {
+                type: 'line',
+                background: '#fff',
+                height: '380',
+                width: '100%'
+            },
+            dataLabels: {
+                enabled: false
+            },
+            stroke: {
+                show: true,
+                width: 2,
+            },
+            xaxis: {
+                type: 'datetime',
+                categories: categories_array,
+                labels: {
+                    datetimeFormatter: {
+                        year: 'yyyy',
+                        month: "MMM yyyy",
+                        day: 'dd MMM yyyy',
+                        hour: 'HH:mm',
+                    },
+                }
+            },
+            yaxis: {
+                title: {
+                    text: 'Number of Public IP Nodes'
+                }
+            },
+            fill: {
+                opacity: 1
+            },
+            tooltip: {
+                x: {
+                    show: true,
+                    format: 'dd MMM yyyy',
+                },
+                y: {
+                    formatter: function (val) {
+                        return val
+                    }
+                }
+            },
+            //this will be needed based on chart for mobile display
+            responsive: [
+                {
+                    breakpoint: 1000,
+                    options: {
+                        plotOptions: {
+                            bar: {
+                                horizontal: false
+                            }
+                        },
+                        legend: {
+                            position: "bottom"
+                        }
+                    }
+                }
+            ]
+        };
+
+        var chart = new ApexCharts(document.querySelector("#chart_div_4"), options);
+        chart.render();
+        /*]]>*/
+    </script>
+
+    <!-- Tile Stats Styling for Chart -->
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+
+        var row_data = /*[[${lightningStatsArray}]]*/'';
+        var data_array = [];
+        var categories_array = [];
+
+        for (let i = 0; i < row_data.length; i++) {
+            data_array.push(row_data[i].numberofnodes30dchange);
+        }
+
+
+        Apex.tooltip = {
+            theme: 'dark'
+        }
+
+        var d_1options3 = {
+            chart: {
+                id: 'sparkline1',
+                type: 'area',
+                height: 160,
+                sparkline: {
+                    enabled: true
+                },
+            },
+            stroke: {
+                curve: 'smooth',
+                width: 2,
+            },
+            series: [{
+                name: 'Number of Nodes',
+                data: data_array
+            }],
+            labels: ['1', '2', '3', '4', '5', '6', '7'],
+            yaxis: {
+                min: 0
+            },
+            colors: ['#4361ee'],
+            tooltip: {
+                x: {
+                    show: false,
+                }
+            },
+            fill: {
+                type: "gradient",
+                gradient: {
+                    type: "vertical",
+                    shadeIntensity: 1,
+                    inverseColors: !1,
+                    opacityFrom: .30,
+                    opacityTo: .05,
+                    stops: [100, 100]
+                }
+            }
+        }
+
+        var d_1C_5 = new ApexCharts(document.querySelector("#hybrid_followers"), d_1options3);
+        d_1C_5.render()
+        /*]]>*/
+    </script>
+</div>
+</body>
+</html>

@@ -1,0 +1,138 @@
+{
+  "nodes":
+  [
+    {
+      "alias":"LQwD US-West",
+      "pubkey":"03820714a3f891c7c3ae5e00dbdd77f06ceccc24ddd8c99fadef13ec2eec462cce",
+      "externalip":"35.162.250.128",
+      "port": "9735",
+      "minChannel": "500000"
+    },
+    {
+      "alias":"LQwD France",
+      "pubkey":"032ae3168ba52314da581d6b6693c562b437a9cf805933d4d69e7801547e07302e",
+      "externalip":"13.37.62.86",
+      "port": "9735",
+      "minChannel": "500000"
+    },
+    {
+      "alias":"LQwD Indonesia",
+      "pubkey":"02b1afba6153f9668ea0be12f4dbfc396a782a52d3eccf868732a1088eb2cc5d69",
+      "externalip":"108.136.185.66",
+      "port": "9735",
+      "minChannel": "500000"
+    },
+    {
+      "alias":"LQwD Germany",
+      "pubkey":"02bd87b47c03654eeda9d8ba96ae2f1a73543ce703721326801d2945e5ef173475",
+      "externalip":"3.67.205.121",
+      "port": "9735",
+      "minChannel": "500000"
+    },
+    {
+      "alias":"LQwD Singapore",
+      "pubkey":"026756a68c3437bdcdff8f43585db665fdd9585d082f4624d51bd0346bc396a73e",
+      "externalip":"52.74.28.75",
+      "port": "9735",
+      "minChannel": "500000"
+    },
+    {
+      "alias":"LQwD India",
+      "pubkey":"02b20c736785ce8e801d50ae0bb6f6daa534a992445b44f4b6255ebedebd84c037",
+      "externalip":"3.111.151.70",
+      "port": "9735",
+      "minChannel": "500000"
+    },
+    {
+      "alias":"LQwD Sweden",
+      "pubkey":"032312e5e15e89211df36e473d76af60672e3efebfe42a9b2113acbb456050b502",
+      "externalip":"16.170.28.230",
+      "port": "9735",
+      "minChannel": "500000"
+    },
+    {
+      "alias": "LQwD England",
+      "pubkey": "02be8a325c61af50aebc2004e3a3db0dc8d255f2fb95036738392172f739fa1c3a",
+      "externalip": "18.133.176.219",
+      "port": "9735",
+      "minChannel": "500000"
+    },
+    {
+      "alias":"LQwD Italy",
+      "pubkey":"0313827390afcae8876dc7d56c417d5698effb237e6eab45a364ac71e9e2044c9a",
+      "externalip":"15.160.13.112",
+      "port": "9735",
+      "minChannel": "500000"
+    },
+    {
+      "alias":"LQwD Ireland",
+      "pubkey":"0230b207b3385feddb1ed18d5c7a808015aeb668aaf9bf980bee62465a382112c1",
+      "externalip":"52.17.5.198",
+      "port": "9735",
+      "minChannel": "500000"
+    },
+    {
+      "alias":"LQwD South Korea",
+      "pubkey":"036982a2b2398b9835a9d6cd2371a08c6e221f9e1b879008959dae28413af78067",
+      "externalip":"3.39.44.50",
+      "port": "9735",
+      "minChannel": "500000"
+    },
+    {
+      "alias":"LQwD Canada",
+      "pubkey":"0364913d18a19c671bb36dd04d6ad5be0fe8f2894314c36a9db3f03c2d414907e1",
+      "externalip":"3.99.2.130",
+      "port": "9735",
+      "minChannel": "500000"
+    },
+    {
+      "alias":"LQwD Japan-Tokyo",
+      "pubkey":"031a01e29587952eda0ed5d10c4e79bf0fc88d61aeae89e8a7ea7c036badb8c793",
+      "externalip":"35.77.235.168",
+      "port": "9735",
+      "minChannel": "500000"
+    },
+    {
+      "alias":"LQwD South Africa",
+      "pubkey":"036fc6041f67b673e9357118eb2b74cb71aebf7e1e3535edcdba3b808b2a790c0a",
+      "externalip":"13.245.58.129",
+      "port": "9735",
+      "minChannel": "500000"
+    },
+    {
+      "alias":"LQwD Hong Kong",
+      "pubkey":"02eb9dfcbe445ea0366635e932db3bf78e95eb5241ba9bd3f1c72b48fa9f3fc234",
+      "externalip":"18.163.90.95",
+      "port": "9735",
+      "minChannel": "500000"
+    },
+    {
+      "alias":"LQwD Brazil",
+      "pubkey":"02c4ad243f18d8ed3a40e98725bc6a795b941d7e3d64be9f7dab38144f1eb09cb8",
+      "externalip":"54.232.36.250",
+      "port": "9735",
+      "minChannel": "500000"
+    },
+    {
+      "alias":"LQwD Bahrain",
+      "pubkey":"0390b3d73a0e40a1a4d91d486f422bcb232868000a05cf4d88d74b62a6e7421f18",
+      "externalip":"157.175.240.136",
+      "port": "9735",
+      "minChannel": "500000"
+    },
+    {
+      "alias":"LQwD Japan-Osaka",
+      "pubkey":"034f580779cb7d8fe4759af29a04a58c3dbe9c49f40bfa6a8c6d35c507e97053c6",
+      "externalip":"15.168.0.45",
+      "port": "9735",
+      "minChannel": "500000"
+    },
+    {
+      "alias":"LQwD Australia",
+      "pubkey":"03e4f3d7ccf98bdbf24085b948f204a6c0c0b4464a7572cbac85c746085b14bbc9",
+      "externalip":"13.211.49.49",
+      "port": "9735",
+      "minChannel": "500000"
+    }
+  ]
+}

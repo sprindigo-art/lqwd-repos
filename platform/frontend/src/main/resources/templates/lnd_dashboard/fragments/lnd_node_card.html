@@ -1,0 +1,140 @@
+<div id="lnd-node-list" class="row d-flex justify-content-start" th:fragment="lnd_node_card(lndNodes)">
+    <div th:each="lndNode : ${lndNodes}">
+        <div class="col-auto pb-3 ">
+            <div class="card component-card_4 lnd-node-card" th:data-lnd="${lndNode.getLndNodeName()}" style="cursor: pointer;">
+                <div class="card-body">
+                    <div class="user-profile lnd-node-card-select-session">
+                        <img th:src="@{images/logo/LQwD-Q.png}" class="" alt="LND Node" style="border-radius: 10%; width: 70px; height: 70px;">
+                    </div>
+                    <div class="user-info">
+                        <div class="row ">
+                            <div class="col">
+                                <h5 class="card-user_name lnd-node-card-select-session" th:text="'LND Node Name: '+${lndNode.getLndNodeName()}"></h5>
+                            </div>
+                            <div th:if="${lndNode.getWalletBalance()!=null}" style="margin-right: 15px;">
+                                <th:block th:switch="${user.getCurrency()}">
+                                    <div th:case="'satoshi'">
+                                        <h6>
+                                            <span class="rounded bs-popover mb-3" data-trigger="hover"
+                                                   data-container="body" data-html="true" th:if="${lndNode.getStatus()} == 'RUNNING'"
+                                                   th:data-content="'Active channels: ' + ${lndNode.getLndNodeInfo().getNum_active_channels()} +
+                                                                    '<br />Number of peers: '+${lndNode.getLndNodeInfo().getNum_peers()}+'<br />Balance: '+
+                                                                    ${#numbers.formatDecimal(lndNode.getWalletBalance().getTotal_balance(), 1, 'COMMA', 2, 'POINT')}+' SAT'">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-info">
+                                                    <circle cx="12" cy="12" r="10"></circle>
+                                                    <line x1="12" y1="16" x2="12" y2="12"></line>
+                                                    <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                                                </svg>
+                                            </span>
+                                        </h6>
+                                    </div>
+                                    <div th:case="'bitcoin'">
+                                        <span class="rounded bs-popover mb-3" data-trigger="hover"
+                                            data-container="body" data-html="true" th:if="${lndNode.getStatus()} == 'RUNNING'"
+                                            th:data-content="'Active channels: ' + ${lndNode.getLndNodeInfo().getNum_active_channels()} +
+                                            '<br />Number of peers: '+${lndNode.getLndNodeInfo().getNum_peers()}+'<br />Balance: '+
+                                            ${#numbers.formatDecimal(lndNode.getWalletBalance().getTotal_balance(), 1, 'COMMA', 2, 'POINT')}+' BTC'">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-info">
+                                                    <circle cx="12" cy="12" r="10"></circle>
+                                                    <line x1="12" y1="16" x2="12" y2="12"></line>
+                                                    <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                                                </svg>
+                                        </span>
+                                    </div>
+                                    <div th:case="'USD'">
+                                        <span class="rounded bs-popover mb-3" data-trigger="hover"
+                                              data-container="body" data-html="true" th:if="${lndNode.getStatus()} == 'RUNNING'"
+                                              th:data-content="'Active channels: ' + ${lndNode.getLndNodeInfo().getNum_active_channels()} +
+                                                                '<br />Number of peers: '+${lndNode.getLndNodeInfo().getNum_peers()}+'<br />Balance: '+
+                                                                ${#numbers.formatDecimal(lndNode.getWalletBalance().getTotal_balance(), 1, 'COMMA', 2, 'POINT')}+' USD'">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-info">
+                                                <circle cx="12" cy="12" r="10"></circle>
+                                                <line x1="12" y1="16" x2="12" y2="12"></line>
+                                                <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                                            </svg>
+                                        </span>
+                                    </div>
+                                    <div th:case="'CAD'">
+                                        <span class="rounded bs-popover mb-3" data-trigger="hover"
+                                              data-container="body" data-html="true" th:if="${lndNode.getStatus()} == 'RUNNING'"
+                                              th:data-content="'Active channels: ' + ${lndNode.getLndNodeInfo().getNum_active_channels()} +
+                                                                '<br />Number of peers: '+${lndNode.getLndNodeInfo().getNum_peers()}+'<br />Balance: '
+                                                                +${#numbers.formatDecimal(lndNode.getWalletBalance().getTotal_balance(), 1, 'COMMA', 2, 'POINT')}+' CAD'">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-info">
+                                                <circle cx="12" cy="12" r="10"></circle>
+                                                <line x1="12" y1="16" x2="12" y2="12"></line>
+                                                <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                                            </svg>
+                                        </span>
+                                    </div>
+                                    <div th:case="'*'">
+                                        <h6>
+                                            <span class="rounded bs-popover mb-3" data-trigger="hover"
+                                                   data-container="body" data-html="true" th:if="${lndNode.getStatus()} == 'RUNNING'"
+                                                   th:data-content="'Active channels: ' + ${lndNode.getLndNodeInfo().getNum_active_channels()} +
+                                                                    '<br />Number of peers: '+${lndNode.getLndNodeInfo().getNum_peers()}+'<br />Balance: '
+                                                                    +${#numbers.formatDecimal(lndNode.getWalletBalance().getTotal_balance(), 1, 'COMMA', 2, 'POINT')}+' SAT'">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-info">
+                                                    <circle cx="12" cy="12" r="10"></circle>
+                                                    <line x1="12" y1="16" x2="12" y2="12"></line>
+                                                    <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                                                </svg>
+                                            </span>
+                                        </h6>
+                                    </div>
+                                </th:block>
+                            </div>
+                            <div th:unless="${lndNode.getWalletBalance()!=null}" style="margin-right: 15px;">
+                                    <h6>
+                                        <span class="clickable-link bs-popover mb-4 ml-2 overflow-hidden" data-trigger="hover"
+                                               data-container="body" data-html="true"
+                                               th:data-content="'Node Info is not available now'">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-info">
+                                                <circle cx="12" cy="12" r="10"></circle>
+                                                <line x1="12" y1="16" x2="12" y2="12"></line>
+                                                <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                                            </svg>
+                                       </span>
+                                    </h6>
+                            </div>
+                        </div>
+                        <p class="card-user_occupation lnd-node-card-select-session" th:if="${lndNode.getExternalip()} != null" th:text="${lndNode.getExternalip()}+':'+${lndNode.getPort()}">IP:PORT</p>
+                        <div class="card-star_rating">
+                          <span class="badge outline-badge-success node-status" style="font-size: 12px;" th:if="${lndNode.getStatus()} == 'ACTIVE' OR ${lndNode.getStatus()} == 'RUNNING'" th:text="${#strings.toUpperCase(lndNode.getStatus())}" th:attr="data-nodeName=${lndNode.getLndNodeName()}">STATUS</span>
+                          <span class="badge outline-badge-warning node-status" style="font-size: 12px;" th:unless="${lndNode.getStatus()} == 'ACTIVE' OR ${lndNode.getStatus()} == 'RUNNING' OR ${lndNode.getStatus()} == 'IS_WAITING_USER_CONFIRMATION'" th:text="${#strings.toUpperCase(lndNode.getStatus())}" th:attr="data-nodeName=${lndNode.getLndNodeName()}">STATUS</span>
+                          <span class="badge outline-badge-warning node-status" style="font-size: 12px;" th:if="${lndNode.getStatus()} == 'IS_WAITING_USER_CONFIRMATION'" th:text="${#strings.toUpperCase(lndNode.getStatus())}" th:attr="onclick=|getSeed('${lndNode.getLndNodeName()}')|" th:data-nodeName="${lndNode.getLndNodeName()}">STATUS</span>
+                            <div class="row" >
+                                <div class="col">
+                                    <a th:href="@{/peers}"
+                                       class="clickable-link bs-popover mb-4 ml-2 overflow-hidden" data-trigger="hover"
+                                       data-container="body" data-html="true"
+                                       data-placement="bottom"
+                                       th:data-content="'Link to peers page'"
+                                       th:text="|Peers: ${lndNode.getLndNodeInfo().getNum_peers()}|" style="margin-bottom: 0px; color: #888ea8 !important;" >
+                                    </a>
+                                </div>
+                                <div class="col">
+                                    <span class="float-right detail-arrows" th:data-value="${lndNode.getLndNodeName()}"
+                                          th:attr="onclick=|event.stopPropagation(); openDetails('${lndNode.getLndNodeName()}')|" style="margin-bottom: 0px;">Details
+                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right">
+                                             <line x1="5" y1="12" x2="19" y2="12"></line>
+                                             <polyline points="12 5 19 12 12 19"></polyline>
+                                         </svg>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="card-text">
+                          <div class="btn-group">
+                            <button id="lnd-node-card_btn_create" class="btn btn-primary"  th:if="${lndNode.getStatus()} == 'ACTIVE' OR ${lndNode.getStatus()} == 'RUNNING'" th:attr="onclick=|redirectChannel()|">Create Channels</button>
+                            <button class="btn btn-primary" th:unless="${lndNode.getStatus()} == 'ACTIVE' OR ${lndNode.getStatus()} == 'RUNNING'" disabled>Create Channels</button>
+                            <button th:if="${lndNode.getExternalip()} != null" id="lnd-node-card_btn_copy-node-info" class="btn btn-outline-primary copy-hostdata" th:attr="onclick=|copyHostData('${lndNode.getNodepubkey()}@${lndNode.getExternalip()}:${lndNode.getPort()}')|" th:data-value="${lndNode.getNodepubkey()}+'@'+${lndNode.getExternalip()}+':'+${lndNode.getPort()}">Copy Node Info</button>
+                            <button th:unless="${lndNode.getExternalip()} != null" class="btn btn-outline-primary copy-hostdata" disabled>Copy Node Info</button>
+                          </div>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

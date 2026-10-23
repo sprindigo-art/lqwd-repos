@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: dla
+  namespace: microservice-v1
+  labels:
+    app: dla
+
+spec:
+  selector:
+    app: dla
+  ports:
+    - name: client
+      port: 8690
+      targetPort: 8690
+      protocol: TCP

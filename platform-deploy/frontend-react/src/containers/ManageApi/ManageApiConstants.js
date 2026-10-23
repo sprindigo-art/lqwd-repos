@@ -1,0 +1,11 @@
+export const MANAGE_API_GET_NODES = 'lqwd/frontend/MANAGE_API_GET_NODES';
+export const MANAGE_API_GET_NODES_SUCCESS =
+  'lqwd/frontend/MANAGE_API_GET_NODES_SUCCESS';
+export const MANAGE_API_GET_NODES_FAILED =
+  'lqwd/frontend/MANAGE_API_GET_NODES_FAILED';
+
+export const MANAGE_API_SEND_COMMAND = 'lqwd/frontend/MANAGE_API_SEND_COMMAND';
+export const MANAGE_API_SEND_COMMAND_SUCCESS =
+  'lqwd/frontend/MANAGE_API_SEND_COMMAND_SUCCESS';
+export const MANAGE_API_SEND_COMMAND_FAILED =
+  'lqwd/frontend/MANAGE_API_SEND_COMMAND_FAILED';

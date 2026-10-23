@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<title>LQwD | Forwarding History Report</title>
+		<!-- BEGIN GLOBAL MANDATORY STYLES -->
+		<link href="https://fonts.googleapis.com/css?family=Nunito:400,600,700" rel="stylesheet">
+		<link href="{{absolute_path}}/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+		<link href="{{absolute_path}}/css/plugins.css" rel="stylesheet" type="text/css" />
+		<!-- END GLOBAL MANDATORY STYLES -->
+
+		<!--  BEGIN CUSTOM STYLE FILE  -->
+		<link href="{{absolute_path}}/css/invoice-preview.css" rel="stylesheet" type="text/css" />
+		<!--  END CUSTOM STYLE FILE  -->
+	</head>
+	<body>
+		<!--  BEGIN MAIN CONTAINER  -->
+		<div class="main-container" id="container">
+			<!--  BEGIN CONTENT AREA  -->
+			<div id="content" class="main-content">
+				<div class="layout-px-spacing">
+					<div class="row invoice layout-top-spacing layout-spacing">
+						<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+							<div class="doc-container">
+								<div class="row">
+									<div class="col-xl-12">
+										<div class="invoice-container">
+											<div class="invoice-inbox">
+												<div id="ct" class="">
+													<div class="invoice-00001">
+														<div class="content-section">
+															<div class="inv--head-section inv--detail-section">
+																<div class="row">
+																	<div class="col-sm-6 col-12 mr-auto">
+																		<div class="d-flex">
+																			<img class="company-logo w-50 h-50" src="data:image/png;base64,{{image_base64}}" alt="company">
+																		</div>
+																	</div>
+
+																	<div class="col-sm-6 text-sm-right">
+																		<p class="inv-list-number"><span class="inv-title">Forwarding History Report : </span> <span class="inv-number">#0001</span></p>
+																	</div>
+
+																	<div class="col-sm-6 align-self-center mt-3">
+																	</div>
+
+																	<div class="col-sm-6 align-self-center mt-3 text-sm-right">
+																		<p class="inv-created-date"><span class="inv-title">Start Date : </span> <span class="inv-date">{{start_date}}</span></p>
+																		<p class="inv-due-date"><span class="inv-title">End Date : </span> <span class="inv-date">{{end_date}}</span></p>
+																	</div>
+
+																</div>
+
+															</div>
+
+															<div class="inv--detail-section inv--customer-detail-section">
+
+																<div class="row">
+
+																	<div class="col-xl-8 col-lg-7 col-md-6 col-sm-4 align-self-center">
+																		<p class="inv-to">Forwarding History For:</p>
+																	</div>
+
+																	<div class="col-xl-4 col-lg-5 col-md-6 col-sm-8 align-self-center order-sm-0 order-1 inv--payment-info">
+																		<h6 class=" inv-title">Node Info:</h6>
+																	</div>
+
+																	<div class="col-xl-8 col-lg-7 col-md-6 col-sm-4">
+																		<p class="inv-customer-name">{{ user_name }}</p>
+																		<p class="inv-email-address">{{ user_email }}</p>
+																		<p class="inv-email-address">{{ user_phone }}</p>
+																	</div>
+
+																	<div class="col-xl-4 col-lg-5 col-md-6 col-sm-8 col-12 order-sm-0 order-1">
+																		<div class="inv--payment-info">
+																			<p><span class=" inv-subtitle">Node Alias:</span> <span>{{ node_alias }}</span></p>
+																			<p><span class=" inv-subtitle">Node Pubkey: </span> <span>{{ node_pubkey }}</span></p>
+																			<p><span class=" inv-subtitle">Number of Channels:</span> <span>{{ num_channels }}</span></p>
+																			<p><span class=" inv-subtitle">Number of Peers:</span> <span>{{ num_peers }}</span></p>
+																			<p><span class=" inv-subtitle">Current Node Total Balance (Satoshi): </span> <span>{{ total_balance }}</span></p>
+																		</div>
+																	</div>
+																</div>
+															</div>
+
+															<div class="inv--product-table-section">
+																<div class="table-responsive">
+																	<table class="table">
+																		<thead class="">
+																			<tr>
+																				<th scope="col">Channel ID</th>
+																				<th scope="col">Total Forwarded Events</th>
+																				<th scope="col" style="font-weight: 900;">Total Fees (sat)</th>
+
+																				<!-- Average Number of Forwarded Evented -->
+																				<th scope="col">Total In Events</th>
+																				<th scope="col">Total Out Events</th>
+
+																				<th class="text-right" scope="col">Amount In Per Day</th>
+																				<th class="text-right" scope="col">Amount Out Per Day</th>
+																				<th class="text-right" scope="col">Fees Per Day (msat)</th>
+
+<!--																				<th class="text-right" scope="col">Amount In  Per 7d</th>-->
+<!--																				<th class="text-right" scope="col">Amount Out Per 7d</th>-->
+<!--																				<th class="text-right" scope="col">Fees Per 7d (msat)</th>-->
+
+<!--																				<th class="text-right" scope="col">Amount In Per 30d</th>-->
+<!--																				<th class="text-right" scope="col">Amount Out Per 30d</th>-->
+<!--																				<th class="text-right" scope="col">Fees Per 30d (msat)</th>-->
+																				<th class="text-right" scope="col">Age (days)</th>
+																			</tr>
+																		</thead>
+																		<tbody>
+																			{% for idx, row in df.iterrows() %}
+																			<tr>
+																				<td>{{ row['chan_id'] }}</td>
+																				<td>{{ "%.0f" % row['total_events']}}</td>
+																				<td style="font-weight: 900;">{{ "%.2f" % row['fee_sat'] }}</td>
+																				<td>{{ "%.0f" % row['total_events_in']}}</td>
+																				<td>{{ "%.0f" % row['total_events_out']}}</td>
+
+
+																				<td class="text-right">{{ "%.0f" % row['amt_in_1d'] }}</td>
+																				<td class="text-right">{{ "%.0f" %  row['amt_out_1d'] }}</td>
+																				<td class="text-right">{{ "%.0f" %  row['fee_msat_1d'] }}</td>
+
+<!--																				<td class="text-right">{{ "%.0f" %  row['amt_in_7d'] }}</td>-->
+<!--																				<td class="text-right">{{ "%.0f" %  row['amt_out_7d'] }}</td>-->
+<!--																				<td class="text-right">{{ "%.0f" %  row['fee_msat_7d'] }}</td>-->
+<!--																				-->
+<!--																				<td class="text-right">{{ "%.0f" %  row['amt_in_30d'] }}</td>-->
+<!--																				<td class="text-right">{{ "%.0f" %  row['amt_out_30d'] }}</td>-->
+<!--																				<td class="text-right">{{ "%.0f" %  row['fee_msat_30d'] }}</td>-->
+
+																				<td>{{ "%.0f" % row['age_days']}}</td>
+																			</tr>
+																			{% endfor %}
+																		</tbody>
+																	</table>
+																</div>
+															</div>
+
+															<div class="inv--total-amounts">
+
+																<div class="row mt-4">
+																	<div class="col-sm-5 col-12 order-sm-0 order-1">
+																	</div>
+																	<div class="col-sm-7 col-12 order-sm-1 order-0">
+																		<div class="text-sm-right">
+																			<div class="row">
+																				<div class="col-sm-8 col-7">
+																					<p class="">Total Number of Incoming Forwarding Events:</p>
+																				</div>
+																				<div class="col-sm-4 col-5">
+																					<p class="">{{ "%.0f" %  total_num_events_in}}</p>
+																				</div>
+																				<div class="col-sm-8 col-7">
+																					<p class="">Total Number of Outgoing Forwarding Events:</p>
+																				</div>
+																				<div class="col-sm-4 col-5">
+																					<p class="">{{ "%.0f" %  total_num_events_out}}</p>
+																				</div>
+																				<div class="col-sm-8 col-7">
+																					<p class="">Total Number of Forwarding Events:</p>
+																				</div>
+																				<div class="col-sm-4 col-5">
+																					<p class="">{{ "%.0f" %  total_num_events}}</p>
+																				</div>
+																				<div class="col-sm-8 col-7">
+																					<p class="">Total Amount Incoming:</p>
+																				</div>
+																				<div class="col-sm-4 col-5">
+																					<p class="">{{ "%.0f" %  total_amount_in}} SAT</p>
+																				</div>
+																				<div class="col-sm-8 col-7">
+																					<p class="">Total Amount Outgoing:</p>
+																				</div>
+																				<div class="col-sm-4 col-5">
+																					<p class="">{{ "%.0f" %  total_amount_out}} SAT</p>
+																				</div>
+																				<div class="col-sm-8 col-7 grand-total-title">
+																					<h4 class="">Total Fees Collected:</h4>
+																				</div>
+																				<div class="col-sm-4 col-5 grand-total-amount">
+																					<h4 class="">{{total_fees}} SAT</h4>
+																				</div>
+																			</div>
+																		</div>
+																	</div>
+																</div>
+
+															</div>
+
+															<div class="inv--note">
+
+																<div class="row mt-4">
+																	<div class="col-sm-12 col-12 order-sm-0 order-1">
+																		<p>Note: Thank you for doing Business with us.</p>
+																	</div>
+																</div>
+
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!--  END CONTENT AREA  -->
+		</div>
+		<!-- END MAIN CONTAINER -->
+		<!-- BEGIN GLOBAL MANDATORY SCRIPTS -->
+		<script src="{{absolute_path}}/js/jquery-3.1.1.min.js"></script>
+		<script src="{{absolute_path}}/js/popper.min.js"></script>
+		<script src="{{absolute_path}}/js/bootstrap.min.js"></script>
+		<script src="{{absolute_path}}/js/perfect-scrollbar.min.js"></script>
+		<script src="{{absolute_path}}/js/app.js"></script>
+
+		<script>
+			$(document).ready(function() {
+				App.init();
+			});
+		</script>
+		<script src="{{absolute_path}}/js/custom.js"></script>
+		<!-- END GLOBAL MANDATORY SCRIPTS -->
+		<script src="{{absolute_path}}/js/invoice-preview.js"></script>
+	</body>
+</html>

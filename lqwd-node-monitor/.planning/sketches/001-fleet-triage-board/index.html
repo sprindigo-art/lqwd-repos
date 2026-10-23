@@ -1,0 +1,416 @@
+<!doctype html>
+<html lang="en" class="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sketch 001 — Fleet Triage Board</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Saira+Semi+Condensed:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../themes/light.css">
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--color-bg);
+    color: var(--color-text);
+    font-family: var(--font-body);
+    font-size: var(--text-sm);
+    padding-top: 46px;
+    -webkit-font-smoothing: antialiased;
+  }
+  button { font: inherit; cursor: pointer; }
+  :focus-visible { outline: 2px solid var(--color-navy-bright); outline-offset: 2px; }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { transition: none !important; animation: none !important; }
+  }
+
+  /* ── Variant nav ─────────────────────────────────── */
+  #variant-nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 9998;
+    background: var(--color-surface); border-bottom: 1px solid var(--color-border);
+    padding: 8px 16px; display: flex; gap: 8px; align-items: center;
+    font-family: var(--font-mono); font-size: var(--text-xs);
+  }
+  #variant-nav .sketch-id { color: var(--color-text-faint); margin-right: 8px; }
+  .variant-tab {
+    background: transparent; color: var(--color-text-muted);
+    border: 1px solid var(--color-border); border-radius: var(--radius-sm);
+    padding: 5px 12px; transition: all .15s ease;
+  }
+  .variant-tab:hover { color: var(--color-text); border-color: var(--color-border-strong); }
+  .variant-tab.active {
+    background: var(--color-navy); border-color: var(--color-navy-bright); color: #fff;
+  }
+
+  /* ── Shared chrome ───────────────────────────────── */
+  .page { max-width: 1280px; margin: 0 auto; padding: var(--space-6); }
+  .masthead {
+    display: flex; align-items: baseline; justify-content: space-between;
+    border-bottom: 1px solid var(--color-border); padding-bottom: var(--space-3);
+    margin-bottom: var(--space-4);
+  }
+  .masthead h1 {
+    font-family: var(--font-display); font-size: var(--text-xl); font-weight: 600;
+    letter-spacing: .04em; text-transform: uppercase; margin: 0;
+  }
+  .masthead h1 span { color: var(--color-navy-bright); }
+  .masthead .asof { font-family: var(--font-mono); font-size: var(--text-xs); color: var(--color-text-faint); }
+
+  /* Triage strip */
+  .triage-strip { display: flex; gap: var(--space-2); margin-bottom: var(--space-6); }
+  .tstat {
+    flex: 1; background: var(--color-surface); border: 1px solid var(--color-border);
+    border-radius: var(--radius-md); padding: var(--space-3) var(--space-4);
+    display: flex; flex-direction: column; gap: 2px; transition: border-color .15s ease;
+    text-decoration: none; color: inherit;
+  }
+  a.tstat:hover { border-color: var(--color-navy-bright); }
+  .tstat .n { font-family: var(--font-mono); font-size: var(--text-2xl); font-weight: 600; line-height: 1; }
+  .tstat .l { font-family: var(--font-mono); font-size: var(--text-xs); color: var(--color-text-muted); text-transform: uppercase; letter-spacing: .08em; }
+  .tstat.critical .n { color: var(--color-critical); }
+  .tstat.warn .n { color: var(--color-warn); }
+  .tstat.ok .n { color: var(--color-ok); }
+  .tstat.stale .n { color: var(--color-stale); }
+  .tstat.pending .n { color: var(--color-navy-bright); }
+
+  /* Grade letter — the letter IS the color. No dot. */
+  .grade { font-family: var(--font-mono); font-weight: 600; }
+  .grade.ok { color: var(--color-ok); }
+  .grade.warn { color: var(--color-warn); }
+  .grade.critical { color: var(--color-critical); }
+  .grade.stale, .grade.nodata { color: var(--color-stale); }
+
+  /* Breach text — plain words, no emoji */
+  .breach {
+    font-family: var(--font-mono); font-size: var(--text-xs); font-weight: 600;
+    color: var(--color-critical); text-transform: uppercase; letter-spacing: .06em;
+  }
+  .breach + .breach::before { content: " · "; color: var(--color-text-faint); }
+
+  .mono { font-family: var(--font-mono); }
+  .muted { color: var(--color-text-muted); }
+  .faint { color: var(--color-text-faint); }
+  .backend {
+    font-family: var(--font-mono); font-size: var(--text-xs);
+    border: 1px solid var(--color-border-strong); border-radius: var(--radius-sm);
+    padding: 1px 6px; color: var(--color-text-muted);
+  }
+  .panel {
+    background: var(--color-surface); border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg); box-shadow: var(--shadow-panel);
+  }
+  .panel-head {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: var(--space-3) var(--space-4); border-bottom: 1px solid var(--color-border);
+    font-family: var(--font-display); text-transform: uppercase; letter-spacing: .08em;
+    font-size: var(--text-xs); color: var(--color-text-muted);
+  }
+  .variant { display: none; }
+  .variant.active { display: block; }
+
+  /* ── Variant A: Attention Queue ──────────────────── */
+  .queue-row {
+    display: grid; grid-template-columns: 4px 1fr; cursor: pointer;
+  }
+  .queue-row + .queue-row .qbody { border-top: 1px solid var(--color-border); }
+  .queue-row .edge { border-radius: 2px; margin: 6px 0; }
+  .queue-row.critical .edge { background: var(--color-critical); }
+  .queue-row.warn .edge { background: var(--color-warn); }
+  .queue-row.stale .edge { background: var(--color-stale); }
+  .qbody {
+    display: grid; grid-template-columns: 200px 56px 1fr 130px; gap: var(--space-4);
+    align-items: center; padding: var(--space-3) var(--space-4); transition: background .15s ease;
+  }
+  .queue-row:hover .qbody { background: var(--color-surface-2); }
+  .qalias { display: flex; flex-direction: column; gap: 2px; }
+  .qalias .a { font-weight: 600; font-size: var(--text-base); }
+  .qgrade { font-size: var(--text-xl); text-align: center; }
+  .qwhy { display: flex; flex-direction: column; gap: 3px; }
+  .qdims { font-family: var(--font-mono); font-size: var(--text-xs); color: var(--color-text-muted); }
+  .qmeta { text-align: right; font-family: var(--font-mono); font-size: var(--text-xs); color: var(--color-text-faint); }
+  .healthy-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: var(--space-2); padding: var(--space-4);
+  }
+  .hcard {
+    display: flex; justify-content: space-between; align-items: center;
+    background: var(--color-surface-2); border: 1px solid var(--color-border);
+    border-radius: var(--radius-md); padding: var(--space-2) var(--space-3);
+    transition: border-color .15s ease; cursor: pointer;
+  }
+  .hcard:hover { border-color: var(--color-navy-bright); }
+  .hcard .grade { font-size: var(--text-base); }
+
+  /* ── Variant B: Status Wall ──────────────────────── */
+  .wall {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+    gap: var(--space-3);
+  }
+  .tile {
+    position: relative; background: var(--color-surface); border: 1px solid var(--color-border);
+    border-left: 3px solid var(--color-border-strong); border-radius: var(--radius-md);
+    padding: var(--space-3) var(--space-4); cursor: pointer;
+    transition: transform .15s ease, border-color .15s ease; min-height: 96px;
+    display: flex; flex-direction: column; justify-content: space-between; gap: var(--space-2);
+  }
+  .tile:hover { transform: translateY(-1px); border-color: var(--color-border-strong); }
+  .tile.critical { border-left-color: var(--color-critical); background: linear-gradient(90deg, var(--color-critical-dim), var(--color-surface) 45%); }
+  .tile.warn { border-left-color: var(--color-warn); background: linear-gradient(90deg, var(--color-warn-dim), var(--color-surface) 45%); }
+  .tile.ok { border-left-color: var(--color-ok); }
+  .tile.stale { border-left-color: var(--color-stale); border-style: solid dashed; }
+  .tile-top { display: flex; justify-content: space-between; align-items: flex-start; gap: var(--space-2); }
+  .tile .grade { font-size: var(--text-2xl); line-height: 1; }
+  .tile-foot { display: flex; justify-content: space-between; align-items: baseline; font-family: var(--font-mono); font-size: var(--text-xs); color: var(--color-text-faint); }
+
+  /* ── Variant C: Severity Ledger ──────────────────── */
+  .ledger { width: 100%; border-collapse: collapse; font-size: var(--text-sm); }
+  .ledger th {
+    font-family: var(--font-mono); font-size: var(--text-xs); font-weight: 500;
+    text-transform: uppercase; letter-spacing: .08em; color: var(--color-text-faint);
+    text-align: left; padding: var(--space-2) var(--space-3);
+    border-bottom: 1px solid var(--color-border-strong);
+  }
+  .ledger th.num, .ledger td.num { text-align: right; }
+  .ledger td { padding: var(--space-2) var(--space-3); border-bottom: 1px solid var(--color-border); }
+  .ledger tr.noderow { cursor: pointer; transition: background .15s ease; }
+  .ledger tr.noderow:hover { background: var(--color-surface-2); }
+  .ledger td.sev { width: 6px; padding: 0; }
+  .ledger td.sev span { display: block; width: 4px; height: 22px; border-radius: 2px; margin: 0 auto; }
+  tr.critical td.sev span { background: var(--color-critical); }
+  tr.warn td.sev span { background: var(--color-warn); }
+  tr.ok td.sev span { background: var(--color-ok); }
+  tr.stale td.sev span { background: var(--color-stale); }
+  .ledger .grade { font-size: var(--text-base); }
+  .dimcell { font-family: var(--font-mono); font-size: var(--text-xs); }
+  .dimcell .grade { font-size: var(--text-xs); margin-right: 6px; }
+
+  /* ── Sketch toolbar ──────────────────────────────── */
+  #sketch-tools {
+    position: fixed; bottom: 12px; right: 12px; z-index: 9999;
+    font-family: system-ui; font-size: 12px; background: rgba(0,0,0,.75); color: #fff;
+    padding: 8px 12px; border-radius: 8px; opacity: .35; transition: opacity .2s;
+    display: flex; gap: 8px; align-items: center;
+  }
+  #sketch-tools:hover { opacity: 1; }
+  #sketch-tools select, #sketch-tools button {
+    background: #222; color: #fff; border: 1px solid #444; border-radius: 4px;
+    font-size: 11px; padding: 2px 6px;
+  }
+  .viewport-wrap { margin: 0 auto; transition: max-width .2s ease; }
+</style>
+</head>
+<body>
+
+<div id="variant-nav">
+  <span class="sketch-id">SKETCH 001 · FLEET TRIAGE</span>
+  <button class="variant-tab active" data-v="a" onclick="showVariant('a', this)">A: Attention Queue ★ Selected</button>
+  <button class="variant-tab" data-v="b" onclick="showVariant('b', this)">B: Status Wall</button>
+  <button class="variant-tab" data-v="c" onclick="showVariant('c', this)">C: Severity Ledger</button>
+</div>
+
+<div class="viewport-wrap" id="viewport">
+<div class="page">
+
+  <div class="masthead">
+    <h1>LQWD <span>/</span> Node Operations</h1>
+    <div class="asof">routing_vm · as of <span id="asof-a">21:42:08 UTC</span></div>
+  </div>
+
+  <div class="triage-strip" id="strip"></div>
+
+  <!-- ════ VARIANT A: ATTENTION QUEUE ════ -->
+  <div id="variant-a" class="variant active">
+    <div class="panel" style="margin-bottom: var(--space-6);">
+      <div class="panel-head">
+        <span>Needs attention</span>
+        <span class="mono faint" id="qcount"></span>
+      </div>
+      <div id="queue"></div>
+    </div>
+    <div class="panel">
+      <div class="panel-head">
+        <span>Healthy fleet</span>
+        <button id="toggle-healthy" class="variant-tab" style="text-transform:none;letter-spacing:0;"
+          onclick="toggleHealthy()">Collapse</button>
+      </div>
+      <div class="healthy-grid" id="healthy"></div>
+    </div>
+  </div>
+
+  <!-- ════ VARIANT B: STATUS WALL ════ -->
+  <div id="variant-b" class="variant">
+    <div class="wall" id="wall"></div>
+  </div>
+
+  <!-- ════ VARIANT C: SEVERITY LEDGER ════ -->
+  <div id="variant-c" class="variant">
+    <div class="panel" style="overflow:hidden;">
+      <table class="ledger">
+        <thead>
+          <tr>
+            <th></th><th>Node</th><th>Grade</th><th>Signals</th>
+            <th>Routing</th><th>Revenue</th><th>Liquidity</th><th>Force close</th>
+            <th class="num">Pending</th><th class="num">Fresh</th>
+          </tr>
+        </thead>
+        <tbody id="ledger-body"></tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<div id="sketch-tools">
+  <select onchange="document.querySelector('link[href*=themes]').href='../themes/'+this.value+'.css'">
+    <option value="light">NOC Light (default)</option>
+    <option value="default">NOC Navy (dark)</option>
+  </select>
+  <button onclick="setViewport('375px')">Phone</button>
+  <button onclick="setViewport('768px')">Tablet</button>
+  <button onclick="setViewport('none')">Desktop</button>
+</div>
+
+<script>
+// ── Real data shapes: GradedDimension letters, StatusColor, Tier1Breach labels ──
+// status: worst signal = tier1 breach (critical) > warn > stale > ok  (D-07: only breaches red a node)
+const FLEET = [
+  { alias: "LQWD-Brazil",     backend: "lnd", status: "critical", grade: "C", pct: 71, breaches: ["close storm"],
+    dims: { routing: ["B","ok"], revenue: ["C","warn"], liquidity: ["B","ok"], forceClose: ["F","critical"] },
+    why: "4 force closes in the last hour · 11 channels in limbo", pending: 11, fresh: "2m" },
+  { alias: "LQWD-Singapore",  backend: "lnd", status: "critical", grade: "D", pct: 62, breaches: ["unreachable"],
+    dims: { routing: ["F","critical"], revenue: ["D","warn"], liquidity: ["C","ok"], forceClose: ["A","ok"] },
+    why: "No forwards observed for 6h · last heartbeat 41m ago", pending: 0, fresh: "41m" },
+  { alias: "LQWD-Zurich",     backend: "lnd", status: "warn", grade: "C", pct: 73, breaches: [],
+    dims: { routing: ["C","warn"], revenue: ["D","warn"], liquidity: ["B","ok"], forceClose: ["A","ok"] },
+    why: "Revenue down 38% vs 7d median · routing volume sagging", pending: 2, fresh: "3m" },
+  { alias: "LQWD-Toronto",    backend: "lnd", status: "warn", grade: "C", pct: 70, breaches: [],
+    dims: { routing: ["B","ok"], revenue: ["C","warn"], liquidity: ["D","warn"], forceClose: ["A","ok"] },
+    why: "Local balance 9% — depleted toward 3 top peers", pending: 4, fresh: "5m" },
+  { alias: "LQwD-Lspd-ldk",   backend: "ldk", status: "warn", grade: "B", pct: 81, breaches: [],
+    dims: { routing: ["B","ok"], revenue: ["B","ok"], liquidity: ["C","warn"], forceClose: ["A","ok"] },
+    why: "Liquidity ratio drifting low on LSP channels", pending: 38, fresh: "4m" },
+  { alias: "LQWD-Osaka",      backend: "lnd", status: "stale", grade: "B", pct: 83, breaches: [],
+    dims: { routing: ["B","ok"], revenue: ["B","ok"], liquidity: ["B","ok"], forceClose: ["A","ok"] },
+    why: "Telemetry stale — last ingest 6h ago", pending: 0, fresh: "6h" },
+  { alias: "LQWD-Dublin",     backend: "lnd", status: "stale", grade: "A", pct: 91, breaches: [],
+    dims: { routing: ["A","ok"], revenue: ["B","ok"], liquidity: ["A","ok"], forceClose: ["A","ok"] },
+    why: "Telemetry stale — last ingest 4h ago", pending: 3, fresh: "4h" },
+  { alias: "LQWD-Vancouver",  backend: "lnd", status: "ok", grade: "A", pct: 94, breaches: [], dims: { routing: ["A","ok"], revenue: ["A","ok"], liquidity: ["A","ok"], forceClose: ["A","ok"] }, why: "", pending: 1, fresh: "2m" },
+  { alias: "LQWD-NewYork",    backend: "lnd", status: "ok", grade: "A", pct: 93, breaches: [], dims: { routing: ["A","ok"], revenue: ["A","ok"], liquidity: ["B","ok"], forceClose: ["A","ok"] }, why: "", pending: 0, fresh: "1m" },
+  { alias: "LQWD-London",     backend: "lnd", status: "ok", grade: "A", pct: 92, breaches: [], dims: { routing: ["A","ok"], revenue: ["B","ok"], liquidity: ["A","ok"], forceClose: ["A","ok"] }, why: "", pending: 2, fresh: "3m" },
+  { alias: "LQWD-Frankfurt",  backend: "lnd", status: "ok", grade: "B", pct: 88, breaches: [], dims: { routing: ["B","ok"], revenue: ["B","ok"], liquidity: ["B","ok"], forceClose: ["A","ok"] }, why: "", pending: 0, fresh: "2m" },
+  { alias: "LQWD-Seoul",      backend: "lnd", status: "ok", grade: "B", pct: 87, breaches: [], dims: { routing: ["B","ok"], revenue: ["B","ok"], liquidity: ["A","ok"], forceClose: ["A","ok"] }, why: "", pending: 1, fresh: "4m" },
+  { alias: "LQWD-Sydney",     backend: "lnd", status: "ok", grade: "B", pct: 86, breaches: [], dims: { routing: ["B","ok"], revenue: ["C","ok"], liquidity: ["B","ok"], forceClose: ["A","ok"] }, why: "", pending: 0, fresh: "3m" },
+  { alias: "LQWD-Amsterdam",  backend: "lnd", status: "ok", grade: "B", pct: 85, breaches: [], dims: { routing: ["B","ok"], revenue: ["B","ok"], liquidity: ["B","ok"], forceClose: ["A","ok"] }, why: "", pending: 1, fresh: "2m" },
+  { alias: "LQWD-Tokyo",      backend: "lnd", status: "ok", grade: "A", pct: 95, breaches: [], dims: { routing: ["A","ok"], revenue: ["A","ok"], liquidity: ["A","ok"], forceClose: ["A","ok"] }, why: "", pending: 0, fresh: "1m" },
+  { alias: "LQWD-Paris",      backend: "lnd", status: "ok", grade: "B", pct: 84, breaches: [], dims: { routing: ["B","ok"], revenue: ["B","ok"], liquidity: ["C","ok"], forceClose: ["A","ok"] }, why: "", pending: 0, fresh: "5m" },
+  { alias: "LQWD-Miami",      backend: "lnd", status: "ok", grade: "B", pct: 83, breaches: [], dims: { routing: ["B","ok"], revenue: ["B","ok"], liquidity: ["B","ok"], forceClose: ["A","ok"] }, why: "", pending: 0, fresh: "2m" },
+  { alias: "LQWD-SaoPaulo",   backend: "lnd", status: "ok", grade: "B", pct: 82, breaches: [], dims: { routing: ["B","ok"], revenue: ["C","ok"], liquidity: ["B","ok"], forceClose: ["A","ok"] }, why: "", pending: 0, fresh: "3m" },
+  { alias: "LQWD-Mumbai",     backend: "lnd", status: "ok", grade: "C", pct: 78, breaches: [], dims: { routing: ["C","ok"], revenue: ["C","ok"], liquidity: ["B","ok"], forceClose: ["A","ok"] }, why: "", pending: 0, fresh: "4m" },
+  { alias: "LQWD-Oslo",       backend: "lnd", status: "ok", grade: "A", pct: 90, breaches: [], dims: { routing: ["A","ok"], revenue: ["B","ok"], liquidity: ["A","ok"], forceClose: ["A","ok"] }, why: "", pending: 0, fresh: "2m" },
+];
+
+const SEV_ORDER = { critical: 0, warn: 1, stale: 2, ok: 3 };
+const sorted = [...FLEET].sort((x, y) => SEV_ORDER[x.status] - SEV_ORDER[y.status] || x.pct - y.pct);
+const attention = sorted.filter(n => n.status !== "ok");
+const healthy = sorted.filter(n => n.status === "ok");
+const counts = {
+  critical: FLEET.filter(n => n.status === "critical").length,
+  warn: FLEET.filter(n => n.status === "warn").length,
+  ok: healthy.length,
+  stale: FLEET.filter(n => n.status === "stale").length,
+  pending: FLEET.reduce((s, n) => s + n.pending, 0),
+};
+
+// Grade letter carries its own status color — tooltip holds the pct (D-14 rev).
+const grade = (n, size) => `<span class="grade ${n.status === 'stale' ? 'stale' : n.dims ? n.status : 'ok'}" title="${n.pct}% composite">${n.grade}</span>`;
+const breaches = n => n.breaches.map(b => `<span class="breach">${b}</span>`).join("");
+
+// ── Triage strip (shared) ──
+document.getElementById("strip").innerHTML = `
+  <div class="tstat critical"><span class="n">${counts.critical}</span><span class="l">Critical</span></div>
+  <div class="tstat warn"><span class="n">${counts.warn}</span><span class="l">Warn</span></div>
+  <div class="tstat ok"><span class="n">${counts.ok}</span><span class="l">Healthy</span></div>
+  <div class="tstat stale"><span class="n">${counts.stale}</span><span class="l">Stale data</span></div>
+  <a class="tstat pending" href="#" onclick="return false"><span class="n">${counts.pending}</span><span class="l">Pending →</span></a>`;
+
+// ── Variant A ──
+document.getElementById("qcount").textContent = attention.length + " of " + FLEET.length + " nodes";
+document.getElementById("queue").innerHTML = attention.map(n => `
+  <div class="queue-row ${n.status}" tabindex="0">
+    <div class="edge"></div>
+    <div class="qbody">
+      <div class="qalias">
+        <span class="a">${n.alias}</span>
+        <span><span class="backend">${n.backend}</span></span>
+      </div>
+      <div class="qgrade">${grade(n)}</div>
+      <div class="qwhy">
+        <div>${n.breaches.length ? breaches(n) : `<span class="mono muted" style="font-size:var(--text-xs);text-transform:uppercase;letter-spacing:.06em;color:${n.status === 'stale' ? 'var(--color-stale)' : 'var(--color-warn)'}">${n.status === 'stale' ? 'stale telemetry' : 'degraded'}</span>`}</div>
+        <div class="qdims">${n.why}</div>
+      </div>
+      <div class="qmeta">${n.pending ? n.pending + " pending<br>" : ""}fresh ${n.fresh}</div>
+    </div>
+  </div>`).join("");
+document.getElementById("healthy").innerHTML = healthy.map(n => `
+  <div class="hcard" tabindex="0">
+    <span>${n.alias.replace("LQWD-", "")}</span>
+    ${grade(n)}
+  </div>`).join("");
+function toggleHealthy() {
+  const g = document.getElementById("healthy");
+  const b = document.getElementById("toggle-healthy");
+  const hidden = g.style.display === "none";
+  g.style.display = hidden ? "grid" : "none";
+  b.textContent = hidden ? "Collapse" : `Show ${healthy.length} nodes`;
+}
+
+// ── Variant B ──
+document.getElementById("wall").innerHTML = sorted.map(n => `
+  <div class="tile ${n.status}" tabindex="0">
+    <div class="tile-top">
+      <div>
+        <div style="font-weight:600">${n.alias}</div>
+        <div style="margin-top:4px">${n.breaches.length ? breaches(n)
+          : n.status === "warn" ? `<span class="mono" style="font-size:var(--text-xs);color:var(--color-warn);text-transform:uppercase;letter-spacing:.06em">degraded</span>`
+          : n.status === "stale" ? `<span class="mono" style="font-size:var(--text-xs);color:var(--color-stale);text-transform:uppercase;letter-spacing:.06em">stale ${n.fresh}</span>`
+          : `<span class="backend">${n.backend}</span>`}</div>
+      </div>
+      ${grade(n)}
+    </div>
+    <div class="tile-foot">
+      <span>${n.pending ? n.pending + " pending" : "&nbsp;"}</span>
+      <span>${n.fresh}</span>
+    </div>
+  </div>`).join("");
+
+// ── Variant C ──
+const dimCell = (n, k) => {
+  const d = n.dims[k];
+  return `<td class="dimcell"><span class="grade ${d[1] === 'warn' ? 'warn' : d[1] === 'critical' ? 'critical' : 'ok'}">${d[0]}</span></td>`;
+};
+document.getElementById("ledger-body").innerHTML = sorted.map(n => `
+  <tr class="noderow ${n.status}" tabindex="0">
+    <td class="sev"><span></span></td>
+    <td><strong>${n.alias}</strong> <span class="backend">${n.backend}</span></td>
+    <td>${grade(n)}</td>
+    <td>${n.breaches.length ? breaches(n) : n.status === "warn" ? `<span class="mono faint" style="font-size:var(--text-xs)">degraded</span>` : n.status === "stale" ? `<span class="mono faint" style="font-size:var(--text-xs)">stale</span>` : `<span class="faint">—</span>`}</td>
+    ${dimCell(n, "routing")}${dimCell(n, "revenue")}${dimCell(n, "liquidity")}${dimCell(n, "forceClose")}
+    <td class="num mono" style="font-size:var(--text-xs)">${n.pending || "—"}</td>
+    <td class="num mono faint" style="font-size:var(--text-xs)">${n.fresh}</td>
+  </tr>`).join("");
+
+// ── Chrome ──
+function showVariant(id, btn) {
+  document.querySelectorAll(".variant").forEach(v => v.classList.remove("active"));
+  document.querySelectorAll(".variant-tab[data-v]").forEach(t => t.classList.remove("active"));
+  document.getElementById("variant-" + id).classList.add("active");
+  btn.classList.add("active");
+}
+function setViewport(w) {
+  document.getElementById("viewport").style.maxWidth = w === "none" ? "" : w;
+}
+</script>
+</body>
+</html>

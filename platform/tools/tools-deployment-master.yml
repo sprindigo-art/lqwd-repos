@@ -1,0 +1,109 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: platform-tools
+  namespace: microservice
+  labels:
+    app: platform-tools
+spec:
+  selector:
+    matchLabels:
+      app: platform-tools
+  template:
+    metadata:
+      labels:
+        app: platform-tools
+    spec:
+      containers:
+        - name: platform-tools
+          image: '514063904685.dkr.ecr.us-west-2.amazonaws.com/platform-tools:prod-$BUILD_NUMBER'
+          env:
+            - name: WENV
+              valueFrom:
+                secretKeyRef:
+                  name: tools-secret
+                  key: WENV
+            - name: IP
+              value: "192.168.123.252"
+            - name: COINMARKETCAPAPI
+              valueFrom:
+                secretKeyRef:
+                  name: tools-secret
+                  key: COINMARKETCAPAPI
+            - name: CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: tools-secret
+                  key: CLIENT_ID
+            - name: CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: tools-secret
+                  key: CLIENT_SECRET
+            - name: STATS_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: tools-secret
+                  key: STATS_HOST
+            - name: STATS_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: tools-secret
+                  key: STATS_PORT
+            - name: STATS_DB
+              valueFrom:
+                secretKeyRef:
+                  name: tools-secret
+                  key: STATS_DB
+            - name: STATS_USER
+              valueFrom:
+                secretKeyRef:
+                  name: tools-secret
+                  key: STATS_USER
+            - name: STATS_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: tools-secret
+                  key: STATS_PASS
+            - name: ROUTING_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: tools-secret
+                  key: ROUTING_HOST
+            - name: ROUTING_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: tools-secret
+                  key: ROUTING_PORT
+            - name: ROUTING_DB
+              valueFrom:
+                secretKeyRef:
+                  name: tools-secret
+                  key: ROUTING_DB
+            - name: ROUTING_USER
+              valueFrom:
+                secretKeyRef:
+                  name: tools-secret
+                  key: ROUTING_USER
+            - name: ROUTING_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: tools-secret
+                  key: ROUTING_PASS
+          resources:
+            requests:
+              memory: "1024Mi"
+              cpu: "100m"
+            limits:
+              memory: "2048Mi"
+              cpu: "250m"
+          volumeMounts:
+            - name: tools-secret
+              readOnly: true
+              mountPath: "/var/run/secrets/tools-secret"
+      volumes:
+        - name: tools-secret
+          secret:
+            secretName: tools-secret
+      imagePullSecrets:
+        - name: ecr-token

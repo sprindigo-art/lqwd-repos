@@ -1,0 +1,68 @@
+<head th:fragment="header_main_light(title, links)" th:with="cssPath='/assets/css/light', pluginPath='plugins/light'">
+    <!-- Header Light -->
+    <meta charset="utf-8">
+    <!--    <meta http-equiv="X-UA-Compatible" content="IE=edge">-->
+    <meta http-equiv="Content-Type" content="text/html"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
+
+    <!--  favicon images  -->
+    <link rel="apple-touch-icon" sizes="180x180" th:href="@{/images/favicon_io/apple-touch-icon.png}">
+    <link rel="icon" type="image/png" sizes="32x32" th:href="@{/images/favicon_io/favicon-32x32.png}">
+    <link rel="icon" type="image/png" sizes="16x16" th:href="@{/images/favicon_io/favicon-16x16.png}">
+    <link rel="manifest" th:href="@{/images/favicon_io/site.webmanifest}">
+
+    <title th:replace="${title}">LQWD Financial Corp</title>
+    <!-- BEGIN GLOBAL MANDATORY STYLES -->
+    <link href="https://fonts.googleapis.com/css?family=Nunito:400,600,700" rel="stylesheet">
+    <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet" type="text/css" />
+    <link th:href="@{${cssPath + '/plugins.css'}}" rel="stylesheet" type="text/css" />
+
+    <link th:href="@{${pluginPath + '/font-icons/fontawesome/css/fontawesome.css'}}" rel="stylesheet" type="text/css" />
+    <link th:href="@{/css/head.css}" rel="stylesheet" type="text/css"/>
+
+    <link rel="preconnect" th:href="@{https://fonts.gstatic.com}">
+    <link th:href="@{https://fonts.googleapis.com/css2?family=Roboto&display=swap}" rel="stylesheet">
+
+    <!-- END GLOBAL MANDATORY STYLES -->
+    <link th:href="@{${pluginPath + '/notification/snackbar/snackbar.min.css'}}" rel="stylesheet" type="text/css" />
+    <link th:href="@{${pluginPath + '/sweetalerts/sweetalert2.min.css'}}" rel="stylesheet" type="text/css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" th:href="@{${cssPath + '/elements/alert.css'}}">
+
+    <!--  Satoshi Font Symbol  -->
+    <script src="https://kit.fontawesome.com/090ca49637.js" crossorigin="anonymous"></script>
+    <link th:href="@{${pluginPath + '/bootstrap-select/bootstrap-select.min.css'}}" rel="stylesheet" type="text/css"/>
+    <!-- Placeholder for additional links -->
+    <th:block th:replace="${links}"/>
+
+    <style>
+        #select-picker-div > div > button {
+            background-color: rgba(0,0,0,0) !important;
+            border-bottom: 1px solid #3b3f5c !important;
+            border-top: 0px solid !important;
+            border-left: 0px solid !important;
+            border-right: 0px solid !important;
+            border-radius: 0px !important;
+            padding: 0.9px 1.25rem 0px 1.25rem !important;
+        }
+
+        #select-picker-div > div > button > span {
+            color: #009EE2 !important;
+            border-top-color: #009EE2 !important;
+        }
+        #select-picker-div > div > button > span.bs-caret > span {
+            color: #009EE2 !important;
+            border-top-color: #009EE2 !important;
+        }
+        .bootstrap-select:not([class*=col-]):not([class*=form-control]):not(.input-group-btn){
+            width: 100% !important;
+            margin-bottom: 0 !important;
+        }
+        #session-select > div > button{
+            margin-bottom: 0 !important;
+        }
+        body > div.snackbar-container {
+            max-width: 100% !important;
+        }
+    </style>
+</head>

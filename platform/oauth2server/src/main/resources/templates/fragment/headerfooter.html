@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+
+<head th:fragment="header1">
+    <title>LQWD BackEnd </title>
+    <script>
+        function startTime() {
+            var today = new Date();
+            var h = today.getHours();
+            var m = today.getMinutes();
+            var s = today.getSeconds();
+            m = checkTime(m);
+            s = checkTime(s);
+            document.getElementById('txt').innerHTML = h + ":" + m + ":" + s;
+            var t = setTimeout(startTime, 500);
+        }
+
+        function checkTime(i) {
+            if (i < 10) {
+                i = "0" + i
+            }
+            ; // add zero in front of numbers < 10
+            return i;
+        }
+
+        function myFunction() {
+            console.log("Linked man")
+            document.getElementById("myDropdown").classList.toggle("show");
+        }
+
+        // Close the dropdown menu if the user clicks outside of it
+        window.onclick = function (e) {
+            if (!e.target.matches('.dropbtn')) {
+                var myDropdown = document.getElementById("myDropdown");
+                if (myDropdown.classList.contains('show')) {
+                    myDropdown.classList.remove('show');
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="css.css" th:href="@{/css/css.css}">
+</head>
+
+<div th:fragment="top_menu(action)">
+    <div id="topLogoMain">
+        <div id="topLogoMainLeft">
+            <img th:src="@{/images/logo.jpg}" style="width:292px;height:103px;"/>
+        </div>
+        <div id="topLogoMainRight">
+            <h1 style="margin: 35px 0px 0px 200px;">LQWD Financial Corp</h1>
+        </div>
+    </div>
+
+    <div id="topBar"></div>
+    <div id="topNavigation">
+        <ul>
+            <li><a
+                    th:classappend="${(action =='accounttypes' or #httpServletRequest.getRequestURI() == '/backend/accounttypes') ? 'active':''}"
+                    href="/backend/accounttypes">Account Type</a></li>
+            <li><a
+                    th:classappend="${#httpServletRequest.getRequestURI() == '/backend/oauthclinets' ? 'active':''}"
+                    href="/backend/oauthclients">Oauth Client</a></li>
+            <li><a
+                    th:classappend="${#httpServletRequest.getRequestURI() == '/backend/mservices' ? 'active':''}"
+                    href="/backend/mservices">Micro Services</a></li>
+            <li><a
+                    th:classappend="${#httpServletRequest.getRequestURI() == '/backend/roles' ? 'active':''}"
+                    href="/backend/roles">Roles</a></li>
+            <li><a
+                    th:classappend="${#httpServletRequest.getRequestURI() == '/backend/users' ? 'active':''}"
+                    href="/backend/users">Users</a></li>
+            <li>
+                <div class="dropdown">
+                    <a class="dropbtn" onclick="myFunction()">Others</a>
+                    <div class="dropdown-content"
+                         th:classappend="${#httpServletRequest.getRequestURI() == '/backend/liquidity' ? 'active':''}"
+                         id="myDropdown">
+                        <a href="/backend/liquidity">Liquidity</a>
+                        <a href="/backend/staking/find_all">Staking</a>
+                        <a href="/backend/applications">Applications</a>
+                        <a href="/backend/ports">Port Management</a>
+                    </div>
+                </div>
+            </li>
+
+            <li class="right_menu_item">
+                <div class="menuForm">
+                    <form autocomplete="off" action="#" th:action="@{/backend/users}" method="get"
+                          class="form-horizontal" role="form">
+                        <div class="row">
+                            <div class="col-75">
+                                <input type="text" name="query" placeholder="search for user"/>
+                            </div>
+                            <div class="col-25">
+                                <input type="submit" value="SEARCH"/>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div id="topBar"></div>
+    <div id="welcomeMain">
+        <div id="welcomeMainLeft">
+            <p>
+				<span style="display: inline-block;"> Welcome: <span
+                        sec:authentication="name">User</span> | <a th:href="@{/logout}">Sign
+						Out</a>
+				</span>
+            </p>
+        </div>
+
+
+        <div id="welcomeMainLeft" style="text-align: right;">
+            <p>
+                Current time: <span id="txt"></span>
+            </p>
+        </div>
+    </div>
+</div>
+
+
+<div th:fragment="footer">
+    <div class="row">
+        <div class="col-xs-12 blue_class">
+            <footer>
+                <center>
+                    <p>LQWD Financial Corp 2020</p>
+                </center>
+            </footer>
+        </div>
+    </div>
+    <script src=""></script>
+</div>
+
+
+</body>
+</html>

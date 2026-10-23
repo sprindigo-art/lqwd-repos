@@ -1,0 +1,57 @@
+<div id="payment-details" th:fragment="payment-details" class="col-xl-12 col-lg-12 col-md-6 col-sm-12 col-12 layout-spacing">
+  <div class="widget">
+    <div class="widget-heading">
+      <h5 class="" th:text="'Payment Request: '">Payment Request</h5>
+    </div>
+    <div class="widget-content widget-content-area">
+      <div class="row pt-2">
+        <div class="col-6">
+          Payment Hash
+        </div>
+        <div class="col-6">
+          <span class="" th:text="${payment.getPayment_hash()}"></span>
+        </div>
+      </div>
+      <div class="row pt-2">
+        <div class="col-6">
+          Destination
+        </div>
+        <div class="col-6">
+          <span class="" th:text="${payment.getDestination()}"></span>
+        </div>
+      </div>
+      <div class="row pt-2">
+        <div class="col-6">
+          Payment Address
+        </div>
+        <div class="col-6">
+          <span class="" th:text="${payment.getPayment_addr()}"></span>
+        </div>
+      </div>
+      <div class="row pt-2">
+        <div class="col-6">
+          Timestamp
+        </div>
+        <div class="col-6">
+          <span class="" th:text="${payment.getTimestamp()}"></span>
+        </div>
+      </div>
+      <div class="row pt-2">
+        <div class="col-6">
+          Expiry
+        </div>
+        <div class="col-6">
+          <span class="" th:text="${payment.getExpiry()}"></span>
+        </div>
+      </div>
+      <div class="row pt-2">
+        <div class="col-6">
+          Number of Satoshis
+        </div>
+        <div class="col-6">
+          <span class="" th:text="${payment.getNum_satoshis()}"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

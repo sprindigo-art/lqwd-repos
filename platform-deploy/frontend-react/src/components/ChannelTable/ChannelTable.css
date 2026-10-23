@@ -1,0 +1,152 @@
+.channel-table{
+    background: #F3F5F9;
+    border-radius: 16px;
+}
+
+.channels-table-total{
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 20px;
+
+    /* identical to box height, or 143% */
+    display: flex;
+    align-items: center;
+
+    /* Text - Tertiary */
+    color: #7A7A7A;
+}
+.channel-table-header {
+    box-sizing: border-box;
+
+    border-bottom: 1px solid #E5E6EB;
+    border-radius: 0px;
+
+    padding: 8px 12px 8px 12px;
+}
+
+
+.channel-table-title {
+
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 20px;
+    /* identical to box height, or 143% */
+
+    display: flex;
+    align-items: center;
+
+    /* Text - Secondary */
+    color: #4D4D4D;
+
+    padding-right: 28px;
+}
+
+.total-channels {
+    width: 58px;
+    height: 20px;
+
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 20px;
+    /* identical to box height, or 143% */
+
+    display: flex;
+    align-items: center;
+    text-align: right;
+
+    /* Text - Secondary */
+
+    color: #4D4D4D;
+}
+
+.channel-table-empty-container {
+    box-sizing: border-box;
+    /* Background - Panel */
+    background: #F3F5F9;
+    border-radius: 8px;
+    padding: 40px;
+}
+
+.channel-table-empty-title{
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 24px;
+    text-align: center;
+
+    /* Text - Primary */
+    color: #111111;
+}
+
+
+.channel-table-empty-text {
+    /* Label 1 */
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    /* identical to box height, or 143% */
+    display: flex;
+    align-items: center;
+    text-align: center;
+
+    /* Text - Tertiary */
+    color: #7A7A7A;
+}
+.channel-table-container {
+    /* Background - Panel */
+    background: #F3F5F9;
+    border-radius: 16px;
+}
+
+.channel-table-row {
+    /* Auto layout */
+
+    display: flex;
+    flex-direction: column;
+    padding-right: 8px;
+    padding-left: 8px;
+    padding-bottom: 8px;
+    padding-top: 8px;
+    gap: 8px;
+}
+
+.channel-table-item{
+    /* Auto layout */
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 12px 28px;
+    gap: 40px;
+
+    /* White */
+    background: #FFFFFF;
+    border-radius: 8px;
+}
+
+.channel-table-item-closed{
+    /* Auto layout */
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 12px 28px;
+    gap: 40px;
+
+    /* White */
+    background: #FFFFFF;
+    border-radius: 8px;
+}
+
+.closed-channels-back {
+    width: 24px;
+    height: 24px;
+}

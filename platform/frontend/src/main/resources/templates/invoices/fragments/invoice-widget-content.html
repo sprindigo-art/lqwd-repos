@@ -1,0 +1,14 @@
+<div id="invoice-detail_div_content" th:fragment="widget-placeholder" class="row layout-spacing">
+  <div th:if="${invoice != null}" class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 layout-spacing">
+    <div class="widget">
+      <div class="widget-heading">
+        <h5 class="" th:text="'Invoice: ' + ${invoice.getR_hash()}">Invoice R Hash</h5>
+      </div>
+      <div class="widget-content widget-content-area" >
+        <div th:if="${invoice != null}">
+          <div th:replace="invoices/fragments/invoice-details-content"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

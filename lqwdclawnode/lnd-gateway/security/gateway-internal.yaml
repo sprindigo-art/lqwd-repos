@@ -1,0 +1,92 @@
+name: "Gateway Auth Boundary Isolation"
+target: "lnd-gateway"
+version: "1.0"
+description: >
+  Validates that the Bearer (internal) and L402 (external) auth layers in the
+  lnd-gateway are fully isolated. Neither auth scheme must grant access to the
+  other layer's endpoints. The Bearer auth middleware runs first on all requests
+  and passes through /v1/l402/* paths with TokenNone. The L402 auth middleware
+  then runs at the route level for L402 endpoints only. These scan cases confirm
+  that cross-layer authentication is rejected in both directions.
+placeholder_syntax: >
+  Dynamic values use ${step_name.field} syntax for outputs from setup steps.
+  Configuration values use ${config.field} syntax (e.g., ${config.agent_token}
+  for a valid Bearer agent token). A scan runner resolves all placeholders
+  before sending requests.
+
+bearer_on_l402:
+  - id: "AUTH-BND-01"
+    name: "Bearer token rejected on L402 endpoint"
+    description: >
+      A valid Bearer agent token must not grant access to L402 endpoints.
+      The Bearer auth middleware passes through /v1/l402/* paths with TokenNone,
+      then the L402Auth middleware sees the Bearer scheme and rejects it with a
+      401 explaining that L402 endpoints require the L402 authorization scheme.
+    method: GET
+    path: "/v1/l402/node-stats"
+    setup: []
+    request:
+      headers:
+        Authorization: "Bearer ${config.agent_token}"
+    expect:
+      status: 401
+      body_contains: "L402 endpoints require L402 authorization scheme"
+
+l402_on_internal:
+  - id: "AUTH-BND-02"
+    name: "L402 token rejected on internal endpoint"
+    description: >
+      An L402 token must not grant access to internal Bearer-protected endpoints.
+      The Bearer auth middleware runs first on non-L402 paths and rejects any
+      Authorization header that does not use the Bearer scheme.
+    method: GET
+    path: "/v1/info"
+    setup:
+      - obtain_l402_token:
+          endpoint: "/v1/l402/node-stats"
+          method: GET
+          description: "Obtain a valid L402 token from any L402 endpoint (402 challenge, then complete payment)"
+    request:
+      headers:
+        Authorization: "L402 ${obtain_l402_token.macaroon}:${obtain_l402_token.preimage}"
+    expect:
+      status: 401
+      body_contains: "Authorization header must use Bearer scheme"
+
+cross_layer_isolation:
+  - id: "AUTH-BND-03"
+    name: "Valid agent Bearer cannot access L402 data"
+    description: >
+      Confirms cross-layer isolation: even a valid agent token with full Bearer
+      privileges gets 401 on L402 endpoints, never 200. This is a stronger
+      assertion than AUTH-BND-01 -- it uses a different L402 endpoint to confirm
+      the rejection is systematic, not path-specific.
+    method: GET
+    path: "/v1/l402/network-analytics"
+    setup: []
+    request:
+      headers:
+        Authorization: "Bearer ${config.agent_token}"
+    expect:
+      status: 401
+      body_not_contains: "data"
+
+  - id: "AUTH-BND-04"
+    name: "Valid L402 token cannot access internal data"
+    description: >
+      Confirms cross-layer isolation: a valid L402 token gets 401 on internal
+      endpoints, never 200. The Bearer auth middleware rejects the L402 scheme
+      before the request reaches any handler.
+    method: GET
+    path: "/v1/channels"
+    setup:
+      - obtain_l402_token:
+          endpoint: "/v1/l402/node-stats"
+          method: GET
+          description: "Obtain a valid L402 token from any L402 endpoint"
+    request:
+      headers:
+        Authorization: "L402 ${obtain_l402_token.macaroon}:${obtain_l402_token.preimage}"
+    expect:
+      status: 401
+      body_not_contains: "channels"

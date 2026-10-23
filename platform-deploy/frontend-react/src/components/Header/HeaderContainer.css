@@ -1,0 +1,100 @@
+.header-item {
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 25px;
+    line-height: 21px;
+    position: relative;
+    cursor: pointer;
+}
+
+.header-title {
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 22px;
+    display: flex;
+    align-items: center;
+    color: #111111;
+}
+
+@media screen and (max-width: 768px) {
+    .header-item {
+        font-weight: 300;
+        font-size: 18px;
+        line-height: 18px;
+    }
+}
+
+.header-item>div {
+    padding: 15px;
+}
+
+.header-item-active>div {
+    background: #F1F4F8;
+    border-radius: 10px;
+    color: black;
+}
+
+.header-item-active::after {
+    content: '';
+    /* required to display pseudo elements */
+    height: 2px;
+    /* this works like a border-width */
+    width: 40px;
+    /* you can use a percentage of parent or fixed px value */
+    background: #0087ca;
+    /* the color of border */
+    position: absolute;
+    bottom: 0;
+    /* position it at the bottom of parent */
+    margin: 0 auto;
+    left: 0;
+    right: 0;
+    /* horizontal centering */
+    border-radius: 10px;
+    border: solid 2px #0087ca;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+
+/* .Header-item::after {
+  content: '';
+  position: absolute;
+  background-color: pink;
+  width: 30%;
+  height: 3px;
+  bottom: 0;
+  left: 0;
+} */
+
+
+/* .Header-item > div:after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  transform: scaleX(0);
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color:
+#0087ca;
+  transform-origin: bottom right;
+  transition: transform 0.25s ease-out;
+} */
+
+
+/* .header-item-active {
+    border: solid 2px black;
+} */
+
+
+/*
+.Header-item-active > div:after {
+  transform: scaleX(1);
+  transform-origin: bottom left;
+  } */

@@ -1,0 +1,41 @@
+<div th:fragment="create_address" id="create-address-form" class="widget widget-activity-four">
+
+    <div class="widget-heading">
+        <h5 class="">Create On-Chain BTC Address</h5>
+        <p>Load your wallet by generating an BTC Wallet Address</p>
+    </div>
+
+    <div class="widget-content">
+
+        <form class="select" novalidate action="javascript:void(0);">
+
+            <div id="create-btc_address" class="form-row generate_btc_component">
+                <div class="form-group col-12">
+                    <button th:unless="${user.isEmailstatus()}" class="col-12 btn btn-primary" disabled>Please Verify Account</button>
+                    <button th:if="${user.isEmailstatus()}" class="col-12 btn btn-primary" id="generate-btc_btn_create">Create BTC Address</button>
+                </div>
+            </div>
+
+            <div class="form-row show_btc_component hidden_div">
+                <div class="form-group col-12">
+                    <div class="text-center">
+                        <img id="btcQrCode" src="">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-row show_btc_component hidden_div">
+                <div class="form-group col-12">
+                    <label class="sr-only" for="generate-btc_txt_request">BTC Address</label>
+                    <textarea type="text" class="form-control mb-2" id="generate-btc_txt_request" placeholder="BTC Address" readonly></textarea>
+                </div>
+            </div>
+
+            <div class="form-row show_btc_component hidden_div">
+                <div class="form-group col-12">
+                    <button class="btn btn-primary form-control" id="generate-btc_btn_copy" onclick="copyToClipboard()">Copy Address to Clipboard</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

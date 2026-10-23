@@ -1,0 +1,17 @@
+<div th:fragment="get-pay-req" class="widget widget-activity-four">
+  <div class="widget-heading">
+    <h5 class="">Payment Look Up</h5>
+  </div>
+  <div class="widget-content">
+    <form class="mt-4" novalidate action="javascript:void(0);">
+      <div class="form-row">
+        <div class="col-8 pr-3">
+          <label class="sr-only" for="payment-request-form_txt_pay-req">Payment Request</label>
+          <input type="text" class="form-control mb-2" id="payment-request-form_txt_pay-req" placeholder="Payment Request">
+        </div>
+        <button th:unless="${user.isEmailstatus()}" class="btn btn-primary col-3 mb-2" id="payment-request-form_btn_lookup" type="submit" disabled>Please Verify Account</button>
+        <button th:if="${user.isEmailstatus()}" class="btn btn-primary col-3 mb-2" id="payment-request-form_btn_lookup" type="submit">Look Up</button>
+      </div>
+    </form>
+  </div>
+</div>

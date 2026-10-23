@@ -1,0 +1,143 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: frontend
+  namespace: microservice
+  labels:
+    app: frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      volumes:
+        - name: frontend-secret
+          secret:
+            secretName: frontend-secret
+            defaultMode: 420
+      imagePullSecrets:
+        - name: ecr-token
+      containers:
+        - name: frontend
+          image: '514063904685.dkr.ecr.us-west-2.amazonaws.com/frontend:dev-$BUILD_NUMBER'
+          ports:
+            - containerPort: 8588
+              protocol: TCP
+          env:
+            - name: FE_ENV
+              valueFrom:
+                secretKeyRef:
+                  name: frontend-secret
+                  key: FE_ENV
+            - name: AUTH_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: frontend-secret
+                  key: AUTH_CLIENT_ID
+            - name: AUTH_GRANT_TYPE
+              valueFrom:
+                secretKeyRef:
+                  name: frontend-secret
+                  key: AUTH_GRANT_TYPE
+            - name: AUTH_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: frontend-secret
+                  key: AUTH_PASSWORD
+            - name: CAPTCHA_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: frontend-secret
+                  key: CAPTCHA_SECRET
+            - name: CAPTCHA_SITE_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: frontend-secret
+                  key: CAPTCHA_SITE_KEY
+            - name: COIN_MARKEY_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: frontend-secret
+                  key: COIN_MARKEY_API_KEY
+            - name: CONFIG_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: frontend-secret
+                  key: CONFIG_PASSWORD
+            - name: CONFIG_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: frontend-secret
+                  key: CONFIG_USERNAME
+            - name: FE_DB_PSSWD
+              valueFrom:
+                secretKeyRef:
+                  name: frontend-secret
+                  key: FE_DB_PSSWD
+            - name: FE_DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: frontend-secret
+                  key: FE_DB_USER
+            - name: KEYSTORE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: frontend-secret
+                  key: KEY_STORE_PASSWORD
+            - name: KEY_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: frontend-secret
+                  key: KEY_PASSWORD
+            - name: MAIL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: frontend-secret
+                  key: MAIL_PASSWORD
+            - name: MAIL_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: frontend-secret
+                  key: MAIL_USERNAME
+            - name: SASL_CONFIG
+              valueFrom:
+                secretKeyRef:
+                  name: frontend-secret
+                  key: SASL_CONFIG
+            - name: GOOGLE_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: frontend-secret
+                  key: GOOGLE_API_KEY
+            - name: STATS_DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: frontend-secret
+                  key: STATS_DB_USER
+            - name: STATS_DB_PSSWD
+              valueFrom:
+                secretKeyRef:
+                  name: frontend-secret
+                  key: STATS_DB_PSSWD
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "100m"
+            limits:
+              memory: "500Mi"
+              cpu: "200m"
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8588
+              scheme: HTTP
+            initialDelaySeconds: 500
+            timeoutSeconds: 5
+            periodSeconds: 10
+            successThreshold: 5
+            failureThreshold: 3

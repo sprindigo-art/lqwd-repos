@@ -1,0 +1,49 @@
+databaseChangeLog:
+  - changeSet:
+      id: add_private_addess_column
+      validCheckSum: ANY
+      author: chris
+      changes:
+        - sql:
+            sql: ALTER TABLE lndnodeinfo ADD COLUMN IF NOT EXISTS private_address varchar(50);
+  - changeSet:
+      id: add_public_addess_column
+      validCheckSum: ANY
+      author: chris
+      changes:
+        - sql:
+            sql: ALTER TABLE lndnodeinfo ADD COLUMN IF NOT EXISTS public_addess varchar(50);
+  - changeSet:
+      id: add_instance_id_column
+      validCheckSum: ANY
+      author: chris
+      changes:
+        - sql:
+            sql: ALTER TABLE lndnodeinfo ADD COLUMN IF NOT EXISTS instance_id varchar(50);
+
+  - changeSet:
+      id: add_deployment_type_column
+      validCheckSum: ANY
+      author: chris
+      changes:
+        - sql:
+            sql: ALTER TABLE lndnodeinfo ADD COLUMN IF NOT EXISTS deployment_type varchar(255);
+
+  - changeSet:
+      id: migrate_private_address_column
+      validCheckSum: ANY
+      author: chris
+      changes:
+        - sql:
+            sql: UPDATE lndnodeinfo SET private_address = CONCAT(lndnodename, '.', namespace);
+
+  - changeSet:
+      id: migrate_deployment_type_column
+      validCheckSum: ANY
+      author: chris
+      changes:
+        - sql:
+            sql: UPDATE lndnodeinfo SET deployment_type = 'K8';
+
+
+

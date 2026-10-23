@@ -1,0 +1,34 @@
+.user-roles-table-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.user-roles-table-header {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: center;
+}
+
+.user-roles-table-header-col {
+    display: flex;
+    flex-direction: column;
+
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 17px;
+
+    /* Text - Secondary */
+    color: #4D4D4D;
+}
+
+.user-roles-table-rows {
+
+}
+
+.user-roles-table-footer {
+
+}

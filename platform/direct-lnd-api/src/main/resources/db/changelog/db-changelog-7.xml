@@ -1,0 +1,64 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <changeSet author="djbabs (generated)" id="1630089304093-1">
+        <createTable tableName="liquidity">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="liquidityPK"/>
+            </column>
+            <column name="amt" type="INT"/>
+            <column name="channel_id" type="BIGINT"/>
+            <column name="date_created" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="date_modified" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="duration_in_weeks" type="INT"/>
+            <column name="invoice_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ip_address" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="paid" type="BOOLEAN"/>
+            <column name="pubkey" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1630089304093-2">
+        <addColumn tableName="invoice">
+            <column name="amt" type="int4"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1630089304093-3">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="lnd_main_v2"/>
+        </preConditions>
+        <addColumn tableName="lnd_main_v2">
+            <column name="encrypt_version" type="varchar(255)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1630089304093-4">
+        <addColumn tableName="invoice">
+            <column name="r_hash_str" type="TEXT"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1630089304093-7">
+        <dropColumn columnName="amount" tableName="invoice"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1630089304093-8">
+        <dropColumn columnName="duration_in_weeks" tableName="invoice"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1630089304093-9">
+        <dropColumn columnName="fee" tableName="invoice"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1630089304093-10">
+        <dropColumn columnName="ip_address" tableName="invoice"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1630089304093-11">
+        <dropColumn columnName="pub_key" tableName="invoice"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1630089304093-12">
+        <dropColumn columnName="r_hash" tableName="invoice"/>
+    </changeSet>
+</databaseChangeLog>

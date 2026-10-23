@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: py-backend
+  namespace: lqwd-lnd
+  labels:
+    app: py-backend
+spec:
+  selector:
+    matchLabels:
+      app: py-backend
+  template:
+    metadata:
+      labels:
+        app: py-backend
+    spec:
+      nodeSelector:
+        node.kubernetes.io/instance-type: t3.medium
+      containers:
+        - name: py-backend
+          image: '514063904685.dkr.ecr.us-west-2.amazonaws.com/py-backend:prod-$BUILD_NUMBER'
+          terminationMessagePath: "/tmp/my-log"
+          env:
+            - name: KUSERPASS
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: KUSERPASS
+            - name: APP_NAME
+              value: py_backend
+            - name: CONFIGSERVER_ADDRESS
+              value: 'http://config-server.microservice:8888'
+            - name: BRANCH
+              value: develop
+            - name: PROFILE
+              value: development
+            - name: CONFIG_FAIL_FAST
+              value: 'False'
+            - name: CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: CLIENT_ID
+            - name: CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: CLIENT_SECRET
+          resources:
+            requests:
+              memory: "1000Mi"
+              cpu: "200m"
+            limits:
+              memory: "1000Mi"
+              cpu: "200m"
+      volumes:
+        - name: secret
+          secret:
+            secretName: secret
+      imagePullSecrets:
+        - name: ecr-token
+      

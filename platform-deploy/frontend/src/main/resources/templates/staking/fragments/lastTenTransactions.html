@@ -1,0 +1,86 @@
+<div class="container-fluid h-100" id="lastTenTransactions_div_transactions" th:fragment="lastTenTransactions(${stakingList})">
+    <div class="row justify-content-center h-100 layout-spacing">
+        <div class="col-12">
+            <div class="widget-content widget-content-area"
+                 style="width: 100%; border-radius: 10px;">
+                <div class="table-responsive mb-4 col-12" >
+                <div class="widget-heading pt-1">
+                    <h4 class="">Last Ten Transactions</h4>
+                </div>
+                <table  id="lastTenTransactions_table_transactions" class="table table-hover custom-table-color">
+                    <thead>
+                    <tr>
+                        <th>Address/Invoice</th>
+                        <th>Type</th>
+                        <th>Amount</th>
+                        <th>Status</th>
+                        <th>Created date</th>
+                        <th>Number of days</th>
+                        <th class="text-center">QR code</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="staking: ${stakingList}">
+
+                        <!-- Address -->
+                        <th th:if="${staking.getType() == 'INVOICE'}" style="text-align: left;">
+                            [[${#strings.abbreviate(staking.getPaymentRequest(), 50)}]]
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-copy" th:attr="onclick=|copyToClipboard('${staking.getPaymentRequest()}')|">
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                            </svg>
+                        </th>
+
+                        <th th:unless="${staking.getType() == 'INVOICE'}" style="text-align: left;">
+                            [[${staking.getAddress()}]]
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-copy" th:attr="onclick=|copyToClipboard('${staking.getAddress()}')|">
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                            </svg>
+                        </th>
+
+                        <!-- Type -->
+                        <th th:if="${staking.getType() == 'INVOICE'}" >
+                    <span th:attr="onclick=|openInvoiceDetails('${staking.getRhash()}')|"
+                          class="invoice-link">[[${staking.getType()}]]</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-copy"
+                                 th:attr="onclick=|copyToClipboard('${staking.getRhash()}')|">
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                            </svg>
+                        </th>
+                        </th>
+                        <th th:unless="${staking.getType() == 'INVOICE'}" th:text="${staking.getType()}"></th>
+
+                        <th th:text="${staking.getAmount()}"></th>
+
+                        <th>
+                            <span class="badge outline-badge-primary" th:if="${staking.getStatus()} == 'REQUESTED'" th:text="${staking.getStatus()}"></span>
+                            <span class="badge outline-badge-warning" th:if="${staking.getStatus()} == 'ACTIVE'" th:text="${staking.getStatus()}"></span>
+                            <span class="badge outline-badge-dark" th:if="${staking.getStatus()} == 'WITHDREW'" th:text="${staking.getStatus()}"></span>
+                            <span class="badge outline-badge-dark" th:if="${staking.getStatus()} == 'RENEWED'" th:text="${staking.getStatus()}"></span>
+                            <span class="badge outline-badge-success" th:if="${staking.getStatus()} == 'PAID'" th:text="${staking.getStatus()}"></span>
+                            <span class="badge outline-badge-warning" th:if="${staking.getStatus()} == 'DELETED'" th:text="${staking.getStatus()}"></span>
+                        </th>
+                        <th th:text="${#dates.format(staking.getDateCreated(),'MMMM d, YYYY')}"></th>
+
+                        <th th:text="${staking.getTotalDays()}"></th>
+                        <!-- QR code-->
+                        <th th:unless="${staking.getType() == 'INVOICE'}">
+                            <i th:attr="onclick=|getStakingAddressQRCode('${staking.getAddress()}')|" data-feather="grid"></i>
+                        </th>
+                        <th th:if="${staking.getType() == 'INVOICE'}">
+                            <i th:attr="onclick=|getStakingAddressQRCode('${staking.getPaymentRequest()}')|" data-feather="grid"></i>
+                        </th>
+                    </tr>
+
+                    </tbody>
+                </table>
+            </div>
+            </div>
+        </div>
+    </div>
+</div>

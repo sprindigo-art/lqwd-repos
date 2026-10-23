@@ -1,0 +1,268 @@
+<div th:fragment="side-navbar" class="sidebar-wrapper sidebar-theme">
+    <!--  BEGIN SIDEBAR  -->
+    <nav id="sidebar" th:if="${user != null}">
+        <ul class="pr-0 list-unstyled menu-categories ps ps--active-y" id="accordionExample">
+
+            <!-- Analytics Menu -->
+            <li class="menu">
+                <a th:if="${user != null} and ${user.getRole_s().contains('USER')}" id="sidebar_a_analytics" th:href="@{/lnstats}" class="dropdown-toggle">
+                    <div class="">
+                        <i data-feather="activity"></i>
+                        <span>LN Stats</span>
+                    </div>
+                    <div>
+                        <i data-feather="chevron-right"></i>
+                    </div>
+                </a>
+            </li>
+
+            <!-- LND Node Menu -->
+            <li class="menu">
+                <a th:if="${user != null} and ${user.getRole_s().contains('USER')}" id="sidebar_a_lnd-node" href="#lnd-node" data-toggle="collapse" aria-expanded="false"
+                   class="dropdown-toggle">
+                    <div class="">
+                        <i data-feather="home"></i>
+                        <span>LN Node</span>
+                    </div>
+                    <div>
+                        <i data-feather="chevron-right"></i>
+                    </div>
+                </a>
+                <ul class="submenu list-unstyled collapse" id="lnd-node" data-parent="#accordionExample">
+                    <li>
+                        <a id="sidebar_a_lnd-dashboard" th:href="@{/lnd-node}"> LND Dashboard </a>
+                    </li>
+                    <li th:if="${#session.getAttribute('lnd')} != null">
+                        <a id="sidebar_a_transaction-history" th:href="@{/transaction-history}"> Transaction History </a>
+                    </li>
+                    <li th:if="${#session.getAttribute('lnd')} != null">
+                        <a id="sidebar_a_managed-api" th:href="@{/dashboard}"> Managed API </a>
+                    </li>
+                </ul>
+            </li>
+
+            <!-- Payments Menu -->
+            <li class="menu" th:if="${#session.getAttribute('lnd')} != null">
+                <a id="sidebar_a_payments_menu" href="#payments" data-toggle="collapse" aria-expanded="false"
+                   class="dropdown-toggle">
+                    <div class="">
+                        <i data-feather="upload"></i>
+                        <span>Send Payment</span>
+                    </div>
+                    <div>
+                        <i data-feather="chevron-right"></i>
+                    </div>
+                </a>
+                <ul class="submenu list-unstyled collapse" id="payments" data-parent="#accordionExample">
+<!--                    <li>-->
+<!--                        <a id="sidebar_a_payment-dashboard" th:href="@{/lnd-node}"> Payment Dashboard </a>-->
+<!--                    </li>-->
+                    <li>
+                        <a id="sidebar_a_payments" th:href="@{/payments}"> Send Payment </a>
+                    </li>
+                    <li>
+                        <a id="sidebar_a_create-invoice" th:href="@{/payment-history}"> Payment History </a>
+                    </li>
+<!--                    <li>-->
+<!--                        <a id="sidebar_a_payment-lookup" th:href="@{/payment-lookup}"> Payment LookUp </a>-->
+<!--                    </li>-->
+                </ul>
+            </li>
+
+            <!-- Invoices Menu -->
+            <li class="menu" th:if="${#session.getAttribute('lnd')} != null">
+                <a id="sidebar_a_invoices" href="#invoice-sidebar" data-toggle="collapse" aria-expanded="false"
+                   class="dropdown-toggle">
+                    <div class="">
+                        <i data-feather="download"></i>
+                        <span>Receive Payment</span>
+                    </div>
+                    <div>
+                        <i data-feather="chevron-right"></i>
+                    </div>
+                </a>
+                <ul class="submenu list-unstyled collapse" id="invoice-sidebar" data-parent="#accordionExample">
+                    <li>
+                        <a id="sidebar_a_invoice" th:href="@{/invoice}"> Create Invoice </a>
+                    </li>
+                    <li>
+                        <a id="sidebar_a_create-address" th:href="@{/lnd-address}"> Create BTC Address </a>
+                    </li>
+                    <li>
+                        <a id="sidebar_a_invoice-history" th:href="@{/invoice-history}"> Invoice History </a>
+                    </li>
+                </ul>
+            </li>
+
+            <!-- Channels Menu -->
+            <li class="menu" th:if="${#session.getAttribute('lnd')} != null">
+                <a id="sidebar_a_channels" href="#channels-sidebar" data-toggle="collapse" aria-expanded="false"
+                   class="dropdown-toggle">
+                    <div class="">
+                        <i data-feather="git-branch"></i>
+                        <span>Channels</span>
+                    </div>
+                    <div>
+                        <i data-feather="chevron-right"></i>
+                    </div>
+                </a>
+                <ul class="submenu list-unstyled collapse" id="channels-sidebar" data-parent="#accordionExample">
+                    <li>
+                        <a id="sidebar_a_manage_channels" th:href="@{/lnd-channels}"> Manage Channels</a>
+                    </li>
+                    <li>
+                        <a id="sidebar_a_open_channels" th:href="@{/open-lnd-channel}"> Open Channel</a>
+                    </li>
+
+                </ul>
+            </li>
+            <!-- Peers Menu -->
+            <li class="menu" th:if="${#session.getAttribute('lnd')} != null">
+                <a id="sidebar_a_peers" href="#peers-sidebar" data-toggle="collapse" aria-expanded="false"
+                   class="dropdown-toggle">
+                    <div class="">
+                        <i data-feather="radio"></i>
+                        <span>Peers</span>
+                    </div>
+                    <div>
+                        <i data-feather="chevron-right"></i>
+                    </div>
+                </a>
+                <ul class="submenu list-unstyled collapse" id="peers-sidebar" data-parent="#accordionExample">
+                    <li>
+                        <a id="sidebar_a_peers-list" th:href="@{/peers-list}"> Manage Peers </a>
+                    </li>
+                    <li>
+                        <a id="sidebar_a_connect peers" th:href="@{/peer-connect}"> Connect to Peer </a>
+                    </li>
+
+                </ul>
+            </li>
+            <!-- Staking Menu -->
+            <li class="menu" th:if="${#session.getAttribute('lnd')} != null">
+               <a th:if="${user != null} and ${user.getRole_s().contains('STAKING')}" id="sidebar_a_staking" href="#staking"
+                  data-toggle="collapse" aria-expanded="false"
+                   class="dropdown-toggle">
+                    <div class="">
+                       <i data-feather="file-plus"></i>
+
+                        <span>Staking</span>
+                    </div>
+                    <div>
+                        <i data-feather="chevron-right"></i>
+                    </div>
+                </a>
+                <ul class="submenu list-unstyled collapse" id="staking" data-parent="#accordionExample">
+                    <li>
+                       <a id="sidebar_a_staking-request" th:href="@{/staking-request}"> Staking Request </a>
+                   </li>
+                   <li class="">
+                      <a id="sidebar_a_staking-lists" th:href="@{/staking-lists}"> Staking Lists </a>
+                   </li>
+                </ul>
+            </li>
+
+            <!-- Liquidity Menu -->
+            <li class="menu" th:if="${#session.getAttribute('lnd')} != null">
+                <a th:if="${user != null} and ${user.getRole_s().contains('LIQUIDITY')}" id="sidebar_a_liquidity" href="#liquidity"
+                   data-toggle="collapse" aria-expanded="false"
+                   class="dropdown-toggle">
+                    <div class="">
+                        <i data-feather="file-text"></i>
+
+                        <span>Liquidity</span>
+                    </div>
+                    <div>
+                        <i data-feather="chevron-right"></i>
+                    </div>
+                </a>
+                <ul class="submenu list-unstyled collapse" id="liquidity" data-parent="#accordionExample">
+                    <li>
+                        <a id="siidebar_a_request-liquidity" th:href="@{/request-liquidity}">Request Liquidity</a>
+                    </li>
+                </ul>
+            </li>
+
+            <!-- Profile Menu -->
+            <li class="menu">
+                <a id="sidebar_a_profile" href="#profile" data-toggle="collapse" aria-expanded="false"
+                   class="dropdown-toggle">
+                    <div class="">
+                        <i data-feather="user"></i>
+                        <span>Profile</span>
+                    </div>
+                    <div>
+                        <i data-feather="chevron-right"></i>
+                    </div>
+                </a>
+                <ul class="submenu list-unstyled collapse" id="profile" data-parent="#accordionExample">
+                    <li>
+                        <a id="sidebar_a_user-profile" th:href="@{/profile}"> User Profile </a>
+                    </li>
+                    <li class="">
+                        <a id="sidebar_a_request-accounting" th:href="@{/request-accounting}"> Request Accounting </a>
+                    </li>
+                </ul>
+            </li>
+
+            <!-- Settings Menu -->
+            <li class="menu">
+                <a id="sidebar_a_settings" href="#settings" data-toggle="collapse" aria-expanded="false"
+                   class="dropdown-toggle">
+                    <div class="">
+                        <i data-feather="settings"></i>
+                        <span>Settings</span>
+                    </div>
+                    <div>
+                        <i data-feather="chevron-right"></i>
+                    </div>
+                </a>
+                <ul class="submenu list-unstyled collapse" id="settings" data-parent="#accordionExample">
+                    <li class="">
+                        <a id="sidebar_a_account-settings" th:href="@{/account-settings}"> User Settings </a>
+                    </li>
+                    <li>
+                        <a id="sidebar_a_account-info" th:href="@{/account-info}"> Account Info </a>
+                    </li>
+<!--                    <li class="">-->
+<!--                        <a id="sidebar_a_subscription" th:href="@{/subscription}"> Subscription </a>-->
+<!--                    </li>-->
+                </ul>
+            </li>
+
+            <!-- Documentation Menu -->
+            <li class="menu">
+                <a id="sidebar_a_documentation" href="#documentation" data-toggle="collapse" aria-expanded="false"
+                   class="dropdown-toggle">
+                    <div class="">
+                        <i data-feather="book"></i>
+                        <span>Documentation</span>
+                    </div>
+                    <div>
+                        <i data-feather="chevron-right"></i>
+                    </div>
+                </a>
+                <ul class="submenu list-unstyled collapse" id="documentation" data-parent="#accordionExample">
+
+                    <li>
+                        <a id="sidebar_a_dla-usage" th:href="@{/dla-usage}">DlA Usage</a>
+                    </li>
+
+                </ul>
+            </li>
+            <!-- Feeback Menu Option -->
+            <li class="menu">
+                <a id="sidebar_a_feedback" href="mailto:feedback@lqwd.money" class="dropdown-toggle">
+                    <div class="">
+                        <i data-feather="mail"></i>
+                        <span>Send Feedback</span>
+                    </div>
+                    <div>
+                        <i data-feather="chevron-right"></i>
+                    </div>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <!--  END SIDEBAR  -->
+</div>

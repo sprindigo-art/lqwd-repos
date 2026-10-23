@@ -1,0 +1,91 @@
+.page-header {
+    display: flex;
+    padding: 0;
+    margin-bottom: 16px;
+    margin-top: 16px;
+}
+.page-header .toggle-switch {
+    display: flex;
+    margin-right: 7px;
+}
+
+.page-header .switch {
+    position: relative;
+    display: inline-block;
+    width: 35px;
+    height: 18px;
+}
+
+.page-header .switch.s-icons {
+    width: 57px;
+    height: 30px;
+}
+/* Hide default HTML checkbox */
+.page-header .switch input {display:none;}
+
+/* The slider */
+.page-header .switch .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ebedf2;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+.page-header .switch.s-icons .slider svg {
+    position: absolute;
+    width: 19px;
+    height: 19px;
+    top: 4px;
+    color: #fff;
+    /* fill: rgba(224, 230, 237, 0.9686274509803922); */
+}
+
+.page-header .switch.s-icons .slider svg.feather-sun {
+    left: 4px;
+    color: #e2a03f;
+    fill: #e2a03f;
+}
+.page-header .switch.s-icons .slider svg.feather-moon {
+    right: 4px;
+}
+
+.page-header .switch .slider:before {
+    position: absolute !important;
+    content: "" !important;
+    background-color: white !important;
+    -webkit-transition: .4s !important;
+    -ms-transition: .4s !important;
+    transition: .4s !important;
+    height: 21px !important;
+    width: 21px !important;
+    left: 4px !important;
+    bottom: 2px !important;
+    box-shadow: 0 1px 15px 1px rgba(52, 40, 104, 0.34) !important;
+    z-index: 1 !important;
+}
+.page-header .switch input:checked + .slider:before {
+    -webkit-transform: translateX(30px) !important;
+    -ms-transform: translateX(30px) !important;
+    transform: translateX(30px) !important;
+    border: 0 !important;
+}
+/* Rounded Slider Switches */
+.page-header .switch .slider.round { border-radius: 34px; }
+.page-header .switch .slider.round:before { border-radius: 50%; }
+
+.page-header .switch.s-outline .slider {
+    border: 2px solid #009EE2 !important;
+    background-color: transparent;
+    width: 64px;
+    height: 30px;
+}
+.page-header .switch.s-icons.s-outline-secondary {
+    color: #009EE2 !important;
+}
+.hidden_div{
+	display:none;
+}

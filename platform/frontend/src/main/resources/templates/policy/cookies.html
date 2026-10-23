@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/head::header_main(~{::title}, ~{::link})">
+    <title>LQWD | Cookies policy</title>
+    <!-- END GLOBAL MANDATORY STYLES -->
+    <link th:href="@{/assets/css/authentication/form-1.css}" rel="stylesheet" type="text/css"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/assets/css/forms/theme-checkbox-radio.css}">
+    <link th:href="@{assets/css/widgets/modules-widgets.css}" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" th:href="@{/assets/css/forms/switches.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/login.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/assets/css/components/custom-modal.css}">
+    <link th:href="@{/assets/css/authentication/form-1.css}" rel="stylesheet" type="text/css"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/policy.css}">
+</head>
+<body>
+<div class="form-image">
+    <div class="l-image">
+    </div>
+</div>
+<div class="main-content">
+
+    <h2>Cookies Policy</h2>
+    <p>Last updated: July 09, 2021</p>
+    <div class="widget-content">
+        <div th:each="cookiePolicy:${cookiePolicies}">
+            <h4 th:text="${cookiePolicy.getHeader()}"></h4>
+            <h5 th:text="${cookiePolicy.getSubheader()}"></h5>
+            <p th:each="description:${cookiePolicy.getDescription()}" th:text="${description}"></p>
+            <ul>
+                <li th:each="list:${cookiePolicy.getList()}" th:text="${list}">
+                </li>
+            </ul>
+            <p>
+                <a th:text="${cookiePolicy.getLinktext()}" th:href="${cookiePolicy.getLinks()}">
+                    <!--                <a th:text="${cookiePolicy.getLinks()}" th:href="${cookiePolicy.getLinks()}"></a>-->
+                </a>
+            </p>
+
+
+        </div>
+    </div>
+    <h5>Contact Us</h5>
+    <p>If you have any questions about this Cookies Policy, You can contact us by email: <a href="info@lqwd.money">info@lqwd.money</a>.
+    </p>
+</div>
+
+<script th:src="@{assets/js/widgets/modules-widgets.js}"></script>
+</body>
+</html>

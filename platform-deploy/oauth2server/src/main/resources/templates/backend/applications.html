@@ -1,0 +1,54 @@
+<html>
+<head th:include="fragment/headerfooter::header1"></head>
+<body onload="startTime()">
+<div id="containerMain">
+    <div th:include="fragment/headerfooter::top_menu('action')"></div>
+    <div id="titleMain">
+        <h1>Applications</h1>
+    </div>
+
+    <div th:if="${message != null}" class="info_messages">
+        <p th:text="${message}"></p>
+    </div>
+    <div id="contentMain">
+
+        <table id="customers">
+            <tr>
+                <th>ID (EDIT)</th>
+                <th>Company Name</th>
+                <th>Contact Name</th>
+                <th>Contact Email</th>
+                <th>Contact Phone</th>
+            </tr>
+            <tr th:each="item, iItem : ${page.content}">
+                <td>
+                    <a th:href="@{/backend/applications/edit(id=${item.id})}" th:text="${item.id}"></a>
+                </td>
+
+
+                    <td th:text="${item.companyName}" />
+
+                    <td th:text="${item.contactName}" />
+
+                    <td th:text="${item.contactEmail}" />
+
+                    <td th:text="${item.contactPhone}" />
+            </tr>
+        </table>
+        <div id="paginationMain">
+            <div class="center">
+                <div class="pagination" th:each="pageNumber : ${pageNumbers}">
+                    <a th:class="${pageNumber == (page.number + 1)} ? 'current page-numbers' : 'page-numbers'"
+                       th:href="@{/backend/applications(size=${page.size}, page=${pageNumber})}"
+                       th:text="${pageNumber}"> </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="footer">
+
+
+</div>
+</body>
+</html>

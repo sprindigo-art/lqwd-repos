@@ -1,0 +1,69 @@
+<html>
+<head th:include="fragment/headerfooter::header"></head>
+<body >
+<div id="containerMain">
+    <img th:src="@{/images/LQwD-Logo_green_small.png}" class="img-responsive center-block" width="300" height="300" alt="Logo"/>
+    <div align="center" th:if="${message}">
+        <h4>
+            <p style="font-size: 14px; color: #1aff38;" th:text="${message}"></p>
+        </h4>
+    </div>
+    <div id="main">
+
+        <div id="requester">
+
+            <input type="button" onclick="$request.activatePoll();" value="poll">
+
+            <input type="button" onclick="$request.disablePoll();" value="turn off poll">
+
+        </div>
+        <div id="resultsjson">
+
+        </div>
+    </div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+<script >
+    function Request() {
+
+        this.poll = false;
+
+        this.activatePoll = function () {
+            console.log("activeted");
+            this.poll = true;
+            this.runPoll();
+        };
+
+        this.disablePoll = function () {
+            console.log("disactiveted");
+            this.poll = false;
+        };
+
+        this.runPoll = function () {
+            var self = this;
+            console.log("started");
+            var poll = setTimeout(function () {
+                $.ajax({
+                    url: '/requests',
+                    success: function(result){
+                        $("#resultsjson").append("<div>"+result+"</div>");
+                    },
+                    complete: function () {
+                        if (self.poll == false) {
+                            clearTimeout(poll);
+                        } else {
+                            self.runPoll();
+                        }
+                    }});
+
+            }, 5000);
+        };
+    }
+</script>
+<script>
+    $(document).ready(function () {
+        $request = new Request();
+    });
+</script>
+</body>
+</html>

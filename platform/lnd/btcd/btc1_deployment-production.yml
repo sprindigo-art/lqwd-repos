@@ -1,0 +1,81 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: btc1
+  namespace: btcd
+  labels:
+    app: btc1
+spec:
+  selector:
+    matchLabels:
+      app: btc1
+  template:
+    metadata:
+      labels:
+        app: btc1
+    spec:
+      containers:
+        - name: btc1
+          image: '514063904685.dkr.ecr.us-west-2.amazonaws.com/btcd:$LND_IMAGE_TAG'
+          terminationMessagePath: "/tmp/my-log"
+          env:
+            - name: WENV
+              value: "production"
+            - name: LND_PODNAME
+              value: btc1
+            - name: SCENARIO
+              value: mbtc1
+            - name: LND_BITCOIND
+              value: "true"
+            - name: WATCHTOWER
+              value: "true"
+            - name: LND_NETWORK
+              value: mainnet
+            - name: LND_RPCUSER
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: LND_RPCUSER
+            - name: LND_RPCPASS
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: LND_RPCPASS
+          ports:
+            - containerPort: 8333
+            - containerPort: 9735
+            - containerPort: 29088
+            - containerPort: 29099
+          resources:
+            requests:
+              memory: "4000Mi"
+              cpu: "200m"
+            limits:
+              memory: "5000Mi"
+              cpu: "500m"
+          volumeMounts:
+            - name: lnd
+              mountPath: /data
+          readinessProbe:
+            exec:
+              command:
+                - cat
+                - /data/bitcoind/bitcoind.pid
+            initialDelaySeconds: 120
+            timeoutSeconds: 1
+            periodSeconds: 5
+            successThreshold: 1
+            failureThreshold: 3
+
+      volumes:
+        - name: lnd
+          persistentVolumeClaim:
+            claimName: pv07-claim
+        - name: secret
+          secret:
+            secretName: secret
+      imagePullSecrets:
+        - name: ecr-token
+
+
+

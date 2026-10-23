@@ -1,0 +1,19 @@
+@0xfff
+@azizlqwd
+@jjacks95
+@okemechris
+@mghd1366
+
+
+/configuration-server/  @azizlqwd @jjacks95 @okemechris 
+/db\ scripts/           @azizlqwd @jjacks95 @okemechris 
+/devops-tools/          @azizlqwd @mghd1366 @azadmir
+/direct-lnd-api/        @azizlqwd @jjacks95 @okemechris 
+/fe_microservices/      @azizlqwd @jjacks95 @okemechris
+/frontend/              @azizlqwd @jjacks95 @okemechris
+/jenkins/               @azizlqwd @mghd1366 @azadmir
+/kafka/                 @azizlqwd @jjacks95 @okemechris 
+/lnd/                   @azizlqwd @jjacks95 @okemechris
+/oauth2server/          @azizlqwd @jjacks95 @okemechris
+/py-backend/            @azizlqwd @jjacks95 @okemechris @0xfff
+/tools/                 @azizlqwd @jjacks95 @mghd1366

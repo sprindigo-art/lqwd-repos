@@ -1,0 +1,4 @@
+# must be ended with a new line "LF" (Unix) and not "CRLF" (Windows)
+* * * * * /root/python/cron.sh >> /root/python/cron.log 2>&1
+*/5 * * * * /data/v3/lnd-885/check-node/run_goscripts.sh >> /data/v3/lnd-885/check-node/cronlogs.log
+

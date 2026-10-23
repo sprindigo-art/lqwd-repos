@@ -1,0 +1,88 @@
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        opaque:
+          introspection-uri: ${AUTH_HOST:http://oauth2.oauth2}:8187/oauth/check_token
+          introspection-client-id: ${APP_USERNAME}
+          introspection-client-secret: ${APP_PASSWORD}
+  datasource:
+    url: ${DB_HOST:jdbc:postgresql://192.168.113.250:5433/billing_db}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+  liquibase:
+    change-log: classpath:/db/changelog/db.changelog-master.xml
+  kafka:
+    bootstrap-servers: ${KAFKA_BROKER:broker.kafka-v1:9092}
+    enable:
+      auto:
+        commit: true
+    auto:
+      commit:
+        interval:
+          ms: 10000
+    session:
+      timeout:
+        ms: 30000
+    consumer:
+      timeout:
+        ms: 120000
+    jaas:
+      enabled: true
+    properties:
+      security:
+        protocol: SASL_PLAINTEXT
+      sasl:
+        mechanism: PLAIN
+        jaas:
+          config: ${SASL_CONFIG}
+  cloud:
+    bus:
+      enabled: false
+    stream:
+      default:
+        producer:
+          useNativeEncoding: true
+        consumer:
+          useNativeEncoding: true
+      bindings:
+        springCloudBusOutput:
+          consumer:
+            useNativeDecoding: false
+          producer:
+            useNativeEncoding: false
+        springCloudBusInput:
+          consumer:
+            useNativeDecoding: false
+          producer:
+            useNativeEncoding: false
+        input:
+          destination: tmessage-details
+          content-type: application/*+avro
+          group: group-1
+          concurrency: 30
+        output:
+          destination: tmessage-details
+          content-type: application/*+avro
+kafka:
+  binder:
+    key-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
+    value-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
+    schema-registry-url: http://schemaregistry.kafka-v1:8081
+    key-deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
+    value-deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
+app:
+  oauth-server-base-url: ${AUTH_HOST:http://oauth2.oauth2}:8187
+  client-id: ${APP_USERNAME}
+  client-secret: ${APP_PASSWORD}
+  subscription-create-invoice-in-days: 15
+  subscription-number-of-conf: 1
+  truststore-password: ${TRUSTSTORE_PASSWORD}
+  frontend-url: https://react-dev.lqwd.tech
+  subscribe-request-validity-in-days: 3
+  invoice-lnd:
+    cert: ${INVOICE_LND_CERT}
+    macaroon: ${INVOICE_LND_MACAROON}
+    address: https://slnd-32783.lqwd-lnd:8080
+    pub-key: ${INVOICE_LND_PUBKEY}
+    lnd-address: slnd-32783.lqwd-lnd:32024

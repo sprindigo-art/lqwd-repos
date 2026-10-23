@@ -1,0 +1,16 @@
+# Read by /etc/init.d/dropbear.
+
+# Listen on all interfaces and let the firewall decide who may reach it.
+#
+# This used to bind 192.168.1.50 explicitly. That broke once the VPN was added:
+# tun0 (10.99.0.10) does not exist yet when dropbear starts, and dropbear
+# cannot bind an address that appears later, so it would fail at boot. The
+# firewall is the real control - it permits port 22 only from 192.168.1.0/24
+# on eth0 and from 10.99.0.0/24 on tun0, and drops everything else.
+DROPBEAR_PORT="22"
+
+#  -s  no password logins at all (public key only)
+#  -g  no root password logins
+#  -j  no local port forwarding
+#  -k  no remote port forwarding
+DROPBEAR_EXTRA_ARGS="-s -g -j -k"

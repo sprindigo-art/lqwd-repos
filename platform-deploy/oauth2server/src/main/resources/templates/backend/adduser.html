@@ -1,0 +1,363 @@
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head th:include="fragment/headerfooter::header1"></head>
+<body onload="startTime()">
+<div id="containerMain">
+    <div th:include="fragment/headerfooter::top_menu('action')"></div>
+
+    <div id="titleMain">
+        <h1>Add/Edit User</h1>
+    </div>
+
+    <div th:if="${errorMessages != null && errorMessages.size() > 0}" class="error_messages">
+        <p th:each="item : ${errorMessages}" th:text="${item}"></p>
+    </div>
+
+    <div id="contentMain" th:if="${user == null}">
+        <p>User cannot be found</p>
+    </div>
+
+    <div id="contentMain" th:if="${user != null}">
+        <form autocomplete="off" action="#" th:action="@{/backend/add/user}"
+              th:object="${user}" method="post" class="form-horizontal"
+              role="form">
+            <input type="hidden" th:field="*{id}" />
+            <input type="hidden" th:field="*{status}" />
+            <div>
+                <h2>ACCOUNT DETAILS</h2>
+            </div>
+            <div class="row">
+                <div class="col-25">
+                    <label>Username</label>
+                </div>
+                <div class="col-75">
+
+                    <input	type="text" th:field="*{username}" placeholder="Username"
+                              class="form-control" />
+                    <label th:if="${#fields.hasErrors('username')}"
+                           th:errors="*{username}" class="validation-message">
+                    </label>
+                </div>
+            </div>
+
+
+
+
+            <div th:if="${user.id == null}" class="row">
+                <div class="col-25">
+                    <label>Password</label>
+                </div>
+                <div class="col-75">
+                    <input	type="text" th:field="*{password}" placeholder="Password"
+                              class="form-control" />
+                </div>
+            </div>
+
+            
+            
+            <div class="row">
+                <div class="col-25">
+                    <label>Email</label>
+                </div>
+                <div class="col-25">
+                    <label th:if="${#fields.hasErrors('email')}"
+                           th:errors="*{email}" class="validation-message">
+                    </label>
+                </div>
+                <div class="col-75">
+                    <input	type="text" th:field="*{email}" placeholder="Email"
+                              class="form-control" />
+                </div>
+            </div>
+
+
+            <div class="row" th:if="${user.id != null}" >
+                <div class="col-25">
+                    <label>Status</label>
+                </div>
+                <div class="col-75">
+                    <label th:text="${user.status}">
+                    </label>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-25">
+                </div>
+                <div class="col-75">
+                    <label>
+                    <input	type="checkbox" th:field="*{accountExpired}"
+                              class="form-control" />
+                        Account Expired</label>
+
+                    <label>
+                    <input	type="checkbox" th:field="*{accountLocked}"
+                              class="form-control" />
+                        Account Locked</label>
+                    <label>
+                    <input	type="checkbox" th:field="*{credentialsExpired}"
+                              class="form-control" />
+                        Credentials Expired</label>
+
+                    <label>
+                    <input	type="checkbox" th:field="*{enabled}"
+                              class="form-control" />
+                        Enabled</label>
+                </div>
+            </div>
+
+
+
+            <div class="row">
+                <div class="col-25">
+                    <label>Allowed No Of LND Nodes</label>
+                </div>
+                <div class="col-75">
+                    <input	min="1" type="number" th:field="*{allowedNoOfLnd}" placeholder="Allowed Number Of Nodes"
+                              class="form-control" />
+                </div>
+            </div>
+
+
+
+            <div class="row">
+                <div class="col-25">
+                    <label>Account_type</label>
+                </div>
+                <div class="col-25">
+                    <label th:if="${#fields.hasErrors('accountTypeId')}"
+                           th:errors="accountTypeId" class="validation-message"> </label>
+                </div>
+                <div class="col-75">
+                    <select id="mservice" th:field="*{accountTypeId}">
+                        <option th:each="item : ${accountTypes}" th:value="${item.id}"
+                                th:text="${item.name}"
+                                th:selected="${item.id == user.accountTypeId}"></option>
+                    </select>
+                </div>
+            </div>
+
+
+            <div class="row" th:if="${hasLiquidity == true}">
+                <div class="col-25">
+                    <label>Liquidity Fee</label>
+                </div>
+                <div class="col-75">
+                    <input	min="0" type="number" th:field="*{liquidityFee}" placeholder="Liquidity Fee"
+                              class="form-control" />
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-25">
+                    <label>Roles</label>
+                </div>
+                <div class="col-25">
+                    <label th:if="${#fields.hasErrors('roleIds')}"
+                           th:errors="accountTypeId" class="validation-message"> </label>
+                </div>
+                <div class="col-75">
+                    <div class="row">
+                        <table id="customers">
+                            <tr>
+                                <th>Service</th>
+                                <th>Roles</th>
+                            </tr>
+                            <tr th:each="service : ${services}">
+                                <td th:text="${service}" />
+                                <td>
+                                    <label class="col-100 block" th:each="role : ${roles}" th:if="${role.mservice.name == service}">
+                                        <input type="checkbox" name="roleIds"
+                                               th:text="${role.name}"
+                                               th:value="${role.id}"
+                                               th:field="*{roleIds}"
+                                        />
+                                    </label>
+                                </td>
+                            </tr>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+            <br />
+
+            <br />
+            <br />
+            <div>
+                <h2>PROFILE DETAILS</h2>
+            </div>
+            <div class="row">
+                <div class="col-25">
+                    <label>First Name</label>
+                </div>
+                <div class="col-25">
+                    <label th:if="${#fields.hasErrors('firstName')}"
+                           th:errors="*{firstName}" class="validation-message">
+                    </label>
+                </div>
+                <div class="col-75">
+                    <input	type="text" th:field="*{firstName}" placeholder="First Name"
+                              class="form-control" />
+                </div>
+            </div>
+            
+            
+            <div class="row">
+                <div class="col-25">
+                    <label>Last Name</label>
+                </div>
+                <div class="col-75">
+                    <input	type="text" th:field="*{lastName}" placeholder="Last Name"
+                              class="form-control" />
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-25">
+                    <label>Phone</label>
+                </div>
+                <div class="col-75">
+                    <input	type="text" th:field="*{phone}" placeholder="Phone"
+                              class="form-control" />
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-25">
+                    <label>Receive News</label>
+                </div>
+
+                <div class="col-75">
+                    <label>
+                        <input	type="checkbox" th:field="*{receiveNews}"
+                                  class="form-control" /> Receive News
+
+                    </label>
+
+                    <label>
+                    <input	type="checkbox" th:field="*{fa2}"
+                              class="form-control" />
+                        Enable 2FA
+                    </label>
+
+                </div>
+            </div>
+            <div class="row">
+            	<input type="submit" th:value="${user.id == null || user.id.trim().isEmpty()?'ADD':'UPDATE USER'}" />
+            </div>
+
+            <h2>
+                <span class="text-success" th:utext="${successMessage}"></span>
+            </h2>
+        </form>
+        <br />
+        <br />
+        <br />
+        <div th:if="${user.id != null}">
+            <h2>Api KEYS</h2>
+        </div>
+        <form id="api_key_form" th:if="${user.id != null && user.id.trim().length() > 0}" autocomplete="off" action="#" th:action="@{/backend/apikeys}" method="post" class="form-horizontal"
+              role="form">
+                <input id="action" type="hidden" name="action" value="ADD"/>
+                <input type="hidden" name="user_id" th:value="${user.id}"/>
+                <input id="api_key_id" type="hidden" name="api_key_id"/>
+
+
+                <div>
+                    <div class="col-100">
+                        <table class="customers">
+                            <colgroup>
+                                <col class="w">
+                                <col>
+                                <col>
+                              </colgroup>
+                            <thead>
+                            <tr>
+                                <th>API KEYS</th>
+                                <th>STATUS</th>
+                                <th>ACTION</th>
+                            </tr>
+
+                            </thead>
+
+                            <tbody>
+
+
+                            <tr th:each="item, iItem : ${apiKeys}">
+                                <td th:text="${item.apikey}" />
+                                <td th:text="${item.status}" />
+                                <td><button th:if="${item.status == 'active'}" type="button" th:data-id="${item.apikey}" name="action" onclick="deactivateKey(this.getAttribute('data-id'))">Deactivate</button></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-100">
+                        <input type="submit" value="GENERATE API KEY" />
+                    </div>
+                </div>
+            <script>
+                function deactivateKey(api_key_id){
+                    console.log(api_key_id);
+                    document.getElementById("action").value = "DEACTIVATE";
+                    document.getElementById("api_key_id").value = api_key_id;
+                    document.getElementById("api_key_form").submit();
+                }
+            </script>
+        </form>
+
+        <br /><br /><br />
+        <div th:if="${(user.id != null  && user.id.trim().length() > 0) && lndNodes != null && lndNodes.size() > 0}">
+            <h2>LND Nodes</h2>
+            <div>
+                <div class="col-100">
+                    <table class="customers">
+                        <colgroup>
+
+                            <col>
+                            <col>
+                            <col>
+                            <col>
+                            <col>
+                            <col>
+                            <col class="w1">
+                        </colgroup>
+                        <thead>
+                        <tr>
+                            <th>NODE NAME</th>
+                            <th>STATUS</th>
+                            <th>EXTERNAL IP</th>
+                            <th>PORT</th>
+                            <th>NAMESPACE</th>
+                            <th>WATCHTOWER</th>
+                            <th>NODE PUBLIC KEY</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+
+                        <tr th:each="item, iItem : ${lndNodes}">
+                            <td th:text="${item.lndnodename}" />
+                            <td th:text="${item.status}" />
+                            <td th:text="${item.externalip}" />
+
+                            <td th:text="${item.port}" />
+                            <td th:text="${item.namespace}" />
+                            <td th:text="${item.watchtower}" />
+                            <td th:text="${item.nodepubkey}" />
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="footer">
+
+
+</div>
+</body>
+</html>

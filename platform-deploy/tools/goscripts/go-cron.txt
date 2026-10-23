@@ -1,0 +1,1 @@
+*/5 * * * * ./lnd/check-node/run_goscripts.sh

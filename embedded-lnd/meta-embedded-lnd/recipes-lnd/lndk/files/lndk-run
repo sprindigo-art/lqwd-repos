@@ -1,0 +1,57 @@
+#!/bin/sh
+# Wait for lnd to be usable, then run lndk.
+#
+# Started by /etc/init.d/lndk, which backgrounds this and records ITS pid. The
+# exec at the end keeps that pid, so the pidfile stays correct.
+#
+# lndk subscribes to lnd's onion messages and peer events, and neither exists
+# before the wallet is unlocked. This device does not auto-unlock - that would
+# mean a plaintext password on the data partition - so "not yet" lasts until
+# someone runs lncli unlock, and waiting is the only sane behaviour.
+set -eu
+
+. /etc/default/lndk
+
+MACAROON="$LND_DIR/data/chain/bitcoin/$LND_NETWORK/admin.macaroon"
+
+log() { echo "lndk-run: $*"; }
+
+log "waiting for $MACAROON"
+while [ ! -f "$MACAROON" ] || [ ! -f "$LND_DIR/tls.cert" ]; do
+    sleep 5
+done
+
+log "waiting for lnd at $LND_RPC to be unlocked and active"
+while true; do
+    state=$(lncli --network="$LND_NETWORK" --lnddir="$LND_DIR" \
+                  --rpcserver="$LND_RPC" state 2>/dev/null | tr -d ' \n' || true)
+    case "$state" in
+        *SERVER_ACTIVE*) break ;;
+    esac
+    sleep 5
+done
+log "lnd is active"
+
+# lndk runs as the lnd user rather than one of its own, because it holds lnd's
+# ADMIN macaroon: it needs signer, peer and invoice access across three
+# sub-servers, and this device cannot bake a narrower credential - the
+# security layer disables BakeMacaroon. Isolating it from lnd's data directory
+# while handing it the admin macaroon would be theatre.
+#
+# What actually bounds it is the same thing that bounds every other caller
+# here: the on-chain allowlist and the RPC deny list apply to the admin
+# macaroon too. lndk can be paid through an offer and cannot pay one.
+mkdir -p "$LNDK_DATA"
+chown lnd:lnd "$LNDK_DATA"
+chmod 0700 "$LNDK_DATA"
+
+log "starting lndk, gRPC on $GRPC_HOST:$GRPC_PORT"
+exec start-stop-daemon --start --chuid lnd:lnd \
+    --exec /usr/bin/lndk -- \
+    --address="https://$LND_RPC" \
+    --cert-path="$LND_DIR/tls.cert" \
+    --macaroon-path="$MACAROON" \
+    --data-dir="$LNDK_DATA" \
+    --grpc-host="$GRPC_HOST" \
+    --grpc-port="$GRPC_PORT" \
+    --log-level="$LOG_LEVEL"

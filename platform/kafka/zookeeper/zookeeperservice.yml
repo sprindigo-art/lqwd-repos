@@ -1,0 +1,22 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: zookeeper
+  namespace: kafka-v1
+  labels:
+    app: zookeeper
+spec:
+  
+  selector:
+    app: zookeeper
+
+  ports:
+    - name: client
+      port: 2181
+      protocol: TCP
+    - name: follower
+      port: 2888
+      protocol: TCP
+    - name: leader
+      port: 3888
+      protocol: TCP

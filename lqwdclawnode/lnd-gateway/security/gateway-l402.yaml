@@ -1,0 +1,131 @@
+name: "Gateway L402 Protocol Compliance"
+target: "lnd-gateway"
+version: "1.0"
+description: >
+  Validates L402 protocol security properties for the lnd-gateway's pay-per-call
+  endpoints. Covers single-use token enforcement (replay protection), concurrent
+  consumption invariant, token expiry enforcement, and endpoint caveat scoping.
+  All assertions use HTTP status codes and error messages that match the gateway's
+  actual L402 middleware behavior.
+placeholder_syntax: >
+  Dynamic values use ${step_name.field} syntax. Setup steps produce named outputs
+  (e.g., obtain_l402_token produces macaroon and preimage). The request block
+  references these via ${obtain_l402_token.macaroon} and ${obtain_l402_token.preimage}.
+  Configuration values use ${config.field} syntax. A scan runner resolves all
+  placeholders before sending requests.
+
+replay_protection:
+  - id: "L402-RPL-01"
+    name: "Consumed token rejected on replay"
+    description: >
+      After a valid L402 token is consumed (200 response), the same token must
+      be rejected on subsequent requests. The token store's atomic Consume()
+      transitions the token from 'paid' to 'consumed', so any replay attempt
+      finds no matching 'paid' row and returns an error.
+    method: GET
+    path: "/v1/l402/node-stats"
+    setup:
+      - obtain_l402_token:
+          endpoint: "/v1/l402/node-stats"
+          method: GET
+          description: "GET the endpoint with no auth to receive 402 challenge with WWW-Authenticate header, then complete payment of the Lightning invoice"
+      - consume_token:
+          method: GET
+          path: "/v1/l402/node-stats"
+          headers:
+            Authorization: "L402 ${obtain_l402_token.macaroon}:${obtain_l402_token.preimage}"
+          expect_status: 200
+          description: "First use of the token must succeed, consuming it"
+    request:
+      headers:
+        Authorization: "L402 ${obtain_l402_token.macaroon}:${obtain_l402_token.preimage}"
+    expect:
+      status: 401
+      body_contains: "token validation failed"
+      body_not_contains: "data"
+
+concurrent_consumption:
+  - id: "L402-CON-01"
+    name: "Only one of N concurrent requests succeeds"
+    description: >
+      When N identical requests are sent simultaneously with the same valid
+      token, exactly 1 must succeed (200) and all others must fail (401).
+      The token store uses an atomic UPDATE...WHERE status='paid' RETURNING
+      query, so only one concurrent caller can transition the token. The runner
+      determines N and the concurrency strategy.
+    method: GET
+    path: "/v1/l402/node-stats"
+    setup:
+      - obtain_l402_token:
+          endpoint: "/v1/l402/node-stats"
+          method: GET
+          description: "GET the endpoint with no auth to receive 402 challenge, then complete payment"
+    request:
+      headers:
+        Authorization: "L402 ${obtain_l402_token.macaroon}:${obtain_l402_token.preimage}"
+    expect:
+      status: 401
+      body_contains: "token validation failed"
+      body_not_contains: "data"
+
+expired_token:
+  - id: "L402-EXP-01"
+    name: "Expired token rejected"
+    description: >
+      A token that has passed its expires_at timestamp must be rejected.
+      The Consume() query includes an expires_at > now() condition, so
+      expired tokens are not found even if their status is still 'paid'.
+      The runner should wait for or force token expiry before sending the request.
+    method: GET
+    path: "/v1/l402/node-stats"
+    setup:
+      - obtain_l402_token:
+          endpoint: "/v1/l402/node-stats"
+          method: GET
+          description: "GET the endpoint with no auth to receive 402 challenge, complete payment, then wait for or force token expiry past its TTL"
+    request:
+      headers:
+        Authorization: "L402 ${obtain_l402_token.macaroon}:${obtain_l402_token.preimage}"
+    expect:
+      status: 401
+      body_contains: "token validation failed"
+
+endpoint_caveat:
+  - id: "L402-CAV-01"
+    name: "Token scoped to wrong endpoint rejected"
+    description: >
+      A token minted for one L402 endpoint must not grant access to a
+      different L402 endpoint. The L402 middleware checks the endpoint
+      caveat against the request path and returns 403 on mismatch.
+    method: GET
+    path: "/v1/l402/node-stats"
+    setup:
+      - obtain_l402_token:
+          endpoint: "/v1/l402/promo"
+          method: GET
+          description: "GET the /v1/l402/promo endpoint with no auth to receive 402 challenge scoped to /v1/l402/promo, then complete payment"
+    request:
+      headers:
+        Authorization: "L402 ${obtain_l402_token.macaroon}:${obtain_l402_token.preimage}"
+    expect:
+      status: 403
+      body_contains: "token not valid for this endpoint"
+
+  - id: "L402-CAV-02"
+    name: "Token scoped to correct endpoint succeeds"
+    description: >
+      A token minted for an endpoint must grant access to that same endpoint.
+      Confirms positive path: endpoint caveat matches request path, token is
+      consumed, and the handler returns data.
+    method: GET
+    path: "/v1/l402/node-stats"
+    setup:
+      - obtain_l402_token:
+          endpoint: "/v1/l402/node-stats"
+          method: GET
+          description: "GET the /v1/l402/node-stats endpoint with no auth to receive 402 challenge scoped to /v1/l402/node-stats, then complete payment"
+    request:
+      headers:
+        Authorization: "L402 ${obtain_l402_token.macaroon}:${obtain_l402_token.preimage}"
+    expect:
+      status: 200

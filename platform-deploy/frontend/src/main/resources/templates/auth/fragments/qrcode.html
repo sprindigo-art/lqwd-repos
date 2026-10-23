@@ -1,0 +1,13 @@
+<div th:fragment="qr-code">
+  <div id="qrcode_div_qrcode" class="card component-card_9 text-center">
+    <img id="qr-code-img" th:src="${qr}" class="card-img-top" alt="widget-card-2">
+    <div class="card-body">
+      <h5 class="card-title">Google Authenticator QR Code</h5>
+      <p class="card-text">Scan this Barcode using Google Authenticator app on your phone to use it later in login.</p>
+      <div class="pt-3">
+        <a id="qrcode_btn_continue"  class="button btn-dark btn-lg">Continue</a>
+      </div>
+
+    </div>
+  </div>
+</div>

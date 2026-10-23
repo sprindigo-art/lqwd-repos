@@ -1,0 +1,28 @@
+# lnurlpd - LNURL-pay for this appliance.
+#
+# Read by /etc/init.d/lnurlpd and /usr/libexec/lnurlpd-run.
+
+# Where lnd keeps its data, and which network its macaroons are filed under.
+LND_DIR=/data/lnd
+LND_NETWORK=regtest
+LND_REST=https://127.0.0.1:8080
+
+# The VPN address, and the port the gateway proxies to. NOT 0.0.0.0: the
+# firewall would still stop the LAN and the internet reaching it, but there is
+# no reason for the socket to be there at all.
+LISTEN=10.99.0.10:8090
+
+# The PUBLIC base URL, which the gateway serves and proxies to this device.
+# It is what a wallet calls back to, so it is the gateway's name and not this
+# device's address. Substituted at build time from the provisioning input in
+# /vm/testbed/secrets/merchant.env.
+BASE_URL=@LNURL_BASE_URL@
+NAME=@LNURL_NAME@
+
+# Payment limits, in satoshis.
+MIN_SAT=1
+MAX_SAT=1000000
+
+# Copies of the two credentials lnurlpd needs, readable by it and nothing
+# else. See /usr/libexec/lnurlpd-run for why they are copies.
+CRED_DIR=/data/lnurlpd

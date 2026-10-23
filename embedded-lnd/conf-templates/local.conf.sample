@@ -1,0 +1,40 @@
+# Generated from conf-templates/local.conf.sample by scripts/20-setup-build.sh.
+# @YOCTO_ROOT@ is substituted at install time.
+
+MACHINE ?= "raspberrypi4-64"
+DISTRO ?= "embedded-lnd"
+
+# Everything big goes on the /vm volume (3.1T). The root filesystem has only
+# ~40G free and a Yocto build will fill it.
+DL_DIR ?= "@YOCTO_ROOT@/downloads"
+SSTATE_DIR ?= "@YOCTO_ROOT@/sstate-cache"
+TMPDIR = "@YOCTO_ROOT@/build/tmp"
+
+# Where the 4x build scripts leave the cross-compiled binaries: lnd itself,
+# lndk (BOLT 12) and lnurlpd (LNURL-pay). Each recipe defaults to the same
+# paths, so these only matter if the workspace moves.
+LND_ARTIFACTS_DIR = "@YOCTO_ROOT@/artifacts/lnd"
+LNDK_ARTIFACTS_DIR = "@YOCTO_ROOT@/artifacts/lndk"
+LNURLPD_ARTIFACTS_DIR = "@YOCTO_ROOT@/artifacts/lnurlpd"
+
+# 12 cores on this host.
+BB_NUMBER_THREADS ?= "12"
+PARALLEL_MAKE ?= "-j 12"
+
+PACKAGE_CLASSES ?= "package_ipk"
+
+# Fail the build on QA problems rather than warning and shipping them.
+ERROR_QA:append = " installed-vs-shipped"
+
+USER_CLASSES ?= "buildstats"
+PATCHRESOLVE = "noop"
+BB_DISKMON_DIRS ??= "\
+    STOPTASKS,${TMPDIR},1G,100K \
+    STOPTASKS,${DL_DIR},1G,100K \
+    ABORT,${TMPDIR},100M,1K \
+    ABORT,${DL_DIR},100M,1K"
+
+CONF_VERSION = "2"
+
+# Raspberry Pi firmware carries this flag.
+LICENSE_FLAGS_ACCEPTED += "synaptics-killswitch"

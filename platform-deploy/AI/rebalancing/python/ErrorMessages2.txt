@@ -1,0 +1,162 @@
+aziz@lnd-node-01:/python/scripts$ python3 open_main.py 
+total len : 2181
+select remote_pubkey from channel_data where remote_pubkey = '03cde60a6323f7122d5178255766e38114b4722ede08f7c9e0c5df9b912cc201d6'
+lncli --tlscertpath /lnd/tls.cert --macaroonpath /lnd/data/chain/bitcoin/mainnet/admin.macaroon connect 03cde60a6323f7122d5178255766e38114b4722ede08f7c9e0c5df9b912cc201d6@34.65.85.39:9745
+Error in Peer connection : [lncli] rpc error: code = Unknown desc = already connected to peer: 03cde60a6323f7122d5178255766e38114b4722ede08f7c9e0c5df9b912cc201d6@34.65.85.39:9745
+
+select remote_pubkey from channel_data where remote_pubkey = '023d70f2f76d283c6c4e58109ee3a2816eb9d8feb40b23d62469060a2b2867b77f'
+lncli --tlscertpath /lnd/tls.cert --macaroonpath /lnd/data/chain/bitcoin/mainnet/admin.macaroon connect 023d70f2f76d283c6c4e58109ee3a2816eb9d8feb40b23d62469060a2b2867b77f@54.159.193.149:9735
+Error in Peer connection : [lncli] rpc error: code = Unknown desc = already connected to peer: 023d70f2f76d283c6c4e58109ee3a2816eb9d8feb40b23d62469060a2b2867b77f@54.159.193.149:9735
+
+select remote_pubkey from channel_data where remote_pubkey = '03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f'
+Already connected node 03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f
+select remote_pubkey from channel_data where remote_pubkey = '034ea80f8b148c750463546bd999bf7321a0e6dfc60aaf84bd0400a2e8d376c0d5'
+lncli --tlscertpath /lnd/tls.cert --macaroonpath /lnd/data/chain/bitcoin/mainnet/admin.macaroon connect 034ea80f8b148c750463546bd999bf7321a0e6dfc60aaf84bd0400a2e8d376c0d5@213.174.156.66:9735
+Error in Peer connection : [lncli] rpc error: code = Unknown desc = already connected to peer: 034ea80f8b148c750463546bd999bf7321a0e6dfc60aaf84bd0400a2e8d376c0d5@213.174.156.66:9735
+
+select remote_pubkey from channel_data where remote_pubkey = '030c3f19d742ca294a55c00376b3b355c3c90d61c6b6b39554dbc7ac19b141c14f'
+lncli --tlscertpath /lnd/tls.cert --macaroonpath /lnd/data/chain/bitcoin/mainnet/admin.macaroon connect 030c3f19d742ca294a55c00376b3b355c3c90d61c6b6b39554dbc7ac19b141c14f@52.50.244.44:9735
+Error in Peer connection : [lncli] rpc error: code = Unknown desc = already connected to peer: 030c3f19d742ca294a55c00376b3b355c3c90d61c6b6b39554dbc7ac19b141c14f@52.50.244.44:9735
+
+select remote_pubkey from channel_data where remote_pubkey = '0390b5d4492dc2f5318e5233ab2cebf6d48914881a33ef6a9c6bcdbb433ad986d0'
+lncli --tlscertpath /lnd/tls.cert --macaroonpath /lnd/data/chain/bitcoin/mainnet/admin.macaroon connect 0390b5d4492dc2f5318e5233ab2cebf6d48914881a33ef6a9c6bcdbb433ad986d0@46.229.165.139:9735
+Error in Peer connection : [lncli] rpc error: code = Unknown desc = already connected to peer: 0390b5d4492dc2f5318e5233ab2cebf6d48914881a33ef6a9c6bcdbb433ad986d0@46.229.165.139:9735
+
+select remote_pubkey from channel_data where remote_pubkey = '03c8dfbf829eaeb0b6dab099d87fdf7f8faceb0c1b935cd243e8c1fb5af71361cf'
+lncli --tlscertpath /lnd/tls.cert --macaroonpath /lnd/data/chain/bitcoin/mainnet/admin.macaroon connect 03c8dfbf829eaeb0b6dab099d87fdf7f8faceb0c1b935cd243e8c1fb5af71361cf@3.234.251.85:9735
+Error in Peer connection : [lncli] rpc error: code = Unknown desc = already connected to peer: 03c8dfbf829eaeb0b6dab099d87fdf7f8faceb0c1b935cd243e8c1fb5af71361cf@3.234.251.85:9735
+
+select remote_pubkey from channel_data where remote_pubkey = '033e9ce4e8f0e68f7db49ffb6b9eecc10605f3f3fcb3c630545887749ab515b9c7'
+lncli --tlscertpath /lnd/tls.cert --macaroonpath /lnd/data/chain/bitcoin/mainnet/admin.macaroon connect 033e9ce4e8f0e68f7db49ffb6b9eecc10605f3f3fcb3c630545887749ab515b9c7@46.229.165.154:9735
+Error in Peer connection : [lncli] rpc error: code = Unknown desc = already connected to peer: 033e9ce4e8f0e68f7db49ffb6b9eecc10605f3f3fcb3c630545887749ab515b9c7@46.229.165.154:9735
+
+select remote_pubkey from channel_data where remote_pubkey = '03d607f3e69fd032524a867b288216bfab263b6eaee4e07783799a6fe69bb84fac'
+lncli --tlscertpath /lnd/tls.cert --macaroonpath /lnd/data/chain/bitcoin/mainnet/admin.macaroon connect 03d607f3e69fd032524a867b288216bfab263b6eaee4e07783799a6fe69bb84fac@3.237.23.179:9735
+Error in Peer connection : [lncli] rpc error: code = Unknown desc = already connected to peer: 03d607f3e69fd032524a867b288216bfab263b6eaee4e07783799a6fe69bb84fac@3.237.23.179:9735
+
+select remote_pubkey from channel_data where remote_pubkey = '03423790614f023e3c0cdaa654a3578e919947e4c3a14bf5044e7c787ebd11af1a'
+Already connected node 03423790614f023e3c0cdaa654a3578e919947e4c3a14bf5044e7c787ebd11af1a
+select remote_pubkey from channel_data where remote_pubkey = '0298f6074a454a1f5345cb2a7c6f9fce206cd0bf675d177cdbf0ca7508dd28852f'
+lncli --tlscertpath /lnd/tls.cert --macaroonpath /lnd/data/chain/bitcoin/mainnet/admin.macaroon connect 0298f6074a454a1f5345cb2a7c6f9fce206cd0bf675d177cdbf0ca7508dd28852f@174.169.193.33:9735
+Error in Peer connection : [lncli] rpc error: code = Unknown desc = already connected to peer: 0298f6074a454a1f5345cb2a7c6f9fce206cd0bf675d177cdbf0ca7508dd28852f@174.169.193.33:9735
+
+select remote_pubkey from channel_data where remote_pubkey = '035b1ff29e8db1ba8f2a4f4f95db239b54069cb949b8cde329418e2a83da4f1b30'
+lncli --tlscertpath /lnd/tls.cert --macaroonpath /lnd/data/chain/bitcoin/mainnet/admin.macaroon connect 035b1ff29e8db1ba8f2a4f4f95db239b54069cb949b8cde329418e2a83da4f1b30@62.77.157.54:9735
+json_out : {}
+dump json out {}
+dump json output connected
+select remote_pubkey from channel_data where remote_pubkey = '02315fe3619ffdea2561bcacecada87b226723f471a59fdbfec18c4e84bcf785b2'
+lncli --tlscertpath /lnd/tls.cert --macaroonpath /lnd/data/chain/bitcoin/mainnet/admin.macaroon connect 02315fe3619ffdea2561bcacecada87b226723f471a59fdbfec18c4e84bcf785b2@52.88.191.202:9735
+json_out : {}
+dump json out {}
+dump json output connected
+select remote_pubkey from channel_data where remote_pubkey = '03fb822818be083e0a954db85257a2911a3d55458b8c1ea4124b157e865a836d12'
+lncli --tlscertpath /lnd/tls.cert --macaroonpath /lnd/data/chain/bitcoin/mainnet/admin.macaroon connect 03fb822818be083e0a954db85257a2911a3d55458b8c1ea4124b157e865a836d12@46.229.165.155:9735
+json_out : {}
+dump json out {}
+dump json output connected
+select remote_pubkey from channel_data where remote_pubkey = '03abf6f44c355dec0d5aa155bdbdd6e0c8fefe318eff402de65c6eb2e1be55dc3e'
+lncli --tlscertpath /lnd/tls.cert --macaroonpath /lnd/data/chain/bitcoin/mainnet/admin.macaroon connect 03abf6f44c355dec0d5aa155bdbdd6e0c8fefe318eff402de65c6eb2e1be55dc3e@3.132.230.42:9735
+json_out : {}
+dump json out {}
+dump json output connected
+select remote_pubkey from channel_data where remote_pubkey = '03e691f81f08c56fa876cc4ef5c9e8b727bd682cf35605be25d48607a802526053'
+lncli --tlscertpath /lnd/tls.cert --macaroonpath /lnd/data/chain/bitcoin/mainnet/admin.macaroon connect 03e691f81f08c56fa876cc4ef5c9e8b727bd682cf35605be25d48607a802526053@[2a01:4f9:2a:1787:0:999:0:2095]:8888
+Error in Peer connection : [lncli] rpc error: code = Unknown desc = tor general error
+
+select remote_pubkey from channel_data where remote_pubkey = '03da1c27ca77872ac5b3e568af30673e599a47a5e4497f85c7b5da42048807b3ed'
+lncli --tlscertpath /lnd/tls.cert --macaroonpath /lnd/data/chain/bitcoin/mainnet/admin.macaroon connect 03da1c27ca77872ac5b3e568af30673e599a47a5e4497f85c7b5da42048807b3ed@213.174.156.70:9735
+json_out : {}
+dump json out {}
+dump json output connected
+['035b1ff29e8db1ba8f2a4f4f95db239b54069cb949b8cde329418e2a83da4f1b30', '02315fe3619ffdea2561bcacecada87b226723f471a59fdbfec18c4e84bcf785b2', '03fb822818be083e0a954db85257a2911a3d55458b8c1ea4124b157e865a836d12', '03abf6f44c355dec0d5aa155bdbdd6e0c8fefe318eff402de65c6eb2e1be55dc3e', '03da1c27ca77872ac5b3e568af30673e599a47a5e4497f85c7b5da42048807b3ed']
+lncli --tlscertpath /lnd/tls.cert --macaroonpath /lnd/data/chain/bitcoin/mainnet/admin.macaroon batchopenchannel --sat_per_vbyte=10 '[{"node_pubkey": "035b1ff29e8db1ba8f2a4f4f95db239b54069cb949b8cde329418e2a83da4f1b30", "local_funding_amount":2000000},
+{"node_pubkey": "02315fe3619ffdea2561bcacecada87b226723f471a59fdbfec18c4e84bcf785b2", "local_funding_amount":2000000},
+{"node_pubkey": "03fb822818be083e0a954db85257a2911a3d55458b8c1ea4124b157e865a836d12", "local_funding_amount":2000000},
+{"node_pubkey": "03abf6f44c355dec0d5aa155bdbdd6e0c8fefe318eff402de65c6eb2e1be55dc3e", "local_funding_amount":2000000},
+{"node_pubkey": "03da1c27ca77872ac5b3e568af30673e599a47a5e4497f85c7b5da42048807b3ed", "local_funding_amount":2000000}]'
+Error: [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: remote canceled funding, possibly timed out: received funding error from 03fb822818be083e0a954db85257a2911a3d55458b8c1ea4124b157e865a836d12: chan_id=49ff164ab0f539174e5f84aeb96c7bd8e83a4b4f50e9b3591d2ddb81c948ee1d, err=Number of pending channels exceed maximum
+
+The result is  False and result string : [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: remote canceled funding, possibly timed out: received funding error from 03fb822818be083e0a954db85257a2911a3d55458b8c1ea4124b157e865a836d12: chan_id=49ff164ab0f539174e5f84aeb96c7bd8e83a4b4f50e9b3591d2ddb81c948ee1d, err=Number of pending channels exceed maximum
+
+pubkey in string: 03fb822818be083e0a954db85257a2911a3d55458b8c1ea4124b157e865a836d12
+['035b1ff29e8db1ba8f2a4f4f95db239b54069cb949b8cde329418e2a83da4f1b30', '02315fe3619ffdea2561bcacecada87b226723f471a59fdbfec18c4e84bcf785b2', '03abf6f44c355dec0d5aa155bdbdd6e0c8fefe318eff402de65c6eb2e1be55dc3e', '03da1c27ca77872ac5b3e568af30673e599a47a5e4497f85c7b5da42048807b3ed'] this after  error message search
+select remote_pubkey from channel_data where remote_pubkey = '039edc94987c8f3adc28dab455efc00dea876089a120f573bd0b03c40d9d3fb1e1'
+lncli --tlscertpath /lnd/tls.cert --macaroonpath /lnd/data/chain/bitcoin/mainnet/admin.macaroon connect 039edc94987c8f3adc28dab455efc00dea876089a120f573bd0b03c40d9d3fb1e1@213.174.156.37:9735
+json_out : {}
+dump json out {}
+dump json output connected
+['035b1ff29e8db1ba8f2a4f4f95db239b54069cb949b8cde329418e2a83da4f1b30', '02315fe3619ffdea2561bcacecada87b226723f471a59fdbfec18c4e84bcf785b2', '03abf6f44c355dec0d5aa155bdbdd6e0c8fefe318eff402de65c6eb2e1be55dc3e', '03da1c27ca77872ac5b3e568af30673e599a47a5e4497f85c7b5da42048807b3ed', '039edc94987c8f3adc28dab455efc00dea876089a120f573bd0b03c40d9d3fb1e1']
+lncli --tlscertpath /lnd/tls.cert --macaroonpath /lnd/data/chain/bitcoin/mainnet/admin.macaroon batchopenchannel --sat_per_vbyte=10 '[{"node_pubkey": "035b1ff29e8db1ba8f2a4f4f95db239b54069cb949b8cde329418e2a83da4f1b30", "local_funding_amount":2000000},
+{"node_pubkey": "02315fe3619ffdea2561bcacecada87b226723f471a59fdbfec18c4e84bcf785b2", "local_funding_amount":2000000},
+{"node_pubkey": "03abf6f44c355dec0d5aa155bdbdd6e0c8fefe318eff402de65c6eb2e1be55dc3e", "local_funding_amount":2000000},
+{"node_pubkey": "03da1c27ca77872ac5b3e568af30673e599a47a5e4497f85c7b5da42048807b3ed", "local_funding_amount":2000000},
+{"node_pubkey": "039edc94987c8f3adc28dab455efc00dea876089a120f573bd0b03c40d9d3fb1e1", "local_funding_amount":2000000}]'
+Error: [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: remote canceled funding, possibly timed out: received funding error from 03abf6f44c355dec0d5aa155bdbdd6e0c8fefe318eff402de65c6eb2e1be55dc3e: chan_id=ef1e4fac8c0a895d554b55f8ae8eaa1670e948a757ed9056fb68def86e3dcd90, err=chan size of 0.02 BTC is below min chan size of 0.1 BTC
+
+The result is  False and result string : [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: remote canceled funding, possibly timed out: received funding error from 03abf6f44c355dec0d5aa155bdbdd6e0c8fefe318eff402de65c6eb2e1be55dc3e: chan_id=ef1e4fac8c0a895d554b55f8ae8eaa1670e948a757ed9056fb68def86e3dcd90, err=chan size of 0.02 BTC is below min chan size of 0.1 BTC
+
+pubkey in string: 03abf6f44c355dec0d5aa155bdbdd6e0c8fefe318eff402de65c6eb2e1be55dc3e
+['035b1ff29e8db1ba8f2a4f4f95db239b54069cb949b8cde329418e2a83da4f1b30', '02315fe3619ffdea2561bcacecada87b226723f471a59fdbfec18c4e84bcf785b2', '03da1c27ca77872ac5b3e568af30673e599a47a5e4497f85c7b5da42048807b3ed', '039edc94987c8f3adc28dab455efc00dea876089a120f573bd0b03c40d9d3fb1e1'] this after  error message search
+select remote_pubkey from channel_data where remote_pubkey = '035f5236d7e6c6d16107c1f86e4514e6ccdd6b2c13c2abc1d7a83cd26ecb4c1d0e'
+lncli --tlscertpath /lnd/tls.cert --macaroonpath /lnd/data/chain/bitcoin/mainnet/admin.macaroon connect 035f5236d7e6c6d16107c1f86e4514e6ccdd6b2c13c2abc1d7a83cd26ecb4c1d0e@213.174.156.34:9735
+json_out : {}
+dump json out {}
+dump json output connected
+['035b1ff29e8db1ba8f2a4f4f95db239b54069cb949b8cde329418e2a83da4f1b30', '02315fe3619ffdea2561bcacecada87b226723f471a59fdbfec18c4e84bcf785b2', '03da1c27ca77872ac5b3e568af30673e599a47a5e4497f85c7b5da42048807b3ed', '039edc94987c8f3adc28dab455efc00dea876089a120f573bd0b03c40d9d3fb1e1', '035f5236d7e6c6d16107c1f86e4514e6ccdd6b2c13c2abc1d7a83cd26ecb4c1d0e']
+lncli --tlscertpath /lnd/tls.cert --macaroonpath /lnd/data/chain/bitcoin/mainnet/admin.macaroon batchopenchannel --sat_per_vbyte=10 '[{"node_pubkey": "035b1ff29e8db1ba8f2a4f4f95db239b54069cb949b8cde329418e2a83da4f1b30", "local_funding_amount":2000000},
+{"node_pubkey": "02315fe3619ffdea2561bcacecada87b226723f471a59fdbfec18c4e84bcf785b2", "local_funding_amount":2000000},
+{"node_pubkey": "03da1c27ca77872ac5b3e568af30673e599a47a5e4497f85c7b5da42048807b3ed", "local_funding_amount":2000000},
+{"node_pubkey": "039edc94987c8f3adc28dab455efc00dea876089a120f573bd0b03c40d9d3fb1e1", "local_funding_amount":2000000},
+{"node_pubkey": "035f5236d7e6c6d16107c1f86e4514e6ccdd6b2c13c2abc1d7a83cd26ecb4c1d0e", "local_funding_amount":2000000}]'
+Error: [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: remote canceled funding, possibly timed out: received funding error from 035f5236d7e6c6d16107c1f86e4514e6ccdd6b2c13c2abc1d7a83cd26ecb4c1d0e: chan_id=b992b10003cbac33bb7fac726d311a33cbcc33888884d2cd6410a4d377cb4003, err=Number of pending channels exceed maximum
+
+The result is  False and result string : [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: remote canceled funding, possibly timed out: received funding error from 035f5236d7e6c6d16107c1f86e4514e6ccdd6b2c13c2abc1d7a83cd26ecb4c1d0e: chan_id=b992b10003cbac33bb7fac726d311a33cbcc33888884d2cd6410a4d377cb4003, err=Number of pending channels exceed maximum
+
+pubkey in string: 035f5236d7e6c6d16107c1f86e4514e6ccdd6b2c13c2abc1d7a83cd26ecb4c1d0e
+['035b1ff29e8db1ba8f2a4f4f95db239b54069cb949b8cde329418e2a83da4f1b30', '02315fe3619ffdea2561bcacecada87b226723f471a59fdbfec18c4e84bcf785b2', '03da1c27ca77872ac5b3e568af30673e599a47a5e4497f85c7b5da42048807b3ed', '039edc94987c8f3adc28dab455efc00dea876089a120f573bd0b03c40d9d3fb1e1'] this after  error message search
+select remote_pubkey from channel_data where remote_pubkey = '030995c0c0217d763c2274aa6ed69a0bb85fa2f7d118f93631550f3b6219a577f5'
+lncli --tlscertpath /lnd/tls.cert --macaroonpath /lnd/data/chain/bitcoin/mainnet/admin.macaroon connect 030995c0c0217d763c2274aa6ed69a0bb85fa2f7d118f93631550f3b6219a577f5@46.229.165.133:9735
+json_out : {}
+dump json out {}
+dump json output connected
+['035b1ff29e8db1ba8f2a4f4f95db239b54069cb949b8cde329418e2a83da4f1b30', '02315fe3619ffdea2561bcacecada87b226723f471a59fdbfec18c4e84bcf785b2', '03da1c27ca77872ac5b3e568af30673e599a47a5e4497f85c7b5da42048807b3ed', '039edc94987c8f3adc28dab455efc00dea876089a120f573bd0b03c40d9d3fb1e1', '030995c0c0217d763c2274aa6ed69a0bb85fa2f7d118f93631550f3b6219a577f5']
+lncli --tlscertpath /lnd/tls.cert --macaroonpath /lnd/data/chain/bitcoin/mainnet/admin.macaroon batchopenchannel --sat_per_vbyte=10 '[{"node_pubkey": "035b1ff29e8db1ba8f2a4f4f95db239b54069cb949b8cde329418e2a83da4f1b30", "local_funding_amount":2000000},
+{"node_pubkey": "02315fe3619ffdea2561bcacecada87b226723f471a59fdbfec18c4e84bcf785b2", "local_funding_amount":2000000},
+{"node_pubkey": "03da1c27ca77872ac5b3e568af30673e599a47a5e4497f85c7b5da42048807b3ed", "local_funding_amount":2000000},
+{"node_pubkey": "039edc94987c8f3adc28dab455efc00dea876089a120f573bd0b03c40d9d3fb1e1", "local_funding_amount":2000000},
+{"node_pubkey": "030995c0c0217d763c2274aa6ed69a0bb85fa2f7d118f93631550f3b6219a577f5", "local_funding_amount":2000000}]'
+Error: [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: remote canceled funding, possibly timed out: received funding error from 030995c0c0217d763c2274aa6ed69a0bb85fa2f7d118f93631550f3b6219a577f5: chan_id=a94abb320a28f08a84067289802d387be712f23042b74b8df8b370eeffce0ad7, err=Number of pending channels exceed maximum
+
+The result is  False and result string : [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: remote canceled funding, possibly timed out: received funding error from 030995c0c0217d763c2274aa6ed69a0bb85fa2f7d118f93631550f3b6219a577f5: chan_id=a94abb320a28f08a84067289802d387be712f23042b74b8df8b370eeffce0ad7, err=Number of pending channels exceed maximum
+
+pubkey in string: 030995c0c0217d763c2274aa6ed69a0bb85fa2f7d118f93631550f3b6219a577f5
+['035b1ff29e8db1ba8f2a4f4f95db239b54069cb949b8cde329418e2a83da4f1b30', '02315fe3619ffdea2561bcacecada87b226723f471a59fdbfec18c4e84bcf785b2', '03da1c27ca77872ac5b3e568af30673e599a47a5e4497f85c7b5da42048807b3ed', '039edc94987c8f3adc28dab455efc00dea876089a120f573bd0b03c40d9d3fb1e1'] this after  error message search
+select remote_pubkey from channel_data where remote_pubkey = '03bc9337c7a28bb784d67742ebedd30a93bacdf7e4ca16436ef3798000242b2251'
+lncli --tlscertpath /lnd/tls.cert --macaroonpath /lnd/data/chain/bitcoin/mainnet/admin.macaroon connect 03bc9337c7a28bb784d67742ebedd30a93bacdf7e4ca16436ef3798000242b2251@46.229.165.140:9735
+json_out : {}
+dump json out {}
+dump json output connected
+['035b1ff29e8db1ba8f2a4f4f95db239b54069cb949b8cde329418e2a83da4f1b30', '02315fe3619ffdea2561bcacecada87b226723f471a59fdbfec18c4e84bcf785b2', '03da1c27ca77872ac5b3e568af30673e599a47a5e4497f85c7b5da42048807b3ed', '039edc94987c8f3adc28dab455efc00dea876089a120f573bd0b03c40d9d3fb1e1', '03bc9337c7a28bb784d67742ebedd30a93bacdf7e4ca16436ef3798000242b2251']
+lncli --tlscertpath /lnd/tls.cert --macaroonpath /lnd/data/chain/bitcoin/mainnet/admin.macaroon batchopenchannel --sat_per_vbyte=10 '[{"node_pubkey": "035b1ff29e8db1ba8f2a4f4f95db239b54069cb949b8cde329418e2a83da4f1b30", "local_funding_amount":2000000},
+{"node_pubkey": "02315fe3619ffdea2561bcacecada87b226723f471a59fdbfec18c4e84bcf785b2", "local_funding_amount":2000000},
+{"node_pubkey": "03da1c27ca77872ac5b3e568af30673e599a47a5e4497f85c7b5da42048807b3ed", "local_funding_amount":2000000},
+{"node_pubkey": "039edc94987c8f3adc28dab455efc00dea876089a120f573bd0b03c40d9d3fb1e1", "local_funding_amount":2000000},
+{"node_pubkey": "03bc9337c7a28bb784d67742ebedd30a93bacdf7e4ca16436ef3798000242b2251", "local_funding_amount":2000000}]'
+^CTraceback (most recent call last):
+  File "/python/scripts/open_main.py", line 283, in <module>
+    open_channels()
+  File "/python/scripts/open_main.py", line 95, in open_channels
+    result, result_string = run_command(command_string)
+  File "/python/scripts/open_main.py", line 34, in run_command
+    result = subprocess.run(command_string, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True, text=True)
+  File "/usr/lib/python3.10/subprocess.py", line 505, in run
+    stdout, stderr = process.communicate(input, timeout=timeout)
+  File "/usr/lib/python3.10/subprocess.py", line 1154, in communicate
+    stdout, stderr = self._communicate(input, endtime, timeout)
+  File "/usr/lib/python3.10/subprocess.py", line 2021, in _communicate
+    ready = selector.select(timeout)
+  File "/usr/lib/python3.10/selectors.py", line 416, in select
+    fd_event_list = self._selector.poll(timeout)
+KeyboardInterrupt
+

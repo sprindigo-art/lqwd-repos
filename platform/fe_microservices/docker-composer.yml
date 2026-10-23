@@ -1,0 +1,101 @@
+version: '2'
+services:
+    config-server:
+        container_name: config-server
+        build:
+            context: .
+            dockerfile: Dockerfile.server
+        image: config-server:latest
+        expose:
+           8888
+        networks:
+            spring-cloud-network
+        volumes:
+            spring-cloud-config-repo:/var/lib/spring-cloud/config-repo
+        logging:
+            driver: json-file
+    config-client:
+        container_name: config-client
+        build:
+            context: .
+            dockerfile: Dockerfile.client
+        image: config-client:latest
+        entrypoint: /opt/spring-cloud/bin/config-client-entrypoint.sh
+        environment:
+          SPRING_APPLICATION_JSON: {"spring": {"cloud": {"config": {"uri": "http://config-server:8888"}}}}
+          expose:
+            - 8080
+          ports:
+            - 8080:8080
+          networks:
+            - spring-cloud-network
+          links:
+            - config-server:config-server
+          depends_on:
+            - config-server
+          logging:
+              driver: json-file
+networks:
+    spring-cloud-network:
+        driver: bridge
+volumes:
+    spring-cloud-config-repo:
+        external: true
+
+
+
+
+#  Docker commands and Dockerfiles are particularly suitable for creating individual containers. But if you want to operate on a network of isolated applications, the container management quickly becomes cluttered.
+#
+#  To solve that, Docker provides a tool named Docker Compose. This comes with an own build-file in YAML format and is better suited in managing multiple containers. For example: it is able to start or stop a composite of services in one command, or merges logging output of multiple services together into one pseudo-tty.
+#
+#    Let's build an example of two applications running in different docker containers. They will communicate with each other and be presented as “single unit” to the host system. We will build and copy the spring-cloud-config/client example described in the spring cloud configuration tutorial to our files folder, like we have done before with the config-server.
+#
+#  This will be our docker-compose.yml:
+#
+#
+#version: Specifies which format version should be used. This is a mandatory field. Here we use the newer version, whereas the legacy format is ‘1'
+#  services: Each object in this key defines a service, a.k.a container. This section is mandatory
+#  build: If given, docker-compose is able to build an image from a Dockerfile
+#  context: If given, it specifies the build-directory, where the Dockerfile is looked-up
+#  dockerfile: If given, it sets an alternate name for a Dockerfile
+#  image: Tells Docker which name it should give to the image when build-features are used. Otherwise it is searching for this image in the library or remote-registry
+#  networks: This is the identifier of the named networks to use. A given name-value must be listed in the networks section
+#  volumes: This identifies the named volumes to use and the mountpoints to mount the volumes to, separated by a colon. Likewise in networks section, a volume-name must be defined in a separate volumes section
+#  links: This will create an internal network link between this service and the listed service. This service will be able to connect to the listed service, whereby the part before the colon specifies a service-name from the services section and the part after the colon specifies the hostname at which the service is listening on an exposed port
+#  depends_on: This tells Docker to start a service only, if the listed services have started successfully. NOTICE: This works only at container level! For a workaround to start the dependent application first, see config-client-entrypoint.sh
+#  logging: Here we are using the ‘json-file' driver, which is the default one. Alternatively ‘syslog' with a given address option or ‘none' can be used
+#  networks: In this section we're specifying the networks available to our services. In this example we let docker-compose create a named network of type ‘bridge' for us. If the option external is set to true, it will use an existing one with the given name
+#  volumes: This is very similar to the networks section
+#  Before we continue, we will check our build-file for syntax-errors:
+#
+#    $> docker-compose config
+#  This will be our Dockerfile.client to build the config-client image from. It differs from the Dockerfile.server in that we additionally install OpenBSD netcat (which is needed in the next step) and make the entrypoint executable:
+#
+#
+#    FROM alpine-java:base
+#    MAINTAINER baeldung.com
+#    RUN apk --no-cache add netcat-openbsd
+#    COPY files/config-client.jar /opt/spring-cloud/lib/
+#    COPY files/config-client-entrypoint.sh /opt/spring-cloud/bin/
+#    RUN chmod 755 /opt/spring-cloud/bin/config-client-entrypoint.sh
+#  And this will be the customized entrypoint for our config-client service. Here we use netcat in a loop to check whether our config-server is ready. You have to notice, that we can reach our config-server by its link-name, instead of an IP address:
+#
+#
+#    #!/bin/sh
+#    while ! nc -z config-server 8888 ; do
+#    echo "Waiting for upcoming Config Server"
+#    sleep 2
+#    done
+#    java -jar /opt/spring-cloud/lib/config-client.jar
+#  Finally we can build our images, create the defined containers and start it in one command:
+#
+
+#    $> docker-compose up --build
+#  To stop the containers, remove it from Docker and remove the connected networks and volumes from it, we can use the opposite command:
+#
+
+#    $> docker-compose down
+#    A nice feature of docker-compose is the ability to scale services. For example, we can tell Docker to run one container for the config-server and three containers for the config-client.
+#
+#    But for this to work properly, we have to remove the container_name from our docker-compose.yml, for letting Docker choose one, and we have to change the exposed port configuration, to avoiding clashes.

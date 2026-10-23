@@ -1,0 +1,87 @@
+<html>
+<head th:include="fragment/headerfooter::header1"></head>
+<body onload="startTime()">
+<div id="containerMain">
+    <div th:include="fragment/headerfooter::top_menu('action')"></div>
+    <div id="titleMain">
+        <h1>Add New Micro Service </h1>
+    </div>
+
+    <div id="contentMain">
+        <form autocomplete="off" action="#" th:action="@{/backend/add/mservice}"
+              th:object="${mservice}" method="post" class="form-horizontal"
+              role="form">
+            <input type="hidden" th:field="*{id}" />
+            <div class="row">
+                <div class="col-25">
+                    <label>Name</label>
+                </div>
+                <div class="col-25">
+                    <label th:if="${#fields.hasErrors('name')}" th:errors="*{name}"
+                           class="validation-message">
+                    </label>
+                </div>
+                <div class="col-75">
+                    <input type="text" th:field="*{name}" placeholder="Name" class="form-control" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-25">
+                    <label>Uri Info</label>
+                </div>
+                <div class="col-25">
+                    <label th:if="${#fields.hasErrors('uriinfo')}"
+                           th:errors="*{uriinfo}" class="validation-message">
+                    </label>
+                </div>
+                <div class="col-75">
+                    <input	type="text" th:field="*{uriinfo}" placeholder="Short Name"
+                              class="form-control" />
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-25">
+                    <label>Description</label>
+                </div>
+                <div class="col-25">
+                    <label	th:if="${#fields.hasErrors('description')}"
+                              th:errors="*{description}" class="validation-message">
+                    </label>
+                </div>
+                <div class="col-75">
+                    <input type="text" th:field="*{description}"
+                           placeholder="description" class="form-control" />
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-25">
+                    <label>Oauth Client Detail</label>
+                </div>
+                <div class="col-25">
+                    <label th:if="${#fields.hasErrors('clientId')}"
+                           th:errors="*{clientId}" class="validation-message"> </label>
+                </div>
+                <div class="col-75">
+                    <select id="lot" th:field="*{clientId}">
+                        <option th:each="item : ${oauthclients}" th:value="${item.clientId}"
+                                th:text="${item.clientId}"
+                                th:selected="${item.clientId == mservice.clientId}"></option>
+                    </select>
+                </div>
+            </div>
+            
+
+            <div class="row">
+            	 <input type="submit" th:value="${mservice.id == null?'ADD':'EDIT'}" />
+            </div>
+
+            <h2>
+                <span class="text-success" th:utext="${successMessage}"></span>
+            </h2>
+        </form>
+    </div>
+</div>
+</body>
+</html>

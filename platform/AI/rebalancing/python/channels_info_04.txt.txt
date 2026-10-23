@@ -1,0 +1,9 @@
+Number of total Channels: 1
+
+Channel Information:
+Node1 Pub Key: 03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f
+Node2 Pub Key: 03e4e2b04ad857e93d195acda767cc7f7671a66fa87075c16f4697714c2228cb3b
+Node1 Policy: {'time_lock_delta': 144, 'min_htlc': '1', 'fee_base_msat': '1000', 'fee_rate_milli_msat': '499', 'disabled': False, 'max_htlc_msat': '994950000', 'last_update': '01-08-23 01:23', 'custom_records': {}}
+Node2 Policy: {'time_lock_delta': 40, 'min_htlc': '10000', 'fee_base_msat': '100000', 'fee_rate_milli_msat': '1', 'disabled': False, 'max_htlc_msat': '1005000000', 'last_update': '04-08-23 05:59', 'custom_records': {}}
+------------------------------
+Total interesting number of channels: 1

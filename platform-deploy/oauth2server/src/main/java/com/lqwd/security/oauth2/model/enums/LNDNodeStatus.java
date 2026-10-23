@@ -1,0 +1,17 @@
+package com.lqwd.security.oauth2.model.enums;
+
+public enum LNDNodeStatus {
+    CREATING,
+    RUNNING ,
+    NEED_RESTART,
+    DELETED,
+    RESTARTING,
+    IS_WAITING_USER_CONFIRMATION,
+    IS_AWAITING_WALLET_UNLOCK,
+    PENDING,
+    RESTART_REQUESTED,
+    UPGRADE_REQUESTED,
+    UPDATE_CONFIG_REQUESTED,
+    UNLOCK_REQUESTED
+
+}

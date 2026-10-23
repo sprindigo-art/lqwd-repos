@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lndplus-slnd-32678
+  namespace: lqwd-lnd
+  labels:
+    app: lndplus-slnd-32678
+spec:
+  selector:
+    matchLabels:
+      app: lndplus-slnd-32678
+  template:
+    metadata:
+      labels:
+        app: lndplus-slnd-32678
+    spec:
+      containers:
+        - name: lndplus-slnd-32678
+          image: '192.168.113.100:32000/lndplus:v0.9'
+          terminationMessagePath: "/tmp/my-log"
+          env:
+            - name: WENV
+              value: "development"
+            - name: LND_PODNAME
+              value: slnd-32678
+            - name: LND_NETWORK
+              value: regtest
+            - name: LND_HOST
+              value: 'slnd-32678.lqwd-lnd'
+            - name: LIT_UI_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: LIT_UI_PASSWORD
+            - name: CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: CLIENT_ID
+            - name: CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: CLIENT_SECRET
+            - name: CIPHER_BASE_URL
+              value: 'http://cipher-service.microservice:8790'
+            - name: TOKEN_URL
+              value: 'http://oauth2.oauth2:8187/oauth/token'
+          ports:
+            - containerPort: 8443
+          resources:
+            requests:
+              memory: "1500Mi"
+            limits:
+              memory: "2000Mi"
+          volumeMounts:
+            - name: lnd
+              mountPath: /data
+      volumes:
+        - name: lnd
+          persistentVolumeClaim:
+            claimName: pv006-claim
+        - name: secret
+          secret:
+            secretName: secret

@@ -1,0 +1,400 @@
+<div th:fragment="transaction-history-details(transactionHistory)" class="modal fade" id="todoShowListItem" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: fit-content !important; min-width: 50% !important;" role="document">
+        <div class="modal-content pl-5">
+            <div class="modal-body">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x close" data-dismiss="modal"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                <div class="compose-box">
+                    <div class="compose-content">
+                        <div id="transaction-history-details" class="px-5">
+                            <!-- If Invoice -->
+                            <div th:if="${transactionHistory.getType()} == 'INVOICE'" id="transaction-history-details-widget" class="">
+                                <h5 id="todoModalHeading" class="task-heading" >Invoice - [[${transactionHistory.getInvoice().getReadableCreationDate()}]]</h5>
+                                <div class="todoModalText">
+                                    <div class="row">
+                                        <div class="col-5">
+                                            LND Node
+                                        </div>
+                                        <div class="col-7">
+                                            <span class="" th:text="${transactionHistory.getLndNode().getLndNodeName()}"></span>
+                                        </div>
+                                    </div>
+                                    <div class="row pt-2">
+                                        <div class="col-5">
+                                            Value
+                                        </div>
+                                        <div class="col-7">
+                                            <span class="" th:text="${transactionHistory.getInvoice().getValue()}"></span>
+                                        </div>
+                                    </div>
+                                    <div class="row pt-2">
+                                        <div class="col-5">
+                                            Value MSat
+                                        </div>
+                                        <div class="col-7">
+                                            <span class="" th:text="${transactionHistory.getInvoice().getValue_msat()}"></span>
+                                        </div>
+                                    </div>
+                                    <div class="row pt-2">
+                                        <div class="col-5">
+                                            R Hash
+                                        </div>
+                                        <div class="col-7">
+                                            [[${#strings.abbreviate(transactionHistory.getInvoice().getR_hash(),50)}]]
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                                 fill="none"
+                                                 stroke="currentColor"
+                                                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                 class="feather feather-copy"
+                                                 style="width: 16px !important; height: 16px !important;" th:attr="onclick=|copyToClipboard('${transactionHistory.getInvoice().getR_hash()}')|">
+                                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <div class="row pt-2">
+                                        <div class="col-5">
+                                            R Preimage
+                                        </div>
+                                        <div class="col-7">
+                                            [[${#strings.abbreviate(transactionHistory.getInvoice().getR_preimage(),50)}]]
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                                 fill="none"
+                                                 stroke="currentColor"
+                                                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                 class="feather feather-copy"
+                                                 style="position: relative !important; width: 16px !important; height: 16px !important;"
+                                                 th:attr="onclick=|copyToClipboard('${transactionHistory.getInvoice().getR_preimage()}')|">
+                                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <div class="row pt-2">
+                                        <div class="col-5">
+                                            Settled
+                                        </div>
+                                        <div class="col-7">
+                                            <span class="" th:text="${transactionHistory.getInvoice().isSettled()}"></span>
+                                        </div>
+                                    </div>
+                                    <div class="row pt-2">
+                                        <div class="col-5">
+                                            Creation Date
+                                        </div>
+                                        <div class="col-7">
+                                            <span class="" th:text="${transactionHistory.getInvoice().getReadableCreationDate()}"></span>
+                                        </div>
+                                    </div>
+                                    <div th:if="${transactionHistory.getInvoice().getReadableSettleDate()} != null" class="row pt-2">
+                                        <div class="col-5">
+                                            Settle Date
+                                        </div>
+                                        <div class="col-7">
+                                            <span class="" th:text="${transactionHistory.getInvoice().getReadableSettleDate()}"></span>
+                                        </div>
+                                    </div>
+                                    <div class="row pt-2">
+                                        <div class="col-5">
+                                            Payment Request
+                                        </div>
+                                        <div class="col-7">
+                                            [[${#strings.abbreviate(transactionHistory.getInvoice().getPayment_request(),50)}]]
+                                            <svg id="copy-payreq" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-copy"
+                                                 style="width: 16px !important; height: 16px !important;"
+                                                 th:value="${transactionHistory.getInvoice().getPayment_request()}" onclick="copyPayReq(this)">
+                                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <div class="row pt-2">
+                                        <div class="col-5">
+                                            Payment Address
+                                        </div>
+                                        <div class="col-7">
+                                            [[${#strings.abbreviate(transactionHistory.getInvoice().getPayment_addr(),50)}]]
+                                            <svg id="copy-payreq" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-copy"
+                                                 style="width: 16px !important; height: 16px !important;"
+                                                 th:value="${transactionHistory.getInvoice().getPayment_addr()}" onclick="copyPayReq(this)">
+                                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <div class="row pt-2">
+                                        <div class="col-5">
+                                            Expiry
+                                        </div>
+                                        <div class="col-7">
+                                            <span class="" th:text="${transactionHistory.getInvoice().getExpiry()}"></span>
+                                        </div>
+                                    </div>
+                                    <div class="row pt-2">
+                                        <div class="col-5">
+                                            State
+                                        </div>
+                                        <div class="col-7">
+                                            <span class="badge badge-danger" th:if="${transactionHistory.getInvoice().getState()} == 'CANCELED'" th:text="${transactionHistory.getInvoice().getState()}"></span>
+                                            <span class="badge badge-success" th:if="${transactionHistory.getInvoice().getState()} == 'SETTLED'" th:text="${transactionHistory.getInvoice().getState()}"></span>
+                                            <span class="badge badge-warning" th:if="${transactionHistory.getInvoice().getState()} == 'PENDING'" th:text="${transactionHistory.getInvoice().getState()}"></span>
+                                            <span class="badge badge-warning" th:if="${transactionHistory.getInvoice().getState()} == 'OPEN'" th:text="${transactionHistory.getInvoice().getState()}"></span>
+                                        </div>
+                                    </div>
+                                    <div th:if="${transactionHistory.getInvoice().getAmt_paid_sat()} != 0" class="row pt-2">
+                                        <div class="col-5">
+                                            Amount Paid
+                                        </div>
+                                        <div class="col-7">
+                                            <span class="" th:text="${transactionHistory.getInvoice().getAmt_paid_sat()}"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- If Payment -->
+                            <div th:if="${transactionHistory.getType()} == 'PAYMENT'" id="transaction-history-details-widget" class="">
+                                <h5 id="todoModalHeading" class="task-heading">Payment - [[${transactionHistory.getPayment().getReadableCreationDate()}]]</h5>
+
+                                <div class="todoModalText">
+                                    <div class="row">
+                                        <div class="col-5">
+                                            LND Node
+                                        </div>
+                                        <div class="col-7">
+                                            <span class="" th:text="${transactionHistory.getLndNode().getLndNodeName()}"></span>
+                                        </div>
+                                    </div>
+                                    <div class="row pt-2">
+                                        <div class="col-5">
+                                            Total Fees
+                                        </div>
+                                        <div class="col-7">
+                                            <span class="" th:text="${transactionHistory.getPayment().getFee()}"></span>
+                                        </div>
+                                    </div>
+                                    <div class="row pt-2">
+                                        <div class="col-5">
+                                            Total Amount
+                                        </div>
+                                        <div class="col-7">
+                                            <span class="" th:text="${transactionHistory.getPayment().getValue()}"></span>
+                                        </div>
+                                    </div>
+                                    <div class="row pt-2">
+                                        <div class="col-5">
+                                            Payment Hash
+                                        </div>
+                                        <div class="col-7">
+                                            <span class="" th:text="${#strings.abbreviate(transactionHistory.getPayment().getPayment_hash(), 50)}"></span>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                                 fill="none"
+                                                 stroke="currentColor"
+                                                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                 class="feather feather-copy"
+                                                 style="width: 16px !important; height: 16px !important;"
+                                                 th:attr="onclick=|copyToClipboard('${transactionHistory.getPayment().getPayment_hash()}')|">
+                                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <div class="row pt-2">
+                                        <div class="col-5">
+                                            Status
+                                        </div>
+                                        <div class="col-7">
+                                            <span class="" th:text="${transactionHistory.getPayment().getStatus()}"></span>
+                                        </div>
+                                    </div>
+                                    <div class="row pt-2">
+                                        <div class="col-5">
+                                            Payment Request
+                                        </div>
+                                        <div class="col-7">
+                                            <span class="" th:text="${#strings.abbreviate(transactionHistory.getPayment().getPayment_request(),50)}"></span>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                                 fill="none"
+                                                 stroke="currentColor"
+                                                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                 class="feather feather-copy"
+                                                 style="width: 16px !important; height: 16px !important;"
+                                                 th:attr="onclick=|copyToClipboard('${transactionHistory.getPayment().getPayment_request()}')|">
+                                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <div class="row pt-2">
+                                        <div class="col-5">
+                                            Preimage
+                                        </div>
+                                        <div class="col-7">
+                                            <span class="" th:text="${transactionHistory.getPayment().getPaymentHtlcs().getPreimage()}"></span>
+                                        </div>
+                                    </div>
+                                    <div class="row pt-2">
+                                        <div class="col-5">
+                                            Created
+                                        </div>
+                                        <div class="col-7">
+                                            <span class="" th:text="${transactionHistory.getPayment().getReadableCreationDate()}"></span>
+                                        </div>
+                                    </div>
+                                    <div class="row pt-2">
+                                        <div class="col-5">
+                                            Route
+                                        </div>
+                                        <div class="col-7">
+                                            <div class="mt-container mx-auto">
+                                                <div class="timeline-line">
+
+                                                    <div class="item-timeline" th:each="hops, key : ${transactionHistory.getPayment().getPaymentHtlcs().getPaymentHops()}">
+                                                        <div class="t-text pl-0 ml-0 pr-3">
+                                                            <p>[[${hops.getAlias()}]]</p>
+                                                            <p class="t-meta-time">Hop [[${key.index}]]</p>
+                                                        </div>
+                                                        <div class="t-dot t-dot-primary"></div>
+                                                        <div class="t-text">
+                                                            <p>Chan ID - [[${hops.getChan_id()}]]</p>
+                                                            <p class="t-meta-time">Fee: [[${hops.getFee()}]] sat</p>
+                                                        </div>
+                                                    </div>
+
+<!--                                                    <div class="item-timeline">-->
+<!--                                                        <p class="t-time">12:45</p>-->
+<!--                                                        <div class="t-dot t-dot-success">-->
+<!--                                                        </div>-->
+<!--                                                        <div class="t-text">-->
+<!--                                                            <p>Backup Files EOD</p>-->
+<!--                                                            <p class="t-meta-time">2 hrs ago</p>-->
+<!--                                                        </div>-->
+<!--                                                    </div>-->
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- If Transaction -->
+                            <div th:if="${transactionHistory.getType()} == 'TRANSACTION'" id="transaction-history-details-widget" class="">
+                                <h5 id="todoModalHeading" class="task-heading">Transaction - [[${transactionHistory.getTransaction().getReadableDate()}]]</h5>
+                                <div class="task-text">
+                                    <div class="row">
+                                        <div class="col-5">
+                                            LND Node
+                                        </div>
+                                        <div class="col-7">
+                                            <span class="" th:text="${transactionHistory.getLndNode().getLndNodeName()}"></span>
+                                        </div>
+                                    </div>
+                                    <div class="row pt-2">
+                                        <div class="col-5">
+                                            Total Fees
+                                        </div>
+                                        <div class="col-7">
+                                            <span class="" th:text="${transactionHistory.getTransaction().getTotal_fees()}"></span>
+                                        </div>
+                                    </div>
+                                    <div class="row pt-2">
+                                        <div class="col-5">
+                                            Amount
+                                        </div>
+                                        <div class="col-7">
+                                            <span class="" th:text="${transactionHistory.getTransaction().getAmount()}"></span>
+                                        </div>
+                                    </div>
+                                    <div class="row pt-2">
+                                        <div class="col-5">
+                                            Transaction Hash
+                                        </div>
+                                        <div class="col-7">
+                                            <span class="" th:text="${#strings.abbreviate(transactionHistory.getTransaction().getTx_hash(), 50)}"></span>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                                 fill="none"
+                                                 stroke="currentColor"
+                                                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                 class="feather feather-copy"
+                                                 style="width: 16px !important; height: 16px !important;"
+                                                 th:attr="onclick=|copyToClipboard('${transactionHistory.getTransaction().getTx_hash()}')|">
+                                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <div class="row pt-2">
+                                        <div class="col-5">
+                                            Number of Confirmations
+                                        </div>
+                                        <div class="col-7">
+                                            <span class="" th:text="${transactionHistory.getTransaction().getNum_confirmations()}"></span>
+                                        </div>
+                                    </div>
+                                    <div class="row pt-2">
+                                        <div class="col-5">
+                                            Block Hash
+                                        </div>
+                                        <div class="col-7">
+                                            <span class="" th:text="${#strings.abbreviate(transactionHistory.getTransaction().getBlock_hash(), 50)}"></span>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                                 fill="none"
+                                                 stroke="currentColor"
+                                                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                 class="feather feather-copy"
+                                                 style="width: 16px !important; height: 16px !important;"
+                                                 th:attr="onclick=|copyToClipboard('${transactionHistory.getTransaction().getBlock_hash()}')|">
+                                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <div class="row pt-2">
+                                        <div class="col-5">
+                                            Block Height
+                                        </div>
+                                        <div class="col-7">
+                                            <span class="" th:text="${transactionHistory.getTransaction().getBlock_height()}"></span>
+                                        </div>
+                                    </div>
+                                    <div class="row pt-2">
+                                        <div class="col-5">
+                                            Raw Transaction Hex
+                                        </div>
+                                        <div class="col-7">
+                                            <span class="" th:text="${#strings.abbreviate(transactionHistory.getTransaction().getRaw_tx_hex(), 50)}"></span>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                                 fill="none"
+                                                 stroke="currentColor"
+                                                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                 class="feather feather-copy"
+                                                 style="width: 16px !important; height: 16px !important;"
+                                                 th:attr="onclick=|copyToClipboard('${transactionHistory.getTransaction().getRaw_tx_hex()}')|">
+                                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <div class="row pt-2">
+                                        <div class="col-5">
+                                            Date
+                                        </div>
+                                        <div class="col-7">
+                                            <span class="" th:text="${transactionHistory.getTransaction().getReadableDate()}"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+

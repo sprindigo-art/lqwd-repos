@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout/app}" lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <title>LQwD | Account Settings</title>
+    <link th:href="@{${cssPath + '/authentication/form-1.css'}}"  rel="stylesheet" type="text/css" />
+    <link th:href="@{${pluginPath + '/dropify/dropify.min.css'}}" rel="stylesheet" type="text/css"/>
+    <link th:href="@{${cssPath + '/users/account-setting.css'}}" rel="stylesheet" type="text/css"/>
+    <link rel="stylesheet" type="text/css" th:href="@{${cssPath + '/forms/switches.css'}}">
+    <link th:href="@{${cssPath + '/components/custom-modal.css'}}" rel="stylesheet" type="text/css">
+    <link th:href="@{${cssPath + '/elements/popover.css'}}" rel="stylesheet" type="text/css"/>
+</head>
+
+<body>
+<section layout:fragment="sub-header">
+    <span>Account Settings</span>
+</section>
+<div layout:fragment="content-section">
+    <div class="layout-px-spacing">
+        <div class="account-settings-container layout-top-spacing" id="account-settings">
+            <div class="account-content">
+                <div class="scrollspy-example" data-spy="scroll" data-target="#account-settings-scroll"
+                     data-offset="-100">
+                    <div class="row">
+                        <!-- Content -->
+                        <div id="general-contact-info" th:replace="settings/general_contact_info"></div>
+
+
+                        <div class="col-xl-12 col-lg-12 col-md-12 layout-spacing"
+                             th:insert="settings/toggles::toggles"></div>
+
+
+                        <div id="reset_password" class="col-xl-12 col-lg-12 col-md-12 layout-spacing"
+                             th:insert="settings/reset_password::reset_password"></div>
+                        <div th:replace="fragments/modal_login_popup"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="account-settings-footer" style="position:sticky; width: 100%;">
+
+                <div class="as-footer-container">
+
+                    <button id="account-setting_btn_multiple-reset" class="btn btn-primary">Reset All</button>
+                    <button id="account-setting_btn_multiple-messages" class="btn btn-dark"
+                            onclick="checkEmailChange()">Save Changes
+                    </button>
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+<div layout:fragment="scripts">
+    <script th:src="@{${pluginPath + '/dropify/dropify.min.js'}}"></script>
+    <script th:src="@{assets/js/elements/popovers.js}"></script>
+    <script th:src="@{${pluginPath + '/blockui/jquery.blockUI.min.js'}}"></script>
+    <script th:src="@{assets/js/users/account-settings.js}"></script>
+    <script th:src="@{assets/js/components/ui-accordions.js}"></script>
+    <script th:src="@{/js/settings/account_settings.js}"></script>
+    <script th:src="@{/js/tools/tools.js}"></script>
+</div>
+</body>
+</html>

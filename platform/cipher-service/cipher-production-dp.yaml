@@ -1,0 +1,91 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cipher-service
+  namespace: microservice
+  labels:
+    app: cipher-service
+  annotations:
+    deployment.kubernetes.io/revision: '3'
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cipher-service
+  template:
+    metadata:
+      labels:
+        app: cipher-service
+    spec:
+      nodeSelector:
+        nodegroup: m5l
+      volumes:
+        - name: frontend-secret
+          secret:
+            secretName: frontend-secret
+            defaultMode: 420
+      imagePullSecrets:
+        - name: ecr-token
+      containers:
+        - name: cipher-service
+          image: '514063904685.dkr.ecr.us-west-2.amazonaws.com/cipher-service:prod-$BUILD_NUMBER'
+          ports:
+            - containerPort: 8790
+              protocol: TCP
+          env:
+            - name: ACTIVE_PROFILE
+              value: "production"
+            - name: WENV
+              value: "production"
+            - name: APPUSERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: APPUSERNAME
+            - name: APPPASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: APPPASSWORD
+            - name: KBTOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: KBTOKEN
+            - name: KBCET
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: KBCET
+            - name: DBUSERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: DBUSERNAME
+            - name: DBPASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: DBPASSWORD
+            - name: SASL_CONFIG
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: SASL_CONFIG
+            - name: ENCRYPT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: ENCRYPT_SECRET
+            - name: ENCRYPT_ASD
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: ENCRYPT_ASD
+          resources:
+            limits:
+              memory: 2048Mi
+            requests:
+              memory: 1024Mi
+
+

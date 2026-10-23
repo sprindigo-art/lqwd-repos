@@ -1,0 +1,8 @@
+export const TRANSACTIONS_APPLY_FILTER =
+  'lqwd/frontend/TRANSACTIONS_APPLY_FILTER';
+
+export const TRANSACTIONS_GET_ALL = 'lqwd/frontend/TRANSACTIONS_GET_ALL';
+export const TRANSACTIONS_GET_ALL_FAIL =
+  'lqwd/frontend/TRANSACTIONS_GET_ALL_FAIL';
+export const TRANSACTIONS_GET_ALL_SUCCESS =
+  'lqwd/frontend/TRANSACTIONS_GET_ALL_SUCCESS';

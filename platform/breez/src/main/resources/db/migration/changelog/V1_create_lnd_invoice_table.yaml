@@ -1,0 +1,30 @@
+databaseChangeLog:
+  - changeSet:
+      id: create_lnd_invoice_table
+      author: femi
+      changes:
+        - createTable:
+            tableName: lnd_invoice
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: payment_address
+                  type: text
+                  constraints:
+                    nullable: false
+              - column:
+                  name: payment_request
+                  type: text
+                  constraints:
+                    nullable: false
+              - column:
+                  name: r_hash
+                  type: text
+                  constraints:
+                    nullable: false

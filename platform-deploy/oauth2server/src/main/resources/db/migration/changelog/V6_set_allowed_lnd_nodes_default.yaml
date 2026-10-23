@@ -1,0 +1,12 @@
+databaseChangeLog:
+  - changeSet:
+      id: set_allowed_lnd_nodes_default
+      validCheckSum: ANY
+      author: femi
+      changes:
+        - update:
+            tableName: user_
+            columns:
+              - column:
+                  name: allowed_no_of_lnd
+                  value: 2

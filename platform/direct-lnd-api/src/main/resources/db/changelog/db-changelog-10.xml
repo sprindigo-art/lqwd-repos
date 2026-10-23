@@ -1,0 +1,38 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <changeSet author="djbabs (generated)" id="1630961915625-1">
+        <createTable tableName="application">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="applicationPK"/>
+            </column>
+            <column name="company_address" type="VARCHAR(255)"/>
+            <column name="company_name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="company_url" type="VARCHAR(255)"/>
+            <column name="contact_email" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="contact_name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="contact_phone" type="VARCHAR(20)"/>
+            <column name="country_code" type="VARCHAR(2)"/>
+            <column name="current_solution" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date_created" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="date_modified" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="goal" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="has_kyc" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="product_info" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="zip_code" type="VARCHAR(10)"/>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>

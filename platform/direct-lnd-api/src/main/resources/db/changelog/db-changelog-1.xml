@@ -1,0 +1,146 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <changeSet author="djbabs (generated)" id="1627677663560-1">
+        <addPrimaryKey columnNames="id" constraintName="lnd_mainPK" tableName="lnd_main"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1627677663560-2">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="lnd_main_v2"/>
+        </preConditions>
+        <addPrimaryKey columnNames="id" constraintName="lnd_main_v2PK" tableName="lnd_main_v2"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1627677663560-3">
+        <preConditions onFail="MARK_RAN"><tableExists tableName="node_script_keys"/></preConditions>
+        <dropTable tableName="node_script_keys"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1627677663560-4">
+        <dropColumn columnName="created_at" tableName="lnd_main"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1627677663560-5">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="lnd_main_v2"/>
+            <columnExists tableName="lnd_main_v2" columnName="created_at"/>
+        </preConditions>
+        <dropColumn columnName="created_at" tableName="lnd_main_v2"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1627677663560-6">
+        <dropColumn columnName="file_type" tableName="lnd_main"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1627677663560-7">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="command_history"/>
+            <columnExists tableName="command_history" columnName="pubkey"/>
+        </preConditions>
+        <dropColumn columnName="pubkey" tableName="command_history"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1627677663560-8">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="lnd_access_uer"/>
+            <columnExists tableName="lnd_access_uer" columnName="pubkey"/>
+        </preConditions>
+        <dropColumn columnName="pubkey" tableName="lnd_access_uer"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1627677663560-9">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="lnd_main_v2"/>
+            <columnExists tableName="lnd_access_uer" columnName="rpcpass"/>
+        </preConditions>
+        <dropColumn columnName="rpcpass" tableName="lnd_main_v2"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1627677663560-10">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="lnd_main_v2"/>
+            <columnExists tableName="lnd_main_v2" columnName="rpcuser"/>
+        </preConditions>
+        <dropColumn columnName="rpcuser" tableName="lnd_main_v2"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1627677663560-11">
+        <dropColumn columnName="updated_at" tableName="lnd_main"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1627677663560-12">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="lnd_main_v2"/>
+            <columnExists tableName="lnd_main_v2" columnName="updated_at"/>
+        </preConditions>
+        <dropColumn columnName="updated_at" tableName="lnd_main_v2"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1627677663560-13">
+        <preConditions onFail="MARK_RAN">
+            <sequenceExists sequenceName="lnd_main_id_seq"/>
+        </preConditions>
+        <dropSequence sequenceName="lnd_main_id_seq"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1627677663560-14">
+        <preConditions onFail="MARK_RAN">
+            <sequenceExists sequenceName="lnd_main_id_v2_seq"/>
+        </preConditions>
+        <dropSequence sequenceName="lnd_main_id_v2_seq"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1627677663560-15">
+        <preConditions onFail="MARK_RAN">
+            <columnExists tableName="command_history" columnName="apikey"/>
+        </preConditions>
+        <dropDefaultValue columnDataType="varchar(1024)" columnName="apikey" tableName="command_history"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1627677663560-16">
+        <preConditions onFail="MARK_RAN">
+            <columnExists tableName="lnd_access_uer" columnName="apikey"/>
+        </preConditions>
+        <dropDefaultValue columnDataType="varchar(255)" columnName="apikey" tableName="lnd_access_uer"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1627677663560-17">
+        <preConditions onFail="MARK_RAN">
+            <columnExists tableName="command_history" columnName="command"/>
+        </preConditions>
+        <dropDefaultValue columnDataType="varchar(2000)" columnName="command" tableName="command_history"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1627677663560-18">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="lnd_main"/>
+            <columnExists tableName="lnd_main" columnName="externalip"/>
+        </preConditions>
+        <dropDefaultValue columnDataType="varchar(255)" columnName="externalip" tableName="lnd_main"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1627677663560-19">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="lnd_main"/>
+            <columnExists tableName="lnd_main" columnName="file_name"/>
+        </preConditions>
+        <dropDefaultValue columnDataType="varchar(255)" columnName="file_name" tableName="lnd_main"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1627677663560-20">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="lnd_main"/>
+            <columnExists tableName="lnd_main" columnName="ip"/>
+        </preConditions>
+        <dropDefaultValue columnDataType="varchar(255)" columnName="ip" tableName="lnd_main"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1627677663560-21">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="lnd_main"/>
+            <columnExists tableName="lnd_main" columnName="node_name"/>
+        </preConditions>
+        <dropDefaultValue columnDataType="varchar(255)" columnName="node_name" tableName="lnd_main"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1627677663560-22">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="lnd_main_v2"/>
+            <columnExists tableName="lnd_main_v2" columnName="sfile"/>
+        </preConditions>
+        <dropNotNullConstraint columnDataType="blob" columnName="sfile" tableName="lnd_main_v2"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1627677663560-23">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="lnd_address"/>
+            <columnExists tableName="lnd_address" columnName="user_id"/>
+        </preConditions>
+        <dropNotNullConstraint columnDataType="varchar(255)" columnName="user_id" tableName="lnd_address"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1627677663560-24">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="lnd_main_v2"/>
+            <columnExists tableName="lnd_main_v2" columnName="watchtower"/>
+        </preConditions>
+        <dropNotNullConstraint columnDataType="varchar(255)" columnName="watchtower" tableName="lnd_main_v2"/>
+    </changeSet>
+</databaseChangeLog>

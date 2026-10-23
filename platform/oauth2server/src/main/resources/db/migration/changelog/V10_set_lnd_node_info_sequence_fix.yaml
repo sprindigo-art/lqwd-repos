@@ -1,0 +1,15 @@
+databaseChangeLog:
+  - changeSet:
+      id: set_lnd_node_info_sequence_fix
+      validCheckSum: ANY
+      preConditions:
+        - onFail: MARK_RAN
+        - sqlCheck:
+            expectedResult: 0
+            sql: SELECT count(*) FROM pg_class where relname = 'lndnodeinfo_id'
+      author: femi
+      changes:
+        - createSequence:
+            sequenceName: lndnodeinfo_id
+            startValue: 32500
+            incrementBy: 1

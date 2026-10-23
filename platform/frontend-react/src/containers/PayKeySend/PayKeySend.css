@@ -1,0 +1,36 @@
+.invoice-input-holder {
+    box-sizing: border-box;
+    background: #F3F5F9;
+    border-radius: 16px;
+}
+
+.payment-detail-holder {
+    box-sizing: border-box;
+    background: #FFFFFF;
+    border: 1px solid #E5E6EB;
+    border-radius: 16px;
+}
+
+.confirm-detail-container {
+    background: #F3F5F9;
+    border-radius: 0px 0px 16px 16px;
+}
+
+
+.confirm-detail-holder {
+    border-width: 1px 0px 1px 1px;
+    border-style: solid;
+    border-color: #EBEEF5;
+    border-radius: 16px 16px 0px 0px;
+}
+
+.channel-form{
+    background: #FFFFFF;
+    border-radius: 8px;
+}
+
+.payment-detail{
+    background: #009EE2;
+    box-shadow: 0px 8px 24px rgba(96, 106, 139, 0.13);
+    border-radius: 16px;
+}

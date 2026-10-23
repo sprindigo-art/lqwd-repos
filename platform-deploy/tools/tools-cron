@@ -1,0 +1,1 @@
+0 */6 * * * /tools/scripts/pendingChannelNotifier/run_pending_notifier.sh >/tools/scripts/pendingChannelNotifier/cron.log 2>&1

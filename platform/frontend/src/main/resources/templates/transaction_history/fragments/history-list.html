@@ -1,0 +1,68 @@
+<div class="ct2" th:fragment="historyList(transactionHistory)">
+    <div th:if="${transactionHistory.getType()} == 'INVOICE'" class="todo-item all-list invoices-list" th:attr="onclick=|loadFragmentForPopUp('${transactionHistory.getType()}', '${transactionHistory.getCreation_date()}')|">
+
+        <div class="todo-item-inner">
+            <!-- Content Tile -->
+            <div class="pl-4 todo-content">
+                <h5 class="todo-heading" th:data-todoHeading="${transactionHistory.getLndNode().getLndNodeName()}+' - '+${transactionHistory.getReadableDate()}">[[${transactionHistory.getLndNode().getLndNodeName()}]] - [[${transactionHistory.getInvoice().getR_hash()}]]</h5>
+                <p class="meta-date">[[${transactionHistory.getReadableDate()}]]</p>
+                <p class="todo-text" th:id="${transactionHistory.getCreation_date()}" th:data-todoHeading="'Invoice - '+${transactionHistory.getReadableDate()}" data-todoHtml="" ></p>
+            </div>
+
+            <!-- Badge for Type -->
+            <div class="priority-dropdown custom-dropdown-icon m-auto">
+                <div class="dropdown p-dropdown">
+                    <a class="dropdown-toggle warning" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                        <span class="shadow-none badge badge-success px-3 py-1">[[${transactionHistory.getType()}]]</span>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div th:if="${transactionHistory.getType()} == 'PAYMENT'" class="todo-item all-list payments-list" th:attr="onclick=|loadFragmentForPopUp('${transactionHistory.getType()}', '${transactionHistory.getCreation_date()}')|">
+
+        <div class="todo-item-inner">
+            <!-- Content Tile -->
+            <div class="pl-4 todo-content">
+                <h5 class="todo-heading" th:data-todoHeading="${transactionHistory.getLndNode().getLndNodeName()} + ' - '+${transactionHistory.getReadableDate()}">[[${transactionHistory.getLndNode().getLndNodeName()}]] - [[${#strings.abbreviate(transactionHistory.getPayment().getPayment_hash(), 50)}]]</h5>
+                <p class="meta-date">[[${transactionHistory.getReadableDate()}]]</p>
+                <p class="todo-text" th:id="${transactionHistory.getCreation_date()}" data-todoHtml="" ></p>
+            </div>
+
+            <!-- Badge for Type -->
+            <div class="priority-dropdown custom-dropdown-icon m-auto">
+                <div class="dropdown p-dropdown">
+                    <a class="dropdown-toggle warning" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                        <span class="shadow-none badge badge-secondary px-3 py-1">[[${transactionHistory.getType()}]]</span>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div th:if="${transactionHistory.getType()} == 'TRANSACTION'" class="todo-item all-list transactions-list" th:attr="onclick=|loadFragmentForPopUp('${transactionHistory.getType()}', '${transactionHistory.getCreation_date()}')|">
+
+        <div class="todo-item-inner">
+            <!-- Content Tile -->
+            <div class="pl-4 todo-content">
+                <h5 class="todo-heading" th:data-todoHeading="${transactionHistory.getLndNode().getLndNodeName()} + ' - '+${transactionHistory.getReadableDate()}">[[${transactionHistory.getLndNode().getLndNodeName()}]] - [[${#strings.abbreviate(transactionHistory.getTransaction().getTx_hash(), 50)}]]</h5>
+                <p class="meta-date">[[${transactionHistory.getReadableDate()}]]</p>
+                <p class="todo-text" th:id="${transactionHistory.getCreation_date()}" data-todoHtml="none" ></p>
+            </div>
+
+            <!-- Badge for Type -->
+            <div class="priority-dropdown custom-dropdown-icon m-auto">
+                <div class="dropdown p-dropdown">
+                    <a class="dropdown-toggle warning" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                        <span class="shadow-none badge badge-primary px-3 py-1">[[${transactionHistory.getType()}]]</span>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

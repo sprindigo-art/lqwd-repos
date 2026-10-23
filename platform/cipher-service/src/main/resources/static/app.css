@@ -1,0 +1,63 @@
+body{
+  padding: 10px;
+}
+
+.header_image{
+  width: 350px;
+}
+
+.page_header{
+  margin-bottom: 24px;
+  margin-top: 20px;
+  font-size: 19px;
+  color: #736666;
+}
+.toright{
+      float: right;
+}
+.page{
+  padding: 10px
+}
+.login-form {
+  width: 340px;
+    margin: 50px auto;
+}
+  .login-form .form {
+    margin-bottom: 15px;
+      background: #f7f7f7;
+      box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+      padding: 30px;
+  }
+  .login-form h2 {
+      margin: 0 0 15px;
+  }
+  .form-control, .btn {
+      min-height: 38px;
+      border-radius: 2px;
+  }
+  .btn {
+      font-size: 15px;
+      font-weight: bold;
+  }
+
+  #application_div{
+    display: none;
+  }
+
+  #login_div{
+    display: none;
+  }
+#select_all_files{
+    font-weight: normal;
+}
+.filter_header  th{
+    border: 0px !important;
+  }
+  #search_text{
+    width: 370px;
+  }
+
+  .filter_header .pagination{
+    padding: 0px;
+    margin: 0px;
+  }

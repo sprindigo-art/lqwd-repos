@@ -1,0 +1,64 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: lnd-updater
+  namespace: microservice
+  labels:
+    app: lnd-updater
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: lnd-updater
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: lnd-updater
+    spec:
+      volumes:
+        - name: lnd-update-secret
+          secret:
+            secretName: lnd-update-secret
+            defaultMode: 420
+    spec:
+      imagePullSecrets:
+        - name: ecr-token
+      containers:
+        - name: lnd-updater
+          image: '514063904685.dkr.ecr.us-west-2.amazonaws.com/lnd-updater:dev-$BUILD_NUMBER'
+          env:
+            - name: KAFKA_USER
+              value: kafka
+            - name: KAFKA_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: lnd-update-secret
+                  key: KAFKA_PASSWORD
+            - name: CERT_DATA
+              valueFrom:
+                secretKeyRef:
+                  name: lnd-update-secret
+                  key: CERT_DATA
+            - name: K8TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: lnd-update-secret
+                  key: K8TOKEN
+            - name: TOPIC
+              value: nodeUpdate-A
+            - name: GROUP_ID
+              value: '33'
+            - name: KAFKA_BROKER
+              value: 'broker.kafka-v1:9092'
+          resources:
+            limits:
+              memory: 200Mi
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          imagePullPolicy: Always
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+      securityContext: {}
+      schedulerName: default-scheduler

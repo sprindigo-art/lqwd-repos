@@ -1,0 +1,95 @@
+ <div th:fragment="create_node" id="create-node-form">
+     <div class="widget-content widget-content-area">
+         <h3>Create LND Node</h3>
+         <div class="form-group pt-4 mb-3">
+             <div class="form-row mb-4">
+                 <div class="form-group col-6">
+                     <div id="create-lnd-node_div_type-select" class="form-group">
+                         <select class="form-control" id="create-lnd-node_slct_select-container">
+                             <option value="testnet">Testnet</option>
+                             <option value="regtest">Simnet</option>
+                             <option value="mainnet">Mainnet</option>
+                         </select>
+                     </div>
+                 </div>
+                 <div class="form-group col-6">
+                     <input type="text" class="form-control" id="create-lnd-node_input_alias" placeholder="Alias">
+                     <small id="emailHelp1" class="form-text text-muted">Default: lqwd-lnd</small>
+                 </div>
+             </div>
+
+             <div class="form-group mb-4" id="custom-passphrase-row">
+                 <div class="row">
+                     <div class="form-check col-6">
+                         <div class="custom-control custom-radio classic-radio-info">
+                             <div class="row">
+                                 <div class="col align-baseline">
+                                     <span class="justify-content-center w-100 h-auto">Self-Managed Node</span>
+                                 </div>
+                                 <div class="col">
+                                     <label class="switch s-icons s-outline  s-outline-info  mb-4 mr-2">
+                                         <input type="checkbox" name="passphraseType" id="passphrase-type2" class="custom-control-input passphraseType" th:checked="${#user.getRole()} != 'ADMIN' ? 'checked' : ''" th:attr="${#user.getRole()} != 'ADMIN' ? 'readonly disabled' : ''">
+                                         <span class="slider round"></span>
+                                     </label>
+                                 </div>
+                             </div>
+                             <div class="row">
+                                 <div class="col align-baseline">
+                                     <span class="justify-content-center w-100 h-auto">Routing Node</span>
+                                 </div>
+                                 <div class="col">
+                                     <label class="switch s-icons s-outline  s-outline-info  mb-4 mr-2">
+                                         <input type="checkbox" name="passphraseType" id="create_lnd_node_chk_routing" class="custom-control-input passphraseType">
+                                         <span class="slider round"></span>
+                                     </label>
+                                 </div>
+                             </div>
+                         </div>
+                     </div>
+
+                     <div class="form-check col-6">
+                         <div class="row mr-0" id="passphrase-div" hidden>
+                             <label for="lnd-node-passphrase">Enter Passphrase</label>
+                             <div class="input-group">
+                                 <input type="password" class="form-control" id="lnd-node-passphrase" placeholder="Enter Passphrase" disabled="disabled" hidden/>
+                                 <div class="input-group-append">
+                                     <span class="input-group-text">
+                                         <!-- show passphrase -->
+                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                              id="create-lnd-node_svg_toggle-passphrase-open" class="feather feather-eye-off" hidden="true" >
+                                             <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                                             <line x1="1" y1="1" x2="23" y2="23"></line>
+                                         </svg>
+
+                                         <!-- hide passphrase -->
+                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                              id="create-lnd-node_svg_toggle-passphrase-close" class="feather feather-eye d-none" hidden="true" >
+                                             <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                             <circle cx="12" cy="12" r="3"></circle>
+                                         </svg>
+                                     </span>
+                                 </div>
+                             </div>
+                         </div>
+                     </div>
+                 </div>
+             </div>
+
+             <div class="row">
+                 <!--                 <div class="col" th:if="${user.getEmail()=='albert@lqwd.money' || user.getEmail()=='aziz@lqwd.money'}">-->
+                 <!--                     <div class="custom-control custom-switch">-->
+                 <!--                         <input type="checkbox" class="custom-control-input s-primary" id="create_lnd_node_chk_breez">-->
+                 <!--                         <label class="custom-control-label" for="create_lnd_node_chk_routing">Breez Node</label>-->
+                 <!--                     </div>-->
+                 <!--                 </div>-->
+                 <div class="col">
+                     <div class="form-group text-right">
+                         <button id="create-lnd-node_btn_verify" th:unless="${user.isEmailstatus()}"  class="btn btn-primary mt-4" disabled>Please Verify Account</button>
+                         <button  th:if="${user.isEmailstatus()}" id="create-lnd-node_btn_create-node"  class="btn btn-primary mt-4">Launch LND Node</button>
+                     </div>
+                 </div>
+             </div>
+
+         </div>
+     </div>
+</div>

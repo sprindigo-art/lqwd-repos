@@ -1,0 +1,48 @@
+spring:
+  profiles:
+    active: ${ENV}
+  application:
+    name: billing
+  cloud:
+    bus:
+      enabled: true
+  liquibase:
+    change-log: classpath:/db/changelog/db.changelog-master.xml
+server:
+  port: 8790
+
+---
+spring:
+  cloud:
+    config:
+      label: develop
+      username: ${CONFIG_USERNAME}
+      password: ${CONFIG_PASSWORD}
+  config:
+    activate:
+      on-profile: development
+    import: configserver:${CONFIG_SERVER:http://config-server.microservice:8888}
+
+---
+spring:
+  cloud:
+    config:
+      label: staging
+      username: ${CONFIG_USERNAME}
+      password: ${CONFIG_PASSWORD}
+  config:
+    activate:
+      on-profile: staging
+    import: configserver:http://config-server.microservice:8888
+
+---
+spring:
+  cloud:
+    config:
+      label: main
+      username: ${CONFIG_USERNAME}
+      password: ${CONFIG_PASSWORD}
+  config:
+    activate:
+      on-profile: production
+    import: configserver:http://config-server.microservice:8888

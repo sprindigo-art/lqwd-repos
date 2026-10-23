@@ -1,0 +1,68 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <changeSet author="djbabs (generated)" id="1658484178994-1">
+        <createTable tableName="lnd_node_balance">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="lnd_node_balancePK"/>
+            </column>
+            <column name="confirmed_balance" type="VARCHAR(255)"/>
+            <column name="date_created" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="date_modified" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="node_name" type="VARCHAR(255)"/>
+            <column name="total_balance" type="VARCHAR(255)"/>
+            <column name="unconfirmed_balance" type="VARCHAR(255)"/>
+            <column name="user_id" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1658484178994-2">
+        <createTable tableName="lnd_node_detail">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="lnd_node_detailPK"/>
+            </column>
+            <column name="alias" type="VARCHAR(255)"/>
+            <column name="best_header_timestamp" type="VARCHAR(100)"/>
+            <column name="block_hash" type="VARCHAR(255)"/>
+            <column name="block_height" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="chains" type="VARCHAR(255)"/>
+            <column name="color" type="VARCHAR(10)"/>
+            <column name="commit_hash" type="VARCHAR(255)"/>
+            <column name="date_created" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="date_modified" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="identity_pubkey" type="VARCHAR(255)"/>
+            <column name="node_name" type="VARCHAR(255)"/>
+            <column name="num_active_channels" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="num_inactive_channels" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="num_peers" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="num_pending_channels" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="synced_to_chain" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="synced_to_graph" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="uris" type="TEXT"/>
+            <column name="user_id" type="VARCHAR(255)"/>
+            <column name="version" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+<!--    <changeSet author="djbabs (generated)" id="1658484178994-3">-->
+<!--        <addUniqueConstraint columnNames="node_name" constraintName="UC_LND_NODE_DETAILNODE_NAME_COL" tableName="lnd_node_detail"/>-->
+<!--    </changeSet>-->
+<!--    <changeSet author="djbabs (generated)" id="1658484178994-4">-->
+<!--        <addUniqueConstraint columnNames="node_name" constraintName="UC_LND_NODE_DETAILNODE_NAME_COL" tableName="lnd_node_detail"/>-->
+<!--    </changeSet>-->
+    <changeSet id="lnd-status" author="aziz">    <sqlFile dbms="postgresql"
+                                                          path="db/migrations/db.migration-1.sql"/></changeSet>
+    <changeSet id="lnd-config" author="aziz">    <sqlFile dbms="postgresql"
+                                                          path="db/migrations/db.migration-2.sql"/></changeSet>
+</databaseChangeLog>

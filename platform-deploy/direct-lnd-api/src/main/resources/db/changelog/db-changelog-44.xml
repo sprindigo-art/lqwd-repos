@@ -1,0 +1,85 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <changeSet author="femi" id="1653663541998-1">
+        <addColumn tableName="user_lnd_channel">
+            <column name="status" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="femi" id="1653663541998-2">
+        <addColumn tableName="user_lnd_channel">
+            <column name="close_height" type="int4">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="femi" id="1653663541998-3">
+        <addColumn tableName="user_lnd_channel">
+            <column name="closing_tx_hash" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="femi" id="1653663541998-4">
+        <addColumn tableName="user_lnd_channel">
+            <column name="chain_hash" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="femi" id="1653663541998-5">
+        <addColumn tableName="user_lnd_channel">
+            <column name="settled_balance" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="femi" id="1653663541998-6">
+        <addColumn tableName="user_lnd_channel">
+            <column name="time_locked_balance" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="femi" id="1653663541998-7">
+        <addColumn tableName="user_lnd_channel">
+            <column name="close_type" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="femi" id="1653663541998-8">
+        <addColumn tableName="lsp_monitor_channel">
+            <column name="user_lnd_channel_id" type="BIGINT" />
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="femi" id="1653663541998-9">
+        <dropColumn columnName="open_channel_id" tableName="lsp_monitor_channel"/>
+    </changeSet>
+    <changeSet author="femi" id="1653663541998-10">
+        <dropColumn columnName="closed_channel_id" tableName="lsp_monitor_channel"/>
+    </changeSet>
+    <changeSet author="femi" id="1653663541998-11">
+        <dropColumn columnName="active_channel_id" tableName="lsp_monitor_channel"/>
+    </changeSet>
+    <changeSet author="femi" id="1653663541998-12">
+        <dropColumn columnName="inactive_channel_id" tableName="lsp_monitor_channel"/>
+    </changeSet>
+    <changeSet author="femi" id="1653663541998-13">
+        <dropColumn columnName="pending_open_channel_id" tableName="lsp_monitor_channel"/>
+    </changeSet>
+    <changeSet author="femi" id="1653663541998-14">
+        <dropColumn columnName="fully_resolved_channel_id" tableName="lsp_monitor_channel"/>
+    </changeSet>
+</databaseChangeLog>

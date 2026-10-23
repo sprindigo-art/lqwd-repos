@@ -1,0 +1,8 @@
+databaseChangeLog:
+  - changeSet:
+      id: add_confirmed_column
+      validCheckSum: ANY
+      author: femi
+      changes:
+        - sql:
+            sql: ALTER TABLE lndnodeinfo ADD COLUMN IF NOT EXISTS confirmed BOOLEAN NOT NULL DEFAULT FALSE;

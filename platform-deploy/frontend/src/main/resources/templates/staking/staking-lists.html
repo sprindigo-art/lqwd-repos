@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout/app}" lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <title>LQwD | Staking Lists</title>
+
+    <link rel="stylesheet" type="text/css" th:href="@{${pluginPath + '/table/datatable/datatables.css'}}">
+    <link rel="stylesheet" type="text/css" th:href="@{${pluginPath + '/table/datatable/dt-global_style.css'}}">
+    <link th:href="@{${cssPath + '/widgets/modules-widgets.css'}}" rel="stylesheet" type="text/css">
+    <link th:href="@{${cssPath + '/scrollspyNav.css'}}" rel="stylesheet" type="text/css" />
+    <link th:href="@{${cssPath + '/components/custom-modal.css'}}" rel="stylesheet" type="text/css">
+    <link th:href="@{${pluginPath + '/apex/apexcharts.css'}}" rel="stylesheet" type="text/css">
+    <link th:href="@{${cssPath + '/elements/popover.css'}}" rel="stylesheet" type="text/css"/>
+</head>
+<style layout:fragment="style">
+    .custom-table-color{
+        width: 100%;
+        color: #e0e6ed;
+        text-align: center;
+    }
+
+    .custom-table-color > tbody > tr:hover{
+        color: #009EE2 !important;
+    }
+    .invoice-link {
+        text-decoration: underline !important;
+        cursor: pointer;
+    }
+
+    .invoice-link:hover{
+        text-decoration: underline !important;
+        cursor: pointer;
+    }
+
+    .feather-copy {
+        cursor: pointer !important;
+    }
+    .feather-refresh-ccw {
+        cursor: pointer !important;
+    }
+    .feather-external-link {
+        cursor: pointer !important;
+    }
+</style>
+<body>
+<section layout:fragment="sub-header">
+    <span>Staking Lists</span>
+</section>
+
+<div layout:fragment="content-section">
+    <div class="layout-px-spacing">
+        <div class="row layout-top-spacing">
+            <div class="col-xl-12 col-lg-12 col-sm-12 layout-spacing">
+                <div class="widget-heading pt-1">
+                    <div class="">
+                        <h5 class="">Select the list</h5>
+                    </div>
+                </div>
+                <div class="widget-content widget-content-area br-6">
+
+                    <select th:unless="${user.isEmailstatus()}" id="staking-lists_slct_verify"
+                            class="col-12 selectpicker form-control" aria-label="API Key" disabled>
+                        <option disabled selected>Please Verify Account</option>
+                    </select>
+
+                    <select th:if="${user.isEmailstatus()}" id="staking-lists_slct_list-select"
+                            class="col-12 selectpicker form-control" aria-label="API Key">
+                        <option selected>Select list</option>
+                        <option th:value="requested">Pending</option>
+                        <option th:value="approved">Approved</option>
+                        <option th:value="active">Active</option>
+                        <option th:value="deleted">Deleted</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-xl-12 col-lg-12 col-sm-12 layout-spacing">
+                <div class="row">
+                    <div id="staking-lists_div_lists"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div th:replace="staking/modal/num_of_days_modal"></div>
+    <div th:replace="staking/modal/authenticate-staking-request"></div>
+</div>
+<div layout:fragment="scripts">
+    <script th:src="@{/js/tools/tools.js}"></script>
+    <script th:src="@{${pluginPath + '/table/datatable/datatables.js'}}"></script>
+    <script th:src="@{assets/js/elements/popovers.js}"></script>
+    <script th:src="@{js/staking/staking-list.js}"></script>
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        function updatePage(page, status,startPageIndex,endPageIndex,updatePageSet) {
+            $.ajax({
+                url: "/staking-list-page",
+                type: "GET",
+                data: {
+                    'page': page,
+                    'status': status,
+                    'startPageIndex': startPageIndex,
+                    'endPageIndex': endPageIndex,
+                    'updatePageSet': updatePageSet
+                },
+
+                success: function (fragment) {
+                    $("#staking-lists_div_lists").replaceWith(fragment);
+                },
+                error: function () {
+                    Snackbar.show({
+                        text: "Failed",
+                        pos: 'top-center',
+                        duration: false,
+                        actionTextColor: '#fff',
+                        backgroundColor: '#e7515a'
+                    });
+                }
+            });
+        }
+        function setNumOfDaysToRenewRequest(paymentRequest, requestType){
+            $("#num_of_days_txt_password").val("");
+            $("#num_of_days_modal_slct_days").val("");
+            $("#num_of_days_modal-div-modal").modal("show");
+            $('#num_of_days_modal_input_payment_request:input').val(paymentRequest);
+            $("#num_of_days_modal_input_request_type:input").val(requestType);
+        }
+        function withdrawPasswordModal(paymentRequest, requestType){
+            $('#authenticate-staking-request_txt_password').val("");
+            $("#stakingAuthModal").modal("show");
+            $('#authenticate-staking-request_txt_payment_request:input').val(paymentRequest);
+            $("#authenticate-staking-request_txt_request_type:input").val(requestType);
+        }
+        function withdrawStakingRequest(paymentRequest,requestType,password){
+            $.ajax({
+                url: "/staking-request-withdraw",
+                type: "POST",
+                data: {
+                    'paymentRequest': paymentRequest,
+                    'type': requestType,
+                    'password': password
+                },
+                beforeSend: function () {
+                    setButtonState("#authenticate-staking-request_btn_stakingAuthModal-blockui", "Sending request.....", true);
+                },
+                success: function (response) {
+
+                    setButtonState("#authenticate-staking-request_btn_stakingAuthModal-blockui", "Authorize", false);
+                    $("#stakingAuthModal").modal('hide');
+                    updatePage(1, "REQUESTED");
+                    var success = JSON.parse(response);
+                    Snackbar.show({
+                        text: success['message'],
+                        pos: 'top-center',
+                        actionTextColor: '#fff',
+                        backgroundColor: '#8dbf42'
+                    });
+                },
+                error: function (response) {
+                    setButtonState("#authenticate-staking-request_btn_stakingAuthModal-blockui", "Authorize", false);
+                    $("#stakingAuthModal").modal('hide');
+                    let error = JSON.parse(response['responseText']);
+                    Snackbar.show({
+                        text: error['message'],
+                        pos: 'top-center',
+                        duration: false,
+                        actionTextColor: '#fff',
+                        backgroundColor: '#e7515a'
+                    });
+                }
+            });
+
+        }
+        function renewStakingRequest(){
+
+            let num_days = $("#num_of_days_modal_slct_days :selected").attr('value');
+            if(num_days===""){
+                Snackbar.show({
+                    text: "Please select the number of days",
+                    pos: 'top-center',
+                    duration: false,
+                    actionTextColor: '#fff',
+                    backgroundColor: '#e7515a'
+                });
+            } else {
+                let paymentRequest =$("#num_of_days_modal_input_payment_request").val();
+                let requestType =$("#num_of_days_modal_input_request_type").val();
+                let password =$("#num_of_days_txt_password").val();
+
+                $.ajax({
+                    url: "/staking-request-renew",
+                    type: "POST",
+                    data: {
+                        'paymentRequest': paymentRequest,
+                        'num_days': num_days,
+                        'type': requestType,
+                        'password': password
+                    },
+                    beforeSend: function () {
+                        setButtonState("#num_of_days_modal_btn_modal-blockui", "Sending request.....", true);
+                    },
+                    success: function (response) {
+                        setButtonState("#num_of_days_modal_btn_modal-blockui", "Renew", false);
+                        $("#num_of_days_modal-div-modal").modal('hide');
+                        updatePage(1, "REQUESTED");
+                        var success = JSON.parse(response);
+
+                        Snackbar.show({
+                            text: success['message'],
+                            pos: 'top-center',
+                            actionTextColor: '#fff',
+                            backgroundColor: '#8dbf42'
+                        });
+                    },
+                    error: function (response) {
+                        setButtonState("#num_of_days_modal_btn_modal-blockui", "Renew", false);
+                        $("#num_of_days_modal-div-modal").modal('hide');
+                        let error = JSON.parse(response['responseText']);
+                        console.log(error);
+                        console.log(error['message']);
+                        Snackbar.show({
+                            text: error['message'],
+                            pos: 'top-center',
+                            duration: false,
+                            actionTextColor: '#fff',
+                            backgroundColor: '#e7515a'
+                        });
+                    }
+                });
+            }
+
+
+        }
+        function setButtonState(id, text, isLoading ){
+            $(id).prop('disabled', isLoading);
+            $(id).html(((isLoading)?
+                '<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"feather feather-loader spin\">\n' +
+                '<line x1=\"12\" y1=\"2\" x2=\"12\" y2=\"6\"></line>\n' +
+                '<line x1=\"12\" y1=\"18\" x2=\"12\" y2=\"22\"></line>\n' +
+                '<line x1=\"4.93\" y1=\"4.93\" x2=\"7.76\" y2=\"7.76\"></line>\n' +
+                '<line x1=\"16.24\" y1=\"16.24\" x2=\"19.07\" y2=\"19.07\"></line>\n' +
+                '<line x1=\"2\" y1=\"12\" x2=\"6\" y2=\"12\"></line>\n' +
+                '<line x1=\"18\" y1=\"12\" x2=\"22\" y2=\"12\"></line>\n' +
+                '<line x1=\"4.93\" y1=\"19.07\" x2=\"7.76\" y2=\"16.24\"></line>\n' +
+                '<line x1=\"16.24\" y1=\"7.76\" x2=\"19.07\" y2=\"4.93\"></line>\n' +
+                '</svg> ':'')+text);
+        }
+        $(document).ready(function () {
+            updatePage(1, "REQUESTED");
+            $("#staking-lists_slct_list-select").on('change', function (event) {
+                    event.preventDefault();
+                    let selectedList = $("#staking-lists_slct_list-select :selected").attr('value');
+                    updatePage(1, selectedList.toUpperCase())
+            });
+            $("#stakingAuthModal").on('shown.bs.modal', function () {
+                $('#authenticate-staking-request_txt_password').get(0).focus();
+            });
+            $("#num_of_days_modal-div-modal").on('shown.bs.modal', function () {
+                $('#num_of_days_modal_input_payment_request').get(0).focus();
+            });
+            $('#authenticate-staking-request_txt_password').on('keypress', function (e) {
+                if (e.which === 13) {
+                    e.preventDefault();
+                    let paymentRequest =$("#authenticate-staking-request_txt_payment_request").val();
+                    let requestType =$("#authenticate-staking-request_txt_request_type").val();
+                    let password =$("#authenticate-staking-request_txt_password").val();
+                    withdrawStakingRequest(paymentRequest,requestType,password);
+                }
+            });
+            $("#authenticate-staking-request_btn_stakingAuthModal-blockui").on('click', function (event) {
+                event.preventDefault();
+                let paymentRequest =$("#authenticate-staking-request_txt_payment_request").val();
+                let requestType =$("#authenticate-staking-request_txt_request_type").val();
+                let password =$("#authenticate-staking-request_txt_password").val();
+                withdrawStakingRequest(paymentRequest,requestType,password);
+            });
+        });
+        /*]]>*/
+    </script>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,46 @@
+.node-balance-title{
+
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 17px;
+    color: #A5A5A5;
+}
+
+.node-balance-body{
+
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 24px;
+    color: #4D4D4D;
+
+}
+
+@media screen and (max-width: 768px){
+    .node-balance-title{
+
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 12px;
+        line-height: 17px;
+        text-align: left;
+        color: #A5A5A5;
+    }
+
+    .node{
+
+        font-family: 'Rubik';
+        font-style: normal;
+        font-weight: 500;
+        font-size: 18px;
+        line-height: 24px;
+        color: #4D4D4D;
+        text-align: left;
+
+    }
+
+}

@@ -1,0 +1,37 @@
+select channel An
+
+tx
+amount
+time
+local
+remote
+
+layer ONE times (day time start at 00.00 till 24.00)
+tx in every 10 min 
+tx in 4 hours
+tx in 12 hours
+tx in 24 hours
+
+layer TWO
+
+
+rebalancing cost 
+increase local
+increase remote
+time frame
+
+
+main goal is number ot tx
+
+remote to local -1
+not needed 0
+local to remote 1
+
+
+new info comes with time of rebalance and amout in persent
+
+
+Second Step Is add layesr between time frame:
+
+100% decreise to 75%
+

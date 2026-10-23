@@ -1,0 +1,124 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <changeSet author="femi" id="1631224662357-1">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="command_history"/>
+            </not>
+        </preConditions>
+        <createTable tableName="command_history">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="command_history_pkey"/>
+            </column>
+            <column name="command" type="character varying(2000)">
+                <constraints nullable="true" />
+            </column>
+            <column name="apikey" type="character varying(2000)">
+                <constraints nullable="true" />
+            </column>
+            <column name="date_created" type="TIMESTAMP WITHOUT TIME ZONE" defaultValueComputed="CURRENT_TIMESTAMP" />
+        </createTable>
+    </changeSet>
+
+    <changeSet author="femi" id="1631224662357-2">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="lnd_access_uer"/>
+            </not>
+        </preConditions>
+        <createTable tableName="lnd_access_uer">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="lnd_access_uer_pkey"/>
+            </column>
+            <column name="count" type="INTEGER"/>
+            <column name="last_date" type="BIGINT"/>
+            <column name="apikey" type="character varying(2000)">
+                <constraints nullable="true" />
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="femi" id="1631224662357-3">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="lnd_address"/>
+            </not>
+        </preConditions>
+        <createTable tableName="lnd_address">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="lnd_address_pkey"/>
+            </column>
+            <column name="address" type="TEXT" />
+            <column name="date_created" type="TIMESTAMP WITHOUT TIME ZONE" />
+            <column name="date_modified" type="TIMESTAMP WITHOUT TIME ZONE" />
+            <column name="node_name" type="character varying(2000)">
+                <constraints nullable="true" />
+            </column>
+            <column name="user_id" type="character varying(2000)">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="femi" id="1631224662357-4">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="lnd_config"/>
+            </not>
+        </preConditions>
+        <createTable tableName="lnd_config">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="lnd_config_pkey"/>
+            </column>
+            <column name="date" type="TIMESTAMP WITHOUT TIME ZONE" defaultValueComputed="CURRENT_TIMESTAMP"/>
+            <column name="image" type="character varying(150)" />
+            <column name="label" type="character varying(50)" />
+            <column name="lndalias" type="character varying(50)" />
+            <column name="lndexternalip" type="character varying(50)" />
+            <column name="lndpassphrase" type="character varying(50)" />
+            <column name="lndpassword" type="character varying(50)" />
+            <column name="lndrpchost" type="character varying(50)" />
+            <column name="lndrpcpass" type="character varying(50)" />
+            <column name="lndrpcuser" type="character varying(50)" />
+            <column name="namespace" type="character varying(50)" />
+            <column name="nodetype" type="character varying(50)" />
+            <column name="port10009" type="character varying(50)" />
+            <column name="port29088" type="character varying(50)" />
+            <column name="port29099" type="character varying(50)" />
+            <column name="port8080" type="character varying(50)" />
+            <column name="port835" type="character varying(50)" />
+            <column name="port9735" type="character varying(50)" />
+            <column name="serviceexternalip" type="character varying(50)" />
+            <column name="status" type="character varying(50)" />
+            <column name="volumename" type="character varying(50)" />
+            <column name="volumepath" type="character varying(50)" />
+        </createTable>
+    </changeSet>
+
+    <changeSet author="femi" id="1631224662357-5">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="lnd_main_v2"/>
+            </not>
+        </preConditions>
+        <createTable tableName="lnd_main_v2">
+            <column autoIncrement="true" name="id" type="integer">
+                <constraints primaryKey="true" primaryKeyName="lnd_main_v2PK"/>
+            </column>
+            <column name="file_name" type="character varying(256)" />
+            <column name="node_name" type="character varying(256)" />
+            <column name="network" type="character varying(32)" />
+            <column name="file_type" type="character varying(32)" />
+            <column name="domain" type="character varying(32)" />
+            <column name="sfile" type="bytea" />
+            <column name="pubkey" type="character varying(255)" />
+            <column name="watchtower" type="character varying(50)" />
+            <column name="rpchost" type="character varying(200)" />
+            <column name="status" type="character varying(50)" />
+            <column name="key" type="character varying(255)" />
+            <column name="rpcpass" type="character varying(255)" />
+            <column name="rpcuser" type="character varying(255)" />
+            <column name="encrypt_version" type="character varying(255)" />
+        </createTable>
+    </changeSet>
+</databaseChangeLog>

@@ -1,0 +1,25 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <changeSet author="djbabs (generated)" id="1653039724036-1">
+        <createTable tableName="lsp_forwarding_history">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="lsp_forwarding_historyPK"/>
+            </column>
+            <column name="date_created" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="incoming_amt_msat" type="INT"/>
+            <column name="incoming_channel_id" type="VARCHAR(255)"/>
+            <column name="incoming_htlc_id" type="VARCHAR(255)"/>
+            <column name="incoming_time_lock" type="BIGINT"/>
+            <column name="node_name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="outgoing_amt_msat" type="INT"/>
+            <column name="outgoing_channel_id" type="VARCHAR(255)"/>
+            <column name="outgoing_htlc_id" type="VARCHAR(255)"/>
+            <column name="outgoing_time_lock" type="BIGINT"/>
+            <column name="timestamp_ns" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>

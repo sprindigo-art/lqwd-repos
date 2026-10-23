@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres
+  namespace: postgres-v1
+  labels:
+    app: postgres
+spec:
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      containers:
+        - name: postgres
+          image: 'localhost:32000/postgres:latest'
+          ports:
+            - containerPort: 5432
+          volumeMounts:
+            - name: postgres-storage
+              mountPath: /data
+          env:
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres
+                  key: POSTGRES_PASSWORD
+            - name: PGDATA
+              value: "/data/db-files/"
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: postgres
+                  key: POSTGRES_USER
+            - name: POSTGRES_DB
+              value: "userinfo"
+            - name: POSTGRES_PORT
+              value: "5432"
+      volumes:
+        - name: postgres-storage
+          persistentVolumeClaim:
+            claimName: pv005-claim
+        - name: postgres
+          secret:
+            secretName: postgres
+---
+
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: pv005-claim
+  namespace: postgres-v1
+spec:
+  storageClassName: local-storage
+  selector:
+    matchLabels:
+      volume-id: pv005
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 50Gi

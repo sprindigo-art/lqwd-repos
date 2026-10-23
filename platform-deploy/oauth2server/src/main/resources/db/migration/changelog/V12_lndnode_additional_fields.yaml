@@ -1,0 +1,22 @@
+databaseChangeLog:
+  - changeSet:
+      id: add_lit_node_name_column
+      validCheckSum: ANY
+      author: femi
+      changes:
+        - sql:
+            sql: ALTER TABLE lndnodeinfo ADD COLUMN IF NOT EXISTS  lit_node_name varchar(255) NULL;
+  - changeSet:
+      id: add_network_column
+      validCheckSum: ANY
+      author: femi
+      changes:
+        - sql:
+            sql: ALTER TABLE lndnodeinfo ADD COLUMN IF NOT EXISTS  network varchar(255) NULL;
+  - changeSet:
+      id: add_is_routing_node_column
+      validCheckSum: ANY
+      author: femi
+      changes:
+        - sql:
+            sql: ALTER TABLE lndnodeinfo ADD COLUMN IF NOT EXISTS is_routing_node BOOLEAN NULL;

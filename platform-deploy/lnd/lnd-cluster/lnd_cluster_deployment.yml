@@ -1,0 +1,140 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lnd-cluster
+  namespace: lqwd-lnd
+  labels:
+    app: lnd-cluster
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: lnd-cluster
+  template:
+    metadata:
+      labels:
+        app: lnd-cluster
+    spec:
+      containers:
+        - name: lnd-cluster
+          image: '192.168.113.100:32000/lnd-cluster:v0.9'
+          terminationMessagePath: "/tmp/my-log"
+          env:
+            - name: WENV
+              value: "development"
+            - name: LND_PASSPHRASE
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: LND_PASSPHRASE
+            - name: LND_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: LND_PASSWORD
+            - name: LND_EXTERNALIP
+              value: 192.243.215.106
+            - name: LND_PODNAME
+              value: lnd-cluster
+            - name: SCENARIO
+              value: lnd
+            - name: LND_BITCOIND
+              value: "true"
+            - name: WATCHTOWER
+              value: "true"
+            - name: LND_NETWORK
+              value: regtest
+            - name: LND_ALIAS
+              value: lqwd-lnd
+            - name: LND_ID
+              value: "654321"
+            - name: LND_RPCUSER
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: LND_RPCUSER
+            - name: LND_RPCPASS
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: LND_RPCPASS
+            - name: LND_RPCHOST
+              value: regtest
+            - name: KUSERPASS
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: KUSERPASS
+            - name: KADMINPASS
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: KADMINPASS
+            - name: CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: CLIENT_ID
+            - name: CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: CLIENT_SECRET
+            - name: LND_DB_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: LND_DB_HOST
+            - name: LND_DB_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: LND_DB_PORT
+            - name: LND_DB
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: LND_DB
+            - name: LND_DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: LND_DB_USER
+            - name: LND_DB_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: LND_DB_PASS
+            - name: ETCD_NODE
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: ETCD_NODE
+            - name: CIPHER_BASE_URL
+              value: 'http://cipher-service.microservice:8790'
+            - name: TOKEN_URL
+              value: 'http://oauth2.oauth2:8187/oauth/token'
+          ports:
+            - containerPort: 10009
+            - containerPort: 8080
+            - containerPort: 9735
+            - containerPort: 29088
+            - containerPort: 29099
+          resources:
+            requests:
+              memory: "1500Mi"
+
+            limits:
+              memory: "2000Mi"
+
+          volumeMounts:
+            - name: lnd
+              mountPath: /data
+
+      volumes:
+        - name: lnd
+          persistentVolumeClaim:
+            claimName: pv006-claim
+        - name: secret
+          secret:
+            secretName: secret

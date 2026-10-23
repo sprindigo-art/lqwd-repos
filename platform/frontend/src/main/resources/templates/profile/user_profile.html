@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout/app}" lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <title>LQWD | User Profile</title>
+    <link th:href="@{${cssPath+'/users/user-profile.css'}}" rel="stylesheet" type="text/css"/>
+    <link th:href="@{${cssPath+'/scrollspyNav.css'}}" rel="stylesheet" type="text/css"/>
+
+    <link rel="stylesheet" type="text/css" th:href="@{${pluginPath + '/animate/animate.css'}}">
+    <link th:href="@{${pluginPath + '/apex/apexcharts.css'}}" rel="stylesheet" type="text/css">
+
+    <link rel="stylesheet" type="text/css" th:href="@{${cssPath + '/widgets/modules-widgets.css'}}">
+    <link th:href="@{${cssPath + '/elements/popover.css'}}" rel="stylesheet" type="text/css"/>
+</head>
+
+<body>
+
+<section layout:fragment="sub-header">
+    <span>User Profile</span>
+</section>
+<div layout:fragment="content-section">
+    <div class="layout-px-spacing">
+        <div class="row layout-spacing">
+            <!-- Content -->
+            <div class="col-xl-4 col-lg-6 col-md-5 col-sm-12 layout-top-spacing">
+
+                <div class="user-profile layout-spacing">
+                    <div th:replace="profile/user_info::user_info"></div>
+                </div>
+
+            </div>
+            <div class="col-xl-8 col-lg-6 col-md-7 col-sm-12 layout-top-spacing">
+
+                <div class="bio layout-spacing" id="user-profile_div_generate-api-area">
+                    <div th:replace="profile/api_key_gen::generate_api_key"></div>
+                </div>
+
+                <div class="bio layout-spacing">
+                    <div th:replace="profile/api_key_list::api_key_table"></div>
+                </div>
+                <div th:replace="fragments/modal_login_popup"></div>
+                <div th:replace="fragments/modal_delete_popup"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div layout:fragment="scripts">
+    <script th:src="@{assets/js/scrollspyNav.js}"></script>
+
+    <script th:src="@{${pluginPath + '/blockui/jquery.blockUI.min.js'}}"></script>
+    <script th:src="@{${pluginPath + '/blockui/custom-blockui.js'}}"></script>
+    <script th:src="@{${pluginPath + '/apex/apexcharts.min.js'}}"></script>
+    <script th:src="@{/js/tools/tools.js}"></script>
+    <script th:src="@{/js/profile/user_profile.js}"></script>
+    <script th:src="@{assets/js/widgets/modules-widgets.js}"></script>
+    <script th:src="@{assets/js/elements/popovers.js}"></script>
+    <script th:inline="javascript">
+        $(document).ready(function () {
+            $('#modal-login-popup_txt_password').on('keypress', function (e) {
+                if (e.which === 13) {
+                    e.preventDefault();
+                    genApiKey();
+                }
+            });
+            $('#modal-delete-popup_txt_delete-api-password').on('keypress', function (e) {
+                if (e.which === 13) {
+                    e.preventDefault();
+                    deleteApiKey();
+                }
+            });
+        });
+    </script>
+</div>
+</body>
+</html>

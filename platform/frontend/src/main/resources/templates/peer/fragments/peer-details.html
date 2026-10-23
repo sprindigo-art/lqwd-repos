@@ -1,0 +1,72 @@
+<div id="peer-details-peer_page" class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 layout-spacing" th:fragment="peerDetails(peer)">
+    <div id="peer-page-details-widget" class="widget">
+        <div class="widget-heading">
+            <h5>Peer</h5>
+        </div>
+        <div class="widget-content widget-content-area">
+            <div class="row pt-2">
+                <div class="col-4">
+                    Connected to
+                </div>
+                <div class="col-8">
+                    <span class="" th:text="${peer.getLnd_name()}"></span>
+                </div>
+            </div>
+            <div class="row pt-2">
+                <div class="col-4">
+                    Pubkey
+                </div>
+                <div class="col-8">
+                    <span class="" th:text="${#strings.abbreviate(peer.getPub_key(),45)}"></span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                         stroke="currentColor"
+                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-copy"
+                         th:attr="onclick=|copyToClipboard('${peer.getPub_key()}')|">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                    </svg>
+                </div>
+            </div>
+            <div class="row pt-2">
+                <div class="col-4">
+                    Address
+                </div>
+                <div class="col-8">
+                    <span class="" th:text="${peer.getAddress()}"></span>
+                </div>
+            </div>
+            <div class="row pt-2">
+                <div class="col-4">
+                    Bytes Sent
+                </div>
+                <div class="col-8">
+                    <span class="" th:text="${peer.getBytes_sent()}"></span>
+                </div>
+            </div>
+            <div class="row pt-2">
+                <div class="col-4">
+                    Bytes Sent
+                </div>
+                <div class="col-8">
+                    <span class="" th:text="${peer.getBytes_recv()}"></span>
+                </div>
+            </div>
+            <div class="row pt-2">
+                <div class="col-4">
+                    Ping Time
+                </div>
+                <div class="col-8">
+                    <span class="" th:text="${peer.getPing_time()}"></span>
+                </div>
+            </div>
+            <div class="row pt-2">
+                <div class="col-4">
+                    Inbound
+                </div>
+                <div class="col-8">
+                    <span class="" th:text="${peer.getInbound()}"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

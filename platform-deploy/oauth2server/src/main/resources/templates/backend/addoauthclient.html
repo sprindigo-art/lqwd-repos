@@ -1,0 +1,166 @@
+<html>
+<head th:include="fragment/headerfooter::header1"></head>
+<body onload="startTime()">
+<div id="containerMain">
+    <div th:include="fragment/headerfooter::top_menu('action')"></div>
+    <div id="titleMain">
+        <h1>Add/Edit Oauth client detail </h1>
+    </div>
+
+    <div id="contentMain">
+        <form autocomplete="off" action="#" th:action="@{/backend/add/oauthclient}"
+              th:object="${oauthclient}" method="post" class="form-horizontal"
+              role="form">
+
+            <div class="row">
+                <div class="col-25">
+                    <label>Client Id</label>
+                </div>
+                <div class="col-25">
+                    <label th:if="${#fields.hasErrors('clientId')}" th:errors="*{clientId}"
+                           class="validation-message">
+                    </label>
+                </div>
+                <div class="col-75">
+                    <input th:disabled="${oauthclient.clientId != null}" type="text" th:field="*{clientId}" placeholder="clientid" class="form-control" />
+                    <div th:if="${oauthclient.clientId != null}" >
+                        <input type = "hidden" th:field="*{clientId}" />
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="row" th:if="${oauthclient.clientId == null}" >
+                <div class="col-25">
+                    <label>Client Secret</label>
+                </div>
+                <div class="col-25">
+                    <label th:if="${#fields.hasErrors('clientSecret')}" th:errors="*{clientSecret}"
+                           class="validation-message">
+                    </label>
+                </div>
+                <div class="col-75">
+                    <input  type="text" th:field="*{clientSecret}" placeholder="Client Secret" class="form-control" />
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-25">
+                    <label>Resource Id</label>
+                </div>
+                <div class="col-25">
+                    <label th:if="${#fields.hasErrors('resourceIds')}" th:errors="*{resourceIds}"
+                           class="validation-message">
+                    </label>
+                </div>
+                <div class="col-75">
+                    <input type="text" th:field="*{resourceIds}" placeholder="resourceIds" class="form-control" />
+                </div>
+            </div>
+
+
+
+            <div class="row">
+                <div class="col-25">
+                    <label>Scope</label>
+                </div>
+                <div class="col-25">
+                    <label th:if="${#fields.hasErrors('scope')}" th:errors="*{scope}"
+                           class="validation-message">
+                    </label>
+                </div>
+                <div class="col-75">
+                    <input type="text" th:field="*{scope}" placeholder="scope e.g read,write" class="form-control" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-25">
+                    <label>Authorized grand types</label>
+                </div>
+                <div class="col-25">
+                    <label th:if="${#fields.hasErrors('authorizedGrantTypes')}" th:errors="*{authorizedGrantTypes}"
+                           class="validation-message">
+                    </label>
+                </div>
+                <div class="col-75">
+                    <input type="text" th:field="*{authorizedGrantTypes}" placeholder="Authorized GrantTypes e.g client_credentials" class="form-control" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-25">
+                    <label>Web Server Redirect Uri</label>
+                </div>
+                <div class="col-25">
+                    <label th:if="${#fields.hasErrors('webServerRedirectUri')}" th:errors="*{webServerRedirectUri}"
+                           class="validation-message">
+                    </label>
+                </div>
+                <div class="col-75">
+                    <input type="text" th:field="*{webServerRedirectUri}" placeholder="webServerRedirectUri" class="form-control" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-25">
+                    <label>Authorities</label>
+                </div>
+                <div class="col-25">
+                    <label th:if="${#fields.hasErrors('authorities')}" th:errors="*{authorities}"
+                           class="validation-message">
+                    </label>
+                </div>
+                <div class="col-75">
+                    <input type="text" th:field="*{authorities}" placeholder="authorities e.g USER" class="form-control" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-25">
+                    <label>Access token validity</label>
+                </div>
+                <div class="col-25">
+                    <label th:if="${#fields.hasErrors('accessTokenValidity')}" th:errors="*{accessTokenValidity}"
+                           class="validation-message">
+                    </label>
+                </div>
+                <div class="col-75">
+                    <input type="text" th:field="*{accessTokenValidity}" placeholder="Access Token Validity e.g 10800" class="form-control" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-25">
+                    <label>Refresh Token Validity</label>
+                </div>
+                <div class="col-25">
+                    <label th:if="${#fields.hasErrors('refreshTokenValidity')}" th:errors="*{refreshTokenValidity}"
+                           class="validation-message">
+                    </label>
+                </div>
+                <div class="col-75">
+                    <input type="text" th:field="*{refreshTokenValidity}" placeholder="Refresh Token Validity e.g 259200" class="form-control" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-25">
+                    <label>Autoapprove</label>
+                </div>
+                <div class="col-25">
+                    <label th:if="${#fields.hasErrors('autoapprove')}" th:errors="*{autoapprove}"
+                           class="validation-message">
+                    </label>
+                </div>
+                <div class="col-75">
+                    <input type="text" th:field="*{autoapprove}" placeholder="autoapprove" class="form-control" />
+                </div>
+            </div>
+            <div class="row">
+            	<input type="submit" th:value="${oauthclient.clientId == null?'ADD':'EDIT'}" />
+            </div>
+
+            <h2>
+                <span class="text-success" th:utext="${successMessage}"></span>
+            </h2>
+        </form>
+    </div>
+</div>
+</body>
+</html>

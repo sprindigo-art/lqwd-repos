@@ -1,0 +1,200 @@
+# LQWDClaw-NodeOps — external API surface at api.lqwdclaw.bot
+# Install this file at /etc/caddy/Caddyfile on the production VM.
+# Reference: Obsidian Infrastructure/Cloudflare Edge Setup
+
+{
+    # Global server defaults — timeouts + header cap
+    servers {
+        timeouts {
+            read_body     10s
+            read_header   5s
+            write         30s
+            idle          120s
+        }
+        max_header_size 16KB
+    }
+}
+
+api.lqwdclaw.bot:443 {
+    # Origin CA cert — only trusted by Cloudflare edge. Direct-IP HTTPS from
+    # non-CF clients sees an untrusted cert; this is intentional (layered
+    # defense alongside UFW CF-IP allowlist).
+    tls /etc/caddy/certs/origin-cert.pem /etc/caddy/certs/origin-key.pem
+
+    # Cap request body — faucet registration payloads are tiny (<1KB).
+    request_body {
+        max_size 64KB
+    }
+
+    # --- Path allowlist: only what external agents legitimately need ---
+
+    # L402 pay-per-call endpoints (auth handled by L402 protocol itself)
+    handle /v1/l402/* {
+        reverse_proxy 127.0.0.1:7778 {
+            header_up X-Forwarded-For   {http.request.header.CF-Connecting-IP}
+            header_up X-Forwarded-Proto {http.request.scheme}
+            header_up CF-Connecting-IP  {http.request.header.CF-Connecting-IP}
+            header_up CF-Ray            {http.request.header.CF-Ray}
+        }
+    }
+
+    # Faucet + internal endpoints — Caddy injects X-Internal-Auth so
+    # external agents don't need to know the shared secret (open-faucet
+    # model). Defenses are the gateway's per-IP rate limit (3/hour via
+    # CF-Connecting-IP) + global daily cap + pubkey-ban.
+    handle /v1/internal/* {
+        reverse_proxy 127.0.0.1:7778 {
+            header_up X-Internal-Auth   {env.INTERNAL_AUTH_SECRET}
+            header_up X-Forwarded-For   {http.request.header.CF-Connecting-IP}
+            header_up X-Forwarded-Proto {http.request.scheme}
+            header_up CF-Connecting-IP  {http.request.header.CF-Connecting-IP}
+            header_up CF-Ray            {http.request.header.CF-Ray}
+        }
+    }
+
+    # MCP endpoint — API-key auth handled inside the gateway (Bearer
+    # lqwd_... token validated by mcpserver/server.go, not X-Internal-Auth).
+    # Streaming tool calls can run long, so override the global 30s write
+    # timeout for this path only. Matches both /v1/mcp and /v1/mcp/...
+    handle /v1/mcp* {
+        reverse_proxy 127.0.0.1:7778 {
+            header_up X-Forwarded-For   {http.request.header.CF-Connecting-IP}
+            header_up CF-Connecting-IP  {http.request.header.CF-Connecting-IP}
+            header_up CF-Ray            {http.request.header.CF-Ray}
+            transport http {
+                read_timeout  120s
+                write_timeout 120s
+            }
+        }
+    }
+
+    # Public agent-discovery catalog — no auth. Describes the onboarding
+    # surface so agents self-orient before registering.
+    handle /v1/discovery {
+        reverse_proxy 127.0.0.1:7778 {
+            header_up X-Forwarded-For   {http.request.header.CF-Connecting-IP}
+            header_up CF-Connecting-IP  {http.request.header.CF-Connecting-IP}
+            header_up CF-Ray            {http.request.header.CF-Ray}
+        }
+    }
+
+    # Public minimal health — gateway's /v1/health returns {ok, status} only
+    # (detailed snapshot moved to /v1/health/detailed which is NOT in this
+    # allowlist, so it 404s from outside).
+    handle /v1/health {
+        reverse_proxy 127.0.0.1:7778
+    }
+
+    # Block admin dashboard with explicit log so probe attempts are visible
+    handle /admin/* {
+        log_name admin_probe
+        respond "Not found" 404
+    }
+
+    # Human-facing landing at / — serves the static marketing page.
+    # handle / in Caddy v2 matches the exact root path only; sub-paths
+    # fall through to /logo.png (below) or the catch-all.
+    handle / {
+        root * /etc/caddy/landing
+        rewrite * /landing.html
+        file_server
+    }
+
+    # Landing-page assets — just the logo for now. Served from the same
+    # /etc/caddy/landing directory as landing.html. Adding new assets means
+    # either adding more handle blocks or shifting to /assets/* glob.
+    handle /logo.png {
+        root * /etc/caddy/landing
+        file_server
+    }
+    handle /favicon.ico {
+        root * /etc/caddy/landing
+        rewrite * /logo.png
+        file_server
+    }
+
+    # Catch-all: Bearer-authed write ops, /v1/health/detailed, etc. stay
+    # localhost-only and return 404 via this edge.
+    handle {
+        respond "Not found" 404
+    }
+
+    # Access log to journald (via stderr) — captures CF-Ray for correlation
+    log {
+        output stderr
+        format console
+    }
+}
+
+# lqwdclaw.bot — human-facing agent quickstart (Phase 18 Option A).
+#
+# Served by the same VM using the (expanded) Origin CA cert that
+# covers lqwdclaw.bot + *.lqwdclaw.bot + api.lqwdclaw.bot. Keeps the
+# full main frontend deferred until v3; for now this is a static
+# docs page at /for-agents plus a minimal root redirect.
+#
+# Requires: origin-cert.pem + origin-key.pem at /etc/caddy/certs/
+# actually contain the apex in their SANs. See Obsidian
+# "Cloudflare Edge Setup" § Phase 18 deploy for devops steps.
+lqwdclaw.bot:443 {
+    tls /etc/caddy/certs/origin-cert.pem /etc/caddy/certs/origin-key.pem
+
+    # The quickstart page itself.
+    handle /for-agents {
+        root * /etc/caddy/landing
+        rewrite * /for-agents.html
+        file_server
+    }
+
+    # Phase 22 TRM-01: machine-readable trust manifest for AI-agent
+    # classifiers (Claude Code, Cursor, Cline). Inspectable-data posture
+    # per D-04. Cache 5min so operator edits propagate quickly; must-
+    # revalidate so stale tokens never outlive the window.
+    # CRITICAL: these two handle blocks must appear BEFORE `handle /`
+    # (Caddy matches in source order — the root redirect would otherwise
+    # swallow /.well-known/* paths).
+    handle /.well-known/ai-agent-trust.json {
+        root * /etc/caddy/landing
+        rewrite * /.well-known/ai-agent-trust.json
+        file_server
+        header Content-Type "application/json; charset=utf-8"
+        header Cache-Control "public, max-age=300, must-revalidate"
+        header X-Content-Type-Options "nosniff"
+        header Access-Control-Allow-Origin "*"
+    }
+
+    # Phase 22 TRM-03: RFC 9116 security.txt. Longer cache (1h) since
+    # Contact / Expires rarely change.
+    handle /.well-known/security.txt {
+        root * /etc/caddy/landing
+        rewrite * /.well-known/security.txt
+        file_server
+        header Content-Type "text/plain; charset=utf-8"
+        header Cache-Control "public, max-age=3600, must-revalidate"
+    }
+
+    # Root redirects to the quickstart — nothing else is hosted at the
+    # apex yet (marketing site is deferred to v3). This makes naked
+    # https://lqwdclaw.bot reach the intended page without a 404.
+    handle / {
+        redir https://lqwdclaw.bot/for-agents 302
+    }
+
+    # Reuse the same favicon as api.lqwdclaw.bot for brand consistency.
+    handle /favicon.ico {
+        root * /etc/caddy/landing
+        rewrite * /logo.png
+        file_server
+    }
+
+    # Catch-all 404 — anything else on lqwdclaw.bot is undefined until
+    # v3 ships the real frontend.
+    handle {
+        respond "Not found" 404
+    }
+
+    log {
+        output stderr
+        format console
+    }
+}

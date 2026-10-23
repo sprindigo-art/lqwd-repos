@@ -1,0 +1,52 @@
+<div id="payment-list" th:fragment="paymentListFrag(payments, user)">
+    <div th:if="${payments} != null" th:each="payment : ${payments}" class="timeline-line">
+        <div class="item-timeline timeline-primary" th:if="${payment.getStatus()} == 'SUCCEEDED'">
+            <div class="t-dot" data-original-title="" title=""></div>
+            <div class="t-text">
+                <p><span class="clickable-link" th:attr="onclick=|openLink('${payment.getPayment_hash()}')|" th:text="${payment.getPayment_hash()}">R Hash</span></p>
+                <div style="min-width: 25%;">
+                    <p class="t-time" style="min-width: 100%;" th:if="${payment.getReadableCreationDate() != null}" th:text="${payment.getReadableCreationDate()}">Just Now</p>
+                    <span class="badge" style="min-width: inherit;" th:text="${payment.getStatus()}">UNKNOWN</span>
+                </div>
+            </div>
+        </div>
+        <div class="item-timeline timeline-danger" th:if="${payment.getStatus()} == 'FAILED'">
+            <div class="t-dot" data-original-title="" title="">
+            </div>
+            <div class="t-text">
+                <p><span class="clickable-link" th:attr="onclick=|openLink('${payment.getPayment_hash()}')|" th:text="${payment.getPayment_hash()}">R Hash</span></p>
+                <div style="min-width: 25%;">
+                    <p class="t-time" style="min-width: 100%;" th:if="${payment.getReadableCreationDate() != null}" th:text="${payment.getReadableCreationDate()}">Just Now</p>
+                    <span class="badge" style="min-width: inherit;" th:text="${payment.getStatus()}">UNKNOWN</span>
+                </div>
+            </div>
+        </div>
+        <div class="item-timeline timeline-warning" th:if="${payment.getStatus()} == 'IN_FLIGHT'">
+            <div class="t-dot" data-original-title="" title="">
+            </div>
+            <div class="t-text">
+                <p><span class="clickable-link" th:attr="onclick=|openLink('${payment.getPayment_hash()}')|" th:text="${payment.getPayment_hash()}">R Hash</span></p>
+                <div style="min-width: 25%;">
+                    <p class="t-time" style="min-width: 100%;" th:if="${payment.getReadableCreationDate() != null}" th:text="${payment.getReadableCreationDate()}">Just Now</p>
+                    <span class="badge" style="min-width: inherit;" th:text="${payment.getStatus()}">UNKNOWN</span>
+                </div>
+            </div>
+        </div>
+        <div class="item-timeline timeline-warning" th:if="${payment.getStatus()} == 'UNKNOWN'">
+            <div class="t-dot" data-original-title="" title="">
+            </div>
+            <div class="t-text">
+                <p><span class="clickable-link" th:attr="onclick=|openLink('${payment.getPayment_hash()}')|" th:text="${payment.getPayment_hash()}">R Hash</span></p>
+                <div style="min-width: 25%;">
+                    <p class="t-time" style="min-width: 100%;" th:if="${payment.getReadableCreationDate() != null}" th:text="${payment.getReadableCreationDate()}">Just Now</p>
+                    <span class="badge" style="min-width: inherit;" th:text="${payment.getStatus()}">UNKNOWN</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div th:unless="${payments} != null" class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 layout-spacing m-auto">
+        <div class="text-center pt-5">
+            <h4>No Payments Found.</h4>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,15 @@
+# short-description: Raspberry Pi 4 SD image, OS and data on separate partitions
+#
+# p1 /boot  vfat  128M   RPi firmware, kernel, dtbs, overlays, config.txt
+# p2 /      ext4  1024M  read-mostly OS - replaced wholesale on update
+# p3 /data  ext4  4096M  lnd data (wallet, macaroons, TLS, sqlite db, graph)
+#
+# p1 and p2 are FIXED SIZE on purpose. That pins the byte offset of p3, so an
+# OS update can rewrite p1+p2 and leave p3 untouched. Do not change these sizes
+# without reading docs/UPDATES.md - doing so moves p3 and orphans the data.
+
+part /boot --source bootimg-partition --ondisk mmcblk0 --fstype=vfat --label boot   --active --align 4096 --fixed-size 128
+part /     --source rootfs            --ondisk mmcblk0 --fstype=ext4 --label root            --align 4096 --fixed-size 1024
+part /data                            --ondisk mmcblk0 --fstype=ext4 --label lnddata         --align 4096 --fixed-size 4096
+
+bootloader --ptable msdos

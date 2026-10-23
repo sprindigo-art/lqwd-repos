@@ -1,0 +1,57 @@
+<div id="transactions" th:fragment="transactionsFrag(transactions, user)">
+    <div class="transactions-list t-info pr-1" th:if="${transactions} != null or not ${#lists.isEmpty(transactions)}" th:each="transaction: ${transactions}">
+        <div class="t-item">
+            <div class="t-company-name">
+                <div class="t-icon">
+                    <div class="icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-repeat">
+                            <polyline points="17 1 21 5 17 9"></polyline>
+                            <path d="M3 11V9a4 4 0 0 1 4-4h14"></path>
+                            <polyline points="7 23 3 19 7 15"></polyline>
+                            <path d="M21 13v2a4 4 0 0 1-4 4H3"></path>
+                        </svg>
+                    </div>
+                </div>
+                <div class="t-name transaction-link">
+                    <h4 th:attr="onclick=|openTransaction('${transaction.getTx_hash()}','${transaction.getLnd_name()}')|" th:text="${transaction.getTx_hash()}">Transaction Hash</h4>
+                    <p class="meta-date"><span th:text="${transaction.getReadableDate()}"></span></p>
+                </div>
+
+            </div>
+            <div class="t-rate rate-dec" th:if="${#strings.contains(transaction.getAmount(), '-')}">
+                <p>
+                    <span>
+                        <span th:if="${user.getCurrency() == 'USD'}">[[${#numbers.formatCurrency(transaction.getAmount())}]]</span>
+                        <span th:if="${user.getCurrency() == 'CAD'}">[[${#numbers.formatCurrency(transaction.getAmount())}]]</span>
+                        <span th:if="${user.getCurrency() == 'bitcoin'}">&#8383;[[${transaction.getAmount()}]]</span>
+                        <span th:if="${user.getCurrency() == 'satoshi'}">
+                            <i class="fak fa-satoshisymbol-outline" style="font-size: 20px;"></i>
+                            [[${transaction.getAmount()}]]
+                        </span>
+                    </span>
+                </p>
+            </div>
+            <div class="t-rate rate-inc" th:unless="${#strings.contains(transaction.getAmount(), '-')}">
+                <p>
+                    <span>
+                        <span th:if="${user.getCurrency() == 'USD'}">[[${#numbers.formatCurrency(transaction.getAmount())}]]</span>
+                        <span th:if="${user.getCurrency() == 'CAD'}">[[${#numbers.formatCurrency(transaction.getAmount())}]]</span>
+                        <span th:if="${user.getCurrency() == 'bitcoin'}">&#8383;[[${transaction.getAmount()}]]</span>
+                        <span th:if="${user.getCurrency() == 'satoshi'}">
+                            <i class="fak fa-satoshisymbol-outline" style="font-size: 20px;"></i>
+                            [[${transaction.getAmount()}]]
+                        </span>
+
+                    </span>
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="transactions-list t-info pr-1" th:if="${transactions} == null or ${#lists.isEmpty(transactions)}">
+        <div class="col-12 layout-spacing m-auto">
+            <div class="text-center pt-5">
+                <h4>No Transaction Found.</h4>
+            </div>
+        </div>
+    </div>
+</div>

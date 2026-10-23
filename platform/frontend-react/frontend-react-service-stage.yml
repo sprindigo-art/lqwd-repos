@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: react
+  namespace: microservice
+  labels:
+    app: react
+
+spec:
+  selector:
+    app: react
+  ports:
+    - name: client
+      port: 80
+      targetPort: 80
+      protocol: TCP

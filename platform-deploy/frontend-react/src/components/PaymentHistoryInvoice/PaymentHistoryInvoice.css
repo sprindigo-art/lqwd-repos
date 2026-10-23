@@ -1,0 +1,156 @@
+.payment-history-invoice-container{
+
+    display: flex;
+    flex-direction: column;
+    row-gap: 40px;
+    padding-left: 5.5%;
+}
+
+.payment-history-invoice-row {
+    display: flex;
+    flex-direction: row;
+}
+
+.payment-history-invoice-header {
+    display: flex;
+    flex-direction: row;
+    /* Header 1 */
+
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 32px;
+    /* identical to box height, or 133% */
+
+    display: flex;
+    align-items: center;
+
+    color: #000000;
+}
+
+.payment-history-invoice-download {
+    display: flex;
+    flex-direction: row;
+}
+
+.payment-history-invoice-table {
+    display: flex;
+    flex-direction: column;
+    width: 88.8%;
+}
+
+.payment-history-invoice-table-row-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+
+    /* Title 1 */
+
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 24px;
+    align-items: center;
+    /* Text - Secondary */
+    color: #4D4D4D;
+
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 20px;
+}
+
+.payment-history-invoice-table-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+
+    /* Text - Label */
+    border-width: 1px 0px;
+    border-style: solid;
+    border-color: #A5A5A5;
+
+    height: 60px;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.payment-history-invoice-table-col {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    align-content: center;
+    justify-content: center;
+    align-self: center;
+    width: 20%;
+
+    /* Title 1 */
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 24px;
+    /* identical to box height, or 133% */
+
+    /* Text - Primary */
+    color: #111111;
+
+}
+
+.payment-history-invoice-table-col:nth-last-child(1){
+    display: flex;
+    flex-direction: column;
+    width: 20%;
+    /* Header 2 */
+
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 27px;
+
+    align-items: flex-end;
+    text-align: right;
+    text-transform: capitalize;
+
+    /* Text - Primary */
+
+    color: #111111;
+}
+
+.payment-history-invoice-table-total {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    width: 88.8%;
+    padding-right: 20px;
+    padding-top: 40px;
+    row-gap: 8px;
+}
+
+.payment-history-invoice-table-total-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    min-width: 15.6%;
+}
+
+.payment-history-invoice-table-total-col {
+    display: flex;
+    flex-direction: column;
+
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 24px;
+    /* identical to box height, or 133% */
+    display: flex;
+    align-items: center;
+
+    /* Text - Secondary */
+    color: #4D4D4D;
+
+}

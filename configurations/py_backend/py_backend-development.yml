@@ -1,0 +1,24 @@
+app:
+  sasl_mechanism: PLAIN
+  security_protocol: SASL_PLAINTEXT
+  schema_host: http://schemaregistry.kafka-v1:8081
+  lnd_rpc_port: 8080
+  user_kafka_pass: ${KUSERPASS}
+  user_kafka: kafka
+  grpc_port: 10009
+  kafka_co_host: broker.kafka-v1:9092
+  kafka_co_topic: request
+  kafka_co_group_id: 334
+  kafka_offset_reset: earliest
+  kafka_pro_host: broker.kafka-v1:9092
+  kafka_pro_topic: reply
+  info_value_schema_url: http://schemaregistry.kafka-v1:8081/subjects/info-value/versions/latest
+  info_key_schema_url: http://schemaregistry.kafka-v1:8081/subjects/info-key/versions/latest
+  request_value_schema_url: http://schemaregistry.kafka-v1:8081/subjects/request-value/versions/latest
+  reply_value_schema_url: http://schemaregistry.kafka-v1:8081/subjects/reply-value/versions/latest
+  tmessage_value_schema_url: http://schemaregistry.kafka-v1:8081/subjects/tmessage-details-value/versions/latest
+  tmessage_key_schema_url: http://schemaregistry.kafka-v1:8081/subjects/tmessage-details-key/versions/latest
+  cipher_base_url: http://cipher-service.microservice:8790
+  token_url: http://oauth2.oauth2:8187/oauth/token
+  client_id: ${CLIENT_ID}
+  client_secret: ${CLIENT_SECRET}

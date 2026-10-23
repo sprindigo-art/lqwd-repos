@@ -1,0 +1,44 @@
+<div th:if="${pendingChannels==null}" class="widget-content widget-content-area justify-content-center text-center">
+    <h3 style="padding: 20px;">You Do Not Have Any Pending Channels</h3>
+</div>
+<div th:unless="${pendingChannels == null}" class="widget-content widget-content-area br-6">
+    <div id="default-ordering_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4">
+        <div class="table-responsive">
+            <table id="pending-channel-table" class="table table-hover dataTable" style="width:100%" role="grid" aria-describedby="default-ordering_info">
+                <thead>
+                <tr role="row">
+                    <th class="sorting" tabindex="0" aria-controls="default-ordering" rowspan="1" colspan="1">Type</th>
+                    <th class="sorting" tabindex="0" aria-controls="default-ordering" rowspan="1" colspan="1" style="width: 50%;">Channel Point</th>
+                    <th class="sorting_desc" tabindex="0" aria-controls="default-ordering" rowspan="1" colspan="1" aria-sort="descending">Transaction ID</th>
+                    <th class="sorting" tabindex="0" aria-controls="default-ordering" rowspan="1" colspan="1">Created</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr role="row" th:each="channel : ${pendingChannels}">
+
+                    <td th:text="${channel.getType()}"></td>
+                    <td>
+                        <a th:href="'https://mempool.space/tx/'+${channel.getChannel_point()}">
+                            <span class="">
+                                [[${#strings.abbreviate(channel.getChannel_point(), 50)}]]
+                            </span>
+                        </a>
+                    </td>
+                    <td th:text="${channel.getTx_id()}"></td>
+                    <td th:data-order="${channel.getDate_created().getTime()}" th:text="${channel.getDate_created()}"></td>
+                </tr>
+                </tbody>
+
+                <tfoot>
+                <tr>
+                    <th rowspan="1" colspan="1">Type</th>
+                    <th rowspan="1" colspan="">Channel Point</th>
+                    <th rowspan="1" colspan="1">Transaction ID</th>
+                    <th rowspan="1" colspan="1">Created</th>
+                </tr>
+                </tfoot>
+
+            </table>
+        </div>
+    </div>
+</div>

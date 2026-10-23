@@ -1,0 +1,800 @@
+Success:  {
+	"funding_txid": "646750a86971110ed9d7b6cd76246efe48557706a9758b5f2156daea7ec8d16b",
+	"funding_output_index": 1
+}
+{
+	"funding_txid": "646750a86971110ed9d7b6cd76246efe48557706a9758b5f2156daea7ec8d16b",
+	"funding_output_index": 0
+}
+{
+	"funding_txid": "646750a86971110ed9d7b6cd76246efe48557706a9758b5f2156daea7ec8d16b",
+	"funding_output_index": 2
+}
+
+The result is  True and result string : {
+	"funding_txid": "646750a86971110ed9d7b6cd76246efe48557706a9758b5f2156daea7ec8d16b",
+	"funding_output_index": 1
+}
+{
+	"funding_txid": "646750a86971110ed9d7b6cd76246efe48557706a9758b5f2156daea7ec8d16b",
+	"funding_output_index": 0
+}
+{
+	"funding_txid": "646750a86971110ed9d7b6cd76246efe48557706a9758b5f2156daea7ec8d16b",
+	"funding_output_index": 2
+}
+
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '038306422b8217fe516bbd80cd8bf3a90c85cbf3689c6b1f28d239c97c88f7134b', '03aefa43fbb4009b21a4129d05953974b7dbabbbfb511921410080860fca8ee1f0']
+
+
+
+{
+
+}
+az
+
+total len : 933
+['03cde60a6323f7122d5178255766e38114b4722ede08f7c9e0c5df9b912cc201d6', '03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '034ea80f8b148c750463546bd999bf7321a0e6dfc60aaf84bd0400a2e8d376c0d5']
+Error: [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 03cde60a6323f7122d5178255766e38114b4722ede08f7c9e0c5df9b912cc201d6 is not online
+
+The result is  False and result string : [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 03cde60a6323f7122d5178255766e38114b4722ede08f7c9e0c5df9b912cc201d6 is not online
+
+pubkey in string: 03cde60a6323f7122d5178255766e38114b4722ede08f7c9e0c5df9b912cc201d6
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '034ea80f8b148c750463546bd999bf7321a0e6dfc60aaf84bd0400a2e8d376c0d5'] this after  error message search
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '034ea80f8b148c750463546bd999bf7321a0e6dfc60aaf84bd0400a2e8d376c0d5', '030c3f19d742ca294a55c00376b3b355c3c90d61c6b6b39554dbc7ac19b141c14f']
+Error: [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 030c3f19d742ca294a55c00376b3b355c3c90d61c6b6b39554dbc7ac19b141c14f is not online
+
+The result is  False and result string : [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 030c3f19d742ca294a55c00376b3b355c3c90d61c6b6b39554dbc7ac19b141c14f is not online
+
+pubkey in string: 030c3f19d742ca294a55c00376b3b355c3c90d61c6b6b39554dbc7ac19b141c14f
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '034ea80f8b148c750463546bd999bf7321a0e6dfc60aaf84bd0400a2e8d376c0d5'] this after  error message search
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '034ea80f8b148c750463546bd999bf7321a0e6dfc60aaf84bd0400a2e8d376c0d5', '03c8dfbf829eaeb0b6dab099d87fdf7f8faceb0c1b935cd243e8c1fb5af71361cf']
+Error: [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 03c8dfbf829eaeb0b6dab099d87fdf7f8faceb0c1b935cd243e8c1fb5af71361cf is not online
+
+The result is  False and result string : [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 03c8dfbf829eaeb0b6dab099d87fdf7f8faceb0c1b935cd243e8c1fb5af71361cf is not online
+
+pubkey in string: 03c8dfbf829eaeb0b6dab099d87fdf7f8faceb0c1b935cd243e8c1fb5af71361cf
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '034ea80f8b148c750463546bd999bf7321a0e6dfc60aaf84bd0400a2e8d376c0d5'] this after  error message search
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '034ea80f8b148c750463546bd999bf7321a0e6dfc60aaf84bd0400a2e8d376c0d5', '03d607f3e69fd032524a867b288216bfab263b6eaee4e07783799a6fe69bb84fac']
+Error: [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 03d607f3e69fd032524a867b288216bfab263b6eaee4e07783799a6fe69bb84fac is not online
+
+The result is  False and result string : [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 03d607f3e69fd032524a867b288216bfab263b6eaee4e07783799a6fe69bb84fac is not online
+
+pubkey in string: 03d607f3e69fd032524a867b288216bfab263b6eaee4e07783799a6fe69bb84fac
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '034ea80f8b148c750463546bd999bf7321a0e6dfc60aaf84bd0400a2e8d376c0d5'] this after  error message search
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '034ea80f8b148c750463546bd999bf7321a0e6dfc60aaf84bd0400a2e8d376c0d5', '03423790614f023e3c0cdaa654a3578e919947e4c3a14bf5044e7c787ebd11af1a']
+Error: [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 034ea80f8b148c750463546bd999bf7321a0e6dfc60aaf84bd0400a2e8d376c0d5 is not online
+
+The result is  False and result string : [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 034ea80f8b148c750463546bd999bf7321a0e6dfc60aaf84bd0400a2e8d376c0d5 is not online
+
+pubkey in string: 034ea80f8b148c750463546bd999bf7321a0e6dfc60aaf84bd0400a2e8d376c0d5
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '03423790614f023e3c0cdaa654a3578e919947e4c3a14bf5044e7c787ebd11af1a'] this after  error message search
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '03423790614f023e3c0cdaa654a3578e919947e4c3a14bf5044e7c787ebd11af1a', '035b1ff29e8db1ba8f2a4f4f95db239b54069cb949b8cde329418e2a83da4f1b30']
+Error: [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 035b1ff29e8db1ba8f2a4f4f95db239b54069cb949b8cde329418e2a83da4f1b30 is not online
+
+The result is  False and result string : [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 035b1ff29e8db1ba8f2a4f4f95db239b54069cb949b8cde329418e2a83da4f1b30 is not online
+
+pubkey in string: 035b1ff29e8db1ba8f2a4f4f95db239b54069cb949b8cde329418e2a83da4f1b30
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '03423790614f023e3c0cdaa654a3578e919947e4c3a14bf5044e7c787ebd11af1a'] this after  error message search
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '03423790614f023e3c0cdaa654a3578e919947e4c3a14bf5044e7c787ebd11af1a', '03abf6f44c355dec0d5aa155bdbdd6e0c8fefe318eff402de65c6eb2e1be55dc3e']
+Error: [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 03abf6f44c355dec0d5aa155bdbdd6e0c8fefe318eff402de65c6eb2e1be55dc3e is not online
+
+The result is  False and result string : [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 03abf6f44c355dec0d5aa155bdbdd6e0c8fefe318eff402de65c6eb2e1be55dc3e is not online
+
+pubkey in string: 03abf6f44c355dec0d5aa155bdbdd6e0c8fefe318eff402de65c6eb2e1be55dc3e
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '03423790614f023e3c0cdaa654a3578e919947e4c3a14bf5044e7c787ebd11af1a'] this after  error message search
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '03423790614f023e3c0cdaa654a3578e919947e4c3a14bf5044e7c787ebd11af1a', '03e691f81f08c56fa876cc4ef5c9e8b727bd682cf35605be25d48607a802526053']
+Error: [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 03e691f81f08c56fa876cc4ef5c9e8b727bd682cf35605be25d48607a802526053 is not online
+
+The result is  False and result string : [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 03e691f81f08c56fa876cc4ef5c9e8b727bd682cf35605be25d48607a802526053 is not online
+
+pubkey in string: 03e691f81f08c56fa876cc4ef5c9e8b727bd682cf35605be25d48607a802526053
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '03423790614f023e3c0cdaa654a3578e919947e4c3a14bf5044e7c787ebd11af1a'] this after  error message search
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '03423790614f023e3c0cdaa654a3578e919947e4c3a14bf5044e7c787ebd11af1a', '03da1c27ca77872ac5b3e568af30673e599a47a5e4497f85c7b5da42048807b3ed']
+Error: [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 03da1c27ca77872ac5b3e568af30673e599a47a5e4497f85c7b5da42048807b3ed is not online
+
+The result is  False and result string : [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 03da1c27ca77872ac5b3e568af30673e599a47a5e4497f85c7b5da42048807b3ed is not online
+
+pubkey in string: 03da1c27ca77872ac5b3e568af30673e599a47a5e4497f85c7b5da42048807b3ed
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '03423790614f023e3c0cdaa654a3578e919947e4c3a14bf5044e7c787ebd11af1a'] this after  error message search
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '03423790614f023e3c0cdaa654a3578e919947e4c3a14bf5044e7c787ebd11af1a', '039edc94987c8f3adc28dab455efc00dea876089a120f573bd0b03c40d9d3fb1e1']
+Error: [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 039edc94987c8f3adc28dab455efc00dea876089a120f573bd0b03c40d9d3fb1e1 is not online
+
+The result is  False and result string : [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 039edc94987c8f3adc28dab455efc00dea876089a120f573bd0b03c40d9d3fb1e1 is not online
+
+pubkey in string: 039edc94987c8f3adc28dab455efc00dea876089a120f573bd0b03c40d9d3fb1e1
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '03423790614f023e3c0cdaa654a3578e919947e4c3a14bf5044e7c787ebd11af1a'] this after  error message search
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '03423790614f023e3c0cdaa654a3578e919947e4c3a14bf5044e7c787ebd11af1a', '03bc9337c7a28bb784d67742ebedd30a93bacdf7e4ca16436ef3798000242b2251']
+Error: [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 03bc9337c7a28bb784d67742ebedd30a93bacdf7e4ca16436ef3798000242b2251 is not online
+
+The result is  False and result string : [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 03bc9337c7a28bb784d67742ebedd30a93bacdf7e4ca16436ef3798000242b2251 is not online
+
+pubkey in string: 03bc9337c7a28bb784d67742ebedd30a93bacdf7e4ca16436ef3798000242b2251
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '03423790614f023e3c0cdaa654a3578e919947e4c3a14bf5044e7c787ebd11af1a'] this after  error message search
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '03423790614f023e3c0cdaa654a3578e919947e4c3a14bf5044e7c787ebd11af1a', '03c5528c628681aa17ab9e117aa3ee6f06c750dfb17df758ecabcd68f1567ad8c1']
+Error: [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 03c5528c628681aa17ab9e117aa3ee6f06c750dfb17df758ecabcd68f1567ad8c1 is not online
+
+The result is  False and result string : [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 03c5528c628681aa17ab9e117aa3ee6f06c750dfb17df758ecabcd68f1567ad8c1 is not online
+
+pubkey in string: 03c5528c628681aa17ab9e117aa3ee6f06c750dfb17df758ecabcd68f1567ad8c1
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '03423790614f023e3c0cdaa654a3578e919947e4c3a14bf5044e7c787ebd11af1a'] this after  error message search
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '03423790614f023e3c0cdaa654a3578e919947e4c3a14bf5044e7c787ebd11af1a', '033d9e73a183c9714545f292875fb90c4372bddc9c2cc302b265d15e7969a5ed60']
+Error: [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 033d9e73a183c9714545f292875fb90c4372bddc9c2cc302b265d15e7969a5ed60 is not online
+
+The result is  False and result string : [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 033d9e73a183c9714545f292875fb90c4372bddc9c2cc302b265d15e7969a5ed60 is not online
+
+pubkey in string: 033d9e73a183c9714545f292875fb90c4372bddc9c2cc302b265d15e7969a5ed60
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '03423790614f023e3c0cdaa654a3578e919947e4c3a14bf5044e7c787ebd11af1a'] this after  error message search
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '03423790614f023e3c0cdaa654a3578e919947e4c3a14bf5044e7c787ebd11af1a', '03df3f0a2fd6bea5429a596461ce784c922b2981ada1af89cfefcd9ccfb16c16a7']
+Error: [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 03df3f0a2fd6bea5429a596461ce784c922b2981ada1af89cfefcd9ccfb16c16a7 is not online
+
+The result is  False and result string : [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 03df3f0a2fd6bea5429a596461ce784c922b2981ada1af89cfefcd9ccfb16c16a7 is not online
+
+pubkey in string: 03df3f0a2fd6bea5429a596461ce784c922b2981ada1af89cfefcd9ccfb16c16a7
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '03423790614f023e3c0cdaa654a3578e919947e4c3a14bf5044e7c787ebd11af1a'] this after  error message search
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '03423790614f023e3c0cdaa654a3578e919947e4c3a14bf5044e7c787ebd11af1a', '03bb88ccc444534da7b5b64b4f7b15e1eccb18e102db0e400d4b9cfe93763aa26d']
+Error: [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 03bb88ccc444534da7b5b64b4f7b15e1eccb18e102db0e400d4b9cfe93763aa26d is not online
+
+The result is  False and result string : [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 03bb88ccc444534da7b5b64b4f7b15e1eccb18e102db0e400d4b9cfe93763aa26d is not online
+
+pubkey in string: 03bb88ccc444534da7b5b64b4f7b15e1eccb18e102db0e400d4b9cfe93763aa26d
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '03423790614f023e3c0cdaa654a3578e919947e4c3a14bf5044e7c787ebd11af1a'] this after  error message search
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '03423790614f023e3c0cdaa654a3578e919947e4c3a14bf5044e7c787ebd11af1a', '03f94b8e82c3c9be8f8d1e3bcb595e2855b72f23b92967c26f7d65be9a75184c12']
+Error: [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 03f94b8e82c3c9be8f8d1e3bcb595e2855b72f23b92967c26f7d65be9a75184c12 is not online
+
+The result is  False and result string : [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 03f94b8e82c3c9be8f8d1e3bcb595e2855b72f23b92967c26f7d65be9a75184c12 is not online
+
+pubkey in string: 03f94b8e82c3c9be8f8d1e3bcb595e2855b72f23b92967c26f7d65be9a75184c12
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '03423790614f023e3c0cdaa654a3578e919947e4c3a14bf5044e7c787ebd11af1a'] this after  error message search
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '03423790614f023e3c0cdaa654a3578e919947e4c3a14bf5044e7c787ebd11af1a', '037f990e61acee8a7697966afd29dd88f3b1f8a7b14d625c4f8742bd952003a590']
+Error: [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 037f990e61acee8a7697966afd29dd88f3b1f8a7b14d625c4f8742bd952003a590 is not online
+
+The result is  False and result string : [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 037f990e61acee8a7697966afd29dd88f3b1f8a7b14d625c4f8742bd952003a590 is not online
+
+pubkey in string: 037f990e61acee8a7697966afd29dd88f3b1f8a7b14d625c4f8742bd952003a590
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '03423790614f023e3c0cdaa654a3578e919947e4c3a14bf5044e7c787ebd11af1a'] this after  error message search
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '03423790614f023e3c0cdaa654a3578e919947e4c3a14bf5044e7c787ebd11af1a', '03037dc08e9ac63b82581f79b662a4d0ceca8a8ca162b1af3551595b8f2d97b70a']
+Error: [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 03037dc08e9ac63b82581f79b662a4d0ceca8a8ca162b1af3551595b8f2d97b70a is not online
+
+The result is  False and result string : [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 03037dc08e9ac63b82581f79b662a4d0ceca8a8ca162b1af3551595b8f2d97b70a is not online
+
+pubkey in string: 03037dc08e9ac63b82581f79b662a4d0ceca8a8ca162b1af3551595b8f2d97b70a
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '03423790614f023e3c0cdaa654a3578e919947e4c3a14bf5044e7c787ebd11af1a'] this after  error message search
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '03423790614f023e3c0cdaa654a3578e919947e4c3a14bf5044e7c787ebd11af1a', '031f2669adab71548fad4432277a0d90233e3bc07ac29cfb0b3e01bd3fb26cb9fa']
+Error: [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 031f2669adab71548fad4432277a0d90233e3bc07ac29cfb0b3e01bd3fb26cb9fa is not online
+
+The result is  False and result string : [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 031f2669adab71548fad4432277a0d90233e3bc07ac29cfb0b3e01bd3fb26cb9fa is not online
+
+pubkey in string: 031f2669adab71548fad4432277a0d90233e3bc07ac29cfb0b3e01bd3fb26cb9fa
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '03423790614f023e3c0cdaa654a3578e919947e4c3a14bf5044e7c787ebd11af1a'] this after  error message search
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '03423790614f023e3c0cdaa654a3578e919947e4c3a14bf5044e7c787ebd11af1a', '02fb79c3a9121d85b126687bd111eaebf21aaaaa5cbf232e2b6c3bdf8803f40182']
+Error: [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 02fb79c3a9121d85b126687bd111eaebf21aaaaa5cbf232e2b6c3bdf8803f40182 is not online
+
+The result is  False and result string : [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 02fb79c3a9121d85b126687bd111eaebf21aaaaa5cbf232e2b6c3bdf8803f40182 is not online
+
+pubkey in string: 02fb79c3a9121d85b126687bd111eaebf21aaaaa5cbf232e2b6c3bdf8803f40182
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '03423790614f023e3c0cdaa654a3578e919947e4c3a14bf5044e7c787ebd11af1a'] this after  error message search
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '03423790614f023e3c0cdaa654a3578e919947e4c3a14bf5044e7c787ebd11af1a', '03afa7a8196dbca763ee6f9a34b634a7adc03f154e5d6979fe654db5606b5fb2b1']
+Error: [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 03afa7a8196dbca763ee6f9a34b634a7adc03f154e5d6979fe654db5606b5fb2b1 is not online
+
+The result is  False and result string : [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 03afa7a8196dbca763ee6f9a34b634a7adc03f154e5d6979fe654db5606b5fb2b1 is not online
+
+pubkey in string: 03afa7a8196dbca763ee6f9a34b634a7adc03f154e5d6979fe654db5606b5fb2b1
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '03423790614f023e3c0cdaa654a3578e919947e4c3a14bf5044e7c787ebd11af1a'] this after  error message search
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '03423790614f023e3c0cdaa654a3578e919947e4c3a14bf5044e7c787ebd11af1a', '03dc686001f9b1ff700dfb8917df70268e1919433a535e1fb0767c19223509ab57']
+Error: [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 03dc686001f9b1ff700dfb8917df70268e1919433a535e1fb0767c19223509ab57 is not online
+
+The result is  False and result string : [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 03dc686001f9b1ff700dfb8917df70268e1919433a535e1fb0767c19223509ab57 is not online
+
+pubkey in string: 03dc686001f9b1ff700dfb8917df70268e1919433a535e1fb0767c19223509ab57
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '03423790614f023e3c0cdaa654a3578e919947e4c3a14bf5044e7c787ebd11af1a'] this after  error message search
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '03423790614f023e3c0cdaa654a3578e919947e4c3a14bf5044e7c787ebd11af1a', '039cdd937f8d83fb2f78c8d7ddc92ae28c9dbb5c4827181cfc80df60dee1b7bf19']
+Error: [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 039cdd937f8d83fb2f78c8d7ddc92ae28c9dbb5c4827181cfc80df60dee1b7bf19 is not online
+
+The result is  False and result string : [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 039cdd937f8d83fb2f78c8d7ddc92ae28c9dbb5c4827181cfc80df60dee1b7bf19 is not online
+
+pubkey in string: 039cdd937f8d83fb2f78c8d7ddc92ae28c9dbb5c4827181cfc80df60dee1b7bf19
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '03423790614f023e3c0cdaa654a3578e919947e4c3a14bf5044e7c787ebd11af1a'] this after  error message search
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '03423790614f023e3c0cdaa654a3578e919947e4c3a14bf5044e7c787ebd11af1a', '03dbe3fedd4f6e7f7020c69e6d01453d5a69f9faa1382901cf3028f1e997ef2814']
+Error: [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 03dbe3fedd4f6e7f7020c69e6d01453d5a69f9faa1382901cf3028f1e997ef2814 is not online
+
+The result is  False and result string : [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 03dbe3fedd4f6e7f7020c69e6d01453d5a69f9faa1382901cf3028f1e997ef2814 is not online
+
+pubkey in string: 03dbe3fedd4f6e7f7020c69e6d01453d5a69f9faa1382901cf3028f1e997ef2814
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '03423790614f023e3c0cdaa654a3578e919947e4c3a14bf5044e7c787ebd11af1a'] this after  error message search
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '03423790614f023e3c0cdaa654a3578e919947e4c3a14bf5044e7c787ebd11af1a', '02f460ae6d3d3e104f8afe520ae0cff3d94c35c2ba8df66da89f3c8006a265b90a']
+Error: [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 02f460ae6d3d3e104f8afe520ae0cff3d94c35c2ba8df66da89f3c8006a265b90a is not online
+
+The result is  False and result string : [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 02f460ae6d3d3e104f8afe520ae0cff3d94c35c2ba8df66da89f3c8006a265b90a is not online
+
+pubkey in string: 02f460ae6d3d3e104f8afe520ae0cff3d94c35c2ba8df66da89f3c8006a265b90a
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '03423790614f023e3c0cdaa654a3578e919947e4c3a14bf5044e7c787ebd11af1a'] this after  error message search
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '03423790614f023e3c0cdaa654a3578e919947e4c3a14bf5044e7c787ebd11af1a', '03c2abfa93eacec04721c019644584424aab2ba4dff3ac9bdab4e9c97007491dda']
+Error: [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 03c2abfa93eacec04721c019644584424aab2ba4dff3ac9bdab4e9c97007491dda is not online
+
+The result is  False and result string : [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 03c2abfa93eacec04721c019644584424aab2ba4dff3ac9bdab4e9c97007491dda is not online
+
+pubkey in string: 03c2abfa93eacec04721c019644584424aab2ba4dff3ac9bdab4e9c97007491dda
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '03423790614f023e3c0cdaa654a3578e919947e4c3a14bf5044e7c787ebd11af1a'] this after  error message search
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '03423790614f023e3c0cdaa654a3578e919947e4c3a14bf5044e7c787ebd11af1a', '039174f846626c6053ba80f5443d0db33da384f1dde135bf7080ba1eec465019c3']
+Error: [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 039174f846626c6053ba80f5443d0db33da384f1dde135bf7080ba1eec465019c3 is not online
+
+The result is  False and result string : [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 039174f846626c6053ba80f5443d0db33da384f1dde135bf7080ba1eec465019c3 is not online
+
+pubkey in string: 039174f846626c6053ba80f5443d0db33da384f1dde135bf7080ba1eec465019c3
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '03423790614f023e3c0cdaa654a3578e919947e4c3a14bf5044e7c787ebd11af1a'] this after  error message search
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '03423790614f023e3c0cdaa654a3578e919947e4c3a14bf5044e7c787ebd11af1a', '02ff30e83896d453cfc89ff4dd06d23d793b7246f154c210324adc1d42c849ce74']
+Error: [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 02ff30e83896d453cfc89ff4dd06d23d793b7246f154c210324adc1d42c849ce74 is not online
+
+The result is  False and result string : [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 02ff30e83896d453cfc89ff4dd06d23d793b7246f154c210324adc1d42c849ce74 is not online
+
+pubkey in string: 02ff30e83896d453cfc89ff4dd06d23d793b7246f154c210324adc1d42c849ce74
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '03423790614f023e3c0cdaa654a3578e919947e4c3a14bf5044e7c787ebd11af1a'] this after  error message search
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '03423790614f023e3c0cdaa654a3578e919947e4c3a14bf5044e7c787ebd11af1a', '02d246c519845e7b23b02684d64ca23b750958e0307f9519849ee2535e3637999a']
+Error: [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 02d246c519845e7b23b02684d64ca23b750958e0307f9519849ee2535e3637999a is not online
+
+The result is  False and result string : [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 02d246c519845e7b23b02684d64ca23b750958e0307f9519849ee2535e3637999a is not online
+
+pubkey in string: 02d246c519845e7b23b02684d64ca23b750958e0307f9519849ee2535e3637999a
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '03423790614f023e3c0cdaa654a3578e919947e4c3a14bf5044e7c787ebd11af1a'] this after  error message search
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '03423790614f023e3c0cdaa654a3578e919947e4c3a14bf5044e7c787ebd11af1a', '03aab7e9327716ee946b8fbfae039b0db85356549e72c5cca113ea67893d0821e5']
+Error: [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 03aab7e9327716ee946b8fbfae039b0db85356549e72c5cca113ea67893d0821e5 is not online
+
+The result is  False and result string : [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 03aab7e9327716ee946b8fbfae039b0db85356549e72c5cca113ea67893d0821e5 is not online
+
+pubkey in string: 03aab7e9327716ee946b8fbfae039b0db85356549e72c5cca113ea67893d0821e5
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '03423790614f023e3c0cdaa654a3578e919947e4c3a14bf5044e7c787ebd11af1a'] this after  error message search
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '03423790614f023e3c0cdaa654a3578e919947e4c3a14bf5044e7c787ebd11af1a', '033dee9c6a0afc40ffd8f27d68ef260f3e5e1c19e59c6f9bb607fb04c1d497a809']
+Error: [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 033dee9c6a0afc40ffd8f27d68ef260f3e5e1c19e59c6f9bb607fb04c1d497a809 is not online
+
+The result is  False and result string : [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 033dee9c6a0afc40ffd8f27d68ef260f3e5e1c19e59c6f9bb607fb04c1d497a809 is not online
+
+pubkey in string: 033dee9c6a0afc40ffd8f27d68ef260f3e5e1c19e59c6f9bb607fb04c1d497a809
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '03423790614f023e3c0cdaa654a3578e919947e4c3a14bf5044e7c787ebd11af1a'] this after  error message search
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '03423790614f023e3c0cdaa654a3578e919947e4c3a14bf5044e7c787ebd11af1a', '027ce055380348d7812d2ae7745701c9f93e70c1adeb2657f053f91df4f2843c71']
+Error: [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 027ce055380348d7812d2ae7745701c9f93e70c1adeb2657f053f91df4f2843c71 is not online
+
+The result is  False and result string : [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 027ce055380348d7812d2ae7745701c9f93e70c1adeb2657f053f91df4f2843c71 is not online
+
+pubkey in string: 027ce055380348d7812d2ae7745701c9f93e70c1adeb2657f053f91df4f2843c71
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '03423790614f023e3c0cdaa654a3578e919947e4c3a14bf5044e7c787ebd11af1a'] this after  error message search
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '03423790614f023e3c0cdaa654a3578e919947e4c3a14bf5044e7c787ebd11af1a', '034a5fdb2df3ce1bfd2c2aca205ce9cfeef1a5f4af21b0b5e81c453080c30d7683']
+Error: [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 034a5fdb2df3ce1bfd2c2aca205ce9cfeef1a5f4af21b0b5e81c453080c30d7683 is not online
+
+The result is  False and result string : [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 034a5fdb2df3ce1bfd2c2aca205ce9cfeef1a5f4af21b0b5e81c453080c30d7683 is not online
+
+pubkey in string: 034a5fdb2df3ce1bfd2c2aca205ce9cfeef1a5f4af21b0b5e81c453080c30d7683
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '03423790614f023e3c0cdaa654a3578e919947e4c3a14bf5044e7c787ebd11af1a'] this after  error message search
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '03423790614f023e3c0cdaa654a3578e919947e4c3a14bf5044e7c787ebd11af1a', '03b9aacb265dc5ebde04b91b28f7c8bb6ba0af146e5f37426915742daf8f195a09']
+Error: [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 03b9aacb265dc5ebde04b91b28f7c8bb6ba0af146e5f37426915742daf8f195a09 is not online
+
+The result is  False and result string : [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 03b9aacb265dc5ebde04b91b28f7c8bb6ba0af146e5f37426915742daf8f195a09 is not online
+
+pubkey in string: 03b9aacb265dc5ebde04b91b28f7c8bb6ba0af146e5f37426915742daf8f195a09
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '03423790614f023e3c0cdaa654a3578e919947e4c3a14bf5044e7c787ebd11af1a'] this after  error message search
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '03423790614f023e3c0cdaa654a3578e919947e4c3a14bf5044e7c787ebd11af1a', '035e4ff418fc8b5554c5d9eea66396c227bd429a3251c8cbc711002ba215bfc226']
+Error: [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: remote canceled funding, possibly timed out: received funding error from 03423790614f023e3c0cdaa654a3578e919947e4c3a14bf5044e7c787ebd11af1a: chan_id=e67e90c44fd44c6f422a87fde6867be6549163b689bf743c504fabbff0774eb4, err=chan size of 0.02 BTC is below min chan size of 0.04 BTC
+
+The result is  False and result string : [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: remote canceled funding, possibly timed out: received funding error from 03423790614f023e3c0cdaa654a3578e919947e4c3a14bf5044e7c787ebd11af1a: chan_id=e67e90c44fd44c6f422a87fde6867be6549163b689bf743c504fabbff0774eb4, err=chan size of 0.02 BTC is below min chan size of 0.04 BTC
+
+pubkey in string: 03423790614f023e3c0cdaa654a3578e919947e4c3a14bf5044e7c787ebd11af1a
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '035e4ff418fc8b5554c5d9eea66396c227bd429a3251c8cbc711002ba215bfc226'] this after  error message search
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '035e4ff418fc8b5554c5d9eea66396c227bd429a3251c8cbc711002ba215bfc226', '03ec512342aeee370b53d9fd12dbd5283dcd670d248018b3a1cf537313e76e6a2d']
+Error: [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 03ec512342aeee370b53d9fd12dbd5283dcd670d248018b3a1cf537313e76e6a2d is not online
+
+The result is  False and result string : [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 03ec512342aeee370b53d9fd12dbd5283dcd670d248018b3a1cf537313e76e6a2d is not online
+
+pubkey in string: 03ec512342aeee370b53d9fd12dbd5283dcd670d248018b3a1cf537313e76e6a2d
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '035e4ff418fc8b5554c5d9eea66396c227bd429a3251c8cbc711002ba215bfc226'] this after  error message search
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '035e4ff418fc8b5554c5d9eea66396c227bd429a3251c8cbc711002ba215bfc226', '03e81689bfd18d0accb28d720ed222209b1a5f2c6825308772beac75b1fe35d491']
+Error: [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 03e81689bfd18d0accb28d720ed222209b1a5f2c6825308772beac75b1fe35d491 is not online
+
+The result is  False and result string : [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 03e81689bfd18d0accb28d720ed222209b1a5f2c6825308772beac75b1fe35d491 is not online
+
+pubkey in string: 03e81689bfd18d0accb28d720ed222209b1a5f2c6825308772beac75b1fe35d491
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '035e4ff418fc8b5554c5d9eea66396c227bd429a3251c8cbc711002ba215bfc226'] this after  error message search
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '035e4ff418fc8b5554c5d9eea66396c227bd429a3251c8cbc711002ba215bfc226', '03c792f6a89fefd3f1b49b3d2ce23143b6f18d36b2ccb039fdb7dbfeb29159bb70']
+Error: [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 03c792f6a89fefd3f1b49b3d2ce23143b6f18d36b2ccb039fdb7dbfeb29159bb70 is not online
+
+The result is  False and result string : [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 03c792f6a89fefd3f1b49b3d2ce23143b6f18d36b2ccb039fdb7dbfeb29159bb70 is not online
+
+pubkey in string: 03c792f6a89fefd3f1b49b3d2ce23143b6f18d36b2ccb039fdb7dbfeb29159bb70
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '035e4ff418fc8b5554c5d9eea66396c227bd429a3251c8cbc711002ba215bfc226'] this after  error message search
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '035e4ff418fc8b5554c5d9eea66396c227bd429a3251c8cbc711002ba215bfc226', '02f1a8c87607f415c8f22c00593002775941dea48869ce23096af27b0cfdcc0b69']
+Error: [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 02f1a8c87607f415c8f22c00593002775941dea48869ce23096af27b0cfdcc0b69 is not online
+
+The result is  False and result string : [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 02f1a8c87607f415c8f22c00593002775941dea48869ce23096af27b0cfdcc0b69 is not online
+
+pubkey in string: 02f1a8c87607f415c8f22c00593002775941dea48869ce23096af27b0cfdcc0b69
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '035e4ff418fc8b5554c5d9eea66396c227bd429a3251c8cbc711002ba215bfc226'] this after  error message search
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '035e4ff418fc8b5554c5d9eea66396c227bd429a3251c8cbc711002ba215bfc226', '038306422b8217fe516bbd80cd8bf3a90c85cbf3689c6b1f28d239c97c88f7134b']
+Error: [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: remote canceled funding, possibly timed out: received funding error from 035e4ff418fc8b5554c5d9eea66396c227bd429a3251c8cbc711002ba215bfc226: chan_id=97675a15555ecd1645ff80addc5d17e58b1c06375a90cbdc57f8bd558a339c16, err=chan size of 0.02 BTC is below min chan size of 0.05 BTC
+
+The result is  False and result string : [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: remote canceled funding, possibly timed out: received funding error from 035e4ff418fc8b5554c5d9eea66396c227bd429a3251c8cbc711002ba215bfc226: chan_id=97675a15555ecd1645ff80addc5d17e58b1c06375a90cbdc57f8bd558a339c16, err=chan size of 0.02 BTC is below min chan size of 0.05 BTC
+
+pubkey in string: 035e4ff418fc8b5554c5d9eea66396c227bd429a3251c8cbc711002ba215bfc226
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '038306422b8217fe516bbd80cd8bf3a90c85cbf3689c6b1f28d239c97c88f7134b'] this after  error message search
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '038306422b8217fe516bbd80cd8bf3a90c85cbf3689c6b1f28d239c97c88f7134b', '03ef684e8c2ec25ea1a95fa46729e3355dd90210e0c57bad502d60676098ec83b3']
+Error: [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 03ef684e8c2ec25ea1a95fa46729e3355dd90210e0c57bad502d60676098ec83b3 is not online
+
+The result is  False and result string : [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 03ef684e8c2ec25ea1a95fa46729e3355dd90210e0c57bad502d60676098ec83b3 is not online
+
+pubkey in string: 03ef684e8c2ec25ea1a95fa46729e3355dd90210e0c57bad502d60676098ec83b3
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '038306422b8217fe516bbd80cd8bf3a90c85cbf3689c6b1f28d239c97c88f7134b'] this after  error message search
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '038306422b8217fe516bbd80cd8bf3a90c85cbf3689c6b1f28d239c97c88f7134b', '03bd6d28432d67effa2b2b89dd5fd68697940e8a8f2fbb84aaae90d584295b03bf']
+Error: [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 03bd6d28432d67effa2b2b89dd5fd68697940e8a8f2fbb84aaae90d584295b03bf is not online
+
+The result is  False and result string : [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 03bd6d28432d67effa2b2b89dd5fd68697940e8a8f2fbb84aaae90d584295b03bf is not online
+
+pubkey in string: 03bd6d28432d67effa2b2b89dd5fd68697940e8a8f2fbb84aaae90d584295b03bf
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '038306422b8217fe516bbd80cd8bf3a90c85cbf3689c6b1f28d239c97c88f7134b'] this after  error message search
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '038306422b8217fe516bbd80cd8bf3a90c85cbf3689c6b1f28d239c97c88f7134b', '03d35779ff612c574b92494d74300ce467e0eb510181a6ae3eb74d8ada891d82aa']
+Error: [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 03d35779ff612c574b92494d74300ce467e0eb510181a6ae3eb74d8ada891d82aa is not online
+
+The result is  False and result string : [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 03d35779ff612c574b92494d74300ce467e0eb510181a6ae3eb74d8ada891d82aa is not online
+
+pubkey in string: 03d35779ff612c574b92494d74300ce467e0eb510181a6ae3eb74d8ada891d82aa
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '038306422b8217fe516bbd80cd8bf3a90c85cbf3689c6b1f28d239c97c88f7134b'] this after  error message search
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '038306422b8217fe516bbd80cd8bf3a90c85cbf3689c6b1f28d239c97c88f7134b', '033d38e07e2541628214c8184cf6c562311059872363e9f538b2f45434418b5bc5']
+Error: [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 033d38e07e2541628214c8184cf6c562311059872363e9f538b2f45434418b5bc5 is not online
+
+The result is  False and result string : [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 033d38e07e2541628214c8184cf6c562311059872363e9f538b2f45434418b5bc5 is not online
+
+pubkey in string: 033d38e07e2541628214c8184cf6c562311059872363e9f538b2f45434418b5bc5
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '038306422b8217fe516bbd80cd8bf3a90c85cbf3689c6b1f28d239c97c88f7134b'] this after  error message search
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '038306422b8217fe516bbd80cd8bf3a90c85cbf3689c6b1f28d239c97c88f7134b', '03c157946cc1cd376b929e36006e645fae490b1b1d4156b40db804e01b4bda48cd']
+Error: [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 03c157946cc1cd376b929e36006e645fae490b1b1d4156b40db804e01b4bda48cd is not online
+
+The result is  False and result string : [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 03c157946cc1cd376b929e36006e645fae490b1b1d4156b40db804e01b4bda48cd is not online
+
+pubkey in string: 03c157946cc1cd376b929e36006e645fae490b1b1d4156b40db804e01b4bda48cd
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '038306422b8217fe516bbd80cd8bf3a90c85cbf3689c6b1f28d239c97c88f7134b'] this after  error message search
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '038306422b8217fe516bbd80cd8bf3a90c85cbf3689c6b1f28d239c97c88f7134b', '03ac61c971d146787a036f75e80a9fbede238a75d0c396f1fe996def00f0ac5dbe']
+Error: [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 03ac61c971d146787a036f75e80a9fbede238a75d0c396f1fe996def00f0ac5dbe is not online
+
+The result is  False and result string : [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 03ac61c971d146787a036f75e80a9fbede238a75d0c396f1fe996def00f0ac5dbe is not online
+
+pubkey in string: 03ac61c971d146787a036f75e80a9fbede238a75d0c396f1fe996def00f0ac5dbe
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '038306422b8217fe516bbd80cd8bf3a90c85cbf3689c6b1f28d239c97c88f7134b'] this after  error message search
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '038306422b8217fe516bbd80cd8bf3a90c85cbf3689c6b1f28d239c97c88f7134b', '03d83d26813669d8665d6a5017ecd18d176db0893f00f39e0a38493a1b6e3bbcd7']
+Error: [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 03d83d26813669d8665d6a5017ecd18d176db0893f00f39e0a38493a1b6e3bbcd7 is not online
+
+The result is  False and result string : [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 03d83d26813669d8665d6a5017ecd18d176db0893f00f39e0a38493a1b6e3bbcd7 is not online
+
+pubkey in string: 03d83d26813669d8665d6a5017ecd18d176db0893f00f39e0a38493a1b6e3bbcd7
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '038306422b8217fe516bbd80cd8bf3a90c85cbf3689c6b1f28d239c97c88f7134b'] this after  error message search
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '038306422b8217fe516bbd80cd8bf3a90c85cbf3689c6b1f28d239c97c88f7134b', '03ae9f91a0cb8ff43840e3c322c4c61f019d8c1c3cea15a25cfc425ac605e61a4a']
+Error: [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 03ae9f91a0cb8ff43840e3c322c4c61f019d8c1c3cea15a25cfc425ac605e61a4a is not online
+
+The result is  False and result string : [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 03ae9f91a0cb8ff43840e3c322c4c61f019d8c1c3cea15a25cfc425ac605e61a4a is not online
+
+pubkey in string: 03ae9f91a0cb8ff43840e3c322c4c61f019d8c1c3cea15a25cfc425ac605e61a4a
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '038306422b8217fe516bbd80cd8bf3a90c85cbf3689c6b1f28d239c97c88f7134b'] this after  error message search
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '038306422b8217fe516bbd80cd8bf3a90c85cbf3689c6b1f28d239c97c88f7134b', '03ef1f35c48695828f614ac685fd5eead1005641cac453ed31052b0ef6cb959a60']
+Error: [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 03ef1f35c48695828f614ac685fd5eead1005641cac453ed31052b0ef6cb959a60 is not online
+
+The result is  False and result string : [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 03ef1f35c48695828f614ac685fd5eead1005641cac453ed31052b0ef6cb959a60 is not online
+
+pubkey in string: 03ef1f35c48695828f614ac685fd5eead1005641cac453ed31052b0ef6cb959a60
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '038306422b8217fe516bbd80cd8bf3a90c85cbf3689c6b1f28d239c97c88f7134b'] this after  error message search
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '038306422b8217fe516bbd80cd8bf3a90c85cbf3689c6b1f28d239c97c88f7134b', '0390cc12f782259427bdc45a283705f4c20ccbdff064ed43f6b74fefcafe9eb1f7']
+Error: [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 0390cc12f782259427bdc45a283705f4c20ccbdff064ed43f6b74fefcafe9eb1f7 is not online
+
+The result is  False and result string : [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 0390cc12f782259427bdc45a283705f4c20ccbdff064ed43f6b74fefcafe9eb1f7 is not online
+
+pubkey in string: 0390cc12f782259427bdc45a283705f4c20ccbdff064ed43f6b74fefcafe9eb1f7
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '038306422b8217fe516bbd80cd8bf3a90c85cbf3689c6b1f28d239c97c88f7134b'] this after  error message search
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '038306422b8217fe516bbd80cd8bf3a90c85cbf3689c6b1f28d239c97c88f7134b', '03cc1d0932bb99b0697f5b5e5961b83ab7fd66f1efc4c9f5c7bad66c1bcbe78f02']
+Error: [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 03cc1d0932bb99b0697f5b5e5961b83ab7fd66f1efc4c9f5c7bad66c1bcbe78f02 is not online
+
+The result is  False and result string : [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 03cc1d0932bb99b0697f5b5e5961b83ab7fd66f1efc4c9f5c7bad66c1bcbe78f02 is not online
+
+pubkey in string: 03cc1d0932bb99b0697f5b5e5961b83ab7fd66f1efc4c9f5c7bad66c1bcbe78f02
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '038306422b8217fe516bbd80cd8bf3a90c85cbf3689c6b1f28d239c97c88f7134b'] this after  error message search
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '038306422b8217fe516bbd80cd8bf3a90c85cbf3689c6b1f28d239c97c88f7134b', '027ccec61f4bf1fafb5156931da6527dc104ec3613dd4f4050161d89dd76ab494c']
+Error: [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 027ccec61f4bf1fafb5156931da6527dc104ec3613dd4f4050161d89dd76ab494c is not online
+
+The result is  False and result string : [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 027ccec61f4bf1fafb5156931da6527dc104ec3613dd4f4050161d89dd76ab494c is not online
+
+pubkey in string: 027ccec61f4bf1fafb5156931da6527dc104ec3613dd4f4050161d89dd76ab494c
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '038306422b8217fe516bbd80cd8bf3a90c85cbf3689c6b1f28d239c97c88f7134b'] this after  error message search
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '038306422b8217fe516bbd80cd8bf3a90c85cbf3689c6b1f28d239c97c88f7134b', '03c72f89b660de43fc5c77ef879cbf7846601af88befb80e436242909b14fd0495']
+Error: [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 03c72f89b660de43fc5c77ef879cbf7846601af88befb80e436242909b14fd0495 is not online
+
+The result is  False and result string : [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 03c72f89b660de43fc5c77ef879cbf7846601af88befb80e436242909b14fd0495 is not online
+
+pubkey in string: 03c72f89b660de43fc5c77ef879cbf7846601af88befb80e436242909b14fd0495
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '038306422b8217fe516bbd80cd8bf3a90c85cbf3689c6b1f28d239c97c88f7134b'] this after  error message search
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '038306422b8217fe516bbd80cd8bf3a90c85cbf3689c6b1f28d239c97c88f7134b', '03bcf1f73199ed4445a8d6c033dd8cb550bb5205a16982ad2e13359e3318498c02']
+Error: [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 03bcf1f73199ed4445a8d6c033dd8cb550bb5205a16982ad2e13359e3318498c02 is not online
+
+The result is  False and result string : [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 03bcf1f73199ed4445a8d6c033dd8cb550bb5205a16982ad2e13359e3318498c02 is not online
+
+pubkey in string: 03bcf1f73199ed4445a8d6c033dd8cb550bb5205a16982ad2e13359e3318498c02
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '038306422b8217fe516bbd80cd8bf3a90c85cbf3689c6b1f28d239c97c88f7134b'] this after  error message search
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '038306422b8217fe516bbd80cd8bf3a90c85cbf3689c6b1f28d239c97c88f7134b', '035cf526f4c01ed693bacd7434461b9dc53d65b910fb3006110d8b42a574858fb2']
+Error: [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 035cf526f4c01ed693bacd7434461b9dc53d65b910fb3006110d8b42a574858fb2 is not online
+
+The result is  False and result string : [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 035cf526f4c01ed693bacd7434461b9dc53d65b910fb3006110d8b42a574858fb2 is not online
+
+pubkey in string: 035cf526f4c01ed693bacd7434461b9dc53d65b910fb3006110d8b42a574858fb2
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '038306422b8217fe516bbd80cd8bf3a90c85cbf3689c6b1f28d239c97c88f7134b'] this after  error message search
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '038306422b8217fe516bbd80cd8bf3a90c85cbf3689c6b1f28d239c97c88f7134b', '0274ce2cee1266882c266940abd10d1a8c5285c68fd984e468e325884b9b5e526c']
+Error: [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 0274ce2cee1266882c266940abd10d1a8c5285c68fd984e468e325884b9b5e526c is not online
+
+The result is  False and result string : [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 0274ce2cee1266882c266940abd10d1a8c5285c68fd984e468e325884b9b5e526c is not online
+
+pubkey in string: 0274ce2cee1266882c266940abd10d1a8c5285c68fd984e468e325884b9b5e526c
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '038306422b8217fe516bbd80cd8bf3a90c85cbf3689c6b1f28d239c97c88f7134b'] this after  error message search
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '038306422b8217fe516bbd80cd8bf3a90c85cbf3689c6b1f28d239c97c88f7134b', '02ef503ab9f9fe3d78a83b4124c8ab9777fd08702b205034e6e8bd8d9d2cb84527']
+Error: [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 02ef503ab9f9fe3d78a83b4124c8ab9777fd08702b205034e6e8bd8d9d2cb84527 is not online
+
+The result is  False and result string : [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 02ef503ab9f9fe3d78a83b4124c8ab9777fd08702b205034e6e8bd8d9d2cb84527 is not online
+
+pubkey in string: 02ef503ab9f9fe3d78a83b4124c8ab9777fd08702b205034e6e8bd8d9d2cb84527
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '038306422b8217fe516bbd80cd8bf3a90c85cbf3689c6b1f28d239c97c88f7134b'] this after  error message search
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '038306422b8217fe516bbd80cd8bf3a90c85cbf3689c6b1f28d239c97c88f7134b', '02816caed43171d3c9854e3b0ab2cf0c42be086ff1bd4005acc2a5f7db70d83774']
+Error: [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 02816caed43171d3c9854e3b0ab2cf0c42be086ff1bd4005acc2a5f7db70d83774 is not online
+
+The result is  False and result string : [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 02816caed43171d3c9854e3b0ab2cf0c42be086ff1bd4005acc2a5f7db70d83774 is not online
+
+pubkey in string: 02816caed43171d3c9854e3b0ab2cf0c42be086ff1bd4005acc2a5f7db70d83774
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '038306422b8217fe516bbd80cd8bf3a90c85cbf3689c6b1f28d239c97c88f7134b'] this after  error message search
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '038306422b8217fe516bbd80cd8bf3a90c85cbf3689c6b1f28d239c97c88f7134b', '03f3643570433b67f22ef1c2e7660e33c9b9d53f786cb1779544983aa5c8f286e3']
+Error: [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 03f3643570433b67f22ef1c2e7660e33c9b9d53f786cb1779544983aa5c8f286e3 is not online
+
+The result is  False and result string : [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 03f3643570433b67f22ef1c2e7660e33c9b9d53f786cb1779544983aa5c8f286e3 is not online
+
+pubkey in string: 03f3643570433b67f22ef1c2e7660e33c9b9d53f786cb1779544983aa5c8f286e3
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '038306422b8217fe516bbd80cd8bf3a90c85cbf3689c6b1f28d239c97c88f7134b'] this after  error message search
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '038306422b8217fe516bbd80cd8bf3a90c85cbf3689c6b1f28d239c97c88f7134b', '03797da684da0b6de8a813f9d7ebb0412c5d7504619b3fa5255861b991a7f86960']
+Error: [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 03797da684da0b6de8a813f9d7ebb0412c5d7504619b3fa5255861b991a7f86960 is not online
+
+The result is  False and result string : [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 03797da684da0b6de8a813f9d7ebb0412c5d7504619b3fa5255861b991a7f86960 is not online
+
+pubkey in string: 03797da684da0b6de8a813f9d7ebb0412c5d7504619b3fa5255861b991a7f86960
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '038306422b8217fe516bbd80cd8bf3a90c85cbf3689c6b1f28d239c97c88f7134b'] this after  error message search
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '038306422b8217fe516bbd80cd8bf3a90c85cbf3689c6b1f28d239c97c88f7134b', '028ed7bd6ba6763cf040869681890bf5bf95d623108a60e75d76a57f5d637be3ef']
+Error: [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 028ed7bd6ba6763cf040869681890bf5bf95d623108a60e75d76a57f5d637be3ef is not online
+
+The result is  False and result string : [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 028ed7bd6ba6763cf040869681890bf5bf95d623108a60e75d76a57f5d637be3ef is not online
+
+pubkey in string: 028ed7bd6ba6763cf040869681890bf5bf95d623108a60e75d76a57f5d637be3ef
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '038306422b8217fe516bbd80cd8bf3a90c85cbf3689c6b1f28d239c97c88f7134b'] this after  error message search
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '038306422b8217fe516bbd80cd8bf3a90c85cbf3689c6b1f28d239c97c88f7134b', '036ff83834666d3ebfe61c2a7d1f8fc5d6b339a26559a61819e2b0d1b5f540fdfc']
+Error: [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 036ff83834666d3ebfe61c2a7d1f8fc5d6b339a26559a61819e2b0d1b5f540fdfc is not online
+
+The result is  False and result string : [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 036ff83834666d3ebfe61c2a7d1f8fc5d6b339a26559a61819e2b0d1b5f540fdfc is not online
+
+pubkey in string: 036ff83834666d3ebfe61c2a7d1f8fc5d6b339a26559a61819e2b0d1b5f540fdfc
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '038306422b8217fe516bbd80cd8bf3a90c85cbf3689c6b1f28d239c97c88f7134b'] this after  error message search
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '038306422b8217fe516bbd80cd8bf3a90c85cbf3689c6b1f28d239c97c88f7134b', '03ce15213fc42f04132edc0acb73d5830371970bebd7e25ba4a3ca2552d1ae6fdf']
+Error: [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 03ce15213fc42f04132edc0acb73d5830371970bebd7e25ba4a3ca2552d1ae6fdf is not online
+
+The result is  False and result string : [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 03ce15213fc42f04132edc0acb73d5830371970bebd7e25ba4a3ca2552d1ae6fdf is not online
+
+pubkey in string: 03ce15213fc42f04132edc0acb73d5830371970bebd7e25ba4a3ca2552d1ae6fdf
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '038306422b8217fe516bbd80cd8bf3a90c85cbf3689c6b1f28d239c97c88f7134b'] this after  error message search
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '038306422b8217fe516bbd80cd8bf3a90c85cbf3689c6b1f28d239c97c88f7134b', '03501a74753e0f6ae270a1e4e2ffbbc37f7a796360e650c1121c18e116b22ac106']
+Error: [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 03501a74753e0f6ae270a1e4e2ffbbc37f7a796360e650c1121c18e116b22ac106 is not online
+
+The result is  False and result string : [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 03501a74753e0f6ae270a1e4e2ffbbc37f7a796360e650c1121c18e116b22ac106 is not online
+
+pubkey in string: 03501a74753e0f6ae270a1e4e2ffbbc37f7a796360e650c1121c18e116b22ac106
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '038306422b8217fe516bbd80cd8bf3a90c85cbf3689c6b1f28d239c97c88f7134b'] this after  error message search
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '038306422b8217fe516bbd80cd8bf3a90c85cbf3689c6b1f28d239c97c88f7134b', '0380030304baea090616a296674b6ae337a138593b5390266a45a17eef7a62a2b0']
+Error: [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 0380030304baea090616a296674b6ae337a138593b5390266a45a17eef7a62a2b0 is not online
+
+The result is  False and result string : [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 0380030304baea090616a296674b6ae337a138593b5390266a45a17eef7a62a2b0 is not online
+
+pubkey in string: 0380030304baea090616a296674b6ae337a138593b5390266a45a17eef7a62a2b0
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '038306422b8217fe516bbd80cd8bf3a90c85cbf3689c6b1f28d239c97c88f7134b'] this after  error message search
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '038306422b8217fe516bbd80cd8bf3a90c85cbf3689c6b1f28d239c97c88f7134b', '035542f0f213a5b6e985dff0e0fd973da01bd77325d44242fc325d0ea8eea3d312']
+Error: [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 035542f0f213a5b6e985dff0e0fd973da01bd77325d44242fc325d0ea8eea3d312 is not online
+
+The result is  False and result string : [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 035542f0f213a5b6e985dff0e0fd973da01bd77325d44242fc325d0ea8eea3d312 is not online
+
+pubkey in string: 035542f0f213a5b6e985dff0e0fd973da01bd77325d44242fc325d0ea8eea3d312
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '038306422b8217fe516bbd80cd8bf3a90c85cbf3689c6b1f28d239c97c88f7134b'] this after  error message search
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '038306422b8217fe516bbd80cd8bf3a90c85cbf3689c6b1f28d239c97c88f7134b', '03a6ce61fcaacd38d31d4e3ce2d506602818e3856b4b44faff1dde9642ba705976']
+Error: [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 03a6ce61fcaacd38d31d4e3ce2d506602818e3856b4b44faff1dde9642ba705976 is not online
+
+The result is  False and result string : [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 03a6ce61fcaacd38d31d4e3ce2d506602818e3856b4b44faff1dde9642ba705976 is not online
+
+pubkey in string: 03a6ce61fcaacd38d31d4e3ce2d506602818e3856b4b44faff1dde9642ba705976
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '038306422b8217fe516bbd80cd8bf3a90c85cbf3689c6b1f28d239c97c88f7134b'] this after  error message search
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '038306422b8217fe516bbd80cd8bf3a90c85cbf3689c6b1f28d239c97c88f7134b', '024bd94f0425590434538fd21d4e58982f7e9cfd8f339205a73deb9c0e0341f5bd']
+Error: [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 024bd94f0425590434538fd21d4e58982f7e9cfd8f339205a73deb9c0e0341f5bd is not online
+
+The result is  False and result string : [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 024bd94f0425590434538fd21d4e58982f7e9cfd8f339205a73deb9c0e0341f5bd is not online
+
+pubkey in string: 024bd94f0425590434538fd21d4e58982f7e9cfd8f339205a73deb9c0e0341f5bd
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '038306422b8217fe516bbd80cd8bf3a90c85cbf3689c6b1f28d239c97c88f7134b'] this after  error message search
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '038306422b8217fe516bbd80cd8bf3a90c85cbf3689c6b1f28d239c97c88f7134b', '037f6c805dfef7a0f01cca0abcea96352a32aa478c63c974bc2e726cad8d026a89']
+Error: [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 037f6c805dfef7a0f01cca0abcea96352a32aa478c63c974bc2e726cad8d026a89 is not online
+
+The result is  False and result string : [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 037f6c805dfef7a0f01cca0abcea96352a32aa478c63c974bc2e726cad8d026a89 is not online
+
+pubkey in string: 037f6c805dfef7a0f01cca0abcea96352a32aa478c63c974bc2e726cad8d026a89
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '038306422b8217fe516bbd80cd8bf3a90c85cbf3689c6b1f28d239c97c88f7134b'] this after  error message search
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '038306422b8217fe516bbd80cd8bf3a90c85cbf3689c6b1f28d239c97c88f7134b', '03cbf298b068300be33f06c947b9d3f00a0f0e8089da3233f5db37e81d3a596fe1']
+Error: [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 03cbf298b068300be33f06c947b9d3f00a0f0e8089da3233f5db37e81d3a596fe1 is not online
+
+The result is  False and result string : [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 03cbf298b068300be33f06c947b9d3f00a0f0e8089da3233f5db37e81d3a596fe1 is not online
+
+pubkey in string: 03cbf298b068300be33f06c947b9d3f00a0f0e8089da3233f5db37e81d3a596fe1
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '038306422b8217fe516bbd80cd8bf3a90c85cbf3689c6b1f28d239c97c88f7134b'] this after  error message search
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '038306422b8217fe516bbd80cd8bf3a90c85cbf3689c6b1f28d239c97c88f7134b', '0324ba2392e25bff76abd0b1f7e4b53b5f82aa53fddc3419b051b6c801db9e2247']
+Error: [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 0324ba2392e25bff76abd0b1f7e4b53b5f82aa53fddc3419b051b6c801db9e2247 is not online
+
+The result is  False and result string : [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 0324ba2392e25bff76abd0b1f7e4b53b5f82aa53fddc3419b051b6c801db9e2247 is not online
+
+pubkey in string: 0324ba2392e25bff76abd0b1f7e4b53b5f82aa53fddc3419b051b6c801db9e2247
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '038306422b8217fe516bbd80cd8bf3a90c85cbf3689c6b1f28d239c97c88f7134b'] this after  error message search
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '038306422b8217fe516bbd80cd8bf3a90c85cbf3689c6b1f28d239c97c88f7134b', '0357853bbdbeda5b662783f391f29bd10194e2254d0f091eb4116a0b405001dd52']
+Error: [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 0357853bbdbeda5b662783f391f29bd10194e2254d0f091eb4116a0b405001dd52 is not online
+
+The result is  False and result string : [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 0357853bbdbeda5b662783f391f29bd10194e2254d0f091eb4116a0b405001dd52 is not online
+
+pubkey in string: 0357853bbdbeda5b662783f391f29bd10194e2254d0f091eb4116a0b405001dd52
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '038306422b8217fe516bbd80cd8bf3a90c85cbf3689c6b1f28d239c97c88f7134b'] this after  error message search
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '038306422b8217fe516bbd80cd8bf3a90c85cbf3689c6b1f28d239c97c88f7134b', '03a01da97af71f7859cd1b2b6a70f221ecd49f6eabf0bf1e267bae9570b47232a6']
+Error: [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 03a01da97af71f7859cd1b2b6a70f221ecd49f6eabf0bf1e267bae9570b47232a6 is not online
+
+The result is  False and result string : [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 03a01da97af71f7859cd1b2b6a70f221ecd49f6eabf0bf1e267bae9570b47232a6 is not online
+
+pubkey in string: 03a01da97af71f7859cd1b2b6a70f221ecd49f6eabf0bf1e267bae9570b47232a6
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '038306422b8217fe516bbd80cd8bf3a90c85cbf3689c6b1f28d239c97c88f7134b'] this after  error message search
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '038306422b8217fe516bbd80cd8bf3a90c85cbf3689c6b1f28d239c97c88f7134b', '037659a0ac8eb3b8d0a720114efc861d3a940382dcfa1403746b4f8f6b2e8810ba']
+Error: [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 037659a0ac8eb3b8d0a720114efc861d3a940382dcfa1403746b4f8f6b2e8810ba is not online
+
+The result is  False and result string : [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 037659a0ac8eb3b8d0a720114efc861d3a940382dcfa1403746b4f8f6b2e8810ba is not online
+
+pubkey in string: 037659a0ac8eb3b8d0a720114efc861d3a940382dcfa1403746b4f8f6b2e8810ba
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '038306422b8217fe516bbd80cd8bf3a90c85cbf3689c6b1f28d239c97c88f7134b'] this after  error message search
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '038306422b8217fe516bbd80cd8bf3a90c85cbf3689c6b1f28d239c97c88f7134b', '03d29a2fc370cf011a743d893de86ab9a920f2445539ea46db2186d9b95183f67c']
+Error: [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 03d29a2fc370cf011a743d893de86ab9a920f2445539ea46db2186d9b95183f67c is not online
+
+The result is  False and result string : [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: peer 03d29a2fc370cf011a743d893de86ab9a920f2445539ea46db2186d9b95183f67c is not online
+
+pubkey in string: 03d29a2fc370cf011a743d893de86ab9a920f2445539ea46db2186d9b95183f67c
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '038306422b8217fe516bbd80cd8bf3a90c85cbf3689c6b1f28d239c97c88f7134b'] this after  error message search
+['03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f', '038306422b8217fe516bbd80cd8bf3a90c85cbf3689c6b1f28d239c97c88f7134b', '03aefa43fbb4009b21a4129d05953974b7dbabbbfb511921410080860fca8ee1f0']
+Success:  {
+	"funding_txid": "646750a86971110ed9d7b6cd76246efe48557706a9758b5f2156daea7ec8d16b",
+	"funding_output_index": 1
+}
+{
+	"funding_txid": "646750a86971110ed9d7b6cd76246efe48557706a9758b5f2156daea7ec8d16b",
+	"funding_output_index": 0
+}
+{
+	"funding_txid": "646750a86971110ed9d7b6cd76246efe48557706a9758b5f2156daea7ec8d16b",
+	"funding_output_index": 2
+}
+
+The result is  True and result string : {
+	"funding_txid": "646750a86971110ed9d7b6cd76246efe48557706a9758b5f2156daea7ec8d16b",
+	"funding_output_index": 1
+}
+{
+	"funding_txid": "646750a86971110ed9d7b6cd76246efe48557706a9758b5f2156daea7ec8d16b",
+	"funding_output_index": 0
+}
+{
+	"funding_txid": "646750a86971110ed9d7b6cd76246efe48557706a9758b5f2156daea7ec8d16b",
+	"funding_output_index": 2
+}
+
+total number of successed tx is: 2
+
+
+lncli --tlscertpath /lnd/tls.cert --macaroonpath /lnd/data/chain/bitcoin/mainnet/admin.macaroon batchopenchannel --sat_per_vbyte=20 '[{"node_pubkey": "03b9aacb265dc5ebde04b91b28f7c8bb6ba0af146e5f37426915742daf8f195a09", "local_funding_amount":2000000},
+{"node_pubkey": "035cf526f4c01ed693bacd7434461b9dc53d65b910fb3006110d8b42a574858fb2", "local_funding_amount":2000000},
+{"node_pubkey": "03c445275ee7d79ee5778ca2ac81b7c4d84aed7ee04629e8d8f35434b3c21e2da8", "local_funding_amount":2000000},
+{"node_pubkey": "02ef503ab9f9fe3d78a83b4124c8ab9777fd08702b205034e6e8bd8d9d2cb84527", "local_funding_amount":2000000},
+{"node_pubkey": "03f3643570433b67f22ef1c2e7660e33c9b9d53f786cb1779544983aa5c8f286e3", "local_funding_amount":2000000},
+{"node_pubkey": "0351fabd839e93962826ab8eff7f86795b66b7295a2330773938d409a725aa8176", "local_funding_amount":2000000},
+{"node_pubkey": "03797da684da0b6de8a813f9d7ebb0412c5d7504619b3fa5255861b991a7f86960", "local_funding_amount":2000000},
+{"node_pubkey": "03434a39cd9a537c852fc8fb72454086d726f9111e9f730cef4985c39c11fae944", "local_funding_amount":2000000},
+{"node_pubkey": "036ff83834666d3ebfe61c2a7d1f8fc5d6b339a26559a61819e2b0d1b5f540fdfc", "local_funding_amount":2000000},
+{"node_pubkey": "028ed7bd6ba6763cf040869681890bf5bf95d623108a60e75d76a57f5d637be3ef", "local_funding_amount":2000000},
+{"node_pubkey": "0379221a4051d4171490e43e4a09e218a02941f06996b71cd814b290da08ad5f7e", "local_funding_amount":2000000},
+{"node_pubkey": "03a465772d45616bf6c8450a69191db8f3cf8cca19ff92138735fd5f1d436fe4dc", "local_funding_amount":2000000},
+{"node_pubkey": "03501a74753e0f6ae270a1e4e2ffbbc37f7a796360e650c1121c18e116b22ac106", "local_funding_amount":2000000},
+{"node_pubkey": "03fbe1c1baedbc99b2642ae524d9c2a6f12b771a3ab91e0f56ca6efc6f7f7d53b6", "local_funding_amount":2000000},
+{"node_pubkey": "03627ebe50fc6eb80b0caab0c3714958c701eda735e3c29588e83150d6d4a93976", "local_funding_amount":2000000},
+{"node_pubkey": "0380030304baea090616a296674b6ae337a138593b5390266a45a17eef7a62a2b0", "local_funding_amount":2000000},
+{"node_pubkey": "037172d2110c4148d6ed0c2790ec8be948458022425dced6794fede834be92af36", "local_funding_amount":2000000},
+{"node_pubkey": "03edfc1919ca6fe4de6a6645e544486bf5a651122fdb2172b6c96ce3fb68956d51", "local_funding_amount":2000000},
+{"node_pubkey": "037f6c805dfef7a0f01cca0abcea96352a32aa478c63c974bc2e726cad8d026a89", "local_funding_amount":2000000},
+{"node_pubkey": "03a01da97af71f7859cd1b2b6a70f221ecd49f6eabf0bf1e267bae9570b47232a6", "local_funding_amount":2000000}]'
+Success:  {
+	"funding_txid": "b118e2f5494e53302d817ef1132a207b01b08d0ee057cdf949c92f2ed87decf3",
+	"funding_output_index": 17
+}
+{
+	"funding_txid": "b118e2f5494e53302d817ef1132a207b01b08d0ee057cdf949c92f2ed87decf3",
+	"funding_output_index": 9
+}
+{
+	"funding_txid": "b118e2f5494e53302d817ef1132a207b01b08d0ee057cdf949c92f2ed87decf3",
+	"funding_output_index": 5
+}
+{
+	"funding_txid": "b118e2f5494e53302d817ef1132a207b01b08d0ee057cdf949c92f2ed87decf3",
+	"funding_output_index": 18
+}
+{
+	"funding_txid": "b118e2f5494e53302d817ef1132a207b01b08d0ee057cdf949c92f2ed87decf3",
+	"funding_output_index": 11
+}
+{
+	"funding_txid": "b118e2f5494e53302d817ef1132a207b01b08d0ee057cdf949c92f2ed87decf3",
+	"funding_output_index": 19
+}
+{
+	"funding_txid": "b118e2f5494e53302d817ef1132a207b01b08d0ee057cdf949c92f2ed87decf3",
+	"funding_output_index": 6
+}
+{
+	"funding_txid": "b118e2f5494e53302d817ef1132a207b01b08d0ee057cdf949c92f2ed87decf3",
+	"funding_output_index": 1
+}
+{
+	"funding_txid": "b118e2f5494e53302d817ef1132a207b01b08d0ee057cdf949c92f2ed87decf3",
+	"funding_output_index": 0
+}
+{
+	"funding_txid": "b118e2f5494e53302d817ef1132a207b01b08d0ee057cdf949c92f2ed87decf3",
+	"funding_output_index": 15
+}
+{
+	"funding_txid": "b118e2f5494e53302d817ef1132a207b01b08d0ee057cdf949c92f2ed87decf3",
+	"funding_output_index": 3
+}
+{
+	"funding_txid": "b118e2f5494e53302d817ef1132a207b01b08d0ee057cdf949c92f2ed87decf3",
+	"funding_output_index": 16
+}
+{
+	"funding_txid": "b118e2f5494e53302d817ef1132a207b01b08d0ee057cdf949c92f2ed87decf3",
+	"funding_output_index": 13
+}
+{
+	"funding_txid": "b118e2f5494e53302d817ef1132a207b01b08d0ee057cdf949c92f2ed87decf3",
+	"funding_output_index": 12
+}
+{
+	"funding_txid": "b118e2f5494e53302d817ef1132a207b01b08d0ee057cdf949c92f2ed87decf3",
+	"funding_output_index": 8
+}
+{
+	"funding_txid": "b118e2f5494e53302d817ef1132a207b01b08d0ee057cdf949c92f2ed87decf3",
+	"funding_output_index": 14
+}
+{
+	"funding_txid": "b118e2f5494e53302d817ef1132a207b01b08d0ee057cdf949c92f2ed87decf3",
+	"funding_output_index": 10
+}
+{
+	"funding_txid": "b118e2f5494e53302d817ef1132a207b01b08d0ee057cdf949c92f2ed87decf3",
+	"funding_output_index": 2
+}
+{
+	"funding_txid": "b118e2f5494e53302d817ef1132a207b01b08d0ee057cdf949c92f2ed87decf3",
+	"funding_output_index": 4
+}
+{
+	"funding_txid": "b118e2f5494e53302d817ef1132a207b01b08d0ee057cdf949c92f2ed87decf3",
+	"funding_output_index": 7
+}
+
+The result is  True and result string : {
+	"funding_txid": "b118e2f5494e53302d817ef1132a207b01b08d0ee057cdf949c92f2ed87decf3",
+	"funding_output_index": 17
+}
+{
+	"funding_txid": "b118e2f5494e53302d817ef1132a207b01b08d0ee057cdf949c92f2ed87decf3",
+	"funding_output_index": 9
+}
+{
+	"funding_txid": "b118e2f5494e53302d817ef1132a207b01b08d0ee057cdf949c92f2ed87decf3",
+	"funding_output_index": 5
+}
+{
+	"funding_txid": "b118e2f5494e53302d817ef1132a207b01b08d0ee057cdf949c92f2ed87decf3",
+	"funding_output_index": 18
+}
+{
+	"funding_txid": "b118e2f5494e53302d817ef1132a207b01b08d0ee057cdf949c92f2ed87decf3",
+	"funding_output_index": 11
+}
+{
+	"funding_txid": "b118e2f5494e53302d817ef1132a207b01b08d0ee057cdf949c92f2ed87decf3",
+	"funding_output_index": 19
+}
+{
+	"funding_txid": "b118e2f5494e53302d817ef1132a207b01b08d0ee057cdf949c92f2ed87decf3",
+	"funding_output_index": 6
+}
+{
+	"funding_txid": "b118e2f5494e53302d817ef1132a207b01b08d0ee057cdf949c92f2ed87decf3",
+	"funding_output_index": 1
+}
+{
+	"funding_txid": "b118e2f5494e53302d817ef1132a207b01b08d0ee057cdf949c92f2ed87decf3",
+	"funding_output_index": 0
+}
+{
+	"funding_txid": "b118e2f5494e53302d817ef1132a207b01b08d0ee057cdf949c92f2ed87decf3",
+	"funding_output_index": 15
+}
+{
+	"funding_txid": "b118e2f5494e53302d817ef1132a207b01b08d0ee057cdf949c92f2ed87decf3",
+	"funding_output_index": 3
+}
+{
+	"funding_txid": "b118e2f5494e53302d817ef1132a207b01b08d0ee057cdf949c92f2ed87decf3",
+	"funding_output_index": 16
+}
+{
+	"funding_txid": "b118e2f5494e53302d817ef1132a207b01b08d0ee057cdf949c92f2ed87decf3",
+	"funding_output_index": 13
+}
+{
+	"funding_txid": "b118e2f5494e53302d817ef1132a207b01b08d0ee057cdf949c92f2ed87decf3",
+	"funding_output_index": 12
+}
+{
+	"funding_txid": "b118e2f5494e53302d817ef1132a207b01b08d0ee057cdf949c92f2ed87decf3",
+	"funding_output_index": 8
+}
+{
+	"funding_txid": "b118e2f5494e53302d817ef1132a207b01b08d0ee057cdf949c92f2ed87decf3",
+	"funding_output_index": 14
+}
+{
+	"funding_txid": "b118e2f5494e53302d817ef1132a207b01b08d0ee057cdf949c92f2ed87decf3",
+	"funding_output_index": 10
+}
+{
+	"funding_txid": "b118e2f5494e53302d817ef1132a207b01b08d0ee057cdf949c92f2ed87decf3",
+	"funding_output_index": 2
+}
+{
+	"funding_txid": "b118e2f5494e53302d817ef1132a207b01b08d0ee057cdf949c92f2ed87decf3",
+	"funding_output_index": 4
+}
+{
+	"funding_txid": "b118e2f5494e53302d817ef1132a207b01b08d0ee057cdf949c92f2ed87decf3",
+	"funding_output_index": 7
+}
+
+Traceback (most recent call last):
+  File "/python/scripts/open_main.py", line 292, in <module>
+    open_channels()
+  File "/python/scripts/open_main.py", line 99, in open_channels
+    save_open_channel_result(conn, result_string, pubkey_array)
+  File "/python/scripts/open_main.py", line 129, in save_open_channel_result
+    data['open_result'] = open_result
+TypeError: list indices must be integers or slices, not str
+aziz@lnd-node-01:/python/scripts$ 
+
+
+
+Error: [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: remote canceled funding, possibly timed out: received funding error from 02aace31b8120e29cfc29d991b63fe8614cddd3fbf6148431cc3a68932c363ed29: chan_id=cc850060c14488973717ed188a584094ec98c54292b73a13b156e8cad44ae1a0, err=chan size of 0.02 BTC is below min chan size of 0.05 BTC
+
+The result is  False and result string : [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: remote canceled funding, possibly timed out: received funding error from 02aace31b8120e29cfc29d991b63fe8614cddd3fbf6148431cc3a68932c363ed29: chan_id=cc850060c14488973717ed188a584094ec98c54292b73a13b156e8cad44ae1a0, err=chan size of 0.02 BTC is below min chan size of 0.05 BTC
+
+Error: [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: remote canceled funding, possibly timed out: received funding error from 031678745383bd273b4c3dbefc8ffbf4847d85c2f62d3407c0c980430b3257c403: chan_id=60adcf3e11eb8128f7efefd55ebfef359afc627e3c1d2a610ea06b43de78dc1e, err=chan size of 0.02 BTC is below min chan size of 0.05 BTC
+
+The result is  False and result string : [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: remote canceled funding, possibly timed out: received funding error from 031678745383bd273b4c3dbefc8ffbf4847d85c2f62d3407c0c980430b3257c403: chan_id=60adcf3e11eb8128f7efefd55ebfef359afc627e3c1d2a610ea06b43de78dc1e, err=chan size of 0.02 BTC is below min chan size of 0.05 BTC
+
+Error: [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: remote canceled funding, possibly timed out: received funding error from 03006fcf3312dae8d068ea297f58e2bd00ec1ffe214b793eda46966b6294a53ce6: chan_id=871aa6c0d3b6d4f02294f7b3399cb3e09d20a81ddb5119673352ae0ddab1fd1d, err=funding failed due to internal error
+
+The result is  False and result string : [lncli] rpc error: code = Unknown desc = batch funding failed: error batch opening channel, initial negotiation failed: remote canceled funding, possibly timed out: received funding error from 03006fcf3312dae8d068ea297f58e2bd00ec1ffe214b793eda46966b6294a53ce6: chan_id=871aa6c0d3b6d4f02294f7b3399cb3e09d20a81ddb5119673352ae0ddab1fd1d, err=funding failed due to internal error
+
+
+
+

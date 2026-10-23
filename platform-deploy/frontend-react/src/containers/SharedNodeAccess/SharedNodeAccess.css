@@ -1,0 +1,65 @@
+.shared-node-access-container {
+    display: flex;
+    flex-direction: column;
+    padding: 40px;
+    row-gap: 20px;
+}
+
+.shared-node-access-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.shared-node-access-title {
+    display: flex;
+    flex-direction: column;
+
+    /* Header 1 */
+
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 32px;
+    align-items: center;
+
+    /* Text - Primary */
+    color: #111111;
+}
+
+.shared-node-access-add-user {
+    display: flex;
+    flex-direction: column;
+}
+
+.shared-node-access-table-container {
+    display: flex;
+    flex-direction: column;
+
+}
+
+.shared-node-access-table {
+    display: flex;
+    flex-direction: row;
+
+    width: 100%;
+    padding: 10px;
+    background: #F3F5F9;
+    border-radius: 16px;
+
+}
+
+.shared-node-access-table-title {
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 22px;
+
+    display: flex;
+    align-items: center;
+
+    color: #111111;
+    padding: 5px 5px 5px;
+}

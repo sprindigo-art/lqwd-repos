@@ -1,0 +1,147 @@
+ <div id="wallet_balance" class="rounded-0 widget widget-account-invoice-three h-100">
+     <th:block th:switch="${user.getCurrency()}">
+         <div th:case="'satoshi'">
+             <div class="widget-heading" style="border-top-right-radius: 0px !important; border-top-left-radius: 0px !important;">
+                 <div class="wallet-balance">
+                     <p>Wallet Balance</p>
+                     <h5 class="" ><i class="fak fa-satoshisymbol-outline"></i><span class="w-currency">[[${#numbers.formatDecimal(totalBalance, 1, 'COMMA', 2, 'POINT')}]]</span></h5>
+                 </div>
+             </div>
+             <div class="widget-amount">
+                 <div class="w-a-info funds-received">
+                     <span>
+                         Received
+                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-up">
+                             <polyline points="18 15 12 9 6 15"></polyline>
+                         </svg>
+                     </span>
+                     <p><i class="fak fa-satoshisymbol-outline"></i>[[${#numbers.formatDecimal(totalReceived, 1, 'COMMA', 2, 'POINT')}]]</p>
+                 </div>
+
+                 <div class="w-a-info funds-spent">
+                     <span>
+                         Spent
+                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down">
+                             <polyline points="6 9 12 15 18 9"></polyline>
+                         </svg>
+                     </span>
+                     <p><i class="fak fa-satoshisymbol-outline"></i>[[${#numbers.formatDecimal(totalSent, 1, 'COMMA', 2, 'POINT')}]]</p>
+                 </div>
+             </div>
+         </div>
+         <div th:case="'bitcoin'">
+             <div class="widget-heading" style="border-top-right-radius: 0px !important; border-top-left-radius: 0px !important;">
+                 <div class="wallet-balance">
+                     <p>Wallet Balance</p>
+                     <h5 class="" ><span>&#8383;</span><span class="w-currency">[[${#numbers.formatDecimal(totalBalance, 1, 'COMMA', 2, 'POINT')}]] BTC</span></h5>
+                 </div>
+             </div>
+             <div class="widget-amount">
+                 <div class="w-a-info funds-received">
+                     <span>Received <i data-feather="chevron-up"></i></span>
+                     <p><span>&#8383;</span>[[${#numbers.formatDecimal(totalReceived, 1, 'COMMA', 2, 'POINT')}]] BTC</p>
+                 </div>
+
+                 <div class="w-a-info funds-spent">
+                     <span>Spent <i data-feather="chevron-down"></i></span>
+                     <p><span>&#8383;</span>[[${#numbers.formatDecimal(totalSent, 1, 'COMMA', 2, 'POINT')}]] BTC</p>
+                 </div>
+             </div>
+         </div>
+         <div th:case="'USD'">
+             <div class="widget-heading" style="border-top-right-radius: 0px !important; border-top-left-radius: 0px !important;">
+                 <div class="wallet-balance">
+                     <p>Wallet Balance</p>
+                     <h5 class="" ><span class="w-currency">[[${#numbers.formatDecimal(totalBalance, 1, 'COMMA', 2, 'POINT')}]] USD</span></h5>
+                 </div>
+             </div>
+             <div class="widget-amount">
+                 <div class="w-a-info funds-received">
+                     <span>
+                         Received
+                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-up">
+                             <polyline points="18 15 12 9 6 15"></polyline>
+                         </svg>
+                     </span>
+                     <p>[[${#numbers.formatDecimal(totalReceived, 1, 'COMMA', 2, 'POINT')}]] USD</p>
+                 </div>
+
+                 <div class="w-a-info funds-spent">
+                     <span>
+                         Spent
+                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down">
+                             <polyline points="6 9 12 15 18 9"></polyline>
+                         </svg>
+                     </span>
+                     <p>[[${#numbers.formatDecimal(totalSent, 1, 'COMMA', 2, 'POINT')}]] USD</p>
+                 </div>
+             </div>
+         </div>
+         <div th:case="'CAD'">
+             <div class="widget-heading" style="border-top-right-radius: 0px !important; border-top-left-radius: 0px !important;">
+                 <div class="wallet-balance">
+                     <p>Wallet Balance</p>
+                     <h5 class="" ><span class="w-currency">[[${#numbers.formatDecimal(totalBalance, 1, 'COMMA', 2, 'POINT')}]] CAD</span></h5>
+                 </div>
+             </div>
+             <div class="widget-amount">
+                 <div class="w-a-info funds-received">
+                    <span>
+                         Received
+                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-up">
+                             <polyline points="18 15 12 9 6 15"></polyline>
+                         </svg>
+                     </span>
+                     <p>[[${#numbers.formatDecimal(totalReceived, 1, 'COMMA', 2, 'POINT')}]] CAD</p>
+                 </div>
+
+                 <div class="w-a-info funds-spent">
+                     <span>
+                         Spent
+                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down">
+                             <polyline points="6 9 12 15 18 9"></polyline>
+                         </svg>
+                     </span>
+                     <p>[[${#numbers.formatDecimal(totalSent, 1, 'COMMA', 2, 'POINT')}]] CAD</p>
+                 </div>
+             </div>
+         </div>
+         <div th:case="'*'">
+             <div class="widget-heading" style="border-top-right-radius: 0px !important; border-top-left-radius: 0px !important;">
+                 <div class="wallet-balance">
+                     <p>Wallet Balance</p>
+                     <h5 class="" ><i class="fak fa-satoshisymbol-outline"></i><span class="w-currency">[[${#numbers.formatDecimal(totalBalance, 1, 'COMMA', 2, 'POINT')}]]</span></h5>
+                 </div>
+             </div>
+             <div class="widget-amount">
+                 <div class="w-a-info funds-received">
+                     <span>
+                         Received
+                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-up">
+                             <polyline points="18 15 12 9 6 15"></polyline>
+                         </svg>
+                     </span>
+                     <p><i class="fak fa-satoshisymbol-outline"></i>[[${#numbers.formatDecimal(totalReceived, 1, 'COMMA', 2, 'POINT')}]]</p>
+                 </div>
+
+                 <div class="w-a-info funds-spent">
+                     <span>
+                         Spent
+                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down">
+                             <polyline points="6 9 12 15 18 9"></polyline>
+                         </svg>
+                     </span>
+                     <p><i class="fak fa-satoshisymbol-outline"></i>[[${#numbers.formatDecimal(totalSent, 1, 'COMMA', 2, 'POINT')}]]</p>
+                 </div>
+             </div>
+         </div>
+     </th:block>
+    <div class="widget-content">
+        <div class="invoice-list">
+            <div class="inv-action">
+                <a id="wallet-balance_a_view" th:href="@{/transactions}" class="btn btn-outline-primary view-details col-8">View Transaction History</a>
+<!--                <a id="wallet-balance_a_add-funds" href="javascript:void(0);" class="btn btn-outline-primary pay-now">Add Funds</a>-->
+            </div>
+        </div>
+    </div>
+</div>

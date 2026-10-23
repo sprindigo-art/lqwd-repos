@@ -1,0 +1,47 @@
+{
+  "subscriptions" : [
+    {
+      "tier":"Free",
+      "title":"Free Basic Plan",
+      "tagline":"Free Plan with Basic Features, but with no 9/5 support",
+      "priceMonth":"FREE",
+      "priceYear":"FREE",
+      "description": [
+        "Access to a shared LND node",
+        "1000 API calls per month",
+        "Bitcoin Mainnet or Testnet",
+        "Backed by a Bitcoin Node",
+        "Support Available as Add On"
+      ]
+    },
+    {
+      "tier":"Growth",
+      "title":"Hobby Level Plan",
+      "tagline":"Pro Level Plan with Personal Lightning Network",
+      "priceMonth":"99.99",
+      "priceYear":"99.99",
+      "description": [
+        "Your Own Lightning Node",
+        "10,000 API Calls",
+        "Bitcoin Mainnet or Testnet",
+        "Backed by a Bitcoin Node",
+        "9/5 Support"
+      ]
+    },
+    {
+      "tier":"Enterprise",
+      "title":"Custom Level Plan",
+      "tagline":"Custom Level Plan with Personal Lightning Network",
+      "priceMonth":"CUSTOM",
+      "priceYear":"CUSTOM",
+      "description": [
+        "Your Own Lightning Node",
+        "Custom number of API Calls",
+        "Bitcoin Mainnet or Testnet",
+        "Backed by a Bitcoin Node",
+        "9/5 Support"
+      ]
+    }
+  ]
+
+}

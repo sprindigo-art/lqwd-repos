@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout/app}" lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+    <head>
+        <title>LQwD | Documentation</title>
+        <link th:href="@{${cssPath + '/scrollspyNav.css'}}" rel="stylesheet" type="text/css" />
+        <link th:href="@{${cssPath + '/components/custom-modal.css'}}" rel="stylesheet" type="text/css">
+        <link  th:href="@{${pluginPath + '/animate/animate.css'}}" rel="stylesheet" type="text/css">
+        <link th:href="@{${pluginPath + '/apex/apexcharts.css'}}" rel="stylesheet" type="text/css">
+        <link th:href="@{${cssPath + '/widgets/modules-widgets.css'}}" rel="stylesheet" type="text/css">
+        <link th:href="@{${cssPath + '/elements/popover.css'}}" rel="stylesheet" type="text/css" />
+        <link th:href="@{${cssPath + '/pages/error/style-maintanence.css'}}" rel="stylesheet" type="text/css" />
+    </head>
+
+        <body>
+        <section layout:fragment="sub-header">
+            <span>Documentation</span>
+        </section>
+
+        <div layout:fragment="content-section">
+            <div class="maintanence" style="margin-left: 5%; padding:20px;" >
+                <h3 style="text-align: center; padding:20px;">DlA Requests</h3>
+                <p style="margin: 10px; text-align: center; font-size: larger; padding:20px;">This documentation shows how to use DLA through command line use for a user.<br>
+                    <a id="dla-usage_a_lndocumentation" href="https://api.lightning.community/?shell#lnd-rest-api-reference">See Lightning Network Documentation for Available Paths</a></p>
+                <div class="card component-card_1">
+                    <div class="card-body">
+                        <div class="icon-svg">
+                            <i data-feather="help-circle"></i>
+                        </div>
+                        <h5 class="card-title" style="padding-top: 10px;">Requests</h5>
+                        <div th:each="dlarequest: ${dlarequests}" class="table-responsive "  style=" border:none; text-align:left; width: 30%; font-size: 2em;" >
+
+                            <table class="table mb-14" style=" border:none;"  >
+                                <tbody style=" border:none;">
+                                <tr>
+                                    <td>Path</td>
+                                    <td th:text="${dlarequest.getPath()}"></td>
+                                </tr>
+                                <tr>
+                                    <td>Headers</td>
+                                    <td class="text-center">
+                                        <ul class="table-controls">
+                                            <li th:each="header:${dlarequest.getHeaders()}" th:text="${header}" style="text-align: left"></li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Params</td>
+                                    <td class="text-center">
+                                        <ul class="table-controls">
+                                            <li th:each="param:${dlarequest.getParams()}" th:text="${param}"></li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Response Success</td>
+                                    <td th:text="${dlarequest.getResponseSuccess()}"></td>
+                                </tr>
+                                <tr>
+                                    <td>Response Error</td>
+                                    <td class="text-center">
+                                        <ul class="table-controls">
+                                            <li th:each="error:${dlarequest.getResponseError()}" th:text="${error}"></li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="card component-card_1" style="text-align:left; padding:20px; margin-top: 15px;" >
+                    <div class="card-body">
+                        <div class="icon-svg">
+                            <i data-feather="edit-3"></i>
+                        </div>
+                        <h5 class="card-title" style="padding-top: 10px;">Curl Example</h5>
+                        <p class="card-text"><br>
+                            curl --location --request GET 'apihost:port/lnd/{lnd_request}' \
+                            <br>
+                            --header 'pubkey: {pubkey}' \
+                            <br>
+                            --header 'lnd_name: {lnd_name}'
+                            <br></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div layout:fragment="scripts">
+            <!-- END GLOBAL MANDATORY SCRIPTS -->
+            <script th:src="@{assets/js/scrollspyNav.js}"></script>
+
+            <script th:src="@{${pluginPath + '/apex/apexcharts.min.js'}}"></script>
+            <script th:src="@{${pluginPath + '/blockui/custom-blockui.js'}}"></script>
+            <script th:src="@{${pluginPath + '/blockui/jquery.blockUI.min.js'}}"></script>
+            <script th:src="@{assets/js/widgets/modules-widgets.js}"></script>
+            <script th:src="@{assets/js/elements/popovers.js}"></script>
+        </div>
+    </body>
+</html>

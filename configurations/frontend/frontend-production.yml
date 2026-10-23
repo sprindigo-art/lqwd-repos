@@ -1,0 +1,91 @@
+session:
+  datasource:
+    generate-unique-name: false
+    driver-class-name: org.postgresql.Driver
+    url: ${DB_URLNAME:jdbc:postgresql://frontend.csvn42eedrmo.us-west-2.rds.amazonaws.com:5433/frontend}
+    username: ${FE_DB_USER}
+    password: ${FE_DB_PSSWD}
+primary:
+  datasource:
+    generate-unique-name: false
+    driver-class-name: org.postgresql.Driver
+    url: ${STATS_DB_URLNAME:jdbc:postgresql://frontend.csvn42eedrmo.us-west-2.rds.amazonaws.com:5433/stats}
+    username: ${STATS_DB_USER}
+    password: ${STATS_DB_PSSWD}
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: update
+  session:
+    store-type: jdbc
+    jdbc:
+      initialize-schema: always
+      schema: classpath:org/springframework/session/jdbc/schema-postgres.sql
+      table-name: SPRING_SESSION
+    timeout: 900
+  mail:
+    host: email-smtp.us-west-2.amazonaws.com
+    port: 587
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: false
+            required: false
+  kafka:
+    properties:
+      sasl:
+        jaas:
+          config: ${SASL_CONFIG}
+        mechanism: PLAIN
+      security:
+        protocol: SASL_PLAINTEXT
+    jaas:
+      enabled: true
+  cloud:
+    stream:
+      kafka:
+        binder:
+          brokers: broker.kafka-v1:9092
+server:
+   session:
+    cookie:
+      http-only: true
+    servlet:
+      session:
+        cookie:
+          secure: true
+        tracking-modes: cookie
+        timeout: 30m
+        persistent: true
+app:
+  auth_post_url: dla.microservice
+  auth_post_port: 8690
+  auth_user_name: lqwd-front-end-microservice2
+  auth_password: ${AUTH_PASSWORD}
+  auth_grand_type: ${AUTH_GRANT_TYPE}
+  auth_client_id: ${AUTH_CLIENT_ID}
+  lndap_url: lndap.microservice
+  lndap_port: 8590
+  staking_min_amount: 20000
+  liquidity_min_amount: 20000
+  liquidity_min_num_of_weeks: 2
+
+
+features:
+  session_active: true
+
+#captcha
+google:
+  recaptcha:
+    key:
+      site: ${CAPTCHA_SITE_KEY}
+      secret: ${CAPTCHA_SECRET}
+      threshold: 0.5
+  places:
+    key: ${GOOGLE_API_KEY}
+beta:
+  total_registered: 200

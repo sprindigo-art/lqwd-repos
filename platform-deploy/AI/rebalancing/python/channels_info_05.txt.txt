@@ -1,0 +1,27 @@
+Number of total Channels: 4
+
+Channel Information:
+Node1 Pub Key: 0280d9cc3952492ec8638549af954f441f911f187c39535bf4dd9f4afde66c5b82
+Node2 Pub Key: 031f2669adab71548fad4432277a0d90233e3bc07ac29cfb0b3e01bd3fb26cb9fa
+Node1 Policy: {'time_lock_delta': 40, 'min_htlc': '1000', 'fee_base_msat': '1000', 'fee_rate_milli_msat': '1', 'disabled': False, 'max_htlc_msat': '495000000', 'last_update': '04-08-23 11:01', 'custom_records': {}}
+Node2 Policy: {'time_lock_delta': 100, 'min_htlc': '1000', 'fee_base_msat': '1000', 'fee_rate_milli_msat': '175', 'disabled': False, 'max_htlc_msat': '495000000', 'last_update': '04-08-23 06:50', 'custom_records': {}}
+------------------------------
+Channel Information:
+Node1 Pub Key: 0280d9cc3952492ec8638549af954f441f911f187c39535bf4dd9f4afde66c5b82
+Node2 Pub Key: 035e4ff418fc8b5554c5d9eea66396c227bd429a3251c8cbc711002ba215bfc226
+Node1 Policy: {'time_lock_delta': 40, 'min_htlc': '1000', 'fee_base_msat': '10000', 'fee_rate_milli_msat': '100', 'disabled': False, 'max_htlc_msat': '990000000', 'last_update': '05-08-23 01:31', 'custom_records': {}}
+Node2 Policy: {'time_lock_delta': 80, 'min_htlc': '1000', 'fee_base_msat': '0', 'fee_rate_milli_msat': '700', 'disabled': False, 'max_htlc_msat': '990000000', 'last_update': '04-08-23 08:04', 'custom_records': {}}
+------------------------------
+Channel Information:
+Node1 Pub Key: 0280d9cc3952492ec8638549af954f441f911f187c39535bf4dd9f4afde66c5b82
+Node2 Pub Key: 03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f
+Node1 Policy: {'time_lock_delta': 40, 'min_htlc': '1000', 'fee_base_msat': '10000', 'fee_rate_milli_msat': '100', 'disabled': False, 'max_htlc_msat': '1053513000', 'last_update': '04-08-23 10:31', 'custom_records': {}}
+Node2 Policy: {'time_lock_delta': 144, 'min_htlc': '1', 'fee_base_msat': '1000', 'fee_rate_milli_msat': '499', 'disabled': False, 'max_htlc_msat': '1042978000', 'last_update': '04-08-23 19:07', 'custom_records': {}}
+------------------------------
+Channel Information:
+Node1 Pub Key: 0280d9cc3952492ec8638549af954f441f911f187c39535bf4dd9f4afde66c5b82
+Node2 Pub Key: 02f1a8c87607f415c8f22c00593002775941dea48869ce23096af27b0cfdcc0b69
+Node1 Policy: {'time_lock_delta': 80, 'min_htlc': '1000', 'fee_base_msat': '1000', 'fee_rate_milli_msat': '1', 'disabled': False, 'max_htlc_msat': '990000000', 'last_update': '05-08-23 03:31', 'custom_records': {}}
+Node2 Policy: {'time_lock_delta': 144, 'min_htlc': '1000', 'fee_base_msat': '0', 'fee_rate_milli_msat': '500', 'disabled': False, 'max_htlc_msat': '990000000', 'last_update': '04-08-23 06:54', 'custom_records': {}}
+------------------------------
+Total interesting number of channels: 4

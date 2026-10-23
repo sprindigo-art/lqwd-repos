@@ -1,0 +1,44 @@
+.item-title p {
+    font-family: Inter;
+    font-style: normal;
+    font-weight: 400 !important;
+    font-size: 15px !important;
+    color: #7A7A7A !important;
+    margin: 0px !important;
+}
+
+.item-title{
+    margin: 0px !important;
+    padding: 0px !important;
+}
+
+.item-amt h2 {
+    font-family: Rubik;
+    font-weight: 500 !important;
+    font-size: 20px !important;
+    margin: 0 !important;
+}
+
+.item-amt{
+    margin: 0px !important;
+    padding: 0px !important;
+}
+
+.item-amt sub {
+    font-family: Inter;
+    font-weight: 100 !important;
+    font-size: 15px !important;
+}
+
+.item-icon-holder{
+    border-radius: 10px !important;
+    margin: 15px !important;
+}
+
+/*@media only screen and (max-width: 320px) {*/
+
+/*}*/
+
+/*@media only screen and (min-width: 321px)  and ( max-width: 414px) {*/
+
+/*}*/

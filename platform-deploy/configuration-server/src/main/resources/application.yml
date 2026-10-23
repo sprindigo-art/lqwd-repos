@@ -1,0 +1,35 @@
+server:
+  port: 8888
+spring:
+  cloud:
+    bus:
+      enabled: true
+    stream:
+      kafka:
+        binder:
+          brokers: ${BROKERS}
+    config:
+      server:
+        git:
+          uri: https://github.com/lightningriders/configurations.git
+          searchPaths: /{application}
+          username: ${GIT_USERNAME}
+          password: ${GIT_PASSWORD}
+          clone-on-start: true
+          default-label: ${LABEL}
+  security:
+    user:
+      name: ${CONFIG_USERNAME}
+      password: ${CONFIG_PASSWORD}
+  kafka:
+    properties:
+      sasl:
+        jaas:
+          config: ${SASL_CONFIG}
+        mechanism: PLAIN
+      security:
+        protocol: SASL_PLAINTEXT
+    jaas:
+      enabled: true
+config:
+  branch: ${LABEL}

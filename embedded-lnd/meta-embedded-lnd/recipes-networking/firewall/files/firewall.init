@@ -1,0 +1,55 @@
+#!/bin/sh
+### BEGIN INIT INFO
+# Provides:          firewall
+# Required-Start:
+# Required-Stop:
+# Default-Start:     S
+# Default-Stop:      0 6
+# Short-Description: Load the default-deny iptables ruleset
+### END INIT INFO
+
+RULES=/etc/iptables/rules.v4
+
+case "$1" in
+  start)
+        echo -n "Loading firewall rules: "
+        if [ ! -r "$RULES" ]; then
+            echo "FAILED - $RULES missing."
+            exit 1
+        fi
+        # If restore fails we must not be left wide open: fall back to a
+        # hard deny rather than the kernel default of ACCEPT.
+        if iptables-restore < "$RULES"; then
+            echo "done."
+        else
+            echo "FAILED - applying fail-closed policy."
+            iptables -P INPUT DROP
+            iptables -P FORWARD DROP
+            iptables -F INPUT
+            iptables -A INPUT -i lo -j ACCEPT
+            exit 1
+        fi
+        ;;
+  stop)
+        # "Stopping" a firewall means opening the box up, so this only resets
+        # policy on an explicit shutdown.
+        echo -n "Flushing firewall rules: "
+        iptables -F
+        iptables -P INPUT ACCEPT
+        iptables -P FORWARD ACCEPT
+        iptables -P OUTPUT ACCEPT
+        echo "done."
+        ;;
+  status)
+        iptables -L -n -v
+        ;;
+  restart|force-reload)
+        $0 start
+        ;;
+  *)
+        echo "Usage: $0 {start|stop|status|restart}"
+        exit 1
+        ;;
+esac
+
+exit 0

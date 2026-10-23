@@ -1,0 +1,246 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://47.250.182.84:5432/lnd
+    username: ${DBUSERNAME}
+    password: ${DBPASSWORD}
+    initialization-mode: always
+    hikari:
+      connection-timeout: 10000
+      minimum-idle: 10
+      maximum-pool-size: 50
+      idle-timeout: 600000
+      max-lifetime: 1800000
+      auto-commit: true
+      poolName: DLAJPAHikariCP
+      testWhileIdle: true
+      validationQuery: SELECT 1
+      leak-detection-threshold: 150000
+    jpa:
+      show-sql: false
+      hibernate:
+        ddl-auto: update
+      properties:
+        hibernate:
+          dialect: org.hibernate.dialect.PostgreSQL95Dialect
+          show_sql: false
+          format_sql: true
+          id:
+            new_generator_mappings: true
+          jdbc:
+            lob:
+              non_contextual_creation: true
+  kafka:
+    bootstrap-servers: broker.kafka-v1:9092
+    enable:
+      auto:
+        commit: true
+    auto:
+      commit:
+        interval:
+          ms: 10000
+    session:
+      timeout:
+        ms: 30000
+    consumer:
+      timeout:
+        ms: 120000
+    jaas:
+      enabled: true
+    properties:
+      security:
+        protocol: SASL_PLAINTEXT
+      sasl:
+        mechanism: PLAIN
+        jaas:
+          config: ${SASL_CONFIG}
+
+  cloud:
+    stream:
+      default:
+        producer:
+          useNativeEncoding: true
+        consumer:
+          useNativeEncoding: true
+      bindings:
+        springCloudBusOutput:
+          consumer:
+            useNativeDecoding: false
+          producer:
+            useNativeEncoding: false
+        springCloudBusInput:
+          consumer:
+            useNativeDecoding: false
+          producer:
+            useNativeEncoding: false
+        input:
+          destination: tmessage-details
+          content-type: application/*+avro
+          group: group-1
+          concurrency: 3
+        output:
+          destination: tmessage-details
+          content-type: application/*+avro
+      kafka:
+        binder:
+          consumer-properties:
+            specific:
+              avro:
+                reader: true
+  http:
+    log-request-details: true
+  tls:
+    admin: src/main/resources/
+
+kafka:
+  binder:
+      key-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
+      value-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
+      schema-registry-url: http://schemaregistry.kafka-v1:8081
+      key-deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
+      value-deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
+
+logging:
+  level:
+    com:
+      zaxxer:
+        hikari: error
+    org:
+      apache:
+        kafka: warn
+      springframework:
+        security:
+          oauth2: info
+        web: info
+      hibernate:
+        SQL: error
+
+server:
+  ssl:
+    enabled: false
+
+node:
+  external-host: ln.lqwd.tech
+  external-ip: 54.71.76.33
+  postgres-enabled: 1
+  namespace: lqwd-lnd
+  force-update-config: 1
+  non-custodial-enabled: 0
+
+app:
+  number_of_registration_users: 325
+  location: production
+  wenv: production
+  cipher_url: ${CIPHER_SERVICE_HOST:cipher-service.microservice}
+  cipher_port: 8790
+  cipher_client_id: ${APPUSERNAME}
+  cipher_client_secret: ${APPPASSWORD}
+  staking_routing_lnd_node: ${STAKING_ROUTING_NODE:lnd-885}
+  auth_post_url: oauth2.oauth2
+  auth_post_port: 8187
+  auth_user_name: ${APPUSERNAME}
+  auth_password: ${APPPASSWORD}
+  default_lnd_cipher_password: ${ENCRYPT_ASD}
+  auth_grant_type: password
+  encrypt_secret: ${ENCRYPT_SECRET}
+  encrypt_asd: ${ENCRYPT_ASD}
+  resource_id: resource-server-rest-api
+  routing_node_name: lnd-885
+  routing_node_namespace: lqwd-lnd
+  application_notification_to: clients@lqwd.money
+  lnd_min_channel_size: 100000
+  lnd_kafka_user: ${LND_KAFKA_USER}
+  lnd_kafka_password: ${LND_KAFKA_USER}
+  lnd_kafka_co_topic: request
+  lnd_kafka_co_group_id: 334
+  lnd_kafka_pro_topic: reply
+  lnd_debug: true
+  lnd_db_host: lqwd-lnd-pods.csvn42eedrmo.us-west-2.rds.amazonaws.com
+  lnd_db_port: 5432
+  lnd_db_host_main: lnd.csvn42eedrmo.us-west-2.rds.amazonaws.com
+  lnd_db_port_main: 5433
+  lnd_notification_email: aziz@lqwd.money
+  liquidity_notification_emails: aziz@lqwd.money,albert@lqwd.money
+  no_of_times_to_check_node_creation_state: 3
+  no_of_lnd_nodes_to_check_state_in_batch: 10
+  frontend_base_url: https://lqwd.tech
+  k8s_rpchost: btc1
+  k8s_rpchost_testnet: tbtc1
+  k8s_rpchost_regtest: regtest
+  node_alert_email_to: aziz@lqwd.money
+  staking_withdraw_email: aziz@lqwd.money
+  lnd_password_exp_seconds: 2800
+  lnd_seed_exp_seconds: 2800
+  redis_host: ${REDIS_HOST:redis-master.redis}
+  redis_port: 6379
+  redis_cred: ${REDIS_CRED}
+  liquidity_min_amount: 10000
+  min_confirmation_liquidity_and_staking: 3
+  aws_ec2_secret_access_key: ${AWS_EC2_SECRET_ACCESS_KEY}
+  aws_ec2_access_key_id: ${AWS_EC2_ACCESS_KEY_ID}
+  aws_ec2_launch_template_id: lt-05662029544286ee8
+  allowed_origins: https://lqwd.tech
+  billing_service_addr: http://billing.microservice:8790
+  btcd:
+    regtest:
+      host: regtest.btcd
+      port: 853
+      password: ${REGTEST_PASSWORD}
+      username: bitcoin
+    testnet:
+      host: tbtc1.btcd
+      port: 853
+      password: ${TESTNET_PASSWORD}
+      username: bitcoin
+    mainnet:
+      host: btc1.lqwd-lnd
+      port: 853
+      password: ${MAINNET_PASSWORD}
+      username: bitcoin
+  kubernetes:
+    config:
+      token: ${KBTOKEN}
+      cert_data: ${KBCET}
+
+  truststore:
+    password: ${APP_TRUSTORE_PASSWORD}
+  max_lnd_node: 2
+  aws_region: us-west-2
+  aws_access_key: ${AWSACCESS}
+  aws_secret_key: ${AWSSECRET}
+  image_path: 514063904685.dkr.ecr.us-west-2.amazonaws.com/lnd:prod-latest
+  lndplus_image_path: 514063904685.dkr.ecr.us-west-2.amazonaws.com/lndplus:prod-latest
+  lnd_namespace: lqwd-lnd
+  lnd_node_request_mem:
+    default: 1000Mi
+    routing: 1000Mi
+  lnd_node_limit_mem:
+    default: 2000Mi
+    routing: 3000Mi
+  lnd_database_username: ${LND_DB_USERNAME}
+  lnd_database_password: ${LND_DB_PASSWORD}
+  lnd_database_url: jdbc:postgresql://lqwd-lnd-pods.csvn42eedrmo.us-west-2.rds.amazonaws.com:5432/postgres?serverTimezone=UTC
+  volume:
+    claim: pv03-claim
+  logback:
+    producer: broker.kafka-v1
+    consumer: broker.kafka-v1
+  lnd_rpc_port: 8080
+
+grpc:
+  client:
+    target: ${GRPC_CLIENT_TARGET:tlnd3:8080}
+
+twilio:
+  account:
+    sid: AC8a589f3871123cfb51b087b792f66e01
+    auth-token: ${TWILIO_ACC_TOKEN}
+  verify:
+    service-sid: VAba335b7bbb352a3ba5853c09f56db91a
+
+security:
+  oauth2:
+    resource:
+      token-info-uri: http://oauth2.oauth2:8187/oauth/check_token
+    client:
+      client-id: ${APPUSERNAME}
+      client-secret: ${APPPASSWORD}

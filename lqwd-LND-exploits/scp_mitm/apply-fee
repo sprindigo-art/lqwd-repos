@@ -1,0 +1,214 @@
+#!/bin/bash
+#
+# apply-fee — node-side fee applier (EXEC-02): HMAC verify → bounds re-enforce → lncli argv
+# =========================================================================================
+# Phase 8 Plan 02 Task 2. A pure-bash port of:
+#   * src/lib/queue/sign.ts:verifyPayload — recompute HMAC over the VERBATIM
+#     canonical_payload, compare to the stored signature_hex.
+#   * src/lib/queue/bounds.ts             — re-enforce the FROZEN bounds node-side
+#     (3rd of 3 enforcement points: client + server + node).
+# with a REAL `lncli updatechanpolicy` (argv tokens only) in place of the stub.
+#
+# Called by check-queue AFTER it has claimed a row and flipped it to 'executing'.
+# apply-fee does NO DB writes — it returns outcome/reason/detail; check-queue owns
+# all state flips + audit + command_executions rows (stub-executor.ts chain).
+#
+# CONTRACT (consumed by check-queue):
+#   stdin/args: the claimed row's fields (see usage()).
+#   stdout    : a single "detail" line (new-policy summary on success, captured
+#               stderr summary on failure) — NEVER contains the secret/macaroon/signature.
+#   exit code : 0 = succeeded; 1 = failed (reason on the OUTCOME line).
+#   The first stdout line is `OUTCOME=<succeeded|failed> REASON=<reason|->`.
+#
+# SECURITY:
+#   * The secret is read from env NODEMON_HMAC_SECRET (check-queue resolves the
+#     per-pubkey key NODEMON_HMAC_SECRET_<pubkey> from the root-only env file and
+#     exports it). It is NEVER logged, echoed, or placed on the lncli argv.
+#   * D-13: on hmac_mismatch OR bounds_violation, apply-fee returns fail-closed
+#     and NEVER calls lncli. The lncli call is structurally AFTER both gates.
+
+set -u
+
+usage() {
+  cat <<'USAGE'
+usage: apply-fee --canonical-payload <str> --signature-hex <hex> --params <json> --pubkey <hex> --claimed-id <uuid>
+  Env: NODEMON_HMAC_SECRET (per-node secret), TLS_CERT, MACAROON (optional overrides)
+USAGE
+}
+
+# ── creds (verbatim fleet paths — run_liquidity_manager.sh lines 13-14) ──────
+TLS_CERT="${TLS_CERT:-/lnd/tls.cert}"
+MACAROON="${MACAROON:-/lnd/data/chain/bitcoin/mainnet/admin.macaroon}"
+
+CANONICAL_PAYLOAD=""
+SIGNATURE_HEX=""
+PARAMS_JSON=""
+PUBKEY=""
+CLAIMED_ID=""
+
+while [ "$#" -gt 0 ]; do
+  case "$1" in
+    --canonical-payload) CANONICAL_PAYLOAD="$2"; shift 2 ;;
+    --signature-hex)     SIGNATURE_HEX="$2";     shift 2 ;;
+    --params)            PARAMS_JSON="$2";       shift 2 ;;
+    --pubkey)            PUBKEY="$2";            shift 2 ;;
+    --claimed-id)        CLAIMED_ID="$2";        shift 2 ;;
+    -h|--help)           usage; exit 0 ;;
+    *) echo "apply-fee: unknown arg: $1" >&2; usage; exit 2 ;;
+  esac
+done
+
+# fail_closed <reason>: emit the OUTCOME line + a safe detail, exit 1, NO lncli.
+# Logs the REASON only — never the secret, macaroon, or signature.
+fail_closed() {
+  local reason="$1"
+  echo "OUTCOME=failed REASON=${reason}"
+  echo "apply-fee fail-closed: ${reason} (lncli NOT called)"
+  exit 1
+}
+
+# in_range <value> <min> <max> → 0 if integer value in [min,max], else 1.
+in_range() {
+  local v="$1" lo="$2" hi="$3"
+  case "$v" in
+    ''|*[!0-9-]*) return 1 ;;   # non-integer fails closed
+  esac
+  [ "$v" -ge "$lo" ] && [ "$v" -le "$hi" ]
+}
+
+# ── (a) HMAC VERIFY — port of sign.ts:verifyPayload over the VERBATIM payload ──
+# CRITICAL: printf %s (NO trailing newline — Pitfall 1). Hash the STORED
+# canonical_payload verbatim; NEVER re-serialize params for the digest (Pitfall 3).
+# openssl -r prints "<hex> *stdin"; take field 1 (Pitfall 4). Lowercase hex, never base64.
+[ -n "${NODEMON_HMAC_SECRET:-}" ] || fail_closed "missing_secret"
+EXPECTED_HEX="$(printf %s "$CANONICAL_PAYLOAD" | openssl dgst -sha256 -hmac "$NODEMON_HMAC_SECRET" -r | awk '{print $1}')"
+# Constant-time intent: bash [ = ] is acceptable here — the secret is local and the
+# threat is a tampered DB row, not a timing oracle (CLAUDE.md §4).
+[ -n "$EXPECTED_HEX" ] || fail_closed "hmac_mismatch"
+[ "$EXPECTED_HEX" = "$SIGNATURE_HEX" ] || fail_closed "hmac_mismatch"
+
+# ── (a2) BIND applied values to the SIGNED payload, NOT the mutable columns ────
+# The HMAC covers canonical_payload ONLY. Its 5 newline-joined fields are
+#   nodePubkey \n commandId \n actionType \n canonicalParams \n expiresAt
+# (src/lib/queue/canonical.ts:buildSignedPayload). The separate `params` jsonb
+# column and `node_pubkey` column are NOT covered by the signature, so a tampered
+# DB row could change them without breaking HMAC. Derive EVERY applied value from
+# the signed payload so what lncli runs is exactly what was signed (defeats the
+# tampered-DB-row threat this scheme exists for). canonicalize() emits single-line
+# whitespace-free JSON, so the params line never contains a newline.
+SIGNED_PUBKEY="$(printf '%s\n' "$CANONICAL_PAYLOAD" | sed -n '1p')"
+SIGNED_COMMAND_ID="$(printf '%s\n' "$CANONICAL_PAYLOAD" | sed -n '2p')"
+SIGNED_PARAMS="$(printf '%s\n' "$CANONICAL_PAYLOAD" | sed -n '4p')"
+SIGNED_EXPIRES_AT="$(printf '%s\n' "$CANONICAL_PAYLOAD" | sed -n '5p')"
+[ -n "$SIGNED_PARAMS" ] || fail_closed "payload_parse_error"
+# Per-node binding: this node's own identity_pubkey MUST equal the signed
+# nodePubkey, or a row signed for a different node is being replayed here.
+[ "$SIGNED_PUBKEY" = "$PUBKEY" ] || fail_closed "pubkey_mismatch"
+
+# ── (a3) SIGNED commandId ↔ claimed row id binding (Q5b) ──────────────────────
+# The HMAC covers commandId (field 2), but the ROW the executor claimed is
+# identified by its own primary key. Bind the two: a genuine (payload,signature)
+# pair from an OLDER approved command on THIS node must not be transplanted onto a
+# different claimed row (replay). check-queue passes the claimed row id via
+# --claimed-id; it MUST equal the signed commandId or we fail closed with no lncli.
+[ -n "$CLAIMED_ID" ] || fail_closed "command_id_mismatch"
+[ "$SIGNED_COMMAND_ID" = "$CLAIMED_ID" ] || fail_closed "command_id_mismatch"
+
+# ── (a4) SIGNED expiresAt TTL re-check (Q5) ───────────────────────────────────
+# TTL must be enforced from the SIGNED bytes (field 5), NOT the independently
+# mutable `commands.expires_at` column — a DB-tamper attacker who extends that
+# column cannot break the HMAC, so the signed expiresAt is the sole authority.
+# Parse the ISO-8601 UTC instant to epoch seconds (GNU date first, BSD date
+# fallback), fail-closed on parse failure OR expiry. lncli is never reached.
+iso_to_epoch() { # $1 = ISO-8601 UTC (e.g. 2999-01-01T00:00:00.000Z) → epoch secs
+  local iso stripped
+  iso="$1"
+  # Drop fractional seconds and the trailing Z → YYYY-MM-DDTHH:MM:SS.
+  stripped="$(printf %s "$iso" | sed -E 's/\.[0-9]+//; s/Z$//')"
+  date -u -d "${stripped}Z" +%s 2>/dev/null \
+    || date -u -j -f "%Y-%m-%dT%H:%M:%S" "$stripped" +%s 2>/dev/null
+}
+EXPIRES_EPOCH="$(iso_to_epoch "$SIGNED_EXPIRES_AT")"
+NOW_EPOCH="$(date -u +%s)"
+case "$EXPIRES_EPOCH" in
+  ''|*[!0-9]*) fail_closed "ttl_expired" ;;   # unparseable signed expiry → fail closed
+esac
+[ "$EXPIRES_EPOCH" -gt "$NOW_EPOCH" ] || fail_closed "ttl_expired"
+
+# ── (b) PARSE params from the SIGNED payload — ONLY after a successful verify ──
+# The --params ARG (the mutable `params` column) is intentionally NOT used for any
+# applied value; jq reads the signed params substring so the bytes are HMAC-covered.
+FEE_RATE_PPM="$(printf %s "$SIGNED_PARAMS"   | jq -r '.suggestedPpm')"
+BASE_FEE_MSAT="$(printf %s "$SIGNED_PARAMS"  | jq -r '.baseFeeMsat')"
+TIME_LOCK_DELTA="$(printf %s "$SIGNED_PARAMS"| jq -r '.timeLockDelta')"
+CHANNEL_POINT="$(printf %s "$SIGNED_PARAMS"  | jq -r '.channelPoint')"
+# channelPoint is FUNDING_TXID:OUTPUT_INDEX (already in lncli --chan_point form).
+
+# ── (c) BOUNDS RE-ENFORCE (3rd of 3) — frozen bounds.ts values ────────────────
+in_range "$FEE_RATE_PPM"    0 5000   || fail_closed "bounds_violation"   # suggestedPpm  0..5000
+in_range "$BASE_FEE_MSAT"   0 100000 || fail_closed "bounds_violation"   # baseFeeMsat   0..100000
+in_range "$TIME_LOCK_DELTA" 18 2016  || fail_closed "bounds_violation"   # timeLockDelta 18..2016
+case "$CHANNEL_POINT" in
+  *:*) : ;;                                  # require FUNDING_TXID:OUTPUT_INDEX
+  *) fail_closed "bounds_violation" ;;
+esac
+
+# ── (c2) PRESERVE the channel's ACTUAL time_lock_delta (never silently mutate) ─
+# The warehouse channel snapshot carries no time_lock_delta, so the signed params
+# ship the LND default (80) as a PLACEHOLDER — it is display/intent only. lncli
+# `updatechanpolicy` REQUIRES a time_lock_delta and would OVERWRITE the channel's
+# real CLTV delta with that placeholder, a silent mutation the operator never
+# intended. Read the channel's LIVE delta node-side and apply THAT; fail-closed if
+# it cannot be resolved rather than forcing a fabricated value. lncli reads are
+# argv-only (no shell string); the chan_id is digits-only before it is used.
+resolve_current_tld() {
+  local cp="$1" pk="$2" chan_id tld
+  chan_id="$(lncli --tlscertpath "$TLS_CERT" --macaroonpath "$MACAROON" listchannels 2>/dev/null \
+    | jq -r --arg cp "$cp" '.channels[]? | select(.channel_point==$cp) | .chan_id' 2>/dev/null | head -n1)"
+  case "$chan_id" in ''|*[!0-9]*) return 1 ;; esac
+  tld="$(lncli --tlscertpath "$TLS_CERT" --macaroonpath "$MACAROON" getchaninfo "$chan_id" 2>/dev/null \
+    | jq -r --arg pk "$pk" 'if .node1_pub==$pk then .node1_policy.time_lock_delta elif .node2_pub==$pk then .node2_policy.time_lock_delta else empty end' 2>/dev/null | head -n1)"
+  case "$tld" in ''|*[!0-9]*) return 1 ;; esac
+  printf '%s' "$tld"
+}
+CURRENT_TLD="$(resolve_current_tld "$CHANNEL_POINT" "$PUBKEY")" || fail_closed "time_lock_delta_unresolved"
+in_range "$CURRENT_TLD" 18 2016 || fail_closed "bounds_violation"   # live delta sanity
+
+# ── (d) APPLY via ARGV token list ONLY (EXEC-02 hard constraint) ──────────────
+# NEVER build the command as a string for eval / sh -c. Use --fee_rate_ppm ONLY,
+# never --fee_rate (Pitfall 7).
+# [ASSUMED] global flag spelling --tlscertpath/--macaroonpath (vs --tls-cert/
+#   --macaroon) — verify `lncli updatechanpolicy --help` on the pilot at the live
+#   gate (A1).
+# [ASSUMED] inbound-fee passthrough (lnd#8614 / Pitfall 8 / A2): this argv
+#   INTENTIONALLY omits --inbound_base_fee_msat / --inbound_fee_rate_ppm for the
+#   pilot. Some LND builds RESET inbound-fee fields when updatechanpolicy is
+#   called without them. The Plan-04 canary runbook's before/after getchaninfo
+#   capture (A2) is what confirms whether the pilot build resets them; the FIRST
+#   canary apply could otherwise silently reset inbound fees before that
+#   after-capture detects it. If A2 finds a reset, the inbound-fee passthrough
+#   folds back HERE into the argv (the apply tier owns the fix, not just the runbook).
+APPLY_OUT="$(lncli \
+  --tlscertpath  "$TLS_CERT" \
+  --macaroonpath "$MACAROON" \
+  updatechanpolicy \
+  --base_fee_msat   "$BASE_FEE_MSAT" \
+  --fee_rate_ppm    "$FEE_RATE_PPM" \
+  --time_lock_delta "$CURRENT_TLD" \
+  --chan_point      "$CHANNEL_POINT" 2>&1)"
+APPLY_RC="$?"
+
+# ── (e) RETURN outcome + a safe detail (no secret/macaroon/signature) ─────────
+if [ "$APPLY_RC" -eq 0 ]; then
+  echo "OUTCOME=succeeded REASON=-"
+  # Detail = the new-policy summary (chan_point + applied values), not the raw
+  # lncli blob (keeps the detail bounded and free of any sensitive echo).
+  echo "applied chan_point=${CHANNEL_POINT} fee_rate_ppm=${FEE_RATE_PPM} base_fee_msat=${BASE_FEE_MSAT} time_lock_delta=${CURRENT_TLD}"
+  exit 0
+else
+  echo "OUTCOME=failed REASON=lncli_error"
+  # Captured stderr summary for the command_executions detail (first line only;
+  # lncli errors do not include the macaroon/secret).
+  echo "lncli updatechanpolicy failed (rc=${APPLY_RC}): $(printf %s "$APPLY_OUT" | head -n1)"
+  exit 1
+fi

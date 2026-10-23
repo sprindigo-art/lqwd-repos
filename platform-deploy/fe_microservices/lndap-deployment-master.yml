@@ -1,0 +1,84 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lndap
+  namespace: microservice
+  labels:
+    app: lndap
+spec:
+  selector:
+    matchLabels:
+      app: lndap
+  template:
+    metadata:
+      labels:
+        app: lndap
+    spec:
+      nodeSelector:
+        node.kubernetes.io/instance-type: t3.medium
+      containers:
+        - name: lndap
+          image: '514063904685.dkr.ecr.us-west-2.amazonaws.com/lndap:prod-$BUILD_NUMBER'
+          ports:
+            - containerPort: 8590
+          env:
+            - name: WENV
+              value: "production"
+            - name: ACTIVE_PROFILE
+              value: "production"
+            - name: SASL_CONFIG
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: SASL_CONFIG
+
+            - name: KEY_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: KEY_PASSWORD
+
+            - name: KEY_STORE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: KEY_STORE_PASSWORD
+
+            - name: TRUST_STORE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: TRUST_STORE_PASSWORD
+
+            - name: AUTH_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: AUTH_USERNAME
+
+            - name: AUTH_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: AUTH_PASSWORD
+
+            - name: AUTH_GRANT_TYPE
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: AUTH_GRANT_TYPE
+          resources:
+            requests:
+              memory: "1024Mi"
+              cpu: "200m"
+            limits:
+              memory: "2048Mi"
+              cpu: "500m"
+
+      volumes:
+        - name: secret
+          secret:
+            secretName: secret
+      imagePullSecrets:
+        - name: ecr-token
+

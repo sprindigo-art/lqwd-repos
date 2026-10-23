@@ -1,0 +1,31 @@
+<div th:fragment="modal_authorize" class="modal fade text-left" id="exampleModal" tabindex="-1" role="dialog"
+     aria-labelledby="exampleModalLabel"
+     aria-hidden="true" data-check="false">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" id="modal-login-popup_div_modal-reload">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Authorize</h5>
+                <button id="modal-login-popup_btn_close" type="button" class="close" data-dismiss="modal"
+                        aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="modal-login-popup_frm_password">
+                    <div class="form-group">
+                        <label for="modal-login-popup_txt_password">Password</label>
+                        <input type="password" class="form-control" id="modal-login-popup_txt_password"
+                               placeholder="Password">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button id="modal-login-popup_btn_modal-dismiss" type="button" class="btn" data-dismiss="modal">Close
+                </button>
+                <button id="modal-login-popup_btn_modal-blockui" type="button" class="btn btn-primary" data-email="true"
+                        onclick="authorize()">Authorize
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

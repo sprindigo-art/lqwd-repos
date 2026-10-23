@@ -1,0 +1,16 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: config-server
+  namespace: microservice
+  labels:
+    app: config-server
+spec:
+  ports:
+    - protocol: TCP
+      port: 8888
+      targetPort: 8888
+  selector:
+    app: config-server
+  type: ClusterIP
+  sessionAffinity: None

@@ -1,0 +1,67 @@
+<html>
+<head th:include="fragment/headerfooter::header1"></head>
+<body onload="startTime()">
+<div id="containerMain">
+    <div th:include="fragment/headerfooter::top_menu('action')"></div>
+    <div id="titleMain">
+        <h1>Add New Port </h1>
+    </div>
+
+    <div id="contentMain">
+        <form autocomplete="off" action="#" th:action="@{/backend/add/port}"
+              th:object="${port}" method="post" class="form-horizontal"
+              role="form">
+            <div class="row">
+                <div class="col-75">
+                    <label>Port</label>
+                </div>
+                <div class="col-25">
+                    <label th:if="${#fields.hasErrors('portRange')}" th:errors="*{portRange}"
+                           class="validation-message">
+                    </label>
+                </div>
+                <div class="col-75">
+                    <input type="text" th:field="*{portRange}" placeholder="Enter a range e.g 8080-8082" class="form-control" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-75">
+                    <label>BTC host</label>
+                </div>
+                <div class="col-25">
+                    <label th:if="${#fields.hasErrors('btcHost')}" th:errors="*{btcHost}"
+                           class="validation-message">
+                    </label>
+                </div>
+                <div class="col-75">
+                    <input type="text" th:field="*{btcHost}" placeholder="Enter BTC host" class="form-control" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-75">
+                    <label>Lnd external IP</label>
+                </div>
+                <div class="col-25">
+                    <label th:if="${#fields.hasErrors('lndIp')}" th:errors="*{lndIp}"
+                           class="validation-message">
+                    </label>
+                </div>
+                <div class="col-75">
+                    <input type="text" th:field="*{lndIp}" placeholder="Enter lnd external IP for opened port" class="form-control" />
+                </div>
+            </div>
+
+
+            <div class="row">
+                <input type="submit" th:value="ADD" />
+            </div>
+
+            <h2>
+                <span class="text-success" th:utext="${successMessage}"></span>
+            </h2>
+        </form>
+    </div>
+</div>
+<script></script>
+</body>
+</html>

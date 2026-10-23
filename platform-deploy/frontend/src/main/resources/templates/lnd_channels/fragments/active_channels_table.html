@@ -1,0 +1,93 @@
+<div th:if="${channels==null}" class="widget-content widget-content-area justify-content-center text-center">
+    <h3 style="padding: 20px;">You Do Not Have Any Active Channels</h3>
+</div>
+<div th:unless="${channels==null}" class="widget-content widget-content-area br-6">
+    <div id="default-ordering_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4">
+        <div class="table-responsive">
+            <table id="channel-table" class="table table-hover dataTable" style="width:100%" role="grid" aria-describedby="default-ordering_info">
+                <thead>
+                <tr role="row">
+                    <th class="sorting" tabindex="0" aria-controls="default-ordering" rowspan="1" colspan="1" aria-label="Incoming or Outgoing Channel">In/Out</th>
+                    <th class="sorting" tabindex="0" aria-controls="default-ordering" rowspan="1" colspan="1" aria-label="Channel ID of Channel">Channel ID</th>
+                    <th class="sorting" tabindex="0" aria-controls="default-ordering" rowspan="1" colspan="1"
+                        aria-label="Total Capacity of Channel with Local and Remote Balance Shown" style="width: 50%;">Total Capacity (Sats.)</th>
+                    <th class="sorting_desc" tabindex="0" aria-controls="default-ordering" rowspan="1" colspan="1" aria-sort="descending" aria-label="Peer Connected to Channel">Peer</th>
+                    <th class="sorting" tabindex="0" aria-controls="default-ordering" rowspan="1" colspan="1" aria-label="Last time Channel Was Updated">Last Updated</th>
+                    <th class="dt-no-sorting text-center sorting" tabindex="0" aria-controls="default-ordering" rowspan="1" colspan="1" aria-label="Action">Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr role="row" th:each="channel : ${channels}">
+                    <td class="rounded bs-tooltip text-center" data-placement="top" th:title="${channel.isInitiator() ? 'Outgoing' : 'Incoming'}">
+                        <svg th:if="${channel.isInitiator()}" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#009EE2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-up">
+                            <line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline>
+                        </svg>
+                        <svg th:unless="${channel.isInitiator()}" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-down">
+                            <line x1="12" y1="5" x2="12" y2="19"></line><polyline points="19 12 12 19 5 12"></polyline>
+                        </svg>
+                    </td>
+                    <td>
+                        <a th:href="'https://amboss.space/edge/' + ${channel.getChan_id()}">
+                            [[${channel.getChan_id()}]]
+                        </a>
+                    </td>
+                    <td>
+                        <span class="justify-content-start">Local</span>
+                        <span class="justify-content-end float-right">Remote</span>
+                        <div class="progress br-0 progress-xl progress-bar-stack w-100 rounded" style="height: 25px; background-color: rgba(120, 120, 120, 0.1) !important;">
+                            <div class="progress-bar bg-primary br-0" role="progressbar"
+                                 th:style="${#numbers.formatDecimal(channel.getLocal_balance_percent(), 1, 0)} < 10 ? 'min-width:15%;max-width:85%;width:10%;' : 'min-width:15%;max-width:85%;width:' + ${#numbers.formatDecimal(channel.getLocal_balance_percent(), 1, 0)} + '%;'"
+                                 aria-valuenow="60" aria-label="Local Balance" aria-valuemin="0" aria-valuemax="100">
+                                <div class="progress-title progress-text-left bs-tooltip" data-placement="top" th:title="${#numbers.formatInteger(channel.getLocal_balance(), 1, 'COMMA')} + ' Sats'">
+                                    <span></span>
+                                    <span th:text="${channel.getCompactNumber(channel.getLocal_balance())} + ' Sats'">1M Local Balance</span>
+                                </div>
+                            </div>
+                            <div class="progress-bar bg-dark br-0" role="progressbar"
+                                 th:style="${#numbers.formatDecimal(channel.getRemote_balance_percent(), 1, 0)} < 10 ? 'min-width:15%;max-width:85%;width:10%;' : 'min-width:15%;max-width:85%;width:' + ${#numbers.formatDecimal(channel.getRemote_balance_percent(), 1, 0)} + '%;'"
+                                 aria-valuenow="40" aria-label="Remote Balance" aria-valuemin="0" aria-valuemax="100">
+                                <div class="progress-title progress-text-right bs-tooltip" data-placement="top" th:title="${#numbers.formatInteger(channel.getRemote_balance(), 1, 'COMMA')} + ' Sats'">
+                                    <span th:text="${channel.getCompactNumber(channel.getRemote_balance())} + ' Sats'">1M Remote Balance</span>
+                                </div>
+                            </div>
+                        </div>
+                        <span th:text="'Total Capacity: ' + ${#numbers.formatInteger(channel.getCapacity(), 1, 'COMMA')} + ' Satoshis'">Total Capacity: 2M Satoshis</span>
+                    </td>
+                    <td class="sorting_1">
+                        <a th:href="'https://amboss.space/node/' + ${channel.getRemote_pubkey()}">
+                            [[${#strings.abbreviate(channel.getRemote_pubkey(),25)}]]
+                        </a>
+                    </td>
+                    <td th:data-order="${channel.getDate_created().getTime()}" th:text="${channel.getDate_created()}"></td>
+
+                    <td class="text-center">
+                        <div class="dropdown">
+                            <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-horizontal"><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle><circle cx="5" cy="12" r="1"></circle></svg>
+                            </a>
+
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink1" style="will-change: transform;">
+                                <a class="dropdown-item" th:attr="onclick=|getChannelDetails('${channel.toJson()}', '${#session.getAttribute('lnd')}')|">View</a>
+                                <a class="dropdown-item" th:attr="onclick=|updateChannelView('${channel.toJson()}', '${#session.getAttribute('lnd')}')|">Update</a>
+                                <a class="dropdown-item" th:attr="onclick=|openCloseChannelPopupModal('${channel.toJson()}')|">Close</a>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+
+                <tfoot>
+                <tr>
+                    <th rowspan="1" colspan="1">In/Out</th>
+                    <th rowspan="1" colspan="1">Channel ID</th>
+                    <th rowspan="1" colspan="">Total Capacity (Sats.)</th>
+                    <th rowspan="1" colspan="1">Peer</th>
+                    <th rowspan="1" colspan="1">Last Updated</th>
+                    <th rowspan="1" colspan="1">Actiion</th>
+                </tr>
+                </tfoot>
+
+            </table>
+        </div>
+    </div>
+</div>

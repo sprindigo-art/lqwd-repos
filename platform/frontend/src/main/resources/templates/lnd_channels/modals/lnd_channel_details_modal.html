@@ -1,0 +1,39 @@
+<div th:fragment="lndChannelDetailsModal" class="modal fade text-left" id="lndChannelDetailsModal" tabindex="-1" role="dialog" aria-hidden="true" data-check="false" data-nodeName="">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Channel Details</h5>
+                <button id="modal-channel-details-popup_btn_close" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row layout-spacing">
+                    <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-12 layout-spacing pt-3">
+                        <div th:replace="lnd_channels/fragments/channel_general"></div>
+                    </div>
+                    <div class="col-xl-8 col-lg-6 col-md-6 col-sm-12 col-12 layout-spacing pt-3">
+                        <div th:replace="lnd_channels/fragments/channel_balance"></div>
+                    </div>
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 layout-spacing">
+                        <div class="widget">
+                            <div class="widget-heading">
+                                <a th:href="'https://amboss.space/edge/'+${lndChannel.getChan_id()}">
+                                    <h5 class="" th:text="'Channel: ' + ${lndChannel.getChan_id()}">Channel Information</h5>
+                                </a>
+                            </div>
+                            <div class="widget-content widget-content-area">
+                                <div th:replace="lnd_channels/fragments/channel_other_details"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="modal-mnemonic-popup_btn_modal-dismiss" type="button" class="btn" data-dismiss="modal">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

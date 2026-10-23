@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout/app}" lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <title>LQwD | Peer Lists</title>
+
+    <link rel="stylesheet" type="text/css" th:href="@{${pluginPath + '/table/datatable/datatables.css'}}">
+    <link rel="stylesheet" type="text/css" th:href="@{${pluginPath + '/table/datatable/dt-global_style.css'}}">
+    <link th:href="@{${cssPath + '/widgets/modules-widgets.css'}}" rel="stylesheet" type="text/css">
+    <link th:href="@{${cssPath + '/scrollspyNav.css'}}" rel="stylesheet" type="text/css" />
+    <link th:href="@{${cssPath + '/components/custom-modal.css'}}" rel="stylesheet" type="text/css">
+    <link th:href="@{${pluginPath + '/apex/apexcharts.css'}}" rel="stylesheet" type="text/css">
+    <link th:href="@{${cssPath + '/elements/popover.css'}}" rel="stylesheet" type="text/css"/>
+</head>
+<style layout:fragment="style">
+    .custom-table-color{
+        width: 100%;
+        color: #e0e6ed;
+        text-align: center;
+    }
+
+    .custom-table-color > tbody > tr:hover{
+        color: #009EE2 !important;
+    }
+    .invoice-link {
+        text-decoration: underline !important;
+        cursor: pointer;
+    }
+
+    .invoice-link:hover{
+        text-decoration: underline !important;
+        cursor: pointer;
+    }
+
+    .feather-copy {
+        cursor: pointer !important;
+    }
+    .feather-refresh-ccw {
+        cursor: pointer !important;
+    }
+    .feather-external-link {
+        cursor: pointer !important;
+    }
+</style>
+<body>
+<section layout:fragment="sub-header">
+    <span>Peer Lists</span>
+</section>
+
+<div layout:fragment="content-section">
+    <div class="layout-px-spacing">
+        <div class="row layout-top-spacing">
+            <div class="col-xl-12 col-lg-12 col-sm-12 layout-spacing">
+                <div class="row">
+                    <div id="peer-list_div_list">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div layout:fragment="scripts">
+    <script th:src="@{/js/tools/tools.js}"></script>
+    <script th:src="@{${pluginPath + '/apex/apexcharts.min.js'}}"></script>
+    <script th:src="@{assets/js/widgets/modules-widgets.js}"></script>
+    <script th:src="@{${pluginPath + '/table/datatable/datatables.js'}}"></script>
+    <script th:src="@{${pluginPath + '/blockui/custom-blockui.js'}}"></script>
+    <script th:src="@{${pluginPath + '/blockui/jquery.blockUI.min.js'}}"></script>
+    <script th:src="@{assets/js/elements/popovers.js}"></script>
+    <script th:src="@{/js/peer/peers-list.js}"></script>
+
+</div>
+</body>
+</html>

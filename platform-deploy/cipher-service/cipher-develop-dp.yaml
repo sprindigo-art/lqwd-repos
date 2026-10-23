@@ -1,0 +1,85 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cipher-service
+  namespace: microservice
+  labels:
+    app: cipher-service
+spec:
+  selector:
+    matchLabels:
+      app: cipher-service
+  template:
+    metadata:
+      labels:
+        app: cipher-service
+    spec:
+      containers:
+        - name: cipher-service
+          image: '514063904685.dkr.ecr.us-west-2.amazonaws.com/cipher-service:dev-$BUILD_NUMBER'
+          ports:
+            - containerPort: 8790
+          env:
+            - name: ACTIVE_PROFILE
+              value: "develop"
+            - name: WENV
+              value: "development"
+            - name: KBTOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: KBTOKEN
+            - name: KBCET
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: KBCET
+            - name: APPUSERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: APPUSERNAME
+            - name: APPPASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: APPPASSWORD
+            - name: DBUSERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: DBUSERNAME
+            - name: DBPASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: DBPASSWORD
+            - name: SASL_CONFIG
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: SASL_CONFIG
+            - name: ENCRYPT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: ENCRYPT_SECRET
+            - name: ENCRYPT_ASD
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: ENCRYPT_ASD
+          resources:
+            limits:
+              cpu: 500m
+              memory: 512Mi
+            requests:
+              cpu: 500m
+              memory: 512Mi
+
+      volumes:
+        - name: secret
+          secret:
+            secretName: secret
+      imagePullSecrets:
+        - name: ecr-token

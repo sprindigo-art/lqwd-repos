@@ -1,0 +1,15 @@
+# Generated from conf-templates/bblayers.conf.sample by scripts/20-setup-build.sh.
+POKY_BBLAYERS_CONF_VERSION = "2"
+
+BBPATH = "${TOPDIR}"
+BBFILES ?= ""
+
+BBLAYERS ?= " \
+  @YOCTO_ROOT@/poky/meta \
+  @YOCTO_ROOT@/poky/meta-poky \
+  @YOCTO_ROOT@/layers/meta-raspberrypi \
+  @YOCTO_ROOT@/layers/meta-openembedded/meta-oe \
+  @YOCTO_ROOT@/layers/meta-openembedded/meta-python \
+  @YOCTO_ROOT@/layers/meta-openembedded/meta-networking \
+  @YOCTO_ROOT@/meta-embedded-lnd \
+"

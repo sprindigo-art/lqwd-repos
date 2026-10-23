@@ -1,0 +1,40 @@
+spring:
+  profiles:
+    active: ${MENV}
+  application:
+    name: messaging
+  cloud:
+    bus:
+      enabled: true
+
+server:
+  port: 8589
+
+---
+spring:
+  profiles: develop
+  cloud:
+    config:
+      uri: ${CONFIG_SERVER:http://config-server.microservice:8888}
+      label: develop
+      username: ${CONFIG_USERNAME}
+      password: ${CONFIG_PASSWORD}
+
+---
+spring:
+  profiles: staging
+  cloud:
+    config:
+      uri: http://config-server.microservice:8888
+      label: staging
+      username: ${CONFIG_USERNAME}
+      password: ${CONFIG_PASSWORD}
+---
+spring:
+  profiles: production
+  cloud:
+    config:
+      uri: http://config-server.microservice:8888
+      label: main
+      username: ${CONFIG_USERNAME}
+      password: ${CONFIG_PASSWORD}

@@ -1,0 +1,95 @@
+.custom-radio-button {
+    /* Auto layout */
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    padding: 12px 8px;
+
+    /* Primary */
+    background: #F8F8F8;
+    border-radius: 8px;
+}
+
+.custom-radio-button-select {
+    /* Auto layout */
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    padding: 12px 8px;
+
+    /* Primary */
+    border: 1.5px solid #009EE2;
+    border-radius: 8px;
+}
+
+.custom-radio-button:hover {
+    /* Primary */
+    border: 1.5px solid #009EE2;
+    border-radius: 8px;
+}
+
+.custom-radio-button-container {
+    position: relative;
+    padding-left: 35px;
+    cursor: pointer;
+    font-size: 22px;
+    width: 24px;
+    height: 24px;
+}
+
+/* Create a custom radio button */
+.custom-radio-button-checkmark {
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    height: 18px;
+    width: 18px;
+    background-color: #ccc;
+    border-radius: 50%;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.custom-radio-button-container input{
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+}
+
+/* On mouse-over, add a grey background color */
+.custom-radio-button:hover input ~ .custom-radio-button-checkmark {
+    background-color: #ccc;
+}
+
+/* When the radio button is checked, add a blue background */
+.custom-radio-button input:checked ~ .custom-radio-button-checkmark {
+    background-color: #2196F3;
+}
+
+.custom-radio-button-select input:checked ~ .custom-radio-button-checkmark {
+    background-color: #2196F3;
+}
+/* Create the indicator (the dot/circle - hidden when not checked) */
+.custom-radio-button-checkmark:after {
+    content: "";
+    display: none;
+    position: absolute;
+}
+
+/* Show the indicator (dot/circle) when checked */
+.custom-radio-button-container input:checked ~ .custom-radio-button-checkmark:after {
+    display: block;
+}
+
+/* Style the indicator (dot/circle) */
+.custom-radio-button-container .custom-radio-button-checkmark:after {
+    top: 5px;
+    left: 5px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: white;
+    position: absolute;
+}

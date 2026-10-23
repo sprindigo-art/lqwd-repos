@@ -1,0 +1,23 @@
+[Unit]
+Description=OpenClaw Gateway (system service)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=claw
+WorkingDirectory=/home/claw
+Environment=OPENCLAW_GATEWAY_PORT=18789
+Environment=HOME=/home/claw
+ExecStart=/usr/bin/openclaw gateway --port 18789
+Restart=always
+RestartSec=5
+KillMode=control-group
+KillSignal=SIGTERM
+TimeoutStopSec=15
+ExecStopPost=/bin/sh -c 'pgrep -u claw -f openclaw-gateway | xargs -r kill 2>/dev/null || true'
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

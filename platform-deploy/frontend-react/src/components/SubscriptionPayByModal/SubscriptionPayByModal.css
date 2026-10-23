@@ -1,0 +1,259 @@
+.subscription-invoice-modal-header {
+    /* Header 1 */
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 32px;
+    /* identical to box height, or 133% */
+
+    display: flex;
+    align-items: center;
+
+    color: #000000;
+
+}
+
+.subscription-invoice-modal-table {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.subscription-invoice-modal-table-container {
+
+}
+
+.subscription-invoice-modal-table-row {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    padding: 0px 20px 0px 20px;
+    column-gap: 100px;
+}
+
+.subscription-invoice-modal-table-row:nth-child(odd){
+    background: #FAFAFA;
+}
+
+
+.subscription-invoice-modal-table-col {
+    display: flex;
+    flex-direction: column;
+
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+
+    /* Text - Primary */
+    color: #111111;
+    padding-top: 12px;
+    padding-bottom: 12px;
+}
+
+.subscription-invoice-modal-table-col:nth-child(odd){
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 20px;
+
+    /* Text - Primary */
+    color: #111111;
+}
+.subscription-invoice-modal-total-table {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    padding-top: 20px;
+    padding-bottom: 10px;
+}
+
+.subscription-invoice-modal-total-table-container {
+    display: flex;
+    flex-direction: column;
+    align-items: self-start;
+}
+
+.subscription-invoice-modal-total-table-row {
+    display: flex;
+    flex-direction: row;
+    column-gap: 12px;
+    justify-content: space-between;
+    align-self: stretch;
+}
+
+.subscription-invoice-modal-total-table-col {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    /* Label 3 */
+
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 10px;
+    line-height: 15px;
+    /* identical to box height, or 150% */
+
+    display: flex;
+    align-items: center;
+    text-align: right;
+
+    /* Text - Secondary */
+    color: #4D4D4D;
+
+}
+
+.subscription-invoice-modal-total{
+    display: flex;
+    flex-direction: column;
+
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 15px;
+    /* identical to box height, or 107% */
+
+    display: flex;
+    align-items: center;
+    color: #000000;
+}
+
+.subscription-pay-by-modal-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+.subscription-pay-by-modal-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.subscription-pay-by-modal-col {
+    display: flex;
+    flex-direction: column;
+}
+
+.subscription-pay-by-modal-col-title {
+    /* Body 1 */
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 21px;
+    /* identical to box height, or 140% */
+
+    display: flex;
+    align-items: center;
+
+    /* Text - Secondary */
+    color: #4D4D4D;
+
+    padding-bottom: 24px;
+}
+
+.subscription-pay-by-modal-text-area {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    padding: 16px 20px;
+    gap: 40px;
+
+    background: #F3F5F9;
+
+    border: 1px solid #EBEEFD;
+    border-radius: 8px;
+
+    max-width: 340px;
+    min-width: 340px;
+    height: 100%;
+}
+
+.subscription-pay-by-modal-qr-code {
+    /* Auto layout */
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 16px 12px;
+    gap: 12px;
+    isolation: isolate;
+
+    max-width: 340px;
+    min-width: 340px;
+    height: 100%;
+
+    /* Background - Panel */
+
+    background: #F3F5F9;
+    /* Border */
+
+    border: 1px solid #EBEEFD;
+    border-radius: 4px;
+}
+
+
+.subscription-pay-by-modal-qr-code-frame {
+    /* Auto layout */
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 0px;
+    width: 100%;
+    height: 100%;
+    /* Inside auto layout */
+    flex: none;
+    order: 1;
+    align-self: stretch;
+    flex-grow: 0;
+}
+
+.subscription-pay-by-modal-qr-code-border {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+
+    padding: 16px 12px;
+    isolation: isolate;
+    width: 100%;
+    height: 100%;
+    /* Background - Panel */
+    background: #F3F5F9;
+    /* Border */
+    border: 1px solid #EBEEFD;
+    border-radius: 4px;
+}
+
+.subscription-pay-by-modal-qr-code-download-icon {
+    left: 8.33%;
+    right: 8.33%;
+    top: 17.65%;
+    bottom: 15.62%;
+}
+
+.subscription-pay-by-modal-qr-code-download {
+    /* Download */
+    width: 24px;
+    height: 24px;
+    /* Inside auto layout */
+    display: flex;
+}
+
+.qr-code-scan {
+    /* Inside auto layout */
+    background-color: #FFFFFF;
+    padding: 10px;
+    flex: none;
+    order: 1;
+    flex-grow: 0;
+    z-index: 0;
+    text-align: center;
+}

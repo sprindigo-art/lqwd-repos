@@ -1,0 +1,179 @@
+/*.cus-Header {*/
+/*    align-items: start !important;*/
+/*    border: none;*/
+
+/*}*/
+
+/*.cus-sub-Header {*/
+/*    margin-top: 0 !important;*/
+/*}*/
+
+/*.details-container {*/
+/*    background: #F3F5F9;*/
+/*    border-radius: 12px;*/
+/*    padding: 5px;*/
+/*    max-height: 743px;*/
+/*}*/
+
+/*.details-holder {*/
+/*    padding-left: 43px;*/
+/*}*/
+
+/*.details-connection {*/
+/*    font-family: 'Rubik';*/
+/*    font-style: normal;*/
+/*    font-weight: 400;*/
+/*    font-size: 14px;*/
+/*    color: #7A7A7A;*/
+/*}*/
+
+/*.details-title {*/
+/*    font-family: 'Rubik';*/
+/*    font-style: normal;*/
+/*    font-weight: 600;*/
+/*    font-size: 24px;*/
+/*    color: #111111;*/
+/*    margin-left: 10px;*/
+/*    padding-top: 0 !important;*/
+/*}*/
+
+/*.copy-address {*/
+/*    !*padding: 24px 40px 55px 40px;*!*/
+/*    width: 100%;*/
+/*}*/
+/*.qr-code-divider{*/
+
+/*    !* Border *!*/
+/*    border: 1px solid #E6E7ED;*/
+/*    !* Inside auto layout *!*/
+/*    margin-top: 28px;*/
+/*    margin-bottom: 28px;*/
+/*}*/
+/*!* QR Code Display Within Modal *!*/
+/*.qr-code-container {*/
+
+/*    !* Auto layout *!*/
+/*    display: flex;*/
+/*    flex-direction: column;*/
+/*    align-items: flex-start;*/
+/*    padding: 0px;*/
+/*    gap: 24px;*/
+
+/*    !* Inside auto layout *!*/
+/*    flex: none;*/
+/*    order: 2;*/
+/*    align-self: stretch;*/
+/*    flex-grow: 0;*/
+
+/*    width: 100%;*/
+/*    height: 140%;*/
+/*}*/
+
+/*.qr-code-title {*/
+/*    !* Body 1 *!*/
+/*    font-family: 'Rubik';*/
+/*    font-style: normal;*/
+/*    font-weight: 400;*/
+/*    font-size: 15px;*/
+/*    line-height: 21px;*/
+/*    !* identical to box height, or 140% *!*/
+
+/*    display: flex;*/
+/*    align-items: center;*/
+
+/*    !* Text - Secondary *!*/
+
+/*    color: #4D4D4D;*/
+
+
+/*    !* Inside auto layout *!*/
+
+/*    flex: none;*/
+/*    order: 0;*/
+/*    align-self: stretch;*/
+/*    flex-grow: 0;*/
+/*}*/
+
+/*.qr-code-frame {*/
+/*    !* Auto layout *!*/
+
+/*    display: flex;*/
+/*    flex-direction: row;*/
+/*    justify-content: center;*/
+/*    align-items: flex-start;*/
+/*    padding: 0px;*/
+
+/*    width: 100%;*/
+/*    height: 100%;*/
+
+/*    !* Inside auto layout *!*/
+/*    flex: none;*/
+/*    order: 1;*/
+/*    align-self: stretch;*/
+/*    flex-grow: 0;*/
+/*}*/
+
+/*!*.qr-code-border {*!*/
+/*!*    box-sizing: border-box;*!*/
+
+/*!*    !* Auto layout *!*!*/
+
+/*!*    display: flex;*!*/
+/*!*    flex-direction: row;*!*/
+/*!*    justify-content: center;*!*/
+/*!*    align-items: flex-start;*!*/
+/*!*    padding: 16px 12px;*!*/
+/*!*    isolation: isolate;*!*/
+
+/*!*    width: 100%;*!*/
+/*!*    height: 100%;*!*/
+
+/*!*    !* Background - Panel *!*!*/
+
+/*!*    background: #F3F5F9;*!*/
+/*!*    !* Border *!*!*/
+
+/*!*    border: 1px solid #EBEEFD;*!*/
+/*!*    border-radius: 4px;*!*/
+
+/*!*    !* Inside auto layout *!*!*/
+/*!*    flex: none;*!*/
+/*!*    order: 0;*!*/
+/*!*    flex-grow: 0;*!*/
+/*!*}*!*/
+
+/*.qr-code-download-icon {*/
+/*    left: 8.33%;*/
+/*    right: 8.33%;*/
+/*    top: 17.65%;*/
+/*    bottom: 15.62%;*/
+/*}*/
+
+/*!*.qr-code-download {*!*/
+/*!*    !* Download *!*!*/
+/*!*    width: 24px;*!*/
+/*!*    height: 24px;*!*/
+/*!*    left: 12px;*!*/
+/*!*    top: 16px;*!*/
+/*!*    padding-left: 14px;*!*/
+
+/*!*    !* Inside auto layout *!*!*/
+/*!*    flex: none;*!*/
+/*!*    order: 0;*!*/
+/*!*    flex-grow: 0;*!*/
+/*!*    z-index: 1;*!*/
+/*!*}*!*/
+
+/*!*.qr-code-scan {*!*/
+
+/*!*    width: 100%;*!*/
+/*!*    height: 100%;*!*/
+
+/*!*    !* Inside auto layout *!*!*/
+/*!*    flex: none;*!*/
+/*!*    order: 1;*!*/
+/*!*    flex-grow: 0;*!*/
+/*!*    z-index: 0;*!*/
+
+/*!*    text-align: center;*!*/
+/*!*}*!*/

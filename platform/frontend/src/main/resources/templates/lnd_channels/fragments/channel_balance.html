@@ -1,0 +1,16 @@
+<div th:fragment="local-balance" class="widget widget-account-invoice-two">
+    <div class="widget-content">
+        <div class="account-box">
+            <div class="info">
+                <div class="inv-title">
+                    <h5 class="">Local Balance</h5>
+                    <h5 class="">Remote Balance</h5>
+                </div>
+                <div class="inv-balance-info">
+                    <p class="inv-balance" th:text="${#numbers.formatInteger(lndChannel.getLocal_balance(), 1, 'COMMA')} + ' Satoshi'"></p>
+                    <p class="inv-balance" th:text="${#numbers.formatInteger(lndChannel.getRemote_balance(), 1, 'COMMA')} + ' Satoshi'"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,28 @@
+{
+  "agents": {
+    "defaults": {
+      "workspace": "./workspace",
+      "model": {
+        "primary": "anthropic/claude-sonnet-4-6"
+      }
+    }
+  },
+
+  "channels": {
+    "telegram": {
+      "enabled": true,
+      "dmPolicy": "allowlist"
+    }
+  },
+
+  "skills": {
+    "load": {
+      "extraDirs": ["./skills"]
+    }
+  },
+
+  "gateway": {
+    "mode": "local",
+    "port": 18789
+  }
+}

@@ -1,0 +1,81 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dla
+  namespace: microservice
+  labels:
+    app: dla
+spec:
+  selector:
+    matchLabels:
+      app: dla
+  template:
+    metadata:
+      labels:
+        app: dla
+    spec:
+      containers:
+        - name: dla
+          image: 'localhost:32000/dla'
+          ports:
+            - containerPort: 8690
+          env:
+            - name: WENV
+              value: "dev"
+            - name: KUSERPASS
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: KUSERPASS
+            - name: KADMINPASS
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: KADMINPASS
+            - name: APPUSERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: APPUSERNAME
+            - name: APPPASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: APPPASSWORD
+            - name: DBUSERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: DBUSERNAME
+            - name: DBPASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: DBPASSWORD
+            - name: KSSLKEY
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: KSSLKEYPASS
+            - name: KBTOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: KBTOKEN
+            - name: KBCET
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: KBCET
+
+          resources:
+            requests:
+              memory: "2024Mi"
+              cpu: "1000m"
+            limits:
+              memory: "4048Mi"
+              cpu: "2000m"
+      volumes:
+        - name: secret
+          secret:
+            secretName: secret

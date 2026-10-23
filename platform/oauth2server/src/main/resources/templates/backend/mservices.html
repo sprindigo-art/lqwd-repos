@@ -1,0 +1,46 @@
+<html>
+<head th:include="fragment/headerfooter::header1"></head>
+<body onload="startTime()">
+<div id="containerMain">
+    <div th:include="fragment/headerfooter::top_menu('action')"></div>
+    <div id="titleMain">
+        <h1>Micro Service</h1>
+    </div>
+
+    <div id="contentMain">
+        <div id="actionButtonMain">
+            <div style="float: right;">
+                <a id="a" th:href="@{/backend/add/mservice}">ADD NEW</a>
+            </div>
+        </div>
+        <table id="customers">
+            <tr>
+                <th>ID (EDIT)</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>DELETE</th>
+            </tr>
+            <tr th:each="item, iItem : ${page.content}">
+                <td>
+                    <a th:href="@{/backend/edit/mservice(id=${item.id})}" th:text="${item.id}"></a>
+                <td th:text="${item.name}" />
+                 <td th:text="${item.description}" />
+                <td>
+                    <a th:href="@{/admin/delete/mservice(accounttypeid=${item.id})}">DELETE</a>
+                </td>
+            </tr>
+        </table>
+        <div id="paginationMain">
+            <div class="center">
+                <div class="pagination" th:each="pageNumber : ${pageNumbers}">
+                    <a th:class="${pageNumber == (page.number + 1)} ? 'current page-numbers' : 'page-numbers'"
+                       th:href="@{/grades(size=${page.size}, page=${pageNumber})}"
+                       th:text="${pageNumber}"> </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

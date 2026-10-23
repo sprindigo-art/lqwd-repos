@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: broker
+  namespace: kafka-v1
+  labels:
+    app: broker
+spec:
+  selector:
+    matchLabels:
+      app: broker
+  template:
+    metadata:
+      labels:
+        app: broker
+    spec:
+      containers:
+        - name: broker
+          image: '514063904685.dkr.ecr.us-west-2.amazonaws.com/broker'
+          ports:
+            - containerPort: 9092
+            - containerPort: 9093
+          volumeMounts:
+            - name: datak
+              mountPath: /data
+          env:
+            - name: ZOO_CONNECT
+              value: "zookeeper.kafka-v1"
+            - name: KAFKA_HOME
+              value: "/opt/kafka"
+            - name: ADV_LISTENERS
+              value: broker.kafka-v1
+            - name: USERPASS
+              valueFrom:
+                secretKeyRef:
+                  name: zoosecret
+                  key: USERPASS
+            - name: ADMINPASS
+              valueFrom:
+                secretKeyRef:
+                  name: zoosecret
+                  key: ADMINPASS
+          resources:
+            requests:
+             
+            limits:
+             
+      volumes:
+        - name: datak
+          persistentVolumeClaim:
+            claimName: pv01-claim
+        - name: zoosecret
+          secret:
+            secretName: zoosecret
+      imagePullSecrets:
+        - name: ecr-token

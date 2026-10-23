@@ -1,0 +1,90 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: btc1
+  namespace: lqwd-lnd
+  labels:
+    app: btc1
+spec:
+  selector:
+    matchLabels:
+      app: btc1
+  template:
+    metadata:
+      labels:
+        app: btc1
+    spec:
+      containers:
+        - name: btc1
+          image: 'localhost:32000/lnd'
+          terminationMessagePath: "/tmp/my-log"
+
+          env:
+            - name: POSTGRES_DB
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: POSTGRES_DB
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: POSTGRES_USER
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: POSTGRES_PASSWORD
+            - name: LND_PASSPHRASE
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: LND_PASSPHRASE
+            - name: LND_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: LND_PASSWORD
+            - name: LND_EXTERNALIP
+              value: 192.243.215.106
+            - name: LND_PODNAME
+              value: btc1
+            - name: LND_BITCOIND
+              value: "true"
+            - name: LND_NETWORK
+              value: testnet
+            - name: LND_ALIAS
+              value: lqwd-lnd
+            - name: LND_RPCUSER
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: LND_RPCUSER
+            - name: LND_RPCPASS
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: LND_RPCPASS
+            - name: LND_RPCHOST
+              value: btc1
+          ports:
+            - containerPort: 10009
+            - containerPort: 8080
+            - containerPort: 9735
+            - containerPort: 29088
+            - containerPort: 29099
+          resources:
+            requests:
+              memory: "2024Mi"
+            limits:
+              memory: "4048Mi"
+          volumeMounts:
+            - name: lnd
+              mountPath: /data
+      volumes:
+        - name: lnd
+          persistentVolumeClaim:
+            claimName: pv001-claim
+        - name: secret
+          secret:
+            secretName: secret

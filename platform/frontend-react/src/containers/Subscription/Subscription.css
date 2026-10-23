@@ -1,0 +1,60 @@
+.subscription-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.subscription-row {
+    display: flex;
+    flex-direction: row;
+    column-gap: 40px;
+    padding-top: 40px;
+    position: relative;
+    max-width: 100vw;
+}
+
+.subscription-col {
+    display: flex;
+    flex-direction: column;
+    max-width: 100%;
+}
+
+.subscription-header {
+    /* Header 1 */
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 32px;
+    /* identical to box height, or 133% */
+
+    display: flex;
+    align-items: center;
+
+    /* Text - Primary */
+
+    color: #111111;
+}
+
+.subscription-col-title {
+    /* Header 2 */
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 27px;
+    /* identical to box height, or 135% */
+
+    display: flex;
+    align-items: center;
+    text-transform: capitalize;
+
+    /* Secondary */
+    color: #4B545B;
+    padding-bottom: 20px;
+}
+
+.subscription-table {
+    display: flex;
+    flex-direction: column;
+    row-gap: 28px;
+}

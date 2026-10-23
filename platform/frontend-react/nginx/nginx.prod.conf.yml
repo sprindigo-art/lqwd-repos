@@ -1,0 +1,73 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: react-nginx-conf
+  namespace: microservice
+data:
+  default.conf: |
+    server {
+        listen       80;
+        server_name  localhost;
+        underscores_in_headers on;
+
+        location / {
+            root   /usr/share/nginx/html;
+            try_files $uri $uri/ /index.html;
+            index  index.html index.htm;
+        }
+
+        location /version {
+          default_type application/json;
+          return 200 '{ "version": "0.1.REPLACE_WITH_BUILD_NUMBER" }';
+        }
+
+         location /api/ {
+
+           proxy_pass http://dla.microservice:8690/;
+           proxy_http_version 1.1;
+           proxy_set_header X-Forwarded-Proto https;
+           proxy_set_header Upgrade $http_upgrade;
+           proxy_set_header Connection 'upgrade';
+           proxy_set_header Host $host;
+           proxy_cache_bypass $http_upgrade;
+           proxy_pass_request_headers      on;
+
+
+         }
+
+        location /billing/ {
+
+          proxy_pass http://billing.microservice:8790/;
+          proxy_http_version 1.1;
+          proxy_set_header X-Forwarded-Proto https;
+          proxy_set_header Upgrade $http_upgrade;
+          proxy_set_header Connection "";
+          proxy_set_header Host $host;
+          proxy_cache_bypass $http_upgrade;
+          proxy_pass_request_headers      on;
+          chunked_transfer_encoding off;
+          proxy_buffering off;
+          proxy_cache off;
+
+        }
+
+        location /push/ {
+
+            proxy_pass http://push-server.microservice:7001/;
+            proxy_http_version 1.1;
+            proxy_set_header X-Forwarded-Proto https;
+            proxy_set_header Upgrade $http_upgrade;
+            proxy_set_header Connection 'keep-alive';
+            proxy_set_header Host $host;
+            proxy_cache_bypass $http_upgrade;
+            proxy_pass_request_headers      on;
+            chunked_transfer_encoding off;
+
+
+        }
+
+        error_page   500 502 503 504  /50x.html;
+        location = /50x.html {
+            root   /usr/share/nginx/html;
+        }
+    }

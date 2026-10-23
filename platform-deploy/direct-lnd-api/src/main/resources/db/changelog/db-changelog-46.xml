@@ -1,0 +1,87 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <changeSet author="djbabs (generated)" id="1654321980642-1">
+        <createTable tableName="lnd_transaction_output_detail">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="lnd_transaction_output_detailPK"/>
+            </column>
+            <column name="address" type="VARCHAR(255)"/>
+            <column name="amount" type="numeric(19, 2)"/>
+            <column name="created" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="is_our_address" type="BOOLEAN"/>
+            <column name="output_index" type="INT"/>
+            <column name="pk_script" type="VARCHAR(255)"/>
+            <column name="updated" type="TIMESTAMP WITHOUT TIME ZONE"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1654321980642-2">
+        <createTable tableName="lsp_transaction_output_details">
+            <column name="lsp_transaction_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="output_details_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1654321980642-3">
+        <addColumn tableName="lsp_monitor_invoice">
+            <column name="state" type="varchar(255)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1654321980642-4">
+        <addColumn tableName="htlcsend_receive_event_log">
+            <column name="user_id" type="varchar(255)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1654321980642-5">
+        <addColumn tableName="lsp_forwarding_history">
+            <column name="user_id" type="varchar(255)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1654321980642-6">
+        <addColumn tableName="lsp_monitor_invoice">
+            <column name="user_id" type="varchar(255)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1654321980642-7">
+        <addColumn tableName="lsp_transaction">
+            <column name="user_id" type="varchar(255)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1654321980642-8">
+        <addUniqueConstraint columnNames="output_details_id" constraintName="UK_jbpnt3b2kiung0gt61u6a1jdv" tableName="lsp_transaction_output_details"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1654321980642-9">
+        <addForeignKeyConstraint baseColumnNames="output_details_id" baseTableName="lsp_transaction_output_details" constraintName="FK5ijit0rcxrn9jrls28ucnvv1r" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="lnd_transaction_output_detail"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1654321980642-10">
+        <addForeignKeyConstraint baseColumnNames="lsp_transaction_id" baseTableName="lsp_transaction_output_details" constraintName="FKhimovfd2qhr8uun5o16r12a1" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="lsp_transaction"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1654321980642-11">
+        <dropForeignKeyConstraint baseTableName="lsp_transaction_address" constraintName="FKq9yeioy43ba74a4260ye5j9c3"/>
+    </changeSet>
+<!--    <changeSet author="djbabs (generated)" id="1654321980642-12">-->
+<!--        <preConditions onFail="MARK_RAN">-->
+<!--            <not>-->
+<!--                <tableExists tableName="forwarding_events" />-->
+<!--            </not>-->
+<!--        </preConditions>-->
+<!--        <dropUniqueConstraint constraintName="forwarding_events_chan_id_in_timestamp_ns_key" tableName="forwarding_events"/>-->
+<!--    </changeSet>-->
+    <changeSet author="djbabs (generated)" id="1654321980642-21">
+        <dropTable tableName="lsp_transaction_address"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1654321980642-44">
+        <dropNotNullConstraint columnDataType="boolean" columnName="is_amp" tableName="lsp_monitor_invoice"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1654321980642-45">
+        <dropNotNullConstraint columnDataType="boolean" columnName="is_keysend" tableName="lsp_monitor_invoice"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1654321980642-46">
+        <dropNotNullConstraint columnDataType="boolean" columnName="is_private" tableName="lsp_monitor_invoice"/>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1654321980642-47">
+        <dropNotNullConstraint columnDataType="boolean" columnName="settled" tableName="lsp_monitor_invoice"/>
+    </changeSet>
+</databaseChangeLog>

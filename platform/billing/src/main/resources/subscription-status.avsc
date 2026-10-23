@@ -1,0 +1,29 @@
+{
+  "namespace": "com.lqwd.messaging.schemas",
+  "type": "record",
+  "name": "SubscriptionAction",
+  "fields": [
+    {
+      "name": "subId",
+      "type": "string",
+      "avro.java.string": "String"
+    },
+    {
+      "name": "nodeStatus",
+      "type": ["null", "string"],
+      "avro.java.string": "String"
+    },
+    {
+      "name": "node",
+      "type": ["null", "string"],
+      "avro.java.string": "String"
+    },
+    {
+      "name": "action",
+      "type": ["null", "string"],
+      "avro.java.string": "String"
+    }
+
+
+  ]
+}

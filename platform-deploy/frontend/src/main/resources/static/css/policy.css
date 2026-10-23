@@ -1,0 +1,35 @@
+.form-image {
+    position: relative;
+    width: 270px;
+    height: 80px;
+    margin-top: 18px;
+    margin-left: 18px;
+}
+
+.main-content {
+    margin-left: 180px;
+    margin-right: 180px;
+    margin-top: 6px;
+    background-color: #191e3a;
+    border-radius: 15px;
+    padding: 30px;
+}
+
+h4 {
+    color: #009EE2;
+}
+
+.widget-content {
+    border-top-style: solid;
+    margin-bottom: 15px;
+    padding-top: inherit;
+    color: white;
+    border-top-width: thin;
+    border-bottom-style: solid;
+    border-top-width: thin;
+    padding-bottom: inherit;
+}
+
+a {
+    color: #009EE2;
+}

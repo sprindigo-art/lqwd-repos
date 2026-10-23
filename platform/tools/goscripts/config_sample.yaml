@@ -1,0 +1,7 @@
+host:
+port:
+dbname:
+username:
+password:
+nodename: localhost
+nodePort: 10009

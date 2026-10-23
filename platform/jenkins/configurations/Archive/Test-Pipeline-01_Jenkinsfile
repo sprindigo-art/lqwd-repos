@@ -1,0 +1,166 @@
+
+pipeline {
+
+    agent any
+  
+  
+  environment {
+
+       registry = '514063904685.dkr.ecr.us-west-2.amazonaws.com/helloworld'
+       registryCredential = 'aws-ecr'
+   }
+
+  stages {
+    
+    stage('Checkout Source') {
+        steps {
+            git url:'git@github.com:lightningriders/cicd-test.git', branch:'main'
+        }
+    }
+    
+    stage("Build image") {
+        steps {
+            script {
+                //myapp = docker.build("helloworld/helloworld:${env.BUILD_ID}")
+                dockerImage = docker.build registry + ":$BUILD_NUMBER"
+            }
+        }
+    }
+    stage("Push image") {
+        steps {
+            script {
+                    //docker.withRegistry('https://514063904685.dkr.ecr.us-west-2.amazonaws.com/helloworld', 'aws-ecr') {
+                    docker.withRegistry("https://" + registry, "ecr:us-west-2:" + registryCredential) {
+                    dockerImage.push("latest")
+                    dockerImage.push("${env.BUILD_ID}")
+                    //dockerImage.push()
+                }
+            }
+        }
+    }
+    stage('Deploy App') {
+        steps {
+            script {
+                //kubernetesDeploy(configs: "helloworld.yml", kubeconfigId: "stage-k8s")
+                kubernetesDeploy configs: 'helloworld.yml', enableConfigSubstitution: false, kubeConfig: [path: ''], kubeconfigId: 'stage-k8s'
+                //withKubeConfig([credentialsId: 'user1', serverUrl: 'https://api.k8s.my-company.com']) {
+                //sh 'kubectl apply -f my-kubernetes-directory'
+                //withkubernetesDeploy(configs: "helloworld.yml", kubeconfigId: "stage-k8s") {
+                //    sh 'kubectl get nodes'
+                //withCredentials([kubeconfigContent(credentialsId: 'acs-ssh-folder', variable: 'KUBECONFIG_CONTENT')]) {
+                 // sh '''echo "$KUBECONFIG_CONTENT" > kubeconfig && cat kubeconfig && rm kubeconfig'''
+            }
+        }
+    }
+  }
+}
+pipeline {
+
+    agent any
+  
+  
+  environment {
+
+       registry = '514063904685.dkr.ecr.us-west-2.amazonaws.com/helloworld'
+       registryCredential = 'aws-ecr'
+   }
+
+  stages {
+    
+    stage('Checkout Source') {
+        steps {
+            git url:'git@github.com:lightningriders/cicd-test.git', branch:'main'
+        }
+    }
+    
+    stage("Build image") {
+        steps {
+            script {
+                //myapp = docker.build("helloworld/helloworld:${env.BUILD_ID}")
+                dockerImage = docker.build registry + ":$BUILD_NUMBER"
+            }
+        }
+    }
+    stage("Push image") {
+        steps {
+            script {
+                    //docker.withRegistry('https://514063904685.dkr.ecr.us-west-2.amazonaws.com/helloworld', 'aws-ecr') {
+                    docker.withRegistry("https://" + registry, "ecr:us-west-2:" + registryCredential) {
+                    dockerImage.push("latest")
+                    dockerImage.push("${env.BUILD_ID}")
+                    //dockerImage.push()
+                }
+            }
+        }
+    }
+    stage('Deploy App') {
+        steps {
+            script {
+                //kubernetesDeploy(configs: "helloworld.yml", kubeconfigId: "stage-k8s")
+                kubernetesDeploy configs: 'helloworld.yml', enableConfigSubstitution: false, kubeConfig: [path: ''], kubeconfigId: 'stage-k8s'
+                //withKubeConfig([credentialsId: 'user1', serverUrl: 'https://api.k8s.my-company.com']) {
+                //sh 'kubectl apply -f my-kubernetes-directory'
+                //withkubernetesDeploy(configs: "helloworld.yml", kubeconfigId: "stage-k8s") {
+                //    sh 'kubectl get nodes'
+                //withCredentials([kubeconfigContent(credentialsId: 'acs-ssh-folder', variable: 'KUBECONFIG_CONTENT')]) {
+                 // sh '''echo "$KUBECONFIG_CONTENT" > kubeconfig && cat kubeconfig && rm kubeconfig'''
+            }
+        }
+    }
+  }
+}
+pipeline {
+
+    agent any
+  
+  
+  environment {
+
+       registry = '514063904685.dkr.ecr.us-west-2.amazonaws.com/helloworld'
+       registryCredential = 'aws-ecr'
+   }
+
+  stages {
+    
+    stage('Checkout Source') {
+        steps {
+            git url:'git@github.com:lightningriders/cicd-test.git', branch:'main'
+        }
+    }
+    
+    stage("Build image") {
+        steps {
+            script {
+                //myapp = docker.build("helloworld/helloworld:${env.BUILD_ID}")
+                dockerImage = docker.build registry + ":$BUILD_NUMBER"
+            }
+        }
+    }
+    stage("Push image") {
+        steps {
+            script {
+                    //docker.withRegistry('https://514063904685.dkr.ecr.us-west-2.amazonaws.com/helloworld', 'aws-ecr') {
+                    docker.withRegistry("https://" + registry, "ecr:us-west-2:" + registryCredential) {
+                    dockerImage.push("latest")
+                    dockerImage.push("${env.BUILD_ID}")
+                    //dockerImage.push()
+                }
+            }
+        }
+    }
+    stage('Deploy App') {
+        steps {
+            script {
+                //kubernetesDeploy(configs: "helloworld.yml", kubeconfigId: "stage-k8s")
+                kubernetesDeploy configs: 'helloworld.yml', enableConfigSubstitution: false, kubeConfig: [path: ''], kubeconfigId: 'stage-k8s'
+                //withKubeConfig([credentialsId: 'user1', serverUrl: 'https://api.k8s.my-company.com']) {
+                //sh 'kubectl apply -f my-kubernetes-directory'
+                //withkubernetesDeploy(configs: "helloworld.yml", kubeconfigId: "stage-k8s") {
+                //    sh 'kubectl get nodes'
+                //withCredentials([kubeconfigContent(credentialsId: 'acs-ssh-folder', variable: 'KUBECONFIG_CONTENT')]) {
+                 // sh '''echo "$KUBECONFIG_CONTENT" > kubeconfig && cat kubeconfig && rm kubeconfig'''
+            }
+        }
+    }
+  }
+}

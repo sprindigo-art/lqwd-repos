@@ -1,0 +1,67 @@
+{
+	"type": "record",
+	"name": "LndTransactionMessage",
+	"namespace": "com.lqwd.schema",
+	"fields": [
+	{
+		"name": "id",
+		"type": "int",
+		"doc" : "id of this message"
+	},	
+	{   
+        "name": "reply_id",
+        "type": "int",
+        "doc" : "id of the request message that this is a reply to" 
+    }, 
+	{
+        "name": "timestamp",
+        "type": ["long"],
+		"logicalType": "timestamp-millis",
+        "doc" : "timestamp of the message composition"
+    },
+	{
+        "name": "username",
+        "type": "string",
+        "doc" : "username of the user who initiated this action/message"
+    },	
+	{
+		"name": "requested_action",
+		"type": ["string"],
+		"default": "transaction ",
+		"doc":"the action that was requested"
+	},
+	{
+		"name": "description",
+		"type": ["null","string"],
+		"default" : null,
+		"doc" : "description of the message or requested action  (if required)"
+	},
+	{
+        "name": "reply_node_id",
+        "type": ["string"],
+        "default": "lqwd-lnd",
+        "doc": "the id of the LND node that supplied the information"
+    },
+ 
+    {   
+        "name": "reply_message",
+        "type": ["null","string"],
+        "default": null,
+        "doc" : "reply to the action requested"
+    },  
+    {   
+        "name": "error",
+        "type": ["boolean"],
+        "default" : false,
+        "doc" : "a flag to throw if an error has been encountered"
+    },  
+    {   
+        "name": "error_desc",
+        "type": ["null", "string"],
+        "default" : null,
+        "doc" : "description/ body of an error"
+    }   
+
+
+	]
+}

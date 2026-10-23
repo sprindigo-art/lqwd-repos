@@ -1,0 +1,76 @@
+<div id="api_key_table" th:fragment="api_key_table">
+    <div id="api-table-list" class="mt-container" style="max-height: 500px; position: relative; padding-right: 12px;">
+        <div class="widget-content widget-content-area pb-1">
+            <h3>API Keys</h3>
+            <table id="api-key-list_table_apikey-list" class="table table-bordered mb-4 text-center" style="table-layout: fixed;">
+                <thead>
+                <tr>
+                    <th>Created</th>
+                    <th>API Key</th>
+                    <th>Requests</th>
+                    <th class="text-center">Status</th>
+                    <th class="text-center">Action</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr th:each="apiKey, num : ${user.getApiKeyList()}">
+
+                    <td th:text="${#dates.format(apiKey.getCreated(),'MMMM d, YYYY')}"></td>
+
+                    <td class="clickable-link bs-popover mb-4 ml-2 overflow-hidden" style="text-overflow: ellipsis;"
+                        th:href="@{/request-accounting?apikey={apikey}(apikey=${apiKey.getApikey()})}"
+                        th:value="${apiKey.getApikey()}"
+                        th:text="${#strings.abbreviate(apiKey.getApikey(),50)}" data-container="body"
+                        data-trigger="hover" data-placement="top" th:data-content="${apiKey.getApikey()}">
+                    </td>
+
+                    <td th:text="${apiKey.getTotalElements()}">0</td>
+
+                    <div th:switch="${apiKey.getStatus()}">
+                        <td th:case="'active'"><span th:text="${#strings.capitalize(apiKey.getStatus())}"
+                                                     class="badge badge-success"></span></td>
+                        <td th:case="'expired'"><span th:text="${#strings.capitalize(apiKey.getStatus())}"
+                                                      class="badge badge-warning"></span></td>
+                        <td th:case="'deleted'"><span th:text="${#strings.capitalize(apiKey.getStatus())}"
+                                                      class="badge badge-dark"></span></td>
+                        <td th:case="'deactivated'"><span th:text="${#strings.capitalize(apiKey.getStatus())}"
+                                                          class="badge badge-dark"></span></td>
+                    </div>
+
+                    <td class="text-center"
+                        th:if="${apiKey.getStatus()} != 'deactivated' and ${apiKey.getStatus()} != 'deleted'">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                             class="feather feather-copy pr-1"
+                             id="api-key-list_svg_copy-icon"
+                             th:attr="onclick=|copyApiKeys('${apiKey.getApikey()}')|">
+                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                        </svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                             class="feather feather-trash-2 icon delete_api_key"
+                             id="api-key-list_svg_delete-icon"
+                             th:attr="onclick=|setApiKey('${apiKey.getApikey()}')|">
+                            <polyline points="3 6 5 6 21 6"></polyline>
+                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                            <line x1="10" y1="11" x2="10" y2="17"></line>
+                            <line x1="14" y1="11" x2="14" y2="17"></line>
+                        </svg>
+                    </td>
+                    <td class="text-center"
+                        th:unless="${apiKey.getStatus()} != 'deactivated' and ${apiKey.getStatus()} != 'deleted'">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                             class="feather feather-copy">
+                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                        </svg>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

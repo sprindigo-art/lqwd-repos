@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout/app}" lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <title>LQwD | Staking Request</title>
+
+    <link th:href="@{${cssPath + '/widgets/modules-widgets.css'}}" rel="stylesheet" type="text/css">
+    <link th:href="@{${cssPath + '/scrollspyNav.css'}}" rel="stylesheet" type="text/css" />
+    <link th:href="@{${cssPath + '/components/custom-modal.css'}}" rel="stylesheet" type="text/css">
+    <link th:href="@{${cssPath + '/elements/popover.css'}}" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" type="text/css" th:href="@{${pluginPath + '/table/datatable/datatables.css'}}">
+    <link rel="stylesheet" type="text/css" th:href="@{${pluginPath + '/table/datatable/dt-global_style.css'}}">
+    <link th:href="@{${pluginPath + '/apex/apexcharts.css'}}" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" th:href="@{${pluginPath + '/font-icons/fontawesome/css/fontawesome.css'}}">
+    <link rel="stylesheet" th:href="@{${pluginPath + '/font-icons/fontawesome/css/regular.css'}}">
+</head>
+<style layout:fragment="style">
+
+    .custom-table-color > tbody > tr:hover{
+        color: #009EE2 !important;
+    }
+    .custom-table-color{
+        width: 100% !important;
+        color: #e0e6ed !important;
+        text-align: center !important;
+    }
+    .invoice-link {
+        text-decoration: underline !important;
+        cursor: pointer;
+    }
+    .invoice-link:hover{
+        text-decoration: underline !important;
+        cursor: pointer;
+    }
+
+    .feather-copy {
+        cursor: pointer !important;
+    }
+</style>
+<body>
+<section layout:fragment="sub-header">
+    <span>Staking Request</span>
+</section>
+<div layout:fragment="content-section">
+
+    <div class="layout-px-spacing">
+        <div class="account-settings-container layout-top-spacing">
+            <div class="account-content">
+                <div class="scrollspy-example" data-spy="scroll"
+                     data-offset="-100">
+                    <div id="staking-request_div_request-area" class="row">
+                        <div class="container-fluid h-100">
+                            <div class="row justify-content-center h-100 layout-spacing">
+                                <div class="col-12">
+                                    <div id="staking-request-form" class="widget-content widget-content-area pb-1"
+                                         style="width: auto; border-radius: 10px; padding:20px;">
+                                        <div class="widget-heading" style="margin-bottom: 20px;">
+                                            <h4 class="">Staking Request</h4>
+                                        </div>
+                                        <div class="widget-content">
+                                        <form class="form-vertical" style="width: 100%;">
+                                            <div class="form-row mb-4">
+                                                <div class="form-group col-md-6">
+                                                    <input placeholder="Amount in Satoshi" th:type="number" th:min="0" th:step="1" class="form-control"
+                                                           id="staking-request-form_txt_amount">
+                                                </div>
+                                                <div class="form-group col-md-6">
+                                                    <select id="staking-request_slct_days" class="form-control">
+                                                        <option value="">Number of days</option>
+                                                        <option th:value="30" th:text="30"></option>
+                                                        <option th:value="90" th:text="90"></option>
+                                                        <option th:value="180" th:text="180"></option>
+                                                        <option th:value="360" th:text="360"></option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group mb-4">
+                                                <label class="control-label">Payment type:</label>
+                                                <div class="row">
+                                                    <div class="form-check mb-2 col-1" >
+                                                        <div class="custom-control custom-radio classic-radio-info" >
+                                                            <input type="radio" name="radio" id="staking-request-form_txt_payment-type1" th:value="BTCADDRESS" class="custom-control-input">
+                                                            <label class="custom-control-label" for="staking-request-form_txt_payment-type1" th:value="BTCADDRESS">BTC</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-check mb-2 col" >
+                                                        <div class="custom-control custom-radio classic-radio-info">
+                                                            <input type="radio" name="radio" id="staking-request-form_txt_payment-type2" th:value="INVOICE" class="custom-control-input">
+                                                            <label class="custom-control-label" for="staking-request-form_txt_payment-type2" th:value="INVOICE">LN Invoice</label>
+                                                        </div>
+                                                    </div>
+                                                    <div  class="col-md-auto" style="display: inline-block; float: right;">
+                                                        <button id="staking-request-form_btn_submit" style="display: inline-block; float: right;" class="btn btn-lg btn-primary mb-2">Submit request form</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                        <div class="row" style="width: 100%;">
+                                            <div class="col">
+                                                <textarea type="text" style="display: inline-block;" class="form-control" id="payment_input_staking-address" name="address"
+                                                          placeholder="Payment Request Address/Invoice" readonly></textarea>
+                                            </div>
+                                            <div class="col-md-auto">
+                                                <button class="btn btn-primary" id="payment_btn_copy">
+                                                    <svg style="cursor: pointer;" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-copy pr-1">
+                                                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                                    </svg>
+                                                </button>
+                                                <button class="btn btn-dark" id="payment_btn_getQr" >
+                                                    <i data-feather="grid"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    <div class="row" >
+                        <div id="staking-request_div-last-ten-transactions"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div th:replace="staking/modal/authenticate-staking-request"></div>
+    <div th:replace="staking/modal/qrStakingModal"></div>
+</div>
+<div layout:fragment="scripts">
+    <script th:src="@{/assets/js/scrollspyNav.js}"></script>
+
+    <script th:src="@{${pluginPath + '/apex/apexcharts.min.js'}}"></script>
+    <script th:src="@{${pluginPath + '/blockui/custom-blockui.js'}}"></script>
+    <script th:src="@{${pluginPath + '/blockui/jquery.blockUI.min.js'}}"></script>
+    <script th:src="@{${pluginPath + '/table/datatable/datatables.js'}}"></script>
+    <script th:src="@{/assets/js/widgets/modules-widgets.js}"></script>
+    <script th:src="@{/js/tools/tools.js}"></script>
+    <script th:src="@{js/staking/staking-list.js}"></script>
+    <script th:inline="javascript">
+        function updateTableLastTenTransactions(){
+            $.ajax({
+                url: "/update-last-ten-transactions",
+                type: "GET",
+                data: {
+                },
+                beforeSend: function () {
+                    $("#stakingAuthModal").modal('hide');
+                    blockArea('#lastTenTransactions_table_transactions', "Updating last ten transactions...");
+                },
+                success: function (fragment) {
+                    unblockArea('#lastTenTransactions_table_transactions', "");
+                    $("#staking-request_div-last-ten-transactions").replaceWith(fragment);
+                },
+                error: function () {
+                    unblockArea('#lastTenTransactions_table_transactions', "");
+                    Snackbar.show({
+                        text: "Failed to update last ten transactions table",
+                        pos: 'top-center',
+                        duration: false,
+                        actionTextColor: '#fff',
+                        backgroundColor: '#e7515a'
+                    });
+                }
+            });
+        }
+        function submitRequest() {
+            let amount = $("#staking-request-form_txt_amount").val();
+            let num_days = $("#staking-request_slct_days :selected").attr('value');
+            let payment_type = $(".custom-control-input:checked").val();
+            let password = $("#authenticate-staking-request_txt_password").val();
+
+            if (amount == Math.floor(amount)) {
+                $.ajax({
+                    url: "/create-staking-request",
+                    type: "POST",
+                    data: {
+                        'amount': amount,
+                        'num_days': num_days,
+                        'payment_type': payment_type,
+                        'password': password
+                    },
+                    beforeSend: function () {
+                        $("#stakingAuthModal").modal('hide');
+                        blockArea('#staking-request_div_request-area', "Creating Staking Request...");
+                    },
+                    success: function (response) {
+                        var success = JSON.parse(response);
+                        unblockArea('#staking-request_div_request-area', "");
+                        $("#payment_input_staking-address").prop('value', success['address']);
+                        updateTableLastTenTransactions();
+                        Snackbar.show({
+                            text: success['message'],
+                            pos: 'top-center',
+                            actionTextColor: '#fff',
+                            backgroundColor: '#8dbf42'
+                        });
+
+                    },
+                    error: function (response) {
+                        unblockArea('#staking-request_div_request-area', "");
+                        let error = JSON.parse(response['responseText']);
+                        Snackbar.show({
+                            text: error['message'],
+                            pos: 'top-center',
+                            duration: false,
+                            actionTextColor: '#fff',
+                            backgroundColor: '#e7515a'
+                        });
+
+                    }
+                });
+            } else {
+                $("#stakingAuthModal").modal('hide');
+                Snackbar.show({
+                    text: "Please provide a valid amount in Satoshi!",
+                    pos: 'top-center',
+                    duration: false,
+                    actionTextColor: '#fff',
+                    backgroundColor: '#e7515a'
+                });
+
+            }
+        }
+        $(document).ready(function () {
+            updateTableLastTenTransactions();
+
+            $("#payment_btn_copy").on('click', function (event) {
+                copyToClipboard($("#payment_input_staking-address").val());
+            });
+            $("#payment_btn_getQr").on('click', function (event) {
+                getStakingAddressQRCode($("#payment_input_staking-address").val());
+            });
+            $("#stakingAuthModal").on('shown.bs.modal', function () {
+                $('#authenticate-staking-request_txt_password').get(0).focus();
+            });
+            $("#staking-request-form_btn_submit").on('click', function (event) {
+                event.preventDefault();
+                $("#authenticate-staking-request_txt_password").val("");
+                $("#stakingAuthModal").modal('show');
+            });
+            $('#authenticate-staking-request_txt_password').on('keypress', function (e) {
+                if (e.which === 13) {
+                    e.preventDefault();
+                    submitRequest();
+                }
+            });
+            $("#authenticate-staking-request_btn_stakingAuthModal-blockui").on('click', function (event) {
+                event.preventDefault();
+                submitRequest();
+            });
+        });
+    </script>
+</div>
+</body>
+</html>

@@ -1,0 +1,13 @@
+# Time sources, tried in order. Read by /etc/init.d/timesync.
+#
+# The LAN gateway is first on purpose: it needs no DNS, so the clock can be set
+# even if name resolution is broken. The public pools are the fallback.
+#
+# NOTE: plain NTP is unauthenticated. A host able to intercept UDP/123 can move
+# this clock. For anything beyond a lab, use an authenticated source (NTS via
+# chrony) or a hardware RTC - see docs/HARDENING.md.
+NTP_SERVERS="192.168.1.1 pool.ntp.org time.cloudflare.com"
+
+# Seconds to block at boot waiting for the first successful sync before
+# carrying on. The VPN will retry by itself if this is not enough.
+INITIAL_TIMEOUT=25

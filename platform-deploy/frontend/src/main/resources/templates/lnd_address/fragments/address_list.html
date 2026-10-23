@@ -1,0 +1,46 @@
+<div id="lnd-address_div_addresses-list" class="col-12" th:fragment="addresses">
+    <div class="widget widget-activity-four">
+        <div class="widget-heading">
+            <h5>Previously Created Addresses</h5>
+        </div>
+        <div class="widget-content">
+            <table id="lnd-address-table" class="table table-hover mb-4 dataTable">
+            <thead>
+                <tr>
+                    <th>Address</th>
+                    <th class="sorting" tabindex="0" aria-controls="default-ordering" rowspan="1" colspan="1" aria-label="Created">Created</th>
+                    <th class="text-center">Action</th>
+                </tr>
+            </thead>
+
+            <tfoot>
+                <tr>
+                    <th>Address</th>
+                    <th class="sorting" tabindex="0" aria-controls="default-ordering" rowspan="1" colspan="1" aria-label="Created">Created</th>
+                    <th class="text-center">Action</th>
+                </tr>
+            </tfoot>
+            <tbody>
+            <tr th:each="lndAddress : ${lndAddresses}">
+
+                <td class="mb-4 ml-2"
+                    th:text="${lndAddress.getAddress()}"
+                    data-container="body" data-trigger="hover" data-placement="top"
+                    th:data-content="${lndAddress.getAddress()}">
+                </td>
+
+                <td th:data-order="${lndAddress.getDateCreated()}" th:text="${#dates.format(lndAddress.getDateCreated(),'D, MMMM d, YYYY HH:SS Z')}"></td>
+
+                <td class="text-center">
+                    <svg style="cursor: pointer;" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-copy pr-1"
+                         th:attr="onclick=|copyToClipboard('${lndAddress.getAddress()}')|">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                    </svg>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        </div>
+    </div>
+</div>

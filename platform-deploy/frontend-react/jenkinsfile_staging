@@ -1,0 +1,192 @@
+pipeline {
+    agent none
+    parameters {
+        
+        booleanParam(name: 'checkDataChange', defaultValue: true, description: 'check data change before running the pipeline')
+        
+    }
+    environment {
+      GIT_SSH_COMMAND = "ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
+      registry = '514063904685.dkr.ecr.us-west-2.amazonaws.com/react'
+      registryCredential = 'aws-ecr'
+      gitUrl = 'git@github.com:lightningriders/platform.git'
+      gitCredential = 'github-ssh'
+      gitBranch = 'staging'
+      k8sNamespace = 'microservice'
+      PROJECT_FOLDER = 'frontend-react'
+      environment = 'staging'
+      KUBE_CONFIG_ID = "kubeconfig-aws-stage1-jenkins"
+    }
+    
+    tools {
+      maven 'm3'
+    }
+    
+  stages {  
+    stage('Checkout Source') {
+       agent {
+           label "master"
+        }
+        steps {
+            cleanWs()
+            git credentialsId: gitCredential, url: gitUrl, branch: gitBranch 
+            sh "ls -la"
+
+            dir("${env.PROJECT_FOLDER}") {
+              script {
+                def envPrefix = 'stage'
+                def envtext = readFile ".env.${envPrefix}"
+                envtext = envtext.replaceAll("REPLACE_WITH_BUILD_NUMBER", "${BUILD_NUMBER}")
+                writeFile(file: ".env.${envPrefix}", text: envtext)
+                sh "cat .env.${envPrefix}"
+              }
+            }
+        }
+    }
+    
+
+    // stage('Build') {
+    //     when {
+    //         anyOf{ 
+    //             changeset "**/${env.PROJECT_FOLDER}/**"
+    //             expression{params.checkDataChange == false}
+    //         }
+    //     }
+    //     agent {
+    //        label "master"
+    //     }
+    //     steps {
+    //       dir("${env.PROJECT_FOLDER}") {
+    //         sh 'mkdir build'
+    //         sh 'cp pom.xml build/'
+    //         sh 'cp -r src build/'
+    //         sh '''
+    //             cd build
+    //             mvn clean package -Dmaven.test.skip=true
+    //           '''
+    //         sh 'ls -la build/'
+    //       }
+    //     }
+    // }
+      
+    // stage ('Test') {
+    //     when {
+    //         anyOf{ 
+    //             changeset "**/${env.PROJECT_FOLDER}/**"
+    //             expression{params.checkDataChange == false}
+    //         }
+    //     }
+    //     agent {
+    //        label "master"
+    //     }
+    //     steps {
+    //       dir("${env.PROJECT_FOLDER}") {
+    //         sh 'echo \'Here we have to run tests\''
+    //       }
+    //     }
+    // }
+    
+    stage ('Build Image') {
+        when {
+            anyOf{ 
+                changeset "**/${env.PROJECT_FOLDER}/**"
+                expression{params.checkDataChange == false}
+            }
+        }
+        agent {
+           label "master"
+        }
+        steps {
+          dir("${env.PROJECT_FOLDER}") {
+            script {
+                def envPrefix = 'stage'
+                def envtext = readFile ".env.${envPrefix}"
+                envtext = envtext.replaceAll("REPLACE_WITH_BUILD_NUMBER", "${BUILD_NUMBER}")
+                writeFile(file: ".env.${envPrefix}", text: envtext)
+                sh "cat .env.${envPrefix}"
+                dockerImage = docker.build (registry + ":" + "$environment-$BUILD_NUMBER", " --build-arg env=stage --build-arg NODE_ENV_ARG=staging  . ")
+            }
+          }
+        }
+    }
+    
+    stage("Push image") {
+        when {
+            anyOf{ 
+                changeset "**/${env.PROJECT_FOLDER}/**"
+                expression{params.checkDataChange == false}
+            }
+        }
+        agent {
+           label "master"
+        }
+        steps {
+          dir("${env.PROJECT_FOLDER}") {
+            script {
+                    docker.withRegistry("https://" + registry, "ecr:us-west-2:" + registryCredential) {
+                    dockerImage.push("${env.environment}-latest")
+                    dockerImage.push("${env.environment}-$BUILD_NUMBER")
+                }
+            }
+          }
+        }
+    }
+
+    stage('Deploy App') {
+        when {
+            anyOf{ 
+                changeset "**/${env.PROJECT_FOLDER}/**"
+                expression{params.checkDataChange == false}
+            }
+        }
+        agent {
+         kubernetes {
+        	cloud 'kubernetes'
+      	    defaultContainer 'jnlp'
+         }
+        }
+        steps {
+          git credentialsId: gitCredential, url: gitUrl, branch: gitBranch
+          dir("${env.PROJECT_FOLDER}") {
+            script {
+                 def envPrefix = 'stage'
+                 def nginxtext = readFile "nginx/nginx.${envPrefix}.conf.yml"
+                 nginxtext = nginxtext.replaceAll("REPLACE_WITH_BUILD_NUMBER", "${BUILD_NUMBER}")
+                 writeFile(file: "nginx/nginx.${envPrefix}.conf.yml", text: nginxtext)
+                 sh "cat nginx/nginx.${envPrefix}.conf.yml"
+
+                 
+
+                 kubernetesDeploy( kubeconfigId: "${env.KUBE_CONFIG_ID}",
+                                   configs: "namespace.yml"
+                                 )
+                 sleep(time:5,unit:"SECONDS")
+                 kubernetesDeploy( kubeconfigId: "${env.KUBE_CONFIG_ID}",
+                                   configs: "nginx/nginx.${envPrefix}.conf.yml"
+                                 )
+                 kubernetesDeploy( kubeconfigId: "${env.KUBE_CONFIG_ID}",
+                                   configs: "frontend-react-deployment-stage.yml"
+                                 )
+                 kubernetesDeploy( kubeconfigId: "${env.KUBE_CONFIG_ID}",
+                                   configs: "frontend-react-service-stage.yml"
+                                 )
+            }
+          }
+        }
+    }
+    stage('Remove Unused docker image') {
+      when {
+            anyOf{ 
+                changeset "**/${env.PROJECT_FOLDER}/**"
+                expression{params.checkDataChange == false}
+            }
+      }
+      agent {
+           label "master"
+      }
+      steps{
+        sh "docker rmi $registry:$environment-$BUILD_NUMBER"
+      }
+    }
+  }
+}

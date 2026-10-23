@@ -1,0 +1,118 @@
+<div th:fragment="invoice-detail-content">
+  <div class="row pt-2">
+    <div class="col-6">
+      R Preimage
+    </div>
+    <div class="col-6">
+      [[${#strings.abbreviate(invoice.getR_preimage(),50)}]]
+      <svg id="copy-payreq" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+           stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-copy"
+           style="width: 16px !important; height: 16px !important;" th:value="${invoice.getR_preimage()}" onclick="copyPayReq(this)">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+      </svg>
+    </div>
+  </div>
+  <div class="row pt-2">
+    <div class="col-6">
+      Value
+    </div>
+    <div class="col-6">
+      <span class="" th:text="${invoice.getValue()}"></span>
+    </div>
+  </div>
+  <div class="row pt-2">
+    <div class="col-6">
+      Value MSat
+    </div>
+    <div class="col-6">
+      <span class="" th:text="${invoice.getValue_msat()}"></span>
+    </div>
+  </div>
+  <div class="row pt-2">
+    <div class="col-6">
+      Settled
+    </div>
+    <div class="col-6">
+      <span class="" th:text="${invoice.isSettled()}"></span>
+    </div>
+  </div>
+  <div class="row pt-2">
+    <div class="col-6">
+      Creation Date
+    </div>
+    <div class="col-6">
+      <span class="" th:text="${invoice.getCreation_date()}"></span>
+    </div>
+  </div>
+  <div class="row pt-2">
+    <div class="col-6">
+      Settle Date
+    </div>
+    <div class="col-6">
+      <span class="" th:text="${invoice.getSettle_date()}"></span>
+    </div>
+  </div>
+  <div class="row pt-2">
+    <div class="col-6">
+      Payment Request
+    </div>
+    <div class="col-6">
+      [[${#strings.abbreviate(invoice.getPayment_request(),50)}]]
+      <svg id="copy-payreq" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+           stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-copy"
+           style="width: 16px !important; height: 16px !important;" th:value="${invoice.getPayment_request()}" onclick="copyPayReq(this)">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+      </svg>
+    </div>
+  </div>
+  <div class="row pt-2">
+    <div class="col-6">
+      Payment Address
+    </div>
+    <div class="col-6">
+      [[${#strings.abbreviate(invoice.getPayment_addr(),50)}]]
+      <svg id="copy-payreq" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+           stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-copy"
+           style="width: 16px !important; height: 16px !important;" th:value="${invoice.getPayment_addr()}" onclick="copyPayReq(this)">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+      </svg>
+    </div>
+  </div>
+  <div class="row pt-2">
+    <div class="col-6">
+      Description Hash
+    </div>
+    <div class="col-6">
+      <span class="" th:text="${invoice.getDescription_hash()}"></span>
+    </div>
+  </div>
+  <div class="row pt-2">
+    <div class="col-6">
+      Expiry
+    </div>
+    <div class="col-6">
+      <span class="" th:text="${invoice.getExpiry()}"></span>
+    </div>
+  </div>
+  <div class="row pt-2">
+    <div class="col-6">
+      State
+    </div>
+    <div class="col-6">
+      <span class="badge badge-danger" th:if="${invoice.getState()} == 'CANCELED'" th:text="${invoice.getState()}"></span>
+      <span class="badge badge-success" th:if="${invoice.getState()} == 'SETTLED'" th:text="${invoice.getState()}"></span>
+      <span class="badge badge-warning" th:if="${invoice.getState()} == 'PENDING'" th:text="${invoice.getState()}"></span>
+    </div>
+  </div>
+  <div class="row pt-2">
+    <div class="col-6">
+      Amount Paid
+    </div>
+    <div class="col-6">
+      <span class="" th:text="${#numbers.formatDecimal(invoice.getAmt_paid_sat(), 1, 'COMMA', 2, 'POINT')}"></span>
+    </div>
+  </div>
+</div>

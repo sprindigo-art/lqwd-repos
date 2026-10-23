@@ -1,0 +1,100 @@
+.node-balance-component {
+    display: flex;
+    flex-direction: column;
+    border-radius: 16px;
+    height: 100%;
+    width: 100%;
+    padding: 30px;
+    background-image: linear-gradient(101.76deg, #009EE2 18.53%, #0179AD 120.33%);
+    color: #FFFFFF !important;
+    max-width: 100vw;
+}
+
+.node-balance-component h2,
+.node-balance-component p {
+    color: #FFFFFF;
+}
+
+.balance-container {
+    margin-bottom: 1px !important;
+}
+
+.currency {
+    margin: 8.33% 8.78% 8.33% 8.33%;
+    padding: 20.33%;
+    margin: 0 !important;
+}
+
+.chart {
+    max-width: 80%;
+    margin: 5px;
+}
+
+.currency-name {
+    font-family: Inter;
+    font-weight: 400 !important;
+    font-size: 15px !important;
+    line-height: 21px !important;
+}
+
+.balance-title {
+    font-family: Rubik;
+    font-weight: 400 !important;
+    font-size: 14px !important;
+    margin: 0 !important;
+    color: #FFFFFF !important;
+}
+
+.node-balance {
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+.node-balance h2 {
+    font-family: Rubik;
+    font-weight: 600;
+    font-size: 40px;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+.node-balance sub {
+    font-family: Rubik;
+    font-weight: 400 !important;
+    font-size: 20px !important;
+}
+
+@media only screen and (max-width: 320px) {
+    .node-balance h2 {
+        font-size: 18px;
+    }
+    .node-balance sub {
+        font-size: 10px !important;
+    }
+    .currency-name {
+        font-size: 10px !important;
+    }
+    .node-balance-component {
+        padding: 10px !important;
+        max-width: 100% !important;
+        width: 100% !important;
+    }
+    .chart {
+        max-width: 100% !important;
+        max-height: 48% !important;
+    }
+}
+
+@media only screen and (min-width: 321px) and ( max-width: 414px) {
+    .node-balance h2 {
+        font-size: 30px;
+    }
+    .node-balance-component {
+        padding: 10px;
+        width: 100%;
+    }
+    .chart {
+        max-width: 100vw;
+        max-height: 48%;
+    }
+}

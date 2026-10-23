@@ -1,0 +1,49 @@
+<div th:fragment="beta-signup" class="form-content">
+
+  <h1 class="">LQwD Beta!<br/> Register Here Now!</h1>
+  <form class="text-left" id="beta-signup_frm_registration" action="javascript:void(0);">
+    <div class="form">
+      <div id="beta-signup_div_username" class="field-wrapper input">
+        <i data-feather="user"></i>
+        <input id="beta-signup_txt_username" name="username" type="text" class="form-control" placeholder="Username" required>
+        <span id="beta-signup_txt_username-response" class="text-success"></span>
+      </div>
+      <div id="beta-signup_div_email" class="field-wrapper input">
+        <i data-feather="at-sign"></i>
+        <input id="beta-signup_txt_email" name="email" type="text" value="" placeholder="Email" required/>
+        <div class="input-group-prepend">
+          <span id="beta-signup_txt_email-response"></span>
+        </div>
+      </div>
+      <div id="beta-signup_div_password-field" class="field-wrapper input mb-2">
+        <i data-feather="lock"></i>
+        <input id="beta-signup_txt_password" name="password" type="password" value="" placeholder="Password" required>
+      </div>
+<!--      <div class="field-wrapper input mb-2">-->
+<!--        <i data-feather="code"></i>-->
+<!--        <input id="beta-signup_txt_invite-code" name="invite_code" type="text" th:value="${invite}" placeholder="Invite Code" required>-->
+<!--      </div>-->
+      <div class="d-sm-flex justify-content-between">
+        <div class="field-wrapper toggle-pass">
+          <p class="d-inline-block">Show Password</p>
+          <label class="switch s-primary">
+            <input type="checkbox" id="beta-signup_chk_toggle-password" class="d-none">
+            <span class="slider round"></span>
+          </label>
+        </div>
+        <div class="field-wrapper">
+          <button id="beta-signup_btn_register-beta" class="btn btn-primary btn-lg" value="">
+            Get Started!
+          </button>
+        </div>
+      </div>
+    </div>
+  </form>
+  <p class="terms-conditions">
+    © 2021 All Rights Reserved. <a id="beta-signup_a_lqwd" href="https://lqwdfintech.com">LQwD Financial Corp</a>.<br>
+    <a id="beta-signup_a_cookie" th:href="@{/cookies}">Cookie Preferences</a>,
+    <a id="beta-signup_a_privacy" th:href="@{/privacy}">Privacy</a>, and
+    <a id="beta-signup_a_terms" th:href="@{/terms}">Terms</a>.
+  </p>
+
+</div>

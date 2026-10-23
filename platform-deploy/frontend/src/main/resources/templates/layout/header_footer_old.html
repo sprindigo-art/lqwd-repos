@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+
+<head th:fragment="header_main">
+    <title>LQwD Finance Corp</title>
+    <link rel="icon" th:href="@{/images/favicon.ico}" >
+    <link rel="stylesheet" href="css.css" th:href="@{/css/css.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/login.css}"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script>
+        function startTime() {
+            var today = new Date();
+            var h = today.getHours();
+            var m = today.getMinutes();
+            var s = today.getSeconds();
+            m = checkTime(m);
+            s = checkTime(s);
+            document.getElementById('txt').innerHTML = h + ":" + m + ":" + s;
+            var t = setTimeout(startTime, 500);
+        }
+        function checkTime(i) {
+            if (i < 10) {
+                i = "0" + i
+            }
+            ; // add zero in front of numbers < 10
+            return i;
+        }
+    </script>
+
+</head>
+
+<div th:fragment="top_menu(action)" id="headerTop">
+    <div id="topLogoMain">
+        <div id="topLogoMainLeft">
+            <img th:src="@{/images/logo.jpg}" height="60px"/>
+        </div>
+        <div id="topLogoMainRight">
+            <div id="topmenu">
+            <img th:src="@{/images/beer.jpg}" height="30px"/>
+
+            </div>
+        </div>
+    </div>
+
+    <div id="topBar"></div>
+    <div id="topNavigation">
+<!--        <ul>-->
+<!--            <li><a-->
+<!--                    th:classappend="${(action =='Order' or #httpServletRequest.getRequestURI() == '/contracts') ? 'active':''}"-->
+<!--                    href="/contracts">Contracts</a></li>-->
+<!--            -->
+<!--        </ul>-->
+    </div>
+    <div id="topBar"></div>
+    <div id="welcomeMain">
+        <div id="welcomeMainLeft">
+            <p>
+				<span style="display: inline-block;"> Welcome: <span
+                        sec:authentication="name">User</span> | <a th:href="@{/logout}">Sign Out</a>
+				</span>
+            </p>
+        </div>
+        <div id="welcomeMainLeft" style="text-align: right;">
+            <p>
+                Current time: <span id="txt"></span>
+            </p>
+        </div>
+    </div>
+</div>
+
+
+
+
+<div th:fragment="footer">
+    <br/>
+    <br/>
+    <div class="row">
+        <div class="col-xs-12 blue_class">
+            <div id="topBar"></div>
+            <footer>
+                <center>
+                    <p>LQwD Finance Corp 2020</p>
+                </center>
+            </footer>
+        </div>
+    </div>
+    <script src=""></script>
+</div>

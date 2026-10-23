@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: userinfo
+  namespace: postgres-v1
+  labels:
+    app: userinfo
+
+spec:
+  selector:
+    app: postgres
+  ports:
+    - name: client
+      port: 5442
+      targetPort: 5442
+      protocol: TCP
+  externalIPs:
+    - 192.168.123.250
+  type: NodePort

@@ -1,0 +1,12 @@
+databaseChangeLog:
+  - changeSet:
+      id: set_resource_ids
+      validCheckSum: ANY
+      author: femi
+      changes:
+        - update:
+            tableName: oauth_client_details
+            columns:
+              - column:
+                  name: resource_ids
+                  value: "resource-server-rest-api"

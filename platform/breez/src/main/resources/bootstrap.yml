@@ -1,0 +1,47 @@
+spring:
+  profiles:
+    active: ${WENV}
+  application:
+    name: breez
+  cloud:
+    bus:
+      enabled: true
+  liquibase:
+    change-log: classpath:/db/migration/changelog-master.yaml
+  jpa:
+    properties:
+      hibernate:
+        temp:
+          use_jdbc_metadata_defaults: false
+server:
+  port: 8589
+
+---
+spring:
+  profiles: develop
+  cloud:
+    config:
+      uri: ${CONFIG_SERVER:http://config-server.microservice:8888}
+      label: develop
+      username: ${CONFIG_USERNAME}
+      password: ${CONFIG_PASSWORD}
+
+---
+spring:
+  profiles: staging
+  cloud:
+    config:
+      uri: http://config-server.microservice:8888
+      label: staging
+      username: ${CONFIG_USERNAME}
+      password: ${CONFIG_PASSWORD}
+
+---
+spring:
+  profiles: production
+  cloud:
+    config:
+      uri: http://config-server.microservice:8888
+      label: main
+      username: ${CONFIG_USERNAME}
+      password: ${CONFIG_PASSWORD}

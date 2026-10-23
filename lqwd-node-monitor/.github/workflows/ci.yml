@@ -1,0 +1,123 @@
+# =====================================================
+# CI — lint + full test suite against a SEEDED EPHEMERAL nodemon Postgres
+# =====================================================
+# HARDEN-01 coverage floor: the src/lib/queue/* claim/TTL/reaper/enqueue/approve
+# DB-integration proofs MUST actually execute here (not skip) so Cluster 0/A
+# regressions cannot ship green. The job provisions its OWN throwaway Postgres
+# service container and seeds it with the nodemon schema (drizzle migrations)
+# plus db/role-grants.sql (nodemon_node role + RLS + the
+# nodemon_node_transition_guard trigger the integration tests depend on).
+#
+# SECURITY (T-18-02): CI never references or connects to the real warehouses.
+# The ONLY drizzle-kit config invoked is drizzle.nodemon.config.ts — never the
+# routing/ldk configs. NODEMON_QUEUE_URL points at the service container only.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      CI: "true"
+      # Resolved by src/lib/queue/test-helpers.ts (env wins over .env.local) and
+      # by drizzle.nodemon.config.ts for the migrate step. Service container only.
+      NODEMON_QUEUE_URL: postgres://postgres:postgres@localhost:5432/nodemon
+      # Superuser URL for one-time database creation + grants application.
+      PG_ADMIN_URL: postgres://postgres:postgres@localhost:5432/postgres
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Create nodemon database
+        run: psql "$PG_ADMIN_URL" -v ON_ERROR_STOP=1 -c 'CREATE DATABASE nodemon;'
+
+      - name: Apply nodemon schema (drizzle migrations — nodemon config ONLY)
+        # NEVER run migrate against a warehouse config; drizzle.nodemon.config.ts
+        # is the single Drizzle-owned DB (D-08) and reads NODEMON_QUEUE_URL.
+        run: npx drizzle-kit migrate --config drizzle.nodemon.config.ts
+
+      - name: Apply role grants + RLS + transition guard
+        # db/role-grants.sql is one operator artifact covering the warehouses AND
+        # the nodemon queue DB. CI applies ONLY the nodemon-DB blocks (from the
+        # `-- nodemon_node` header onward: nodemon_node + nodemon_telemetry roles,
+        # RLS policies, and the nodemon_node_transition_guard trigger). The
+        # blocks above that marker target the external read-only warehouses,
+        # which CI must never touch.
+        run: |
+          awk '/^-- nodemon_node /{found=1} found' db/role-grants.sql \
+            | psql "$NODEMON_QUEUE_URL" -v ON_ERROR_STOP=1
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Node-script golden tests (Q1/I1 apply-fee + Q3 check-queue)
+        # 18-02: the queue trust-boundary proofs for the node-side executor.
+        # apply-fee.test.sh is DB-less (stub lncli). check-queue.test.sh is
+        # DB-REQUIRED (bash analog of requireNodemonDb): with CI set it exits 1
+        # rather than silently skipping when no docker runtime exists
+        # (T-18-01/T-18-06 fail-on-skip). It provisions its OWN disposable
+        # Postgres via tests/node/lib/pg-harness.sh — never the warehouses.
+        run: |
+          bash scripts/node/apply-fee.test.sh
+          bash scripts/node/check-queue.test.sh
+
+      - name: Test (full suite incl. DB-gated queue proofs)
+        run: npm run test:ci
+
+      - name: Fail-on-skip gate — DB-tagged tests must have EXECUTED (T-18-01)
+        # A silently-skipped queue safety proof is a false green that would
+        # authorize a deploy. Convention (vitest.config.ts): every DB-requiring
+        # suite calls `requireNodemonDb(` from test-helpers — so the DB-tagged
+        # file set is grep-discovered here (downstream plans enroll automatically)
+        # and the vitest JSON report is checked: any skipped/todo/pending/disabled
+        # test in a tagged file, or a tagged file with zero executed tests, fails
+        # the job.
+        run: |
+          DB_FILES=$(grep -rl 'requireNodemonDb(' src --include='*.test.ts')
+          echo "DB-tagged test files:"; echo "$DB_FILES"
+          DB_FILES="$DB_FILES" node -e '
+            const fs = require("fs");
+            const report = JSON.parse(fs.readFileSync("vitest-report.json", "utf8"));
+            const tagged = process.env.DB_FILES.split("\n").map(s => s.trim()).filter(Boolean);
+            const bad = [];
+            for (const rel of tagged) {
+              const fileResult = report.testResults.find(r => r.name.endsWith("/" + rel) || r.name === rel);
+              if (!fileResult) { bad.push(rel + " :: NOT PRESENT in the vitest report"); continue; }
+              const tests = fileResult.assertionResults ?? [];
+              if (tests.length === 0) { bad.push(rel + " :: zero tests executed"); continue; }
+              for (const t of tests) {
+                if (t.status !== "passed" && t.status !== "failed") {
+                  bad.push(rel + " :: " + t.fullName + " [" + t.status + "]");
+                }
+              }
+            }
+            if (bad.length) {
+              console.error("FAIL-ON-SKIP GATE: DB-gated tests did not execute:\n" + bad.join("\n"));
+              process.exit(1);
+            }
+            console.log("fail-on-skip gate: all DB-gated tests executed (" + tagged.length + " files)");
+          '

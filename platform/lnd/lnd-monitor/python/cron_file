@@ -1,0 +1,3 @@
+# must be ended with a new line "LF" (Unix) and not "CRLF" (Windows)
+* * * * * /root/python/cron.sh >> /root/python/cron.log 2>&1
+

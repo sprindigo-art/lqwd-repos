@@ -1,0 +1,33 @@
+<form th:fragment="user_info" id="general-info" class="section general-info" enctype="application/x-www-form-urlencoded" xmlns="http://www.w3.org/1999/html">
+    <div class="widget-content widget-content-area">
+        <h3>General Information</h3>
+        <div class="row">
+            <div class="col-md-11 mx-auto">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label for="general-info_txt_firstName">First Name</label>
+                            <input type="text" class="form-control mb-4" id="general-info_txt_firstName" placeholder="First Name" th:value="${user.getFirstName()}">
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label for="general-info_txt_lastName">Last Name</label>
+                            <input type="text" class="form-control mb-4" id="general-info_txt_lastName" placeholder="Last Name" th:value="${user.getLastName()}">
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label for="general-info_txt_username">Username</label>
+                            <input type="text" class="form-control mb-4" id="general-info_txt_username" placeholder="Username" th:value="${user.getUsername()}">
+                        </div>
+                    </div>
+                </div>
+<!--                <div class="form-group">-->
+<!--                    <label for="profession">Profession</label>-->
+<!--                    <input type="text" class="form-control mb-4" id="profession" placeholder="Designer" value="Web Developer">-->
+<!--                </div>-->
+            </div>
+        </div>
+    </div>
+</form>

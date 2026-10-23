@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout/app}" lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+  <title>LQwD | Invoices</title>
+  <link th:href="@{${pluginPath + '/apex/apexcharts.css'}}" rel="stylesheet" type="text/css">
+  <link th:href="@{${cssPath + '/widgets/modules-widgets.css'}}" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" type="text/css" th:href="@{${pluginPath + '/table/datatable/datatables.css'}}">
+  <link rel="stylesheet" type="text/css" th:href="@{${pluginPath + '/table/datatable/dt-global_style.css'}}">
+</head>
+<body>
+<section layout:fragment="sub-header">
+  <span>All Invoices</span>
+</section>
+<div layout:fragment="content-section">
+  <div class="widget-content widget-content-area pb-1" style="margin: 20px;">
+    <h4 style="padding:20px;">Invoices</h4>
+    <div class="table-responsive mb-4 col-12" style="width: auto; border-radius: 10px;" >
+      <table id="all-invoices_tbl_invoices" class="table table-bordered table-hover" style="width: 100%;">
+        <thead>
+          <tr>
+            <th>Creation date</th>
+            <th>Settle date</th>
+            <th>Lnd Node</th>
+            <th>Payment Request</th>
+            <th>State</th>
+          </tr>
+        </thead>
+        <tbody style="color: #f3effc;">
+          <tr th:each="invoice:${invoices}">
+            <td th:text="${invoice.getReadableCreationDate()}"></td>
+            <td th:if="${invoice.getReadableSettleDate()} != null" th:text="${invoice.getReadableSettleDate()}"></td>
+            <td th:if="${invoice.getReadableSettleDate()} == null">Not Settled</td>
+            <td th:text="${invoice.getLndNode().getLndNodeName()}"></td>
+            <td class="bs-popover mb-4 ml-2" data-container="body" data-trigger="hover" data-placement="top" th:data-content="${invoice.getPayment_request()}">
+              [[${#strings.abbreviate(invoice.getPayment_request(), 50)}]]
+              <svg style="cursor: pointer;" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-copy pr-1 pl-1"
+                   th:attr="onclick=|copyToClipboard('${invoice.getPayment_request()}')|">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+            </td>
+            <td th:text="${invoice.getState()}"></td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <th>Creation date</th>
+            <th>Settle date</th>
+            <th>Lnd Node</th>
+            <th>Payment Request</th>
+            <th>State</th>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+</div>
+<div layout:fragment="scripts">
+  <script th:src="@{${pluginPath + '/apex/apexcharts.min.js'}}"></script>
+  <script th:src="@{assets/js/widgets/modules-widgets.js}"></script>
+  <script th:src="@{${pluginPath + '/table/datatable/datatables.js'}}"></script>
+
+  <script th:src="@{/js/invoices/all-invoices.js}"></script>
+</div>
+</body>
+</html>

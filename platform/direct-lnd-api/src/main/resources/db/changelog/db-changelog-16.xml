@@ -1,0 +1,140 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <changeSet author="femi" id="1631657564495-1">
+        <dropColumn columnName="unique_address" tableName="lsp_staking"/>
+    </changeSet>
+    <changeSet author="femi" id="1631813862552-2">
+        <addColumn tableName="lsp_staking">
+            <column name="staking_type" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="femi" id="1631813862552-3">
+        <addColumn tableName="lsp_staking">
+            <column name="staking_reference" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet author="femi" id="1631813862552-4">
+        <dropColumn columnName="is_staking" tableName="invoice"/>
+    </changeSet>
+
+    <changeSet author="femi" id="1631224662357-5">
+        <createTable tableName="btc_payment_address">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="btc_payment_address_pkey"/>
+            </column>
+            <column name="amount" type="numeric(19, 2)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="wallet_address" type="text">
+                <constraints nullable="false" />
+            </column>
+            <column name="created" type="TIMESTAMP WITHOUT TIME ZONE"/>
+        </createTable>
+    </changeSet>
+
+
+    <changeSet author="femi" id="1631813862552-6">
+        <addColumn tableName="lsp_transaction">
+            <column name="transaction_hash" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="femi" id="1631813862552-7">
+        <addColumn tableName="lsp_transaction">
+            <column name="no_of_confirmations" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="femi" id="1631813862552-8">
+        <addColumn tableName="lsp_transaction">
+            <column name="block_hash" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="femi" id="1631813862552-9">
+        <addColumn tableName="lsp_transaction">
+            <column name="block_height" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="femi" id="1631813862552-10">
+        <addColumn tableName="lsp_transaction">
+            <column name="total_fees" type="numeric(19, 2)">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="femi" id="1631813862552-11">
+        <addColumn tableName="lsp_transaction">
+            <column name="raw_transaction_hex" type="text">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="femi" id="1631813862552-12">
+        <addColumn tableName="lsp_transaction">
+            <column name="label" type="text">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="femi" id="1631813862552-13">
+        <addColumn tableName="lsp_transaction">
+            <column name="time_stamp" type="text">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="femi" id="1631813862552-14">
+        <addColumn tableName="lsp_transaction">
+            <column name="node_name" type="text">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="femi" id="1631813862552-15">
+        <dropColumn columnName="from" tableName="lsp_transaction"/>
+    </changeSet>
+    <changeSet author="femi" id="1631813862552-16">
+        <dropColumn columnName="to" tableName="lsp_transaction"/>
+    </changeSet>
+    <changeSet author="femi" id="1631813862552-17">
+        <dropColumn columnName="status" tableName="lsp_transaction"/>
+    </changeSet>
+    <changeSet author="femi" id="1631224662357-18">
+        <createTable tableName="lsp_transaction_address">
+
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="lsp_transaction_address_pkey"/>
+            </column>
+
+            <column name="lsp_transaction_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="address" type="text">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+
+
+</databaseChangeLog>

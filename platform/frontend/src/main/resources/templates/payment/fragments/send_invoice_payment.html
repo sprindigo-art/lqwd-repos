@@ -1,0 +1,36 @@
+<div th:fragment="send-invoice-payment" class="widget widget-activity-four" style="height: 100%;">
+    <div class="widget-heading">
+        <h5 class="">Pay Invoice via Lightning Network</h5>
+    </div>
+    <div class="widget-content">
+        <form class="select mt-4" novalidate action="javascript:void(0);">
+            <div class="row-12">
+                <div class="col-12">
+                    <div class="row">
+                        <input type="text" class="form-control mb-2" id="send-invoice-payment_txt_request" placeholder="Payment Request" th:data-custodial="${lndNodeSession.getIsNonCustodial()}">
+                    </div>
+                    <div class="row">
+                        <input type="text" class="form-control" id="send-invoice-payment_txt_amount" value="" placeholder="Amount in Satoshi" hidden>
+                    </div>
+<!--                    <div class="row pt-3 pl-0">-->
+<!--                        <div class="col align-baseline text-left">-->
+<!--                            <span class="justify-content-center w-100 h-auto">Is KeySend Payment</span>-->
+<!--                        </div>-->
+<!--                        <div class="col">-->
+<!--                            <label class="switch s-icons s-outline s-outline-info mb-0 mr-2">-->
+<!--                                <input type="checkbox" name="keySend" id="send-invoice-payment_chk_keysend">-->
+<!--                                <span class="slider round"></span>-->
+<!--                            </label>-->
+<!--                        </div>-->
+<!--                    </div>-->
+                </div>
+            </div>
+            <div class="row-12"  id="send-invoice-payment_div_send-request">
+                <div class="col-12" style="padding: 0px;" >
+                <button th:unless="${user.isEmailstatus()}" class="btn btn-primary mb-2 mt-3" type="submit" style="width: 100%;" disabled>Please Verify Account</button>
+                <button th:if="${user.isEmailstatus()}" class="col-12 btn btn-primary mb-2 mt-3" id="send-invoice-payment_btn_submit" style="width: 100%;" type="submit">Send Payment</button>
+            </div>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/head::header_main(~{::title}, ~{::link})">
+    <title>LQWD | Terms and Conditions</title>
+    <!-- END GLOBAL MANDATORY STYLES -->
+    <link th:href="@{/assets/css/authentication/form-1.css}" rel="stylesheet" type="text/css"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/assets/css/forms/theme-checkbox-radio.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/assets/css/forms/switches.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/login.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/assets/css/components/custom-modal.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/policy.css}">
+</head>
+<body>
+<div class="main-content">
+    <h2>Terms and Conditions</h2>
+    <p>Last updated: July 09, 2021<br>
+        Please read these terms and conditions carefully before using Our Service.</p>
+    <div class="widget-content">
+        <div th:each="termsPolicy: ${termsPolicies}">
+            <h4 th:text="${termsPolicy.getHeader()}"></h4>
+            <h5 th:text="${termsPolicy.getSubheader()}"></h5>
+            <p th:each="description:${termsPolicy.getDescription()}" th:text="${description}"></p>
+            <ul>
+                <li th:each="list:${termsPolicy.getList()}" th:text="${list}"></li>
+            </ul>
+        </div>
+
+    </div>
+
+    <h5>Contact Us</h5>
+    <p>If you have any questions about this Privacy Policy, You can contact us by email: <a href="info@lqwd.money">
+        info@lqwd.money</a>.</p>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,15 @@
+databaseChangeLog:
+  - changeSet:
+      id: add_paid_column_lnd_node_info
+      validCheckSum: ANY
+      author: chris
+      changes:
+        - sql:
+            sql: ALTER TABLE lndnodeinfo ADD COLUMN IF NOT EXISTS paid BOOLEAN NOT NULL DEFAULT FALSE;
+  - changeSet:
+      id: update_paid_column_lnd_node_info
+      validCheckSum: ANY
+      author: chris
+      changes:
+        - sql:
+            sql: UPDATE lndnodeinfo SET paid = true WHERE status != 'PENDING';

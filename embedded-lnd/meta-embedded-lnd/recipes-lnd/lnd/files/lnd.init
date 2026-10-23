@@ -1,0 +1,118 @@
+#!/bin/sh
+### BEGIN INIT INFO
+# Provides:          lnd
+# Required-Start:    $local_fs $network $syslog
+# Required-Stop:     $local_fs $network $syslog
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Lightning Network Daemon
+### END INIT INFO
+
+DAEMON=/usr/bin/lnd
+NAME=lnd
+CONF=/etc/lnd/lnd.conf
+LNDDIR=/data/lnd
+PIDFILE=/run/lnd.pid
+RUNAS=lnd
+STOP_TIMEOUT=90
+
+test -x "$DAEMON" || exit 0
+
+is_running() {
+    [ -f "$PIDFILE" ] || return 1
+    kill -0 "$(cat "$PIDFILE")" 2>/dev/null
+}
+
+# lnd keeps everything on the data partition. If p3 did not mount we must not
+# start: lnd would silently create a fresh wallet on the rootfs, and that
+# wallet would be destroyed by the next OS update.
+check_data_partition() {
+    if ! grep -q " /data " /proc/mounts; then
+        echo "$NAME: /data is not mounted - refusing to start." >&2
+        echo "$NAME: check /dev/mmcblk0p3 and /etc/fstab." >&2
+        return 1
+    fi
+    return 0
+}
+
+# BusyBox has no coreutils "install", so create the directories the long way.
+prepare_dirs() {
+    mkdir -p "$LNDDIR" "$LNDDIR/data" "$LNDDIR/logs" || return 1
+    chown -R "$RUNAS:$RUNAS" "$LNDDIR" || return 1
+    chmod 700 "$LNDDIR" || return 1
+    return 0
+}
+
+case "$1" in
+  start)
+        if is_running; then
+            echo "$NAME is already running."
+            exit 0
+        fi
+        echo -n "Starting $NAME: "
+        check_data_partition || { echo "failed."; exit 1; }
+        prepare_dirs || { echo "failed to prepare $LNDDIR."; exit 1; }
+
+        # Run from inside LNDDIR. lnd always creates its *default* directory,
+        # and btcutil.AppDataDir falls back to "." when it cannot resolve a
+        # home directory - so lnd does a mkdir of the working directory. As an
+        # unprivileged user with cwd elsewhere that fails with
+        # "Failed to create lnd directory '.': permission denied".
+        cd "$LNDDIR" || { echo "cannot cd to $LNDDIR."; exit 1; }
+
+        rm -f "$PIDFILE"
+        start-stop-daemon --start --quiet --background \
+            --make-pidfile --pidfile "$PIDFILE" \
+            --chuid "$RUNAS:$RUNAS" \
+            --exec "$DAEMON" -- --lnddir="$LNDDIR" --configfile="$CONF"
+        echo "done."
+        ;;
+  stop)
+        echo -n "Stopping $NAME: "
+        if ! is_running; then
+            rm -f "$PIDFILE"
+            echo "not running."
+            exit 0
+        fi
+        # lnd needs time to close its databases cleanly; SIGKILL can corrupt
+        # them. Poll rather than use start-stop-daemon --retry, which busybox
+        # does not implement.
+        pid=$(cat "$PIDFILE")
+        kill "$pid" 2>/dev/null
+        i=0
+        while [ "$i" -lt "$STOP_TIMEOUT" ]; do
+            kill -0 "$pid" 2>/dev/null || break
+            sleep 1
+            i=$((i + 1))
+        done
+        if kill -0 "$pid" 2>/dev/null; then
+            echo -n "did not exit in ${STOP_TIMEOUT}s, killing: "
+            kill -9 "$pid" 2>/dev/null
+            sleep 2
+        fi
+        rm -f "$PIDFILE"
+        echo "done."
+        ;;
+  status)
+        # busybox start-stop-daemon has no --status, so check the pidfile.
+        if is_running; then
+            echo "$NAME is running (pid $(cat "$PIDFILE"))."
+        else
+            echo "$NAME is not running."
+            exit 1
+        fi
+        ;;
+  restart|force-reload)
+        # "stop" already waits for the process to be gone. Without that wait
+        # the new lnd raced the old one and died with
+        # "listen tcp4 127.0.0.1:10009: bind: address already in use".
+        $0 stop
+        $0 start
+        ;;
+  *)
+        echo "Usage: $0 {start|stop|status|restart|force-reload}"
+        exit 1
+        ;;
+esac
+
+exit 0

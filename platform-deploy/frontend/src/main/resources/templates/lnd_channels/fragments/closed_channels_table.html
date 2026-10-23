@@ -1,0 +1,75 @@
+<div th:if="${closedChannels==null}" class="widget-content widget-content-area justify-content-center text-center">
+  <h3 style="padding: 20px;">You Do Not Have Any Closed Channels</h3>
+</div>
+<div th:unless="${closedChannels == null}" class="widget-content widget-content-area br-6">
+  <div id="default-ordering_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4">
+    <div class="table-responsive">
+      <table id="close-channel-table" class="table table-hover dataTable" style="width:100%" role="grid" aria-describedby="default-ordering_info">
+        <thead>
+          <tr role="row">
+              <th class="sorting" tabindex="0" aria-controls="default-ordering" rowspan="1" colspan="1" aria-label="Incoming or Outgoing Channel">In/Out</th>
+              <th class="sorting" tabindex="0" aria-controls="default-ordering" rowspan="1" colspan="1" aria-label="Channel ID of Channel">Channel ID</th>
+              <th class="sorting" tabindex="0" aria-controls="default-ordering" rowspan="1" colspan="1" aria-label="Closing Transaction" style>Closing Transaction</th>
+              <th class="sorting_desc" tabindex="0" aria-controls="default-ordering" rowspan="1" colspan="1" aria-sort="descending" aria-label="Capacity of Channel">Total Capacity</th>
+              <th class="sorting_desc" tabindex="0" aria-controls="default-ordering" rowspan="1" colspan="1" aria-sort="descending" aria-label="Peer Connected to Channel">Peer</th>
+              <th class="sorting_desc" tabindex="0" aria-controls="default-ordering" rowspan="1" colspan="1" aria-sort="descending" aria-label="Close Initiator">Close Initiator</th>
+              <th class="sorting_desc" tabindex="0" aria-controls="default-ordering" rowspan="1" colspan="1" aria-sort="descending" aria-label="Close Type">Close Type</th>
+              <th class="sorting" tabindex="0" aria-controls="default-ordering" rowspan="1" colspan="1" aria-label="Last Updated">Last Updated</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr role="row" th:each="closeChannel : ${closedChannels}">
+              <td class="rounded bs-tooltip text-center" data-placement="top" th:title="${closeChannel.isInitiator() ? 'Outgoing' : 'Incoming'}">
+                <svg th:if="${closeChannel.isInitiator()}" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-up">
+                  <line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline>
+                </svg>
+                <svg th:unless="${closeChannel.isInitiator()}" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-down">
+                  <line x1="12" y1="5" x2="12" y2="19"></line><polyline points="19 12 12 19 5 12"></polyline>
+                </svg>
+              </td>
+              <td>
+                <a th:href="'https://amboss.space/edge/' + ${closeChannel.getChan_id()}">
+                  [[${closeChannel.getChan_id()}]]
+                </a>
+              </td>
+              <td>
+                <a th:href="'https://mempool.space/tx/' + ${closeChannel.getClosing_tx_hash()}">
+                  [[${#strings.abbreviate(closeChannel.getClosing_tx_hash(), 20)}]]
+                </a>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                       stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-copy" th:attr="onclick=|copyToClipboard('${closeChannel.getClosing_tx_hash()}')|">
+                      <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                      <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                  </svg>
+              </td>
+              <td>
+                <span th:text="${#numbers.formatInteger(closeChannel.getCapacity(), 1, 'COMMA')} + ' Satoshis'">Total Capacity: 2M Satoshis</span>
+              </td>
+              <td class="sorting_1">
+                <a th:href="'https://amboss.space/node/' + ${closeChannel.getRemote_pubkey()}">
+                  [[${#strings.abbreviate(closeChannel.getRemote_pubkey(),20)}]]
+                </a>
+              </td>
+              <td th:text="${closeChannel.getClose_initiator()}"></td>
+              <td th:text="${closeChannel.getType()}"></td>
+              <td th:data-order="${closeChannel.getDate_modified().getTime()}" th:text="${closeChannel.getDate_modified()}">5 min ago</td>
+          </tr>
+        </tbody>
+
+        <tfoot>
+          <tr>
+            <th class="sorting" tabindex="0" aria-controls="default-ordering" rowspan="1" colspan="1" aria-label="Incoming or Outgoing Channel">In/Out</th>
+            <th class="sorting" tabindex="0" aria-controls="default-ordering" rowspan="1" colspan="1" aria-label="Channel ID of Channel">Channel ID</th>
+            <th class="sorting" tabindex="0" aria-controls="default-ordering" rowspan="1" colspan="1" aria-label="Closing Transaction" style>Closing Transaction</th>
+            <th class="sorting" tabindex="0" aria-controls="default-ordering" rowspan="1" colspan="1" aria-label="Total Capacity" style>Total Capacity</th>
+            <th class="sorting_desc" tabindex="0" aria-controls="default-ordering" rowspan="1" colspan="1" aria-sort="descending" aria-label="Peer Connected to Channel">Peer</th>
+            <th class="sorting_desc" tabindex="0" aria-controls="default-ordering" rowspan="1" colspan="1" aria-sort="descending" aria-label="Close Initiator">Close Initiator</th>
+            <th class="sorting_desc" tabindex="0" aria-controls="default-ordering" rowspan="1" colspan="1" aria-sort="descending" aria-label="Close Type">Close Type</th>
+            <th class="sorting" tabindex="0" aria-controls="default-ordering" rowspan="1" colspan="1" aria-label="Last Updated">Last Updated</th>
+          </tr>
+        </tfoot>
+
+      </table>
+    </div>
+  </div>
+</div>

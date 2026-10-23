@@ -1,0 +1,15 @@
+databaseChangeLog:
+  - changeSet:
+      id: add_btc_host_to_lnd_port
+      validCheckSum: ANY
+      author: aziz
+      changes:
+        - sql:
+            sql: ALTER TABLE lnd_port ADD COLUMN IF NOT EXISTS btc_host CHARACTER VARYING(255) NOT NULL DEFAULT 'mbtc1.btcd:853';
+  - changeSet:
+      id: add_lnd_ip_to_lnd_port
+      validCheckSum: ANY
+      author: aziz
+      changes:
+        - sql:
+            sql: ALTER TABLE lnd_port ADD COLUMN IF NOT EXISTS lnd_ip CHARACTER VARYING(255) NOT NULL DEFAULT '35.162.250.128';

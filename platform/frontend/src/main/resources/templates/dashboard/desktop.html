@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout/app}" lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+    <head>
+        <title>Dashboard Home</title>
+        <!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM STYLES -->
+        <link th:href="@{${pluginPath + '/apex/apexcharts.css'}}" rel="stylesheet" type="text/css">
+        <link th:href="@{${cssPath + '/css/dashboard/dash_1.css'}}" rel="stylesheet" type="text/css" />
+        <!-- END PAGE LEVEL PLUGINS/CUSTOM STYLES -->
+    </head>
+    <body>
+        <section layout:fragment="sub-header">
+            <span>LQWD | Managed API</span>
+        </section>
+
+        <div layout:fragment="content-section">
+            <div class="layout-px-spacing">
+                <div class="row layout-top-spacing">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 layout-spacing">
+                        <div class="widget">
+                            <div class="widget-heading">
+                                <h5 class="">API Call</h5>
+                            </div>
+                            <div class="widget-content">
+                                <div class="btn-group mb-4 mr-2 w-100" role="group">
+                                    <button id="desktop_btn_default" type="button" class="btn btn-primary dropdown-toggle rounded bs-tooltip" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" th:disabled="${!user.isEmailstatus()}">
+                                        <span th:if="${user.isEmailstatus()}">Select Managed API Call</span>
+                                        <span th:unless="${user.isEmailstatus()}">Please Verify Account</span>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down">
+                                        <polyline points="6 9 12 15 18 9"></polyline>
+                                    </svg>
+                                    </button>
+
+                                    <div class="dropdown-menu w-100" aria-labelledby="desktop_btn_default">
+                                        <a th:href="@{/getinfo}" class="dropdown-item" id="desktop_a_get-info"><i class="flaticon-home-fill-1 mr-1"></i>Info</a>
+                                        <a th:href="@{/channels}" class="dropdown-item" id="desktop_a_channels-info"><i class="flaticon-bell-fill-2 mr-1"></i>Channels Info</a>
+                                        <a th:href="@{/fees}" class="dropdown-item" id="desktop_a_fees-info"><i class="flaticon-dots mr-1"></i>Fees Info</a>
+                                        <a th:href="@{/getrecoveryinfo}" class="dropdown-item" id="desktop_a_get-recovery-info"><i class="flaticon-dots mr-1"></i>Get Recovery Info</a>
+                                        <a th:href="@{/peers}" class="dropdown-item" id="desktop_a_peers-info"><i class="flaticon-gear-fill mr-1"></i>Peers</a>
+                                        <a th:href="@{/walletbalance}" class="dropdown-item" id="desktop_a_wallet-balance-info"><i class="flaticon-dots mr-1"></i>Wallet Balance</a>
+                                        <a th:href="@{/channelbalance}" class="dropdown-item" id="desktop_a_channel-balance-info"><i class="flaticon-dots mr-1"></i>Channel Balance</a>
+                                        <a th:href="@{/transactionhistory}" class="dropdown-item" id="desktop_a_get-transactionhistory"><i class="flaticon-dots mr-1"></i>Transaction History</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 layout-spacing">
+                        <div class="widget">
+                            <div class="widget-heading">
+                                <h5 class="">Results Box</h5>
+                            </div>
+                            <div class="widget-content">
+                                <div id="desktop_div_results_box"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div layout:fragment="scripts">
+            <script th:src="@{assets/js/dashboard/dash_1.js}"></script>
+            <script th:src="@{${pluginPath + '/apex/apexcharts.min.js'}}"></script>
+            <script th:src="@{${pluginPath + '/blockui/jquery.blockUI.min.js'}}"></script>
+            <script th:src="@{/js/dashboard/desktop.js}"></script>
+        </div>
+    </body>
+</html>

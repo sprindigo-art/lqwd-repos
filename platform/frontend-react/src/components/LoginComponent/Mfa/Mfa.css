@@ -1,0 +1,17 @@
+.mfa .modal-header .btn-close {
+    align-self: flex-start;
+}
+
+.mfa .modal-dialog {
+    max-width: 420px;
+}
+
+.mfa .qrcode {
+    background: #F3F5F9;
+    text-align: center;
+    padding: 10px;
+}
+
+.mfa .copy-text-container {
+    width: 100%;
+}

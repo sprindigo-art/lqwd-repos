@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout/app}" lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+  <head>
+    <title>LQwD | LND Details</title>
+    <link th:href="@{${cssPath + '/scrollspyNav.css'}}" rel="stylesheet" type="text/css" />
+    <link th:href="@{${cssPath + '/widgets/modules-widgets.css'}}" rel="stylesheet" type="text/css">
+    <link th:href="@{${cssPath + '/components/custom-modal.css'}}" rel="stylesheet" type="text/css">
+    <link th:href="@{${cssPath + '/elements/popover.css'}}" rel="stylesheet" type="text/css" />
+
+    <link  th:href="@{${pluginPath + '/animate/animate.css'}}" rel="stylesheet" type="text/css">
+    <link th:href="@{${pluginPath + '/apex/apexcharts.css'}}" rel="stylesheet" type="text/css">
+
+  </head>
+  <style layout:fragment="style">
+    .copy-icons {
+      width: 16px !important;
+      height: 16px !important;
+    }
+  </style>
+  <body>
+    <section layout:fragment="sub-header">
+      <span>LND Node Details</span>
+    </section>
+
+    <div layout:fragment="content-section">
+      <div class="layout-px-spacing">
+        <div class="row layout-spacing">
+          <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 layout-spacing">
+            <div class="widget">
+              <div class="widget-heading">
+                <h5 class="" th:if="${lndNode.getLndNodeName() == 'null'}" th:text="'LND Node: ' + ${lndNode.getLndNodeName()}">LND Information</h5>
+                <h5 class="" th:unless="${lndNode.getLndNodeName() == 'null'}">LND Information</h5>
+              </div>
+              <div class="widget-content widget-content-area">
+                <div th:if="${lndNode.getStatus() == 'null'}" class="row pt-2">
+                  <div class="col-6">
+                    Status
+                  </div>
+                  <div class="col-6">
+                    <span class="badge badge-success" th:text="${lndNode.getStatus()}"></span>
+                  </div>
+                </div>
+                <div class="row pt-2">
+                  <div class="col-6">
+                    Alias
+                  </div>
+                  <div class="col-6">
+                    <span class="" th:text="${lndNode.getLndNodeInfo().getAlias()}"></span>
+                  </div>
+                </div>
+                <div class="row pt-2">
+                  <div class="col-6">
+                    Identity Pubkey
+                  </div>
+                  <div class="col-6">
+                    <span class="" >[[${#strings.abbreviate(lndNode.getLndNodeInfo().getIdentity_pubkey(),50)}]]
+                      <i class="copy-icons" data-feather="copy" th:data-value="${lndNode.getLndNodeInfo().getIdentity_pubkey()}"></i>
+                    </span>
+                  </div>
+                </div>
+                <div class="row pt-2">
+                  <div class="col-6">
+                    Commit Hash
+                  </div>
+                  <div class="col-6">
+                    <span class="" th:text="${#strings.abbreviate(lndNode.getLndNodeInfo().getCommit_hash(), 50)}">
+                      <i class="copy-icons" data-feather="copy" th:data-value="${lndNode.getLndNodeInfo().getCommit_hash()}"></i>
+                    </span>
+                  </div>
+                </div>
+                <div class="row pt-2">
+                  <div class="col-6">
+                    Version
+                  </div>
+                  <div class="col-6">
+                    <span class="" th:text="${lndNode.getLndNodeInfo().getVersion()}"></span>
+                  </div>
+                </div>
+                <div class="row pt-2">
+                  <div class="col-6">
+                    Number of Pending Channels
+                  </div>
+                  <div class="col-6">
+                    <span class="" th:text="${lndNode.getLndNodeInfo().getNum_pending_channels()}"></span>
+                  </div>
+                </div>
+                <div class="row pt-2">
+                  <div class="col-6">
+                    Number of Active Channels
+                  </div>
+                  <div class="col-6">
+                    <span class="" th:text="${lndNode.getLndNodeInfo().getNum_active_channels()}"></span>
+                  </div>
+                </div>
+                <div class="row pt-2">
+                  <div class="col-6">
+                    Number of Inactive Channels
+                  </div>
+                  <div class="col-6">
+                    <span class="" th:text="${lndNode.getLndNodeInfo().getNum_inactive_channels()}"></span>
+                  </div>
+                </div>
+                <div class="row pt-2">
+                  <div class="col-6">
+                    Number of Peers
+                  </div>
+                  <div class="col-6">
+                    <span class="" th:text="${lndNode.getLndNodeInfo().getNum_peers()}"></span>
+                  </div>
+                </div>
+                <div class="row pt-2">
+                  <div class="col-6">
+                    Block Height
+                  </div>
+                  <div class="col-6">
+                    <span class="" th:text="${lndNode.getLndNodeInfo().getBlock_height()}"></span>
+                  </div>
+                </div>
+                <div class="row pt-2">
+                  <div class="col-6">
+                    Block Hash
+                  </div>
+                  <div class="col-6">
+                    <span class="" th:text="${lndNode.getLndNodeInfo().getBlock_hash()}">
+                      <i class="copy-icons" data-feather="copy" th:data-value="${lndNode.getLndNodeInfo().getBlock_hash()}"></i>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div layout:fragment="scripts">
+      <!-- END GLOBAL MANDATORY SCRIPTS -->
+      <script th:src="@{assets/js/scrollspyNav.js}"></script>
+
+      <script th:src="@{${pluginPath + '/apex/apexcharts.min.js'}}"></script>
+      <script th:src="@{${pluginPath + '/blockui/custom-blockui.js'}}"></script>
+      <script th:src="@{${pluginPath + '/blockui/jquery.blockUI.min.js'}}"></script>
+
+      <script th:src="@{assets/js/widgets/modules-widgets.js}"></script>
+      <script th:src="@{assets/js/elements/popovers.js}"></script>
+      <script th:src="@{/js/lnd_node-details/lnd_node-details.js}"></script>
+    </div>
+  </body>
+</html>

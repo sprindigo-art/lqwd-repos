@@ -1,0 +1,23 @@
+{
+  "namespace": "com.lqwd.messaging.schemas",
+  "type": "record",
+  "name": "DestroyNode",
+  "fields": [
+    {
+      "name": "password",
+      "type": ["null", "string"],
+      "avro.java.string": "String"
+    },
+    {
+      "name": "nodeId",
+      "type": ["null", "string"],
+      "avro.java.string": "String"
+    },
+    {
+      "name": "force",
+      "type": "boolean",
+      "avro.java.string": "Boolean"
+    }
+
+  ]
+}

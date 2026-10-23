@@ -1,0 +1,42 @@
+.dashboard-container {
+    margin-right: 0;
+    padding-right: 0;
+    /* background-color: #E5E5E5; */
+}
+
+.dashboard-transactions {
+    background-color: #F3F5F9;
+}
+
+.dashboard-transactions h2 {
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 27px;
+    align-items: center;
+    text-transform: capitalize;
+
+    /* Text - Button */
+    color: #111111;
+}
+
+
+.total-number-of-channels{
+    background-color: white;
+    border-top: 1px solid lightgray;
+    border-bottom: 1px solid lightgray;
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 20px;
+    display: flex;
+    align-items: center;
+}
+
+@media screen and (max-width: 990px){
+    .dashboard-transactions{
+        display: none !important;
+    }
+}

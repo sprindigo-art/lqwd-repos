@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>LQWD | Signup</title>
+    <meta charset="utf-8">
+    <!--    <meta http-equiv="X-UA-Compatible" content="IE=edge">-->
+    <meta http-equiv="Content-Type" content="text/html"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
+
+    <!--  favicon images  -->
+    <link rel="apple-touch-icon" sizes="180x180" th:href="@{/images/favicon_io/apple-touch-icon.png}">
+    <link rel="icon" type="image/png" sizes="32x32" th:href="@{/images/favicon_io/favicon-32x32.png}">
+    <link rel="icon" type="image/png" sizes="16x16" th:href="@{/images/favicon_io/favicon-16x16.png}">
+    <link rel="manifest" th:href="@{/images/favicon_io/site.webmanifest}">
+
+    <!-- BEGIN GLOBAL MANDATORY STYLES -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:400,600,700" rel="stylesheet">
+    <link th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet" type="text/css" />
+    <link th:href="@{/plugins/font-icons/fontawesome/css/fontawesome.css}" rel="stylesheet" type="text/css" />
+
+    <link rel="preconnect" th:href="@{https://fonts.gstatic.com}">
+    <link th:href="@{https://fonts.googleapis.com/css2?family=Roboto&display=swap}" rel="stylesheet">
+
+    <!-- END GLOBAL MANDATORY STYLES -->
+    <link th:href="@{/plugins/light/notification/snackbar/snackbar.min.css}" rel="stylesheet" type="text/css" />
+    <link th:href="@{/plugins/light/sweetalerts/sweetalert2.min.css}" rel="stylesheet" type="text/css">
+
+    <!--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>-->
+    <link rel="stylesheet" type="text/css" th:href="@{/assets/css/light/elements/alert.css}">
+    <link th:href="@{/assets/css/light/plugins.css}" rel="stylesheet" type="text/css" />
+    <!--  Satoshi Font Symbol  -->
+    <script src="https://kit.fontawesome.com/090ca49637.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" th:href="@{/assets/css/light/components/custom-modal.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/assets/css/light/forms/switches.css}"/>
+
+    <script th:src='|https://www.google.com/recaptcha/api.js?render=${@captchaSettings.getSite()}|'></script>
+    <style>
+        @media (min-width: 1200px) and (max-width: 1400px) {
+            .form-col {
+                margin-left: 8.333333% !important;
+            }
+            .title-laptop-row{
+                margin-left: 8.333333%;
+            }
+            .img-laptop{
+                width: 100%;
+            }
+        }
+        @media (min-width: 992px) and (max-width: 1199px) {
+            form{
+                max-width: 363px !important;
+            }
+            input{
+                max-width: 363px !important;
+            }
+            .form-col {
+                left: 50px;
+            }
+
+            .img-laptop{
+                width: 100%;
+            }
+        }
+
+        @media (max-height: 970px) {
+            .custom-footer{
+                position: sticky !important;
+            }
+        }
+        @media (max-width: 350px) {
+            .custom-footer{
+                position: sticky !important;
+            }
+        }
+        a {
+            color: #009EE2;
+        }
+        p{
+            color: #4B555B;
+        }
+        .modal-title {
+            color: #fff !important;
+        }
+
+        .modal-footer button{
+            background-color: #009EE2 !important;
+            border: #009EE2 !important;
+        }
+        .image-login {
+            width: 201px;
+            height: 66px;
+        }
+        .image-login-row {
+            padding-bottom: 36px;
+        }
+        .title-header {
+            font-family: Nunito Sans;
+            font-style: normal;
+            font-weight: 800;
+            font-size: 4rem;
+            line-height: 74px;
+
+            color: #4B545B;
+            width: 100%;
+            max-width: 632px;
+        }
+
+        .subtitle-header{
+            font-family: Nunito Sans;
+            font-style: normal;
+            font-weight: 500;
+            font-size: 1.5rem;
+            line-height: 30px;
+
+            color: #4B545B;
+            width: 100%;
+            max-width: 632px;
+        }
+
+        .login-title {
+            font-family: Nunito Sans;
+            font-style: normal;
+            font-weight: bold;
+            font-size: 36px;
+            line-height: 60px;
+            /* identical to box height, or 167% */
+
+            color: #4B545B;
+            padding-bottom: 40px;
+        }
+
+        .laptop-col {
+            right: 0px;
+            position: relative;
+            bottom: 0px;
+            padding-right: 0px;
+        }
+
+        .title-laptop-wrapper{
+            position: absolute;
+
+            right: 0px;
+            bottom: 0px;
+            top: 0;
+
+            padding-right: 0px;
+
+            min-height: 270px;
+            max-height: 425px;
+
+            max-width: 632px;
+
+            height: calc(100% - 570px);
+            width: 100%;
+        }
+
+        .title-laptop-row{
+            position: absolute;
+            bottom: 0px;
+            right: 0px;
+        }
+
+        .img-laptop-row{
+            max-width: calc(100% - 611px);
+            max-height: calc(100% - 425px);
+
+            object-position: right;
+            position: relative;
+        }
+
+        .img-laptop {
+            position: absolute;
+            vertical-align: bottom;
+            right: 0px !important;
+            bottom: 0px !important;
+
+            max-height: 510px;
+            max-width: 720px;
+
+            height: calc(100% - 270px);
+
+        }
+        .custom-footer {
+            position: fixed;
+            bottom: 0px;
+            z-index: 1030;
+        }
+
+        .form-footer-col {
+            padding-left: 140px;
+        }
+
+        ::placeholder{
+            font-family: Nunito Sans;
+            font-style: normal;
+            font-weight: normal;
+            font-size: 16px;
+            line-height: 23px;
+            /* identical to box height, or 144% */
+
+            color: #8F8F8F;
+
+        }
+
+        .custom-login-btn{
+
+            align-items: center;
+            padding: 12px 25px 11px;
+
+            height: 46px;
+
+            background: #439EDD;
+            border-radius: 50px;
+
+            font-family: Nunito Sans;
+            font-style: normal;
+            font-weight: 600;
+            font-size: 16px;
+            line-height: 23px;
+            /* identical to box height, or 144% */
+
+            text-align: center;
+            text-transform: uppercase;
+
+            color: #FFFFFF;
+        }
+
+        .custom-login-btn:hover{
+            background: #439EDD;
+            color: #FFFFFF;
+        }
+        .custom-login-btn-outline{
+
+            align-items: center;
+            padding: 12px 25px 11px;
+
+            height: 46px;
+
+            /*background: #439EDD;*/
+            border-radius: 50px;
+
+            font-family: Nunito Sans;
+            font-style: normal;
+            font-weight: 600;
+            font-size: 16px;
+            line-height: 23px;
+            /* identical to box height, or 144% */
+
+            text-align: center;
+            text-transform: uppercase;
+
+            color: #439EDD;
+            border: 1px solid #439EDD;
+        }
+
+        .custom-input{
+            font-family: Nunito Sans;
+            font-style: normal;
+            font-weight: normal;
+            font-size: 16px;
+            line-height: 23px;
+
+            padding: 12px 20px;
+            max-width: 540px;
+            color: #8F8F8F;
+            border: 0;
+            width: 100%;
+            background-color: rgba(202, 203, 205, 0.3);
+        }
+
+        .feather {
+            color: #888ea8;
+            fill: rgba(0, 23, 55, 0.08);
+
+            position: absolute;
+            top: 13px;
+            right: 5px;
+        }
+
+        .forgot-pass {
+
+            font-family: Nunito Sans;
+            font-style: normal;
+            font-weight: 500;
+            font-size: 14px;
+            line-height: 20px;
+            /* identical to box height, or 143% */
+
+            text-align: center;
+
+            color: #4B545B;
+        }
+
+        .no-account {
+            font-family: Nunito Sans;
+            font-style: normal;
+            font-weight: normal;
+            font-size: 14px;
+            line-height: 20px;
+            /* identical to box height, or 143% */
+
+            color: #4B545B;
+        }
+        .form-title{
+
+            font-family: Nunito Sans;
+            font-style: normal;
+            font-weight: bold;
+            font-size: 36px;
+            line-height: 44px;
+            /* identical to box height, or 122% */
+
+            color: #4B545B;
+        }
+
+        .form-subtitle{
+            font-family: Nunito Sans;
+            font-style: normal;
+            font-weight: 600;
+            font-size: 20px;
+            line-height: 26px;
+            /* identical to box height, or 130% */
+
+            color: #A2AAB0;
+        }
+
+        .form-group{
+            margin-bottom: 0 !important;
+        }
+
+        .form-row:nth-child(even){
+            padding-bottom: 10px !important;
+        }
+        .form-row{
+            padding-bottom: 5px !important;
+        }
+        .error-response {
+            color: #ff3111;
+            padding: 12px 20px;
+        }
+    </style>
+</head>
+<body style="background-color: #FFFFFF; max-width: 1920px;">
+<div class="container-fluid">
+    <div class="row justify-content-center vh-100">
+
+        <!-- form and footer -->
+        <div class="form-col offset-xl-1 col-xl-5 col-lg-5 col-md-12 col-sm-12 text-black d-flex flex-column justify-content-center text-xl-left text-lg-left text-md-center text-sm-center">
+
+            <!-- logo -->
+            <div class="row justify-content-xl-start justify-content-lg-start justify-content-md-center justify-content-sm-center justify-content-center image-login-row">
+                <a th:href="@{/login}"><img class="image-login" src="/images/logo/LQwD-notext.png"></a>
+            </div>
+
+            <!-- form -->
+            <div class="row justify-content-xl-start justify-content-lg-start justify-content-md-center justify-content-sm-center justify-content-center">
+
+                <form class="w-100" style="max-width: 540px;">
+                    <h3 class="form-title">Beta User Sign up</h3>
+                    <p class="form-subtitle">Spots Remaining: 0</p>
+                    <p class="no-account" style="color: rgba(75,85,91, 0.8)">Already have an account? <a th:href="@{/login}" class="link-info" style="text-decoration: underline;">Login here</a></p>
+                    <div class="" id="application">
+                        <div class="form-row text-left">
+                            <div class="form-group col-12 text-left">
+                                <input autocomplete="off" id="signup-username" name="signup-username" placeholder="Username" type="text" class="custom-input" required>
+                                <span class='small error-response'></span>
+                            </div>
+                        </div>
+                        <div class="form-row text-left">
+                            <div class="form-group col-12 text-left">
+                                <input id="signup-email" name="signup-email" type="text" autocomplete="off" placeholder="Email" class="custom-input" required>
+                                <span class='small error-response'></span>
+                            </div>
+                        </div>
+                        <div class="form-row text-left">
+                            <div class="form-group col-12">
+                                <input id="signup-password" name="signup-password" type="password" autocomplete="off" placeholder="Password" class="custom-input" required>
+                                <span class='small error-response'></span>
+                            </div>
+                        </div>
+                        <div class="d-sm-flex justify-content-between">
+                            <div class="field-wrapper w-100">
+                                <button id="signup_btn_submit" type="submit" class="btn btn-primary btn-lg btn-rounded rounded-pill w-100" style="background-color: #009EE2 !important; border-color: #009EE2 !important;" value="">
+                                    SIGN UP
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+
+            <!-- footer -->
+            <div class="row justify-content-xl-start justify-content-lg-start justify-content-sm-center justify-content-md-center justify-content-center">
+                <div class="custom-footer mt-3">
+                    <p>
+                        © 2021 All Rights Reserved. <a id="registration_a_lqwd" href="https://lqwdfintech.com">LQwD FinTech Corp</a>.
+                    </p>
+                    <p>
+                        <a id="registration_a_cookie" class="terms-conditions-links" th:href="@{/cookies}">Cookie Preferences</a>
+                        <a id="registration_a_privacy" class="terms-conditions-links" th:href="@{/privacy}">Privacy</a>
+                        <a id="registration_a_terms" class="terms-conditions-links" th:href="@{/terms}">Terms</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- title/subtitle and laptop -->
+        <div class="col-xl-6 col-lg-7 d-none d-lg-block align-items-end laptop-col">
+
+            <div class="title-laptop-wrapper">
+
+                <div class="row justify-content-end title-laptop-row">
+                    <h1 class="title-header">Lightning Network Infrastructure For Global Scale</h1>
+                    <p class="subtitle-header">Usable anywhere in the world.</p>
+                </div>
+
+            </div>
+
+            <img class="img-laptop" src="/images/login-image-platform.png">
+
+        </div>
+    </div>
+</div>
+<div th:replace="auth/fragments/qrcode_modal::qrcode"></div>
+<div th:replace="auth/fragments/qrcode_login_modal::qrcode_login"></div>
+<!-- END MAIN CONTAINER -->
+
+<div th:replace="layout/footer::footer_main(~{::script})">
+    <script th:src="@{plugins/dropify/dropify.min.js}"></script>
+    <script th:src="@{plugins/blockui/jquery.blockUI.min.js}"></script>
+    <script th:src="@{assets/js/components/ui-accordions.js}"></script>
+    <script th:src="@{assets/js/authentication/form-1.js}"></script>
+    <script th:src="@{js/signup/signup.js}"></script>
+    <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
+    <script th:src="'https://maps.googleapis.com/maps/api/js?key='+${@environment.getProperty('GOOGLE_API_KEY')}+'&callback=initAutocomplete&libraries=places&v=weekly'" async></script>
+
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        $(document).ready(function (){
+            //check username and email on keyup
+            $("#signup-username").on('change', function (){
+                var email = $('#signup-email').val();
+                var username = $('#signup-username').val();
+
+                checkUsername(username, true);
+                checkEmail(email, false);
+
+            });
+
+            $("#beta-signup_txt_email").on('change', function (){
+                var email = $('#signup-email').val();
+                var username = $('#signup-username').val();
+
+                checkEmail(email, true);
+                checkUsername(username, false);
+            });
+
+            //on registration submit check if user is wanting to use 2fa
+            $("#signup_btn_submit").on('click', function (event){
+                event.preventDefault();
+                var secretKey = /*[[${@captchaSettings.getSite()}]]*/'';
+                grecaptcha.ready(function() {
+                    grecaptcha.execute(secretKey,
+                        {action: /*[[${T(lqwd.frontend.captcha.CaptchaServiceV3).REGISTER_ACTION}]]*/''})
+                        .then(function(response) {
+                            register(response);
+                        });
+                });
+            })
+
+            $("#qrcode-modal_btn_doneQr").on('click', function (){
+                $("#qrcode-modal_div_qrCodeModal").modal('hide');
+                clearInputs();
+                displayEnterCode();
+                setCursorFocusOnFirst();
+            });
+
+            $('#qrcode-login-modal_btn_OTPSubmit').on('click', function (event){
+                event.preventDefault();
+                submitcode2FA();
+            });
+
+            $('#qrcode-modal_copy_code').on('click', function (){
+                try {
+                    var value = $(this).data('value');
+                    navigator.clipboard.writeText(value);
+
+                    Snackbar.show({
+                        text: "Successfully Copied QR Code",
+                        pos: 'top-center',
+                        actionTextColor: '#fff',
+                        backgroundColor: '#8dbf42'
+                    });
+                } catch (err) {
+                    Snackbar.show({
+                        text: "Failed to Copy QR Code",
+                        pos: 'top-center',
+                        actionTextColor: '#fff',
+                        backgroundColor: '#e7515a'
+                    });
+                }
+
+            });
+
+        });
+        /*]]>*/
+    </script>
+</div>
+
+</body>
+</html>

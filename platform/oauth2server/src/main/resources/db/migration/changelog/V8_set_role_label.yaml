@@ -1,0 +1,26 @@
+databaseChangeLog:
+  - changeSet:
+      id: set_role_label_table
+      validCheckSum: ANY
+      author: femi
+      preConditions:
+        onFail: MARK_RAN
+        not:
+          tableExists:
+            tableName: role_label
+      changes:
+        - createTable:
+            tableName: role_label
+            columns:
+              - column:
+                  name: name
+                  type: varchar(255)
+                  constraints:
+                    unique: true
+  - changeSet:
+      id: add_default_roles
+      validCheckSum: ANY
+      author: femi
+      changes:
+        - sql:
+            sql: insert into role_label values('ADMIN'),('USER'),('TESTER'),('STAKING') on conflict(name) do nothing;

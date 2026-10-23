@@ -1,0 +1,26 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <changeSet author="djbabs (generated)" id="1643932312762-3">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists columnName="user_email" tableName="lsp_staking" />
+            </not>
+        </preConditions>
+        <addColumn tableName="lsp_staking">
+            <column name="user_email" type="varchar(100)"/>
+        </addColumn>
+    </changeSet>
+    <changeSet author="djbabs (generated)" id="1643932312762-4">
+        <validCheckSum>ANY</validCheckSum>
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <columnExists columnName="user_firstname" tableName="lsp_staking" />
+            </not>
+        </preConditions>
+        <addColumn tableName="lsp_staking">
+            <column name="user_firstname" type="varchar(100)"/>
+        </addColumn>
+    </changeSet>
+
+</databaseChangeLog>

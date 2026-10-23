@@ -1,0 +1,8 @@
+databaseChangeLog:
+  - changeSet:
+      id: add_key_send_enabled_column
+      validCheckSum: ANY
+      author: chris
+      changes:
+        - sql:
+            sql: ALTER TABLE lndnodeinfo ADD COLUMN IF NOT EXISTS key_send_enabled BOOLEAN NOT NULL DEFAULT FALSE;

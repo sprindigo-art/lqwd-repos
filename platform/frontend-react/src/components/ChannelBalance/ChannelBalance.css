@@ -1,0 +1,28 @@
+.channel-balance-title{
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 10px;
+    line-height: 15px;
+    align-items: center;
+    color: #7A7A7A;
+}
+
+.remote-balance{
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    align-items: center;
+    color: #4D4D4D;
+}
+
+.chan-progress{
+    background-color: #009EE2 !important;
+}
+
+
+.chan-progress-bg{
+    background-color: #DEE8F1 !important;
+}

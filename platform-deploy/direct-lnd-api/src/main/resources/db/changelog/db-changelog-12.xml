@@ -1,0 +1,33 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <changeSet author="femi" id="1631179954808-1">
+        <createTable tableName="lsp_staking_days">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="lspstakingdaysPK"/>
+            </column>
+            <column name="days" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet  author="femi"  id="1631179954808-2">
+        <insert  tableName="lsp_staking_days">
+            <column  name="days"  value="30"/>
+        </insert>
+    </changeSet>
+    <changeSet  author="femi"  id="1631179954808-3">
+        <insert  tableName="lsp_staking_days">
+            <column  name="days"  value="90"/>
+        </insert>
+    </changeSet>
+    <changeSet  author="femi"  id="1631179954808-4">
+        <insert  tableName="lsp_staking_days">
+            <column  name="days"  value="180"/>
+        </insert>
+    </changeSet>
+    <changeSet  author="femi"  id="1631179954808-5">
+        <insert  tableName="lsp_staking_days">
+            <column  name="days"  value="360"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>

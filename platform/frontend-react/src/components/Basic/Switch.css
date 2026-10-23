@@ -1,0 +1,28 @@
+.switch-input .label {
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    color: #111111;
+}
+
+.switch-input .description {
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    color: #7A7A7A;
+}
+
+.switch-input .form-switch .form-check-input {
+    width: 50px;
+    height: 26px;
+    cursor: pointer;
+}
+
+.switch-input .form-switch .form-check-input:checked {
+    background-color: #009EE2;
+    border-color: #009EE2;
+}

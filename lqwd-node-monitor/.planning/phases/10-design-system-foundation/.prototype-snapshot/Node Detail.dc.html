@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#EEF1F5;font-family:'IBM Plex Sans',system-ui,sans-serif;-webkit-font-smoothing:antialiased;color:#10131A}
+  a{text-decoration:none;color:inherit}
+  ::selection{background:#1A3C7926}
+  .d-num{font-variant-numeric:tabular-nums}
+  .d-mono{font-family:'IBM Plex Mono',monospace}
+  .d-rail-btn:hover{background:#ffffff18}
+  .d-btn:hover{filter:brightness(1.08)}
+  .d-ghost:hover{background:#E5E9F0}
+  .d-card{transition:box-shadow .15s}
+  .d-tile{transition:box-shadow .15s,transform .15s}
+  .d-tile:hover{box-shadow:0 8px 22px rgba(16,19,26,.10);transform:translateY(-2px)}
+  @keyframes nmpulse{0%{box-shadow:0 0 0 0 #E0392B55}70%{box-shadow:0 0 0 6px #E0392B00}100%{box-shadow:0 0 0 0 #E0392B00}}
+  .d-chrow:hover{background:#F6F8FB}
+  .d-x:hover{background:#00000010}
+  .d-chev{transition:transform .18s}
+  .d-copy:hover{background:#EAEEF5}
+  @keyframes v2drop{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+</style>
+</helmet>
+
+<div style="min-height:100vh;background:#EEF1F5;display:flex">
+
+  <!-- Left rail -->
+  <div style="position:fixed;top:0;left:0;bottom:0;width:60px;background:#13284F;display:flex;flex-direction:column;align-items:center;padding:14px 0;z-index:30">
+    <a href="Ops%20Center%20-%20Data-Forward%20v2.dc.html" style="width:32px;height:32px;border-radius:9px;background:#fff;display:flex;align-items:center;justify-content:center;margin-bottom:22px">
+      <div style="width:13px;height:13px;border:2.5px solid #13284F;border-radius:4px"></div>
+    </a>
+    <div style="display:flex;flex-direction:column;gap:6px;width:100%;align-items:center">
+      <a href="Ops%20Center%20-%20Data-Forward%20v2.dc.html" class="d-rail-btn" title="Overview" style="width:40px;height:40px;border-radius:11px;display:flex;align-items:center;justify-content:center;cursor:pointer">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#9FB0CE" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>
+      </a>
+      <a href="Nodes.dc.html" class="d-rail-btn" title="Nodes" style="width:40px;height:40px;border-radius:11px;background:#ffffff1f;display:flex;align-items:center;justify-content:center;cursor:pointer">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M13 3 4 14h6l-1 7 9-12h-6l1-6z"/></svg>
+      </a>
+      <a href="Hosts.dc.html" class="d-rail-btn" title="Hosts" style="width:40px;height:40px;border-radius:11px;display:flex;align-items:center;justify-content:center;cursor:pointer">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#9FB0CE" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="6" rx="1.5"/><rect x="3" y="14" width="18" height="6" rx="1.5"/><circle cx="7" cy="7" r="1" fill="#9FB0CE" stroke="none"/><circle cx="7" cy="17" r="1" fill="#9FB0CE" stroke="none"/></svg>
+      </a>
+      <div class="d-rail-btn" title="Security" style="width:40px;height:40px;border-radius:11px;display:flex;align-items:center;justify-content:center;cursor:pointer">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#9FB0CE" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v6c0 4.2-2.9 7.4-7 9-4.1-1.6-7-4.8-7-9V6l7-3z"/></svg>
+      </div>
+    </div>
+    <div style="margin-top:auto;width:32px;height:32px;border-radius:50%;background:#2C4A7E"></div>
+  </div>
+
+  <div style="margin-left:60px;flex:1;min-width:0">
+
+    <!-- Top bar -->
+    <div style="position:sticky;top:0;z-index:20;background:rgba(238,241,245,.9);backdrop-filter:blur(12px);border-bottom:1px solid #DFE3EB;padding:12px 32px;display:flex;align-items:center;gap:14px">
+      <a href="Nodes.dc.html" class="d-ghost" style="display:inline-flex;align-items:center;gap:6px;font-size:12.5px;color:#6F7787;padding:6px 10px;border-radius:8px">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+        Nodes
+      </a>
+      <span style="font-size:12px;color:#C2C8D2">/</span>
+      <span class="d-mono" style="font-size:13px;font-weight:600">lqwd-rtr-02</span>
+      <div style="margin-left:auto;display:flex;align-items:center;gap:8px;font-size:12px;color:#6F7787;background:#fff;border:1px solid #DFE3EB;padding:7px 12px;border-radius:9px">
+        <span style="width:7px;height:7px;border-radius:50%;background:#1E9E63;box-shadow:0 0 0 3px #1E9E6322"></span>
+        Live · polled <span class="d-num" style="color:#10131A;font-weight:600">4s</span> ago
+      </div>
+    </div>
+
+    <div style="max-width:1200px;margin:0 auto;padding:24px 32px 64px">
+
+      <!-- Identity header -->
+      <div class="d-card" style="background:#fff;border:1px solid #E1E5ED;border-radius:16px;padding:22px 24px;box-shadow:0 1px 3px rgba(16,19,26,.05);margin-bottom:20px">
+        <div style="display:flex;align-items:flex-start;gap:20px">
+          <div style="flex:none;width:52px;height:52px;border-radius:14px;background:#EAEFF8;display:flex;align-items:center;justify-content:center">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#33559B" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M13 3 4 14h6l-1 7 9-12h-6l1-6z"/></svg>
+          </div>
+          <div style="flex:1;min-width:0">
+            <div style="display:flex;align-items:center;gap:11px;flex-wrap:wrap">
+              <h1 class="d-mono" style="font-size:22px;font-weight:600;letter-spacing:-.01em;white-space:nowrap">lqwd-rtr-02</h1>
+              <span style="display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;letter-spacing:.06em;color:#fff;background:#0E8C84;padding:4px 10px;border-radius:6px"><span style="width:6px;height:6px;border-radius:50%;background:#fff"></span>WATCH</span>
+              <span style="font-size:11px;font-weight:600;color:#33559B;background:#EAEFF8;padding:4px 9px;border-radius:6px">Routing · LND</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:18px;margin-top:12px;flex-wrap:wrap">
+              <div style="display:flex;align-items:center;gap:7px">
+                <span style="font-size:11px;color:#9AA3B4">host</span>
+                <a href="Hosts.dc.html" class="d-mono d-copy" style="font-size:12px;color:#13284F;font-weight:600;padding:2px 7px;border-radius:6px;background:#F1F4F8">host-01</a>
+              </div>
+              <div style="display:flex;align-items:center;gap:7px;min-width:0">
+                <span style="font-size:11px;color:#9AA3B4">pubkey</span>
+                <span onClick="{{ onCopyPubkey }}" class="d-mono d-copy" style="font-size:12px;color:#5A616E;padding:2px 7px;border-radius:6px;background:#F1F4F8;cursor:pointer;display:inline-flex;align-items:center;gap:6px">03a4f1c8…e29b<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#9AA3B4" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></span>
+                <span style="font-size:11px;color:#1E9E63">{{ pubkeyCopied }}</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:7px">
+                <span style="font-size:11px;color:#9AA3B4">uptime 30d</span>
+                <span class="d-num" style="font-size:12px;color:#10131A;font-weight:600">99.94%</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:7px">
+                <span style="font-size:11px;color:#9AA3B4">version</span>
+                <span class="d-mono" style="font-size:12px;color:#5A616E">lnd 0.18.3-beta</span>
+              </div>
+            </div>
+          </div>
+          <div style="flex:none;display:flex;align-items:center;gap:10px">
+            <span onClick="{{ onExportFix }}" class="d-btn" style="font-size:13px;font-weight:600;padding:9px 16px;background:#13284F;color:#fff;border-radius:9px;cursor:pointer;white-space:nowrap">Export fee realign →</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Active diagnostic (watch) -->
+      <div class="d-card" style="background:#fff;border:1px solid #C2E3DD;border-radius:15px;overflow:hidden;box-shadow:0 4px 16px rgba(14,140,132,.08);margin-bottom:24px">
+        <div style="display:flex;align-items:stretch">
+          <div style="width:6px;background:#0E8C84;flex:none"></div>
+          <div style="flex:1;min-width:0;padding:18px 20px;display:flex;gap:20px;align-items:flex-start">
+            <div style="flex:none;width:38px;height:38px;border-radius:10px;background:#E2F2EF;display:flex;align-items:center;justify-content:center;margin-top:1px">
+              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#0E8C84" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M13 3 4 14h6l-1 7 9-12h-6l1-6z"/></svg>
+            </div>
+            <div style="flex:1;min-width:0">
+              <div style="display:flex;align-items:center;gap:9px;flex-wrap:wrap">
+                <span style="font-size:10.5px;font-weight:700;letter-spacing:.07em;color:#fff;background:#0E8C84;padding:3px 8px;border-radius:5px">WATCH · ACTIVE</span>
+                <h3 style="font-size:15.5px;font-weight:600;letter-spacing:-.01em">Fee drift — outbound ~3× peer median</h3>
+              </div>
+              <p style="font-size:13.5px;line-height:1.5;color:#5A616E;margin-top:6px;max-width:62ch">Outbound fee rate has drifted to roughly three times the median of comparable routing peers. Routed volume on this node is down <span class="d-num" style="color:#10131A;font-weight:600">~40%</span> over the drift window — the realign command below restores it toward peer median.</p>
+              <div style="display:flex;align-items:center;gap:13px;margin-top:11px">
+                <span style="font-size:11.5px;color:#6F7787;background:#F1F4F8;padding:3px 9px;border-radius:6px">flagged 2h ago</span>
+                <span style="display:inline-flex;align-items:center;gap:6px;font-size:11.5px;color:#1E9E63"><span style="width:6px;height:6px;border-radius:50%;background:#1E9E63"></span>data fresh · 4s</span>
+                <a href="Incident%20Detail.dc.html" style="font-size:12px;font-weight:600;color:#13284F;display:inline-flex;align-items:center;gap:5px">Open incident<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></a>
+              </div>
+            </div>
+            <div style="flex:none;width:230px;background:#FAFBFD;border:1px solid #ECEFF4;border-radius:11px;padding:11px 13px 8px">
+              <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:5px">
+                <span style="font-size:10px;color:#8A92A0;font-weight:500">Outbound ppm vs peer band</span>
+                <span class="d-num" style="font-size:13px;font-weight:700;color:#0E8C84">3.1×</span>
+              </div>
+              {{ feeChart }}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Services on this node -->
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:13px">
+        <h2 style="font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#6F7787;white-space:nowrap">Services on this node · 6</h2>
+        <span style="flex:1;height:1px;background:#E1E5ED"></span>
+        <span style="display:inline-flex;align-items:center;gap:6px;font-size:11px;color:#9AA3B4;white-space:nowrap">green = running <span style="color:#C2C8D2">&amp;</span> functioning</span>
+        <span style="display:inline-flex;align-items:center;gap:6px;font-size:11px;color:#E0392B;white-space:nowrap"><span style="width:7px;height:7px;border-radius:50%;background:#E0392B"></span>1 up but not healthy</span>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:16px">
+        <sc-for list="{{ services }}" as="s" hint-placeholder-count="6">
+          <a href="{{ s.href }}" class="d-tile" style="display:block;background:{{ s.tint }};border:1px solid {{ s.border }};border-left:4px solid {{ s.accent }};border-radius:13px;padding:15px 16px;box-shadow:{{ s.shadow }}">
+            <div style="display:flex;align-items:center;gap:9px">
+              <span style="font-size:13.5px;font-weight:600;color:#10131A;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ s.name }}</span>
+              <span style="margin-left:auto;display:inline-flex;align-items:center;gap:6px;font-size:9.5px;font-weight:700;letter-spacing:.04em;color:{{ s.statusColor }};background:{{ s.statusBg }};padding:3px 8px;border-radius:5px;white-space:nowrap">
+                <sc-if value="{{ s.alarm }}" hint-placeholder-val="{{ false }}"><span style="width:6px;height:6px;border-radius:50%;background:{{ s.statusColor }};animation:nmpulse 1.5s infinite"></span></sc-if>
+                <sc-if value="{{ s.ok }}" hint-placeholder-val="{{ true }}"><span style="width:6px;height:6px;border-radius:50%;background:{{ s.statusColor }}"></span></sc-if>
+                {{ s.statusLabel }}
+              </span>
+            </div>
+            <div style="display:flex;gap:8px;margin-top:13px">
+              <div style="flex:1;background:#FAFBFD;border:1px solid #ECEFF4;border-radius:8px;padding:8px 10px">
+                <div style="font-size:9px;letter-spacing:.05em;text-transform:uppercase;color:#9AA3B4;font-weight:700">Running</div>
+                <div style="display:flex;align-items:center;gap:6px;margin-top:4px">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="{{ s.runColor }}" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="{{ s.runGlyph }}"/></svg>
+                  <span style="font-size:12px;font-weight:600;color:{{ s.runColor }}">{{ s.runText }}</span>
+                </div>
+              </div>
+              <div style="flex:1;background:{{ s.funcBg }};border:1px solid {{ s.funcBorder }};border-radius:8px;padding:8px 10px">
+                <div style="font-size:9px;letter-spacing:.05em;text-transform:uppercase;color:#9AA3B4;font-weight:700">Functioning</div>
+                <div style="display:flex;align-items:center;gap:6px;margin-top:4px">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="{{ s.funcColor }}" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="{{ s.funcGlyph }}"/></svg>
+                  <span style="font-size:12px;font-weight:600;color:{{ s.funcColor }}">{{ s.funcText }}</span>
+                </div>
+              </div>
+            </div>
+            <div style="margin-top:12px;padding-top:11px;border-top:1px solid #F1F3F7;display:flex;flex-direction:column;gap:5px">
+              <div style="display:flex;align-items:center;justify-content:space-between;gap:8px"><span style="font-size:10.5px;color:#9AA3B4;white-space:nowrap">last heartbeat</span><span class="d-num" style="font-size:10.5px;font-weight:600;color:{{ s.hbColor }};white-space:nowrap">{{ s.hb }}</span></div>
+              <div style="display:flex;align-items:center;justify-content:space-between;gap:8px"><span style="font-size:10.5px;color:#9AA3B4;white-space:nowrap">last run</span><span class="d-num" style="font-size:10.5px;font-weight:600;color:{{ s.lastRunColor }};white-space:nowrap">{{ s.lastRun }}</span></div>
+              <div style="display:flex;align-items:center;justify-content:space-between;gap:8px"><span style="font-size:10.5px;color:#9AA3B4;white-space:nowrap">errors · 1h</span><span class="d-num" style="font-size:10.5px;font-weight:600;color:{{ s.errColor }};white-space:nowrap">{{ s.err }}</span></div>
+            </div>
+          </a>
+        </sc-for>
+      </div>
+
+      <!-- Host / VM + infra dependency strip -->
+      <div class="d-card" style="background:#fff;border:1px solid #E1E5ED;border-radius:14px;padding:16px 20px;margin-bottom:24px;display:grid;grid-template-columns:1fr 1px 1.15fr;gap:22px;align-items:center">
+        <div>
+          <div style="display:flex;align-items:center;gap:9px;margin-bottom:13px;flex-wrap:wrap">
+            <span style="font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:#6F7787">This VM</span>
+            <a href="Host%20Detail.dc.html" class="d-mono d-copy" style="font-size:12px;color:#13284F;font-weight:600;padding:2px 7px;border-radius:6px;background:#F1F4F8">host-01</a>
+            <span style="display:inline-flex;align-items:center;gap:5px;font-size:11px;color:#1E7A4E"><span style="width:6px;height:6px;border-radius:50%;background:#1E9E63"></span>host healthy</span>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px">
+            <sc-for list="{{ vmMeters }}" as="m" hint-placeholder-count="3">
+              <div>
+                <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:5px">
+                  <span style="font-size:10.5px;color:#9AA3B4;font-weight:500">{{ m.label }}</span>
+                  <span class="d-num" style="font-size:11px;font-weight:600;color:{{ m.color }}">{{ m.value }}</span>
+                </div>
+                <div style="height:5px;border-radius:3px;background:#EEF0F4;overflow:hidden"><span style="display:block;height:100%;width:{{ m.pct }};background:{{ m.color }};border-radius:3px"></span></div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+        <div style="background:#ECEFF4;width:1px;height:100%"></div>
+        <div>
+          <div style="font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:#6F7787;margin-bottom:12px">Infra it depends on</div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <sc-for list="{{ infra }}" as="i" hint-placeholder-count="3">
+              <a href="{{ i.href }}" class="d-copy" style="display:inline-flex;align-items:center;gap:8px;background:#F7F9FB;border:1px solid #E6EAF0;border-radius:9px;padding:8px 12px">
+                <span style="width:7px;height:7px;border-radius:50%;background:{{ i.dot }};flex:none"></span>
+                <span class="d-mono" style="font-size:12px;font-weight:600;color:#10131A">{{ i.name }}</span>
+                <span style="font-size:11px;color:{{ i.statusColor }}">{{ i.status }}</span>
+              </a>
+            </sc-for>
+          </div>
+          <p style="font-size:11.5px;color:#6F7787;line-height:1.45;margin-top:11px">{{ infraNote }}</p>
+        </div>
+      </div>
+
+      <!-- Performance KPIs -->
+      <div style="display:flex;align-items:center;gap:9px;margin-bottom:13px">
+        <h2 style="font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#6F7787">Routing performance · 30 days</h2>
+        <span style="flex:1;height:1px;background:#E1E5ED"></span>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:18px">
+        <sc-for list="{{ kpis }}" as="k" hint-placeholder-count="4">
+          <div class="d-card" style="background:#fff;border:1px solid #E1E5ED;border-radius:14px;padding:16px 17px">
+            <div style="display:flex;align-items:center;justify-content:space-between">
+              <span style="font-size:12px;color:#6F7787;font-weight:500">{{ k.label }}</span>
+              <span style="font-size:11px;font-weight:600;color:{{ k.deltaColor }};background:{{ k.deltaBg }};padding:2px 7px;border-radius:6px" class="d-num">{{ k.delta }}</span>
+            </div>
+            <div style="display:flex;align-items:baseline;gap:5px;margin:9px 0 10px">
+              <span class="d-num" style="font-size:25px;font-weight:700;letter-spacing:-.02em">{{ k.value }}</span>
+              <span style="font-size:12px;color:#9AA3B4">{{ k.unit }}</span>
+            </div>
+            <div>{{ k.spark }}</div>
+          </div>
+        </sc-for>
+      </div>
+
+      <!-- 30d routing history -->
+      <div class="d-card" style="background:#fff;border:1px solid #E1E5ED;border-radius:14px;padding:18px 20px;margin-bottom:24px">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px">
+          <div>
+            <div style="font-size:13px;font-weight:600;color:#10131A">Forwarding volume · 30 days</div>
+            <div style="font-size:11.5px;color:#9AA3B4;margin-top:2px">daily forwarded value, sats · fee-drift window shaded</div>
+          </div>
+          <div style="display:flex;gap:16px">
+            <div style="text-align:right"><div class="d-num" style="font-size:16px;font-weight:700">2.41 <span style="font-size:11px;color:#9AA3B4">BTC</span></div><div style="font-size:10.5px;color:#9AA3B4">routed 30d</div></div>
+            <div style="text-align:right"><div class="d-num" style="font-size:16px;font-weight:700;color:#C8770A">↓ 40%</div><div style="font-size:10.5px;color:#9AA3B4">vs prior 30d</div></div>
+          </div>
+        </div>
+        {{ volumeChart }}
+      </div>
+
+      <!-- Two-column: channels + activity -->
+      <div style="display:grid;grid-template-columns:1.32fr 1fr;gap:20px;align-items:start">
+
+        <!-- Channels -->
+        <div class="d-card" style="background:#fff;border:1px solid #E1E5ED;border-radius:14px;overflow:hidden">
+          <div style="padding:16px 18px 13px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #ECEFF4">
+            <div style="font-size:13px;font-weight:600">Channels <span class="d-num" style="color:#9AA3B4;font-weight:500">· {{ channelCount }} active</span></div>
+            <div class="d-num" style="font-size:11.5px;color:#9AA3B4">4.52 BTC capacity · 64% local</div>
+          </div>
+          <div style="padding:8px 18px 4px;display:grid;grid-template-columns:1fr 150px 70px;gap:12px">
+            <span style="font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:#9AA3B4">Peer</span>
+            <span style="font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:#9AA3B4">Local / remote</span>
+            <span style="font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:#9AA3B4;text-align:right">Out ppm</span>
+          </div>
+          <sc-for list="{{ channels }}" as="ch" hint-placeholder-count="7">
+            <div class="d-chrow" style="padding:11px 18px;display:grid;grid-template-columns:1fr 150px 70px;gap:12px;align-items:center;border-top:1px solid #F1F3F7">
+              <div style="min-width:0">
+                <div style="display:flex;align-items:center;gap:8px">
+                  <span style="width:7px;height:7px;border-radius:50%;background:{{ ch.dot }};flex:none"></span>
+                  <span style="font-size:12.5px;font-weight:600;color:#10131A;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ ch.alias }}</span>
+                </div>
+                <div class="d-mono" style="font-size:10.5px;color:#9AA3B4;margin-top:2px;padding-left:15px">{{ ch.chanId }} · {{ ch.lastFwd }}</div>
+              </div>
+              <div>
+                <div style="display:flex;height:7px;border-radius:4px;overflow:hidden;background:#EEF0F4">
+                  <span style="width:{{ ch.localPct }};background:{{ ch.barColor }}"></span>
+                </div>
+                <div class="d-num" style="display:flex;justify-content:space-between;font-size:10px;color:#9AA3B4;margin-top:3px"><span>{{ ch.local }}</span><span>{{ ch.remote }}</span></div>
+              </div>
+              <div class="d-num d-mono" style="font-size:12px;text-align:right;color:{{ ch.ppmColor }};font-weight:{{ ch.ppmWeight }}">{{ ch.ppm }}</div>
+            </div>
+          </sc-for>
+          <div style="padding:11px 18px;border-top:1px solid #F1F3F7;text-align:center">
+            <span style="font-size:12px;color:#9AA3B4">+ {{ moreChannels }} more channels</span>
+          </div>
+        </div>
+
+        <!-- Recent activity (tabbed) -->
+        <div class="d-card" style="background:#fff;border:1px solid #E1E5ED;border-radius:14px;overflow:hidden">
+          <div style="padding:14px 16px 0">
+            <div style="font-size:13px;font-weight:600;margin-bottom:11px">Recent activity</div>
+            <div style="display:flex;gap:4px;background:#F1F3F7;border-radius:9px;padding:3px">
+              <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="3">
+                <span onClick="{{ t.onClick }}" style="flex:1;text-align:center;font-size:12px;font-weight:600;padding:6px 8px;border-radius:7px;cursor:pointer;background:{{ t.bg }};color:{{ t.color }};box-shadow:{{ t.shadow }}">{{ t.label }}</span>
+              </sc-for>
+            </div>
+          </div>
+          <div style="padding:6px 16px 14px">
+            <sc-for list="{{ activity }}" as="a" hint-placeholder-count="6">
+              <div style="display:flex;align-items:center;gap:11px;padding:10px 0;border-bottom:1px solid #F4F6F9">
+                <div style="flex:none;width:26px;height:26px;border-radius:8px;background:{{ a.iconBg }};display:flex;align-items:center;justify-content:center">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="{{ a.iconColor }}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="{{ a.iconD }}"/></svg>
+                </div>
+                <div style="flex:1;min-width:0">
+                  <div style="font-size:12.5px;color:#10131A;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ a.primary }}</div>
+                  <div class="d-mono" style="font-size:10.5px;color:#9AA3B4;margin-top:1px">{{ a.secondary }}</div>
+                </div>
+                <div style="text-align:right;flex:none">
+                  <div class="d-num d-mono" style="font-size:12px;font-weight:600;color:{{ a.amountColor }}">{{ a.amount }}</div>
+                  <div style="font-size:10px;color:{{ a.statusColor }}">{{ a.status }}</div>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+
+      <!-- Peers + Health history -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start;margin-top:20px">
+        <!-- Peers -->
+        <div class="d-card" style="background:#fff;border:1px solid #E1E5ED;border-radius:14px;overflow:hidden">
+          <div style="padding:16px 18px 13px;border-bottom:1px solid #ECEFF4;display:flex;align-items:center;justify-content:space-between">
+            <div style="font-size:13px;font-weight:600">Peers <span class="d-num" style="color:#9AA3B4;font-weight:500">· 24 connected</span></div>
+            <span style="font-size:11px;color:#1E9E63;display:inline-flex;align-items:center;gap:5px"><span style="width:6px;height:6px;border-radius:50%;background:#1E9E63"></span>all reachable</span>
+          </div>
+          <sc-for list="{{ peers }}" as="p" hint-placeholder-count="5">
+            <div class="d-chrow" style="padding:11px 18px;display:flex;align-items:center;gap:11px;border-top:1px solid #F1F3F7">
+              <span style="width:7px;height:7px;border-radius:50%;background:{{ p.dot }};flex:none"></span>
+              <div style="flex:1;min-width:0">
+                <div style="font-size:12.5px;font-weight:600;color:#10131A;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ p.alias }}</div>
+                <div class="d-mono" style="font-size:10.5px;color:#9AA3B4">{{ p.pubkey }}</div>
+              </div>
+              <div style="text-align:right;flex:none;min-width:52px">
+                <div class="d-num" style="font-size:11.5px;color:#5A616E;white-space:nowrap">{{ p.channels }} ch</div>
+                <div style="font-size:10px;color:#9AA3B4;white-space:nowrap">{{ p.lastSeen }}</div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+
+        <!-- Health history -->
+        <div class="d-card" style="background:#fff;border:1px solid #E1E5ED;border-radius:14px;overflow:hidden">
+          <div style="padding:16px 18px 13px;border-bottom:1px solid #ECEFF4;display:flex;align-items:center;justify-content:space-between">
+            <div style="font-size:13px;font-weight:600">Health &amp; incident history</div>
+            <span class="d-num" style="font-size:11px;color:#9AA3B4">90 days</span>
+          </div>
+          <div style="padding:16px 18px">
+            <div style="display:flex;flex-direction:column">
+              <sc-for list="{{ history }}" as="h" hint-placeholder-count="4">
+                <div style="display:flex;gap:12px">
+                  <div style="display:flex;flex-direction:column;align-items:center;flex:none">
+                    <span style="width:10px;height:10px;border-radius:{{ h.shape }};background:{{ h.dot }};border:2px solid #fff;box-shadow:0 0 0 1px {{ h.dot }}"></span>
+                    <span style="width:2px;flex:1;background:{{ h.line }};min-height:14px"></span>
+                  </div>
+                  <div style="padding-bottom:16px;min-width:0">
+                    <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+                      <span style="font-size:12.5px;font-weight:600;color:#10131A;white-space:nowrap">{{ h.title }}</span>
+                      <span style="font-size:10px;font-weight:600;color:{{ h.tagColor }};background:{{ h.tagBg }};padding:2px 7px;border-radius:5px;white-space:nowrap">{{ h.tag }}</span>
+                    </div>
+                    <div class="d-num" style="font-size:11px;color:#9AA3B4;margin-top:2px">{{ h.when }}</div>
+                    <p style="font-size:12px;color:#6F7787;line-height:1.45;margin-top:3px">{{ h.note }}</p>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Safety -->
+      <div style="margin-top:22px;display:flex;align-items:center;gap:11px;padding:14px 18px;background:#EAEEF6;border:1px solid #DBE2EE;border-radius:12px">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#13284F" stroke-width="1.8"><path d="M12 3l7 3v6c0 4.2-2.9 7.4-7 9-4.1-1.6-7-4.8-7-9V6l7-3z"/></svg>
+        <p style="font-size:12.5px;color:#5A616E;line-height:1.5"><span style="color:#10131A;font-weight:600">Read-only view.</span> NodeMonitor holds no credentials for this node — the fee realign is exported as a command you run, never executed here.</p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Command modal -->
+  <sc-if value="{{ cmdOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ onCloseCmd }}" style="position:fixed;inset:0;z-index:60;background:rgba(16,19,26,.42);backdrop-filter:blur(3px);display:flex;align-items:center;justify-content:center;padding:24px">
+      <div onClick="{{ stop }}" style="width:580px;max-width:100%;background:#fff;border-radius:16px;box-shadow:0 24px 60px rgba(0,0,0,.3);overflow:hidden">
+        <div style="padding:20px 22px 16px;border-bottom:1px solid #ECEEF3">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+            <span style="font-size:10.5px;font-weight:700;letter-spacing:.07em;color:#fff;background:#0E8C84;padding:3px 8px;border-radius:5px">WATCH</span>
+            <span style="font-size:12px;color:#9AA3B4">Exported command</span>
+            <div onClick="{{ onCloseCmd }}" class="d-x" style="margin-left:auto;width:26px;height:26px;border-radius:6px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#9AA3B4">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 5l14 14M19 5L5 19"/></svg>
+            </div>
+          </div>
+          <h3 style="font-size:16.5px;font-weight:600">Realign outbound fees on lqwd-rtr-02</h3>
+          <p style="font-size:13px;color:#5A616E;margin-top:5px;line-height:1.5">Sets the outbound base + ppm rate back toward peer median across all channels. Review the values before running.</p>
+        </div>
+        <div style="padding:18px 22px">
+          <div style="background:#13284F;border-radius:11px;padding:15px 16px;overflow:auto">
+            <code class="d-mono" style="font-size:12.5px;color:#DCE4F4;line-height:1.6;white-space:pre">ssh ops@host-01 -- lncli --node=lqwd-rtr-02 updatechanpolicy \
+  --base_fee_msat=1000 --fee_rate_ppm=350 --time_lock_delta=80</code>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;margin-top:13px">
+            <span onClick="{{ onCopy }}" class="d-btn" style="font-size:13px;font-weight:600;padding:9px 15px;background:#13284F;color:#fff;border-radius:9px;cursor:pointer">{{ copyLabel }}</span>
+            <span style="font-size:12px;color:#9AA3B4;display:flex;align-items:center;gap:6px">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#9AA3B4" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 8v4M12 16h.01" stroke-linecap="round"/></svg>
+              Runs on your machine — never executed by NodeMonitor
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1280,&quot;height&quot;:1700}}">
+class Component extends DCLogic {
+  state = { tab:'forwards', cmd:false, copied:false, pubCopied:false };
+
+  // generic chart (line + optional band/threshold/area + projection)
+  chart(s){
+    const e=React.createElement; const W=s.w,H=s.h,P=s.pad||{t:11,r:10,b:15,l:10};
+    const iw=W-P.l-P.r, ih=H-P.t-P.b; const yMax=s.yMax,yMin=s.yMin||0;
+    const Y=v=>P.t+ih-((v-yMin)/(yMax-yMin))*ih; const N=s.series.length; const X=i=>P.l+(N<=1?0:(i/(N-1))*iw);
+    const SLATE='#64748B',AXIS='#9AA3B4'; const k=[];
+    if(s.shade){ const x0=X(s.shade.from),x1=X(s.shade.to); k.push(e('rect',{key:'sh',x:x0,y:P.t,width:x1-x0,height:ih,fill:'#C8770A12'}));
+      k.push(e('text',{key:'shl',x:(x0+x1)/2,y:P.t+9,fontSize:8.5,fill:'#C8770A',textAnchor:'middle'},s.shade.label)); }
+    if(s.band){ const yh=Y(s.band.hi),yl=Y(s.band.lo); k.push(e('rect',{key:'bd',x:P.l,y:yh,width:iw,height:Math.max(1,yl-yh),fill:'#64748B1c',rx:2}));
+      k.push(e('text',{key:'bl',x:P.l+3,y:yl-3,fontSize:8,fill:SLATE},s.band.label||'peer median')); }
+    if(s.threshold){ const ty=Y(s.threshold.v); k.push(e('line',{key:'th',x1:P.l,y1:ty,x2:W-P.r,y2:ty,stroke:SLATE,strokeWidth:1,strokeDasharray:'3 3'}));
+      k.push(e('text',{key:'thl',x:W-P.r,y:ty-3,fontSize:8,fill:SLATE,textAnchor:'end'},s.threshold.label)); }
+    const pts=s.series.map((v,i)=>[X(i),Y(v)]);
+    if(s.area){ const base=Y(yMin); const d='M'+pts.map(p=>p[0]+','+p[1]).join(' L')+` L${pts[pts.length-1][0]},${base} L${pts[0][0]},${base} Z`;
+      k.push(e('path',{key:'ar',d,fill:s.accent+'1f',stroke:'none'})); }
+    k.push(e('polyline',{key:'ml',points:pts.map(p=>p[0]+','+p[1]).join(' '),fill:'none',stroke:s.accent,strokeWidth:2,strokeLinecap:'round',strokeLinejoin:'round'}));
+    const lp=pts[pts.length-1]; k.push(e('circle',{key:'ld',cx:lp[0],cy:lp[1],r:3,fill:s.accent}));
+    (s.axis||[]).forEach((t,i,a)=>{ const x=i===0?P.l:(i===a.length-1?W-P.r:P.l+iw/2); const anc=i===0?'start':(i===a.length-1?'end':'middle');
+      k.push(e('text',{key:'ax'+i,x,y:H-3,fontSize:8.5,fill:AXIS,textAnchor:anc},t)); });
+    return e('svg',{width:'100%',height:H,viewBox:`0 0 ${W} ${H}`,preserveAspectRatio:'none',style:{display:'block'}},k);
+  }
+
+  bars(vals,opts){
+    const e=React.createElement; const W=opts.w,H=opts.h,P={t:8,r:4,b:16,l:4};
+    const iw=W-P.l-P.r,ih=H-P.t-P.b; const mx=Math.max(...vals); const n=vals.length; const bw=iw/n*0.66; const gap=iw/n;
+    const k=[]; const shadeFrom=opts.shadeFrom!=null?opts.shadeFrom:-1;
+    if(shadeFrom>=0){ const x0=P.l+shadeFrom*gap; k.push(e('rect',{key:'sh',x:x0,y:P.t,width:W-P.r-x0,height:ih,fill:'#C8770A10'}));
+      k.push(e('text',{key:'shl',x:x0+(W-P.r-x0)/2,y:P.t+9,fontSize:9,fill:'#C8770A',textAnchor:'middle'},opts.shadeLabel||'')); }
+    vals.forEach((v,i)=>{ const h=Math.max(1,(v/mx)*ih); const x=P.l+i*gap+(gap-bw)/2; const y=P.t+ih-h;
+      const col = (shadeFrom>=0 && i>=shadeFrom)? '#C8770A' : (opts.color||'#33559B');
+      k.push(e('rect',{key:'b'+i,x,y,width:bw,height:h,rx:1.5,fill:col,opacity:(shadeFrom>=0&&i>=shadeFrom)?0.85:0.9})); });
+    (opts.axis||[]).forEach((t,i,a)=>{ const x=i===0?P.l:(i===a.length-1?W-P.r:W/2); const anc=i===0?'start':(i===a.length-1?'end':'middle');
+      k.push(e('text',{key:'ax'+i,x,y:H-3,fontSize:9,fill:'#9AA3B4',textAnchor:anc},t)); });
+    return e('svg',{width:'100%',height:H,viewBox:`0 0 ${W} ${H}`,preserveAspectRatio:'none',style:{display:'block'}},k);
+  }
+
+  miniSpark(vals,color,down){
+    const e=React.createElement; const W=120,H=30,p=3;
+    const mn=Math.min(...vals),mx=Math.max(...vals),rng=(mx-mn)||1;
+    const pts=vals.map((v,i)=>[p+(i/(vals.length-1))*(W-2*p),(H-p)-((v-mn)/rng)*(H-2*p)]);
+    const line=pts.map(pt=>pt[0].toFixed(1)+','+pt[1].toFixed(1)).join(' ');
+    const area=pts[0][0]+','+(H-p)+' '+line+' '+pts[pts.length-1][0]+','+(H-p);
+    return e('svg',{width:'100%',height:H,viewBox:`0 0 ${W} ${H}`,preserveAspectRatio:'none',style:{display:'block'}},[
+      e('polyline',{key:'a',points:area,fill:color+'1c',stroke:'none'}),
+      e('polyline',{key:'l',points:line,fill:'none',stroke:color,strokeWidth:1.8,strokeLinecap:'round',strokeLinejoin:'round'}),
+    ]);
+  }
+
+  activityData(){
+    return {
+      forwards:[
+        { primary:'ACINQ → Bitrefill', secondary:'742,109 → 742,051 sat · 14:03', amount:'+58', amountColor:'#1E9E63', status:'routed', statusColor:'#9AA3B4', icon:'fwd' },
+        { primary:'Kraken → WoS', secondary:'1,204,880 → 1,204,790 sat · 13:58', amount:'+90', amountColor:'#1E9E63', status:'routed', statusColor:'#9AA3B4', icon:'fwd' },
+        { primary:'LOOP → Boltz', secondary:'318,400 → 318,370 sat · 13:51', amount:'+30', amountColor:'#1E9E63', status:'routed', statusColor:'#9AA3B4', icon:'fwd' },
+        { primary:'River → ACINQ', secondary:'89,000 sat · 13:44', amount:'—', amountColor:'#9AA3B4', status:'failed · no route', statusColor:'#C8770A', icon:'fail' },
+        { primary:'Bitrefill → Kraken', secondary:'556,200 → 556,158 sat · 13:39', amount:'+42', amountColor:'#1E9E63', status:'routed', statusColor:'#9AA3B4', icon:'fwd' },
+        { primary:'WoS → LOOP', secondary:'2,010,000 → 2,009,880 sat · 13:30', amount:'+120', amountColor:'#1E9E63', status:'routed', statusColor:'#9AA3B4', icon:'fwd' },
+      ],
+      payments:[
+        { primary:'Rebalance → lqwd-rtr-05', secondary:'02e1f4…a7 · 13:12', amount:'-2,000,000', amountColor:'#C8770A', status:'settled · 412 sat fee', statusColor:'#9AA3B4', icon:'pay' },
+        { primary:'Channel open fee', secondary:'on-chain · 11:48', amount:'-3,140', amountColor:'#C8770A', status:'confirmed', statusColor:'#9AA3B4', icon:'pay' },
+        { primary:'Rebalance → lqwd-rtr-06', secondary:'03b9c2…d1 · 09:55', amount:'-1,500,000', amountColor:'#C8770A', status:'settled · 308 sat fee', statusColor:'#9AA3B4', icon:'pay' },
+        { primary:'Probe payment', secondary:'02a4f1…e2 · 08:30', amount:'-1,000', amountColor:'#C8770A', status:'settled', statusColor:'#9AA3B4', icon:'pay' },
+        { primary:'Rebalance → lqwd-lsp-06', secondary:'03f7a1…9c · 07:20', amount:'—', amountColor:'#9AA3B4', status:'failed · fee limit', statusColor:'#C8770A', icon:'fail' },
+      ],
+      invoices:[
+        { primary:'Liquidity lease · 30d', secondary:'memo: inbound 5M · 12:40', amount:'+12,500', amountColor:'#1E9E63', status:'settled', statusColor:'#1E9E63', icon:'inv' },
+        { primary:'Keysend tip', secondary:'12:05', amount:'+5,000', amountColor:'#1E9E63', status:'settled', statusColor:'#1E9E63', icon:'inv' },
+        { primary:'Liquidity lease · 30d', secondary:'memo: inbound 2M · 10:18', amount:'+4,800', amountColor:'#1E9E63', status:'settled', statusColor:'#1E9E63', icon:'inv' },
+        { primary:'Service invoice', secondary:'memo: ops-test · 09:02', amount:'+1,000', amountColor:'#9AA3B4', status:'open', statusColor:'#C8770A', icon:'inv' },
+        { primary:'Liquidity lease · 30d', secondary:'memo: inbound 8M · Jun 20', amount:'—', amountColor:'#9AA3B4', status:'expired', statusColor:'#9AA3B4', icon:'exp' },
+      ],
+    };
+  }
+
+  iconFor(kind){ return ({
+    fwd:{d:'M5 12h14M13 6l6 6-6 6', bg:'#E7F4EC', color:'#1E9E63'},
+    fail:{d:'M18 6L6 18M6 6l12 12', bg:'#FBF0DD', color:'#C8770A'},
+    pay:{d:'M12 19V5M5 12l7 7 7-7', bg:'#EAEFF8', color:'#33559B'},
+    inv:{d:'M12 5v14M5 12l7-7 7 7', bg:'#E7F4EC', color:'#1E9E63'},
+    exp:{d:'M12 8v4l3 2', bg:'#F1F3F7', color:'#9AA3B4'},
+  })[kind]; }
+
+  renderVals(){
+    const feeChart=this.chart({ w:204,h:62, yMax:1200, series:[640,720,830,910,980,1020,1045,1050], band:{lo:280,hi:400,label:'peer median'}, accent:'#0E8C84', axis:['-7d','now'] });
+
+    // volume 30d daily, drift window last ~10 days shaded
+    const vol=[]; let v=92; for(let i=0;i<30;i++){ v=Math.max(28, v*(0.96+Math.sin(i)*0.04+ (Math.random?0:0) )); vol.push(78+ (i<20? (10+ (i%5)*4) : (Math.max(0,40-(i-20)*4))) + (i%3)*3); }
+    const volSeries=[88,92,85,96,90,99,94,101,97,103,98,95,100,92,97,89,94,86,90,84,78,72,68,61,57,52,48,46,43,41];
+    const volumeChart=this.bars(volSeries,{ w:1120,h:150, color:'#33559B', shadeFrom:20, shadeLabel:'fee-drift window · volume ↓', axis:['30d ago','15d','today'] });
+
+    const kpis=[
+      { label:'Forwards', value:'1,829', unit:'30d', delta:'-38%', deltaColor:'#C8770A', deltaBg:'#FBF0DD', spark:this.miniSpark([62,60,64,58,61,57,52,48,46,43,41],'#33559B') },
+      { label:'Fees earned', value:'92.4k', unit:'sats', delta:'-31%', deltaColor:'#C8770A', deltaBg:'#FBF0DD', spark:this.miniSpark([3.6,3.4,3.5,3.2,3.0,2.8,2.6,2.5,2.4,2.3,2.2],'#33559B') },
+      { label:'Volume routed', value:'2.41', unit:'BTC', delta:'-40%', deltaColor:'#C8770A', deltaBg:'#FBF0DD', spark:this.miniSpark([100,96,99,92,90,84,78,68,57,48,41],'#33559B') },
+      { label:'Forward success', value:'91.4', unit:'%', delta:'-2.1pt', deltaColor:'#C8770A', deltaBg:'#FBF0DD', spark:this.miniSpark([96,95,96,94,95,93,93,92,92,91,91],'#0E8C84') },
+    ];
+
+    const chDot=(local)=> local>=85||local<=15? '#C8770A' : '#1E9E63';
+    const channels=[
+      { alias:'ACINQ', chanId:'841923x1130x0', lastFwd:'2m ago', localN:38, ppm:1050, hot:true },
+      { alias:'Kraken', chanId:'839004x442x1', lastFwd:'5m ago', localN:71, ppm:980, hot:true },
+      { alias:'Bitrefill', chanId:'842118x77x0', lastFwd:'9m ago', localN:54, ppm:1020, hot:true },
+      { alias:'Wallet of Satoshi', chanId:'840551x903x1', lastFwd:'12m ago', localN:62, ppm:340 },
+      { alias:'LOOP / Lightning Labs', chanId:'838776x210x0', lastFwd:'18m ago', localN:47, ppm:350 },
+      { alias:'Boltz', chanId:'841330x55x2', lastFwd:'26m ago', localN:88, ppm:420 },
+      { alias:'River Financial', chanId:'839912x661x0', lastFwd:'41m ago', localN:23, ppm:310 },
+    ].map(c=>{ return { alias:c.alias, chanId:c.chanId, lastFwd:c.lastFwd, dot:chDot(c.localN),
+      localPct:c.localN+'%', local:c.localN+'% local', remote:(100-c.localN)+'% rem', barColor:chDot(c.localN),
+      ppm:c.ppm.toLocaleString('en-US'), ppmColor:c.hot?'#C8770A':'#5A616E', ppmWeight:c.hot?'700':'500' }; });
+
+    const peers=[
+      { alias:'ACINQ', pubkey:'03864e…f1a2', channels:3, lastSeen:'now', dot:'#1E9E63' },
+      { alias:'Kraken', pubkey:'02f1a4…9b30', channels:2, lastSeen:'now', dot:'#1E9E63' },
+      { alias:'Wallet of Satoshi', pubkey:'035e2c…c7d8', channels:2, lastSeen:'now', dot:'#1E9E63' },
+      { alias:'LOOP / Lightning Labs', pubkey:'021c9b…44ef', channels:1, lastSeen:'2m ago', dot:'#1E9E63' },
+      { alias:'Boltz', pubkey:'026f70…a519', channels:1, lastSeen:'4m ago', dot:'#1E9E63' },
+    ];
+
+    const history=[
+      { title:'Fee drift detected', tag:'WATCH · active', tagColor:'#0E8C84', tagBg:'#E2F2EF', when:'today · 2h ago', note:'Outbound ppm reached 3.1× peer median; routed volume down ~40%.', dot:'#0E8C84', shape:'50%', line:'#E2F2EF' },
+      { title:'Channel opened — Boltz', tag:'INFO', tagColor:'#6F7787', tagBg:'#F1F3F7', when:'Jun 18', note:'2.0M sat channel opened to improve outbound liquidity.', dot:'#9AA3B4', shape:'50%', line:'#EDEFF4' },
+      { title:'Brief unreachability', tag:'RESOLVED', tagColor:'#1E7A4E', tagBg:'#E7F4EC', when:'Jun 09 · 4m', note:'lnd restart after host-01 kernel update; recovered automatically.', dot:'#1E9E63', shape:'50%', line:'#EDEFF4' },
+      { title:'Onboarded to fleet', tag:'INFO', tagColor:'#6F7787', tagBg:'#F1F3F7', when:'Mar 02', note:'Node provisioned on host-01 and added to routing rotation.', dot:'#C2C8D2', shape:'2px', line:'transparent' },
+    ];
+
+    const check='M20 6L9 17l-5-5', cross='M18 6L6 18M6 6l12 12';
+    const svc=[
+      { name:'aiLiquidityManager', running:true, functioning:true, hb:'8s ago', lastRun:'2m ago · ok', err:0 },
+      { name:'internalRebalancer', running:true, functioning:true, hb:'12s ago', lastRun:'18m ago · ok', err:0 },
+      { name:'Monitoring', running:true, functioning:true, hb:'4s ago', lastRun:'continuous', err:0 },
+      { name:'nodeAuditor', running:true, functioning:true, hb:'30s ago', lastRun:'1h ago · ok', err:1 },
+      { name:'addressBalances', running:true, functioning:false, hb:'stale 41m', lastRun:'failed 41m ago', err:14 },
+      { name:'channelAcceptor', running:true, functioning:true, hb:'6s ago', lastRun:'9m ago · ok', err:0 },
+    ];
+    const services=svc.map(s=>{
+      const ok=s.running&&s.functioning; const dead=s.running&&!s.functioning;
+      return { name:s.name, href:'Service%20Detail.dc.html', ok, alarm:!ok,
+        accent: ok?'#1E9E63':'#E0392B', tint: ok?'#ffffff':'#FCF1F0', border: ok?'#E1E5ED':'#F0CFCB',
+        shadow: ok?'0 1px 2px rgba(16,19,26,.04)':'0 4px 16px rgba(224,57,43,.10)',
+        statusLabel: ok?'HEALTHY':(dead?'UP · NOT HEALTHY':'DOWN'), statusColor: ok?'#1E7A4E':'#E0392B', statusBg: ok?'#E7F4EC':'#FCE4E1',
+        runGlyph: s.running?check:cross, runColor: s.running?'#1E9E63':'#E0392B', runText: s.running?'yes':'no',
+        funcGlyph: s.functioning?check:cross, funcColor: s.functioning?'#1E9E63':'#E0392B', funcText: s.functioning?'yes':'no',
+        funcBg: s.functioning?'#FAFBFD':'#FCE9E7', funcBorder: s.functioning?'#ECEFF4':'#F3D3D0',
+        hb:s.hb, hbColor: (s.hb.indexOf('stale')>=0)?'#A9912F':'#5A616E',
+        lastRun:s.lastRun, lastRunColor: (s.lastRun.indexOf('failed')>=0)?'#E0392B':'#5A616E',
+        err: s.err+' err', errColor: s.err>5?'#E0392B':(s.err>0?'#C8770A':'#9AA3B4') };
+    });
+    const vmMeters=[
+      { label:'vCPU', value:'34%', pct:'34%', color:'#1E9E63' },
+      { label:'Memory', value:'51%', pct:'51%', color:'#1E9E63' },
+      { label:'Disk', value:'62%', pct:'62%', color:'#1E9E63' },
+    ];
+    const infra=[
+      { name:'bitcoind', status:'at tip', statusColor:'#1E7A4E', dot:'#1E9E63', href:'Host%20Detail.dc.html' },
+      { name:'esplora', status:'synced', statusColor:'#1E7A4E', dot:'#1E9E63', href:'Host%20Detail.dc.html' },
+      { name:'postgres', status:'healthy', statusColor:'#1E7A4E', dot:'#1E9E63', href:'Host%20Detail.dc.html' },
+    ];
+    const infraNote='All infra on host-01 is healthy — so the addressBalances failure is a service-level fault on this node, not an infra cascade.';
+
+    const adata=this.activityData();
+    const activity=(adata[this.state.tab]||[]).map(a=>{ const ic=this.iconFor(a.icon);
+      return { primary:a.primary, secondary:a.secondary, amount:a.amount, amountColor:a.amountColor, status:a.status, statusColor:a.statusColor,
+        iconD:ic.d, iconBg:ic.bg, iconColor:ic.color }; });
+    const mkTab=(key,label)=>{ const on=this.state.tab===key; return { label, onClick:()=>this.setState({tab:key}), bg:on?'#fff':'transparent', color:on?'#13284F':'#6F7787', shadow:on?'0 1px 2px rgba(16,19,26,.14)':'none' }; };
+
+    return {
+      feeChart, volumeChart, kpis, channels, channelCount:'18', moreChannels:'11',
+      peers, history, activity, services, vmMeters, infra, infraNote,
+      tabs:[ mkTab('forwards','Forwards'), mkTab('payments','Payments'), mkTab('invoices','Invoices') ],
+      pubkeyCopied:this.state.pubCopied?'copied ✓':'', onCopyPubkey:()=>{ try{navigator.clipboard.writeText('03a4f1c8...e29b');}catch(e){} this.setState({pubCopied:true}); },
+      onExportFix:()=>this.setState({cmd:true,copied:false}), cmdOpen:this.state.cmd, onCloseCmd:()=>this.setState({cmd:false}),
+      copyLabel:this.state.copied?'Copied ✓':'Copy command',
+      onCopy:()=>{ try{navigator.clipboard.writeText('ssh ops@host-01 -- lncli --node=lqwd-rtr-02 updatechanpolicy --base_fee_msat=1000 --fee_rate_ppm=350 --time_lock_delta=80');}catch(e){} this.setState({copied:true}); },
+      stop:(e)=>e.stopPropagation(),
+    };
+  }
+}
+</script>
+</body>
+</html>

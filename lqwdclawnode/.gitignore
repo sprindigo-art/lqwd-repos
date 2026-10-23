@@ -1,0 +1,39 @@
+# Go
+lnd-gateway/lnd-gateway
+lnd-gateway/data/
+
+# Admin SPA (only embed.go + dist/ tracked)
+lnd-gateway/admin/node_modules/
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+
+# Audit fallback
+*.jsonl
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Macaroons and TLS certs (never commit)
+*.macaroon
+tls.cert
+tls.key
+
+# Compiled
+*.exe
+*.dll
+*.so
+*.dylib

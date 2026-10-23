@@ -1,0 +1,41 @@
+.copy-text{
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    color: #4D4D4D;
+    word-wrap: anywhere;
+}
+
+.copy-text-container{
+    box-sizing: border-box;
+    /* Auto layout */
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background: #FBFBFC;
+    border: 1px solid #E3E9F5;
+    border-radius: 8px;
+    min-width: 50% !important;
+}
+
+#copy-tooltip > .tooltip-inner {
+    background-color: #24AB20;
+    color: #FFFFFF;
+    border: 1px solid #24AB20;
+    border-radius: 6px;
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+}
+
+#copy-tooltip > .tooltip-arrow::before {
+    border-top-color: #24AB20 !important;
+}
+
+#copy:hover {
+    color: #009EE2;
+}

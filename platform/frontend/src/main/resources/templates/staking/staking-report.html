@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!--[if gte mso 9]><xml><o:OfficeDocumentSettings><o:AllowPNG/><o:PixelsPerInch>96</o:PixelsPerInch></o:OfficeDocumentSettings></xml><![endif]-->
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+    <meta content="width=device-width" name="viewport"/>
+    <!--[if !mso]><!-->
+    <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+    <link href="https://fonts.googleapis.com/css?family=Nunito:400,600,700" rel="stylesheet"/>
+    <style>
+        td {
+            width: 100%;
+            text-align: left;
+            color: #4B545B;
+        }
+        .table-invoices {
+            table-layout: fixed;
+            max-width: 750px;
+            border: 1px solid #4B555B;
+            border-collapse: collapse;
+        }
+        .table-invoices th,.table-invoices td {
+            padding: 4px;
+            text-align: center;
+            color: #4B545B;
+            border: 1px solid #4B555B;
+            border-collapse: collapse;
+        }
+        .title{
+            text-align: center;
+            font-family: Nunito Sans;
+            font-style: normal;
+            font-weight: bold;
+            font-size: 24px;
+            line-height: 60px;
+            color: #4B545B;
+            text-align: center;
+        }
+        .line{
+            border: none;
+            width: 100%;
+            height: 10px;
+            border-bottom: 1px solid #009EE2;
+            position: absolute;
+        }
+
+    </style>
+</head>
+    <body>
+        <div>
+            <table>
+                <tr><td class="title" >Staking Requests Report</td></tr>
+            </table>
+        </div>
+        <div>
+            <table class="table-invoices">
+                <thead>
+                <tr>
+                    <th>Address/Invoice</th>
+                    <th>Type</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                    <th>Created date</th>
+                    <th>Total Days</th>
+                    <th>Left Days</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="staking: ${stakingList}" >
+                    <td class="word-break"  th:if="${staking.getType() == 'INVOICE'}" th:text="${staking.getPaymentRequest()}" style="text-align: left; max-width: 150px; word-wrap: break-word;" ></td>
+                    <td class="word-break" th:unless="${staking.getType() == 'INVOICE'}" th:text="${staking.getAddress()}" style="text-align: left; max-width: 150px; word-wrap: break-word;"></td>
+                    <td>[[${#strings.toLowerCase(staking.getType())}]] </td>
+                    <td th:text="${staking.getAmount()}"></td>
+                    <td>[[${#strings.toLowerCase(staking.getStatus())}]] </td>
+                    <td th:text="${#dates.format(staking.getDateCreated(),'MMMM d, YYYY')}"></td>
+                    <td th:text="${staking.getTotalDays()}"></td>
+                    <td th:text="${staking.getDaysLeft()}"></td>
+                </tr>
+                </tbody>
+                <tfoot>
+                <tr>
+                    <th>Address/Invoice</th>
+                    <th>Type</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                    <th>Created date</th>
+                    <th>Total Days</th>
+                    <th>Left Days</th>
+                </tr>
+                </tfoot>
+
+            </table>
+            <div class="line"></div>
+            <table style="margin-top: 20px;">
+                <tr><td th:text="|Total number of requests: ${totalItems}|" ></td></tr>
+                <tr><td th:text="|Page ${pageNum} out of ${totalPages}|" ></td></tr>
+                <tr><td th:text="|Size ${size}|" ></td></tr>
+            </table>
+        </div>
+    </body>
+</html>

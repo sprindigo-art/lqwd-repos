@@ -1,0 +1,95 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tbtc1
+  namespace: btcd
+  labels:
+    app: tbtc1
+spec:
+  selector:
+    matchLabels:
+      app: tbtc1
+  template:
+    metadata:
+      labels:
+        app: tbtc1
+    spec:
+      imagePullSecrets:
+        - name: ecr-token
+      containers:
+        - name: tbtc1
+          image: '514063904685.dkr.ecr.us-west-2.amazonaws.com/btcd:dev-$BUILD_NUMBER'
+          terminationMessagePath: "/tmp/my-log"
+          env:
+            - name: WENV
+              value: "development"
+            - name: LND_PASSPHRASE
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: LND_PASSPHRASE
+            - name: LND_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: LND_PASSWORD
+            - name: LND_EXTERNALIP
+              value: 192.243.215.106
+            - name: LND_PODNAME
+              value: tbtc1
+            - name: SCENARIO
+              value: tbtc1
+            - name: LND_BITCOIND
+              value: "true"
+            - name: WATCHTOWER
+              value: "true"
+            - name: LND_NETWORK
+              value: testnet
+            - name: LND_ALIAS
+              value: lqwd-lnd
+            - name: LND_RPCUSER
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: LND_RPCUSER
+            - name: LND_RPCPASS
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: LND_RPCPASS
+            - name: LND_RPCHOST
+              value: testnet
+
+
+          ports:
+            - containerPort: 29088
+            - containerPort: 29099
+          resources:
+            requests:
+              memory: "1500Mi"
+
+            limits:
+              memory: "4000Mi"
+
+          volumeMounts:
+            - name: lnd
+              mountPath: /data
+          readinessProbe:
+            exec:
+              command:
+                - cat
+                - /data/bitcoind/bitcoind.pid
+            initialDelaySeconds: 120
+            timeoutSeconds: 1
+            periodSeconds: 5
+            successThreshold: 1
+            failureThreshold: 3
+      volumes:
+        - name: lnd
+          persistentVolumeClaim:
+            claimName: pv008-claim
+        - name: secret
+          secret:
+            secretName: secret
+
+

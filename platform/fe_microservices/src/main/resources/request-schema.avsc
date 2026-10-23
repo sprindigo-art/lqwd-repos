@@ -1,0 +1,42 @@
+{
+	"type": "record",
+	"name": "FrontEndRequest",
+	"namespace": "com.lqwd.schema",
+	"doc" : "this is the message schema that is used to send a request from  FE<->kafka",
+	"fields": [
+	{
+		"name": "id",
+		"type": "int",
+		"doc" : "id of this message"
+	},
+	{
+        "name": "timestamp",
+        "type": ["long"],
+		"logicalType": "timestamp-millis",
+        "doc" : "timestamp of the message composition"
+    },
+	{
+        "name": "username",
+        "type": "string",
+        "doc" : "username of the user who initiated this action/message"
+    },	
+	{
+		"name": "requested_action",
+		"type": ["string"],
+		"default": "transaction ",
+		"doc":"the action that is requested"
+	},
+	{
+		"name": "description",
+		"type": ["null","string"],
+		"default" : null,
+		"doc" : "description of the message or requested action  (if required)"
+	},
+	{
+        "name": "node_id",
+        "type": ["string"],
+        "default": "lqwd-lnd",
+        "doc": "the id of the LND node that this message is meant for"
+    }
+	]
+}

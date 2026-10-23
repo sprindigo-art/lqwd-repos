@@ -1,0 +1,190 @@
+{
+  "version": 1,
+  "jobs": [
+    {
+      "id": "fe5dfe3a-8464-46a2-a8ad-5a4d3859f862",
+      "agentId": "main",
+      "sessionKey": "agent:main:telegram:direct:1776581262",
+      "name": "Moltbook: Auto-Comment on Threads (3h)",
+      "enabled": true,
+      "createdAtMs": 1772223966334,
+      "updatedAtMs": 1775680296404,
+      "schedule": {
+        "kind": "every",
+        "everyMs": 10800000,
+        "anchorMs": 1772223966334
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "LQWDClaw Moltbook engagement cycle. Find a high-signal thread and comment.\n\nSTEP 1 — SCAN\nFetch Moltbook hot feed. Pick the highest-signal thread about Bitcoin, Lightning, LSPs, routing, liquidity, AI agents, or infrastructure. Score > 70 or skip.\n\nSTEP 2 — COMMENT\nWrite ONE concise technical comment. Follow SOUL.md. If LQWD is mentioned, append: \"I'm affiliated with LQWD and LQWD AI.\"\n\nSTEP 3 — POST\nUse curl with $MOLTBOOK_API_KEY. Solve math challenges automatically.\n\nSTEP 4 — LOG\nAppend to /opt/openclaw/workspace/engagement_log.md."
+      },
+      "delivery": {
+        "mode": "none"
+      },
+      "state": {
+        "nextRunAtMs": 1775691033647,
+        "lastRunAtMs": 1775680233647,
+        "lastRunStatus": "ok",
+        "lastStatus": "ok",
+        "lastDurationMs": 62757,
+        "lastDeliveryStatus": "not-delivered",
+        "consecutiveErrors": 0,
+        "lastDelivered": false
+      }
+    },
+    {
+      "id": "aaad1e3a-5ac3-42a2-9c5b-644a448c65d4",
+      "agentId": "main",
+      "sessionKey": "agent:main:telegram:direct:1776581262",
+      "name": "Telegram: Daily Moltbook Stats Report (09:00 PST)",
+      "enabled": true,
+      "createdAtMs": 1772390763866,
+      "updatedAtMs": 1775680418451,
+      "schedule": {
+        "tz": "America/Los_Angeles",
+        "kind": "cron",
+        "expr": "0 9 * * *"
+      },
+      "sessionTarget": "main",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "systemEvent",
+        "text": "Reminder: It is 9 AM PST. As requested by the Operator, please fetch your current post and comment counts from the Moltbook API (and cross-reference local execution logs if necessary), and provide the daily running total update to the user in your normal persona voice."
+      },
+      "state": {
+        "nextRunAtMs": 1775750400000,
+        "lastRunAtMs": 1775680296404,
+        "lastRunStatus": "ok",
+        "lastStatus": "ok",
+        "lastDurationMs": 122047,
+        "lastDeliveryStatus": "not-requested",
+        "consecutiveErrors": 0
+      }
+    },
+    {
+      "id": "9be2a600-cd98-4292-b872-19b977bac328",
+      "agentId": "main",
+      "sessionKey": "agent:main:telegram:direct:1776581262",
+      "name": "X (Twitter): Draft Post & Request Approval (6h)",
+      "enabled": true,
+      "createdAtMs": 1772683469506,
+      "updatedAtMs": 1773763528854,
+      "schedule": {
+        "kind": "every",
+        "everyMs": 21600000,
+        "anchorMs": 1773340165435
+      },
+      "sessionTarget": "main",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "systemEvent",
+        "text": "Draft an X post for Boss's approval. KEEP IT FAST — one research source, one draft.\n\nSTEP 1 — QUICK RESEARCH (pick ONE source)\nCheck cache: python3 /opt/openclaw/workspace/skills/x_content_intel/update_cache.py --read-all\n\nPick the source most likely to yield a fresh angle:\n- Option A: web_search for 1 query (\"Lightning Network news\" or \"Bitcoin infrastructure\")\n- Option B: curl -s https://mempool.space/api/v1/fees/recommended | jq .\n- Option C: Moltbook hot feed\n- Option D: LQWD dashboard (max 1 in 4 posts — see SOUL.md distribution rule)\n\nDo NOT hit multiple sources. One is enough.\n\nSTEP 2 — DRAFT X POST\nHARD LIMIT: 260 characters max. Count before sending. Aim for 140-240.\nInclude one real data point. Be opinionated. Follow SOUL.md tone.\n\nSTEP 3 — SEND TO TELEGRAM\nFormat:\n\n⚡ LQWDClaw X Post Draft\nTopic: [topic]\nSource: [source]\nDraft: [tweet text]\n\nReply: APPROVE / REVISE / CANCEL\n\nWait for APPROVE before posting.\n\nSTEP 4 — IF APPROVED\n1. Write to /opt/openclaw/workspace/x/draft.txt\n2. bash /opt/openclaw/workspace/x/create_post_x.sh --from-file /opt/openclaw/workspace/x/draft.txt\n3. Log to /opt/openclaw/workspace/x/x_post.log"
+      },
+      "state": {
+        "lastRunAtMs": 1773742691424,
+        "lastRunStatus": "ok",
+        "lastStatus": "ok",
+        "lastDurationMs": 37572,
+        "lastDeliveryStatus": "not-requested",
+        "consecutiveErrors": 0,
+        "nextRunAtMs": 1775694565435
+      }
+    },
+    {
+      "id": "526b7239-223a-46ea-bbc2-bbf26eb676af",
+      "agentId": "main",
+      "sessionKey": "agent:main:telegram:direct:1776581262",
+      "name": "X (Twitter): Monitor Replies & Draft Responses (17:00/23:00 UTC)",
+      "enabled": true,
+      "createdAtMs": 1772734920761,
+      "updatedAtMs": 1773763528897,
+      "schedule": {
+        "tz": "UTC",
+        "expr": "0 17,23 * * *",
+        "kind": "cron"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "Run the X Reply Monitoring cycle.\n\nSTEP 1 — COLLECT REPLIES\nCheck for replies to our recent tweets using:\ncd /opt/openclaw/workspace/x && python3 fetch_replies.py\n\nSTEP 2 — FILTER\nEvaluate against REPLY_DIRECTIVE.md rules. Discard memes, trolling, generic praise, bot replies.\n\nSTEP 3 — RESEARCH (if technical reply found)\nIf a reply contains a technical question about Lightning/Bitcoin infrastructure, do a quick web_search to find accurate data before drafting your response. Include specific facts in your reply.\n\nSTEP 4 — DRAFT RESPONSE\nWrite a reply (80-200 chars preferred, 280 max). Must add useful insight. Include data points from research if available.\n\nSTEP 5 — VALIDATION\nConfirm compliance with SOUL.md and REPLY_DIRECTIVE.md rules.\n\nSTEP 6 — SEND FOR APPROVAL\nSend Telegram message:\n\n⚡ LQWDClaw Reply Proposal\nTweet: https://x.com/LQWDClaw/status/[tweet_id]\nUser: @[username]\nTheir Reply: [reply_text]\nProposed Response: [your_reply]\n\nReply: APPROVE / REVISE: [feedback] / CANCEL\n\nSTEP 7 — EXECUTION SUMMARY\nYOU MUST RESPOND with: Status (Success/Failed), Execution Time (UTC), replies found count, action taken. If NO eligible replies found, state \"No eligible replies found.\""
+      },
+      "state": {
+        "lastRunAtMs": 1773702000019,
+        "lastRunStatus": "ok",
+        "lastStatus": "ok",
+        "lastDurationMs": 27229,
+        "lastDeliveryStatus": "delivered",
+        "consecutiveErrors": 0,
+        "lastDelivered": true,
+        "nextRunAtMs": 1775689200000
+      },
+      "delivery": {
+        "mode": "announce"
+      }
+    },
+    {
+      "id": "f3e66856-b49b-4caa-ae27-14fec2c856b3",
+      "agentId": "main",
+      "sessionKey": "agent:main:telegram:direct:1776581262",
+      "name": "Moltbook: Auto-Publish Original Post (6h)",
+      "enabled": true,
+      "createdAtMs": 1773340395916,
+      "updatedAtMs": 1775680471237,
+      "schedule": {
+        "everyMs": 21600000,
+        "kind": "every",
+        "anchorMs": 1773340395916
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "LQWDClaw — create and publish one original Moltbook post.\n\nKEEP IT SIMPLE. Pick ONE research source, get ONE data point, write ONE post. Do not try to hit every API.\n\nSTEP 1 — PICK ONE RESEARCH SOURCE (rotate each cycle)\nCheck the cache first: python3 /opt/openclaw/workspace/skills/x_content_intel/update_cache.py --read-all\n\nThen pick ONE source based on what is stale or interesting:\n- Option A: web_search for Lightning/Bitcoin news (1 query only)\n- Option B: curl -s https://mempool.space/api/v1/fees/recommended | jq . (mempool fees)\n- Option C: Moltbook hot feed via API\n- Option D: LQWD dashboard (see monitoring-dashboard skill) — max 1 in 4 posts\n\nDo NOT hit all sources. One is enough.\n\nSTEP 2 — DRAFT\nWrite a Moltbook post with the data you found. Follow SOUL.md. Include one real data point. Be concise and opinionated.\n\nSTEP 3 — VALIDATE\nNo financial language, no fabricated facts, no negative LQWD language.\n\nSTEP 4 — PUBLISH\nPost to Moltbook using curl with $MOLTBOOK_API_KEY. Solve math challenges automatically. No Telegram approval needed.\n\nSTEP 5 — LOG\nUpdate cache: python3 /opt/openclaw/workspace/skills/x_content_intel/update_cache.py <section> '<json>'\nAppend to /opt/openclaw/workspace/moltbook_post_log.json\nUpdate /opt/openclaw/workspace/moltbook_state.json\n\nRules: max once per 6h, no duplicate topics within 24h. Skip if no strong topic."
+      },
+      "delivery": {
+        "mode": "none"
+      },
+      "state": {
+        "nextRunAtMs": 1775702018451,
+        "lastRunAtMs": 1775680418451,
+        "lastRunStatus": "error",
+        "lastStatus": "error",
+        "lastDurationMs": 52786,
+        "lastDelivered": false,
+        "lastDeliveryStatus": "not-delivered",
+        "consecutiveErrors": 22,
+        "lastDeliveryError": "⚠️ ✉️ Message failed",
+        "lastError": "⚠️ ✉️ Message failed"
+      }
+    },
+    {
+      "id": "a7b1c2d3-e4f5-6789-abcd-ef0123456789",
+      "agentId": "main",
+      "sessionKey": "agent:main:telegram:direct:1776581262",
+      "name": "GitHub: Lightning Release Monitor (daily 10:00 PST)",
+      "enabled": true,
+      "createdAtMs": 1775700000000,
+      "updatedAtMs": 1775700000000,
+      "schedule": {
+        "tz": "America/Los_Angeles",
+        "kind": "cron",
+        "expr": "0 10 * * *"
+      },
+      "sessionTarget": "isolated",
+      "wakeMode": "now",
+      "payload": {
+        "kind": "agentTurn",
+        "message": "LQWDClaw — Daily Lightning implementation release check.\n\nBEFORE STARTING: Read /opt/openclaw/workspace/RESEARCH_PROTOCOL.md. Use the research cache at /opt/openclaw/workspace/research_cache.json — check github_releases cache (TTL 24h) before fetching. Update cache after every fetch.\n\nSTEP 1 — CHECK RELEASES (use cache if fresh)\nFetch latest releases from all major Lightning implementations:\n\ncurl -s \"https://api.github.com/repos/lightningnetwork/lnd/releases?per_page=3\" | jq '[.[] | {repo: \"LND\", tag: .tag_name, date: .published_at, prerelease: .prerelease, body: .body[:500]}]'\n\ncurl -s \"https://api.github.com/repos/ElementsProject/lightning/releases?per_page=3\" | jq '[.[] | {repo: \"CLN\", tag: .tag_name, date: .published_at, prerelease: .prerelease, body: .body[:500]}]'\n\ncurl -s \"https://api.github.com/repos/lightningdevkit/rust-lightning/releases?per_page=3\" | jq '[.[] | {repo: \"LDK\", tag: .tag_name, date: .published_at, prerelease: .prerelease, body: .body[:500]}]'\n\ncurl -s \"https://api.github.com/repos/ACINQ/eclair/releases?per_page=3\" | jq '[.[] | {repo: \"Eclair\", tag: .tag_name, date: .published_at, prerelease: .prerelease, body: .body[:500]}]'\n\nSTEP 2 — FILTER FOR NEW\nIdentify any releases published in the last 24 hours. If none, log \"No new releases\" and stop.\n\nSTEP 3 — ANALYZE\nFor each new release:\n- Summarize the 3-5 most important changes relevant to routing, liquidity, LSP infrastructure, or security\n- Note any breaking changes or deprecations\n- Identify the LQWD relevance angle\n\nSTEP 4 — DRAFT MOLTBOOK POST\nWrite a Moltbook post about the release. Focus on infrastructure implications, not just changelog. Include specific version numbers and key changes.\n\nSTEP 5 — AUTO-PUBLISH TO MOLTBOOK\nPost to Moltbook using curl with $MOLTBOOK_API_KEY. This is autonomous — no approval needed.\n\nSTEP 6 — DRAFT X POST\nWrite a 280-char max X post about the release. Include version number and one key change.\n\nSTEP 7 — SEND X DRAFT TO TELEGRAM\nSend for operator approval:\n\n⚡ LQWDClaw Release Alert\n\nNew Release: [repo] [version]\nKey Change: [one-liner]\n\nDraft X Post:\n[tweet text]\n\nReply: APPROVE / REVISE / CANCEL\n\nSTEP 8 — LOG\nAppend to /opt/openclaw/workspace/engagement_log.md with releases checked, actions taken, posts created."
+      },
+      "delivery": {
+        "mode": "none"
+      },
+      "state": {
+        "consecutiveErrors": 0
+      }
+    }
+  ]
+}

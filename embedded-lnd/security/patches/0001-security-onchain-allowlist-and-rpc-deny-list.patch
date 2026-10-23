@@ -1,0 +1,1048 @@
+From 775c92d03e850905cdb0c261a4aa9ad2c552f9ac Mon Sep 17 00:00:00 2001
+From: embedded-lnd <embedded-lnd@lqwd.local>
+Date: Tue, 8 Sep 2026 17:35:38 +0000
+Subject: [PATCH] security: add an on-chain destination allowlist and an RPC
+ deny list
+
+Two hardening controls for an appliance-style node, both enforced by a pair
+of gRPC interceptors installed as the innermost interceptors in the chain,
+and both configured in a new [security] section of lnd.conf.
+
+  security.onchain-allowlist   the only on-chain destinations this node may
+                               pay. Checked on SendCoins, SendMany, the
+                               CloseChannel delivery address, the OpenChannel
+                               and BatchOpenChannel close address, and the
+                               WalletKit SendOutputs scripts.
+
+  security.disable-rpc         gRPC methods that are refused for every caller.
+                               Fully qualified names, or a whole service with
+                               a /service/* wildcard.
+
+Neither is a macaroon permission. They cannot be lifted by baking a new
+macaroon and they apply to the admin macaroon too, which is the case they
+exist for: an appliance whose credentials are assumed to be reachable by
+whoever holds the box.
+
+Being the innermost interceptors also means the policy sees each request
+exactly as the handler will, so a registered RPC middleware that rewrites
+requests cannot be used to slip a different destination past the allowlist.
+
+Some RPCs can build, sign or broadcast a transaction without ever naming a
+destination in the request - PSBT funding and signing, PublishTransaction,
+SubmitPackage, SignOutputRaw, the MuSig2 signing session, FundingStateStep.
+There is nothing in them for the allowlist to inspect, so while an allowlist
+is in force they are denied outright, and reopening them takes an explicit
+security.allow-unsafe-rpc.
+
+Bad policies fail at startup rather than at the first call: an address for
+the wrong network, a deny list entry that is not a method name, a deny list
+entry naming a method this build does not serve, or an upfront-shutdown-address
+that is not itself an allowed destination.
+---
+ config.go               |  25 ++
+ lnd.go                  |  35 +++
+ security/config.go      |  76 ++++++
+ security/policy.go      | 524 ++++++++++++++++++++++++++++++++++++++++
+ security/policy_test.go | 261 ++++++++++++++++++++
+ 5 files changed, 921 insertions(+)
+ create mode 100644 security/config.go
+ create mode 100644 security/policy.go
+ create mode 100644 security/policy_test.go
+
+diff --git a/config.go b/config.go
+index d09a296..300caec 100644
+--- a/config.go
++++ b/config.go
+@@ -44,6 +44,7 @@ import (
+ 	"github.com/lightningnetwork/lnd/lnwire"
+ 	"github.com/lightningnetwork/lnd/onionmessage"
+ 	"github.com/lightningnetwork/lnd/routing"
++	"github.com/lightningnetwork/lnd/security"
+ 	"github.com/lightningnetwork/lnd/signal"
+ 	"github.com/lightningnetwork/lnd/tor"
+ )
+@@ -564,6 +565,16 @@ type Config struct {
+ 
+ 	GRPC *GRPCConfig `group:"grpc" namespace:"grpc"`
+ 
++	// Security holds the local hardening policy: which on-chain
++	// destinations this node may pay, and which gRPC methods are
++	// refused outright. Neither is a macaroon permission.
++	Security *security.Config `group:"security" namespace:"security"`
++
++	// SecurityPolicy is the compiled form of Security. It is built
++	// during config validation so that an unusable policy stops the
++	// daemon at startup rather than at the first RPC call.
++	SecurityPolicy *security.Policy
++
+ 	// SubLogMgr is the root logger that all the daemon's subloggers are
+ 	// hooked up to.
+ 	SubLogMgr  *build.SubLoggerManager
+@@ -877,6 +888,7 @@ func DefaultConfig() Config {
+ 			ServerPingTimeout: defaultGrpcServerPingTimeout,
+ 			ClientPingMinWait: defaultGrpcClientPingMinWait,
+ 		},
++		Security:                  security.DefaultConfig(),
+ 		LogConfig:                 build.DefaultLogConfig(),
+ 		WtClient:                  lncfg.DefaultWtClientCfg(),
+ 		HTTPHeaderTimeout:         DefaultHTTPHeaderTimeout,
+@@ -1934,11 +1946,24 @@ func ValidateConfig(cfg Config, interceptor signal.Interceptor, fileParser,
+ 		cfg.Routing,
+ 		cfg.Pprof,
+ 		cfg.Gossip,
++		cfg.Security,
+ 	)
+ 	if err != nil {
+ 		return nil, err
+ 	}
+ 
++	// Compile the security policy now that the active chain is
++	// known, so that a destination allowlist naming an address for
++	// the wrong network, or a deny list entry that is not a method
++	// name, is a startup failure and not a surprise later on.
++	cfg.SecurityPolicy, err = security.NewPolicy(
++		cfg.Security, cfg.ActiveNetParams.Params,
++		cfg.UpfrontShutdownAddr,
++	)
++	if err != nil {
++		return nil, mkErr("invalid security policy: %v", err)
++	}
++
+ 	// Finally, ensure that the user's color is correctly formatted,
+ 	// otherwise the server will not be able to start after the unlocking
+ 	// the wallet.
+diff --git a/lnd.go b/lnd.go
+index 096331a..1b9850b 100644
+--- a/lnd.go
++++ b/lnd.go
+@@ -378,6 +378,32 @@ func Main(cfg *Config, lisCfg ListenerCfg, implCfg *ImplementationCfg,
+ 		grpc.KeepaliveEnforcementPolicy(clientKeepalive),
+ 	)
+ 
++	// Install the security policy interceptors last, so they are the
++	// innermost interceptors in the chain. They then run after
++	// macaroon authentication and after any RPC middleware, and see
++	// each request exactly as the handler will - which is what makes
++	// the policy independent of what a macaroon happens to permit.
++	if cfg.SecurityPolicy.Enabled() {
++		ltndLog.Infof("Security policy: %v", cfg.SecurityPolicy)
++
++		if cfg.SecurityPolicy.UnsafeRPCAllowed() {
++			ltndLog.Warnf("security.allow-unsafe-rpc is set: " +
++				"the raw transaction RPCs are reachable, " +
++				"so security.onchain-allowlist can be " +
++				"bypassed")
++		}
++
++		serverOpts = append(
++			serverOpts,
++			grpc.ChainUnaryInterceptor(
++				cfg.SecurityPolicy.UnaryServerInterceptor(),
++			),
++			grpc.ChainStreamInterceptor(
++				cfg.SecurityPolicy.StreamServerInterceptor(),
++			),
++		)
++	}
++
+ 	grpcServer := grpc.NewServer(serverOpts...)
+ 	defer grpcServer.Stop()
+ 
+@@ -393,6 +419,15 @@ func Main(cfg *Config, lisCfg ListenerCfg, implCfg *ImplementationCfg,
+ 		return mkErr("error registering gRPC server", err)
+ 	}
+ 
++	// Every service is registered now, so the deny list can be
++	// checked against what this build actually serves. A misspelt
++	// entry is a control that silently does nothing, so treat it as
++	// a fatal configuration error.
++	err = cfg.SecurityPolicy.ValidateAgainstServer(grpcServer)
++	if err != nil {
++		return mkErr("invalid security policy", err)
++	}
++
+ 	// Now that both the WalletUnlocker and LightningService have been
+ 	// registered with the GRPC server, we can start listening.
+ 	err = startGrpcListen(cfg, grpcServer, grpcListeners)
+diff --git a/security/config.go b/security/config.go
+new file mode 100644
+index 0000000..3943a75
+--- /dev/null
++++ b/security/config.go
+@@ -0,0 +1,76 @@
++package security
++
++import (
++	"fmt"
++	"regexp"
++	"strings"
++)
++
++// methodPattern matches a fully qualified gRPC method name, and the
++// "/service/*" wildcard form that disables a whole service.
++var methodPattern = regexp.MustCompile(`^/[A-Za-z0-9_.]+/([A-Za-z0-9_]+|\*)$`)
++
++// Config is the `[security]` section of lnd.conf, and the whole user visible
++// surface of this package.
++//
++//nolint:ll
++type Config struct {
++	OnchainAllowlist []string `long:"onchain-allowlist" description:"Only permit on-chain sends whose destination is one of these addresses. May be repeated, or given as a comma separated list. While set, the RPCs that can build, sign or broadcast a transaction without ever naming a destination are denied as well - see security.allow-unsafe-rpc. An empty list disables the allowlist."`
++
++	DisableRPC []string `long:"disable-rpc" description:"Refuse calls to this gRPC method, from every caller, regardless of macaroon. Fully qualified method names, e.g. /routerrpc.Router/SendPaymentV2, or a whole service with a wildcard, e.g. /signrpc.Signer/*. May be repeated, or given as a comma separated list."`
++
++	AllowUnsafeRPC bool `long:"allow-unsafe-rpc" description:"Do not automatically deny the raw transaction RPCs (PSBT funding and signing, PublishTransaction, SignOutputRaw, ...) while security.onchain-allowlist is set. UNSAFE: those RPCs can move funds anywhere without the allowlist ever seeing an address, so setting this makes the allowlist a formality."`
++}
++
++// DefaultConfig returns the default security configuration, which enforces
++// nothing at all. lnd behaves exactly as upstream until this section is
++// filled in.
++func DefaultConfig() *Config {
++	return &Config{}
++}
++
++// Validate checks the shape of the configured values. Addresses are only
++// checked for network correctness later, in NewPolicy, where the active chain
++// parameters are known.
++//
++// NOTE: this is part of the lncfg.Validator interface.
++func (c *Config) Validate() error {
++	if c == nil {
++		return nil
++	}
++
++	for _, method := range splitList(c.DisableRPC) {
++		if !strings.HasPrefix(method, "/") {
++			method = "/" + method
++		}
++
++		if !methodPattern.MatchString(method) {
++			return fmt.Errorf("security.disable-rpc: %q is not a "+
++				"fully qualified gRPC method name, expected "+
++				"/package.Service/Method or /package.Service/*",
++				method)
++		}
++	}
++
++	if c.AllowUnsafeRPC && len(splitList(c.OnchainAllowlist)) == 0 {
++		return fmt.Errorf("security.allow-unsafe-rpc only has an " +
++			"effect together with security.onchain-allowlist")
++	}
++
++	return nil
++}
++
++// splitList flattens a repeatable string option: entries may be given one per
++// line, or comma separated on one line, or any mixture of the two.
++func splitList(values []string) []string {
++	var out []string
++	for _, value := range values {
++		for _, item := range strings.Split(value, ",") {
++			if item = strings.TrimSpace(item); item != "" {
++				out = append(out, item)
++			}
++		}
++	}
++
++	return out
++}
+diff --git a/security/policy.go b/security/policy.go
+new file mode 100644
+index 0000000..d2e2e7c
+--- /dev/null
++++ b/security/policy.go
+@@ -0,0 +1,524 @@
++// Package security implements the embedded-lnd hardening layer: an allowlist
++// of the on-chain destinations this node may pay, and a deny list of gRPC
++// methods, both enforced independently of macaroons.
++//
++// Enforcement is a pair of gRPC interceptors installed as the innermost
++// interceptors in the lnd interceptor chain - after macaroon authentication
++// and after any registered RPC middleware. That position is deliberate:
++//
++//   - It is not a macaroon permission, so it cannot be lifted by baking a new
++//     macaroon, and it applies to the admin macaroon as well. Possession of
++//     admin credentials is exactly the case this is meant to survive.
++//
++//   - It sees each request as the handler will see it, so an RPC middleware
++//     that rewrites requests cannot be used to slip a different destination
++//     past the allowlist.
++//
++// The allowlist inspects the requests that name an on-chain destination:
++//
++//	/lnrpc.Lightning/SendCoins          destination address
++//	/lnrpc.Lightning/SendMany           every destination address
++//	/lnrpc.Lightning/CloseChannel       delivery address
++//	/lnrpc.Lightning/OpenChannel        close address
++//	/lnrpc.Lightning/OpenChannelSync    close address
++//	/lnrpc.Lightning/BatchOpenChannel   close address of each channel
++//	/walletrpc.WalletKit/SendOutputs    every output script
++//
++// Requests that name no destination are untouched: change returning to the
++// wallet of this node, the funding output of a channel, a force close paying
++// out through the commitment transaction. Those do not leave the custody of
++// the node, which is what the allowlist is about.
++//
++// The remaining ways to move funds - PSBT funding and signing, raw
++// broadcasting, raw signing - never name an address in the request at all, so
++// there is nothing for the allowlist to check. Those are denied outright
++// while the allowlist is active; see unsafeRPCs.
++package security
++
++import (
++	"context"
++	"encoding/hex"
++	"fmt"
++	"sort"
++	"strings"
++
++	"github.com/btcsuite/btcd/btcutil"
++	"github.com/btcsuite/btcd/chaincfg"
++	"github.com/btcsuite/btcd/txscript"
++	"github.com/lightningnetwork/lnd/lnrpc"
++	"github.com/lightningnetwork/lnd/lnrpc/walletrpc"
++	"google.golang.org/grpc"
++	"google.golang.org/grpc/codes"
++	"google.golang.org/grpc/status"
++)
++
++// unsafeRPCs are the RPCs that let a caller build, sign or broadcast a
++// transaction without naming a destination in the request. The allowlist has
++// nothing to inspect in them, so leaving them reachable would make it
++// bypassable in a single call. They are added to the deny list whenever the
++// allowlist is active, unless security.allow-unsafe-rpc says otherwise.
++var unsafeRPCs = []string{
++	"/lnrpc.Lightning/FundingStateStep",
++	"/signrpc.Signer/ComputeInputScript",
++	"/signrpc.Signer/MuSig2CombineSig",
++	"/signrpc.Signer/MuSig2CreateSession",
++	"/signrpc.Signer/MuSig2RegisterNonces",
++	"/signrpc.Signer/MuSig2Sign",
++	"/signrpc.Signer/SignOutputRaw",
++	"/walletrpc.WalletKit/FinalizePsbt",
++	"/walletrpc.WalletKit/FundPsbt",
++	"/walletrpc.WalletKit/PublishTransaction",
++	"/walletrpc.WalletKit/SignPsbt",
++	"/walletrpc.WalletKit/SubmitPackage",
++}
++
++// Policy is the compiled form of Config: the destination allowlist as output
++// scripts, and the set of denied gRPC methods. It is immutable once built and
++// safe for concurrent use.
++type Policy struct {
++	// params are the chain parameters the allowlisted addresses were
++	// decoded with.
++	params *chaincfg.Params
++
++	// allowedScripts holds the pkScript of every allowlisted address,
++	// keyed by the raw script bytes as a string.
++	allowedScripts map[string]struct{}
++
++	// allowedAddrs holds the same addresses in their original text form,
++	// for error messages and logging.
++	allowedAddrs []string
++
++	// deniedMethods holds fully qualified method names that are refused.
++	deniedMethods map[string]struct{}
++
++	// deniedServices holds services denied in full through the
++	// "/service/*" wildcard.
++	deniedServices map[string]struct{}
++
++	// configuredMethods are the deny list entries that came from the
++	// configuration file, as opposed to unsafeRPCs. Only these are checked
++	// against the methods the gRPC server actually serves - the built in
++	// list deliberately names RPCs that may not be compiled in.
++	configuredMethods []string
++
++	// unsafeAllowed records that the user opted out of denying unsafeRPCs,
++	// so that it can be reported.
++	unsafeAllowed bool
++}
++
++// NewPolicy compiles a Config into a Policy. Chain parameters are needed to
++// decode the allowlisted addresses, and the configured cooperative close
++// address is needed because it must itself be an allowed destination.
++func NewPolicy(cfg *Config, params *chaincfg.Params,
++	upfrontShutdownAddr string) (*Policy, error) {
++
++	if cfg == nil {
++		cfg = DefaultConfig()
++	}
++
++	if err := cfg.Validate(); err != nil {
++		return nil, err
++	}
++
++	p := &Policy{
++		params:         params,
++		allowedScripts: make(map[string]struct{}),
++		deniedMethods:  make(map[string]struct{}),
++		deniedServices: make(map[string]struct{}),
++		unsafeAllowed:  cfg.AllowUnsafeRPC,
++	}
++
++	addrs := splitList(cfg.OnchainAllowlist)
++	if len(addrs) > 0 && params == nil {
++		return nil, fmt.Errorf("security.onchain-allowlist needs the " +
++			"active chain parameters to decode addresses")
++	}
++
++	for _, addr := range addrs {
++		script, err := p.scriptForAddr(addr)
++		if err != nil {
++			return nil, fmt.Errorf("security.onchain-allowlist: %w",
++				err)
++		}
++
++		p.allowedScripts[string(script)] = struct{}{}
++		p.allowedAddrs = append(p.allowedAddrs, addr)
++	}
++
++	// The cooperative close destination is a destination like any other. If
++	// it were not allowlisted the node would be configured to close its
++	// channels to an address it is not permitted to pay, a contradiction we
++	// would rather refuse to start with than discover at close time.
++	if p.AllowlistEnabled() && upfrontShutdownAddr != "" {
++		script, err := p.scriptForAddr(upfrontShutdownAddr)
++		if err != nil {
++			return nil, fmt.Errorf("upfront-shutdown-address: %w",
++				err)
++		}
++
++		if _, ok := p.allowedScripts[string(script)]; !ok {
++			return nil, fmt.Errorf("upfront-shutdown-address %v "+
++				"is not in security.onchain-allowlist (%v): "+
++				"the cooperative close destination must "+
++				"itself be an allowed destination",
++				upfrontShutdownAddr,
++				strings.Join(p.allowedAddrs, ", "))
++		}
++	}
++
++	for _, method := range splitList(cfg.DisableRPC) {
++		normalized := normalizeMethod(method)
++		p.addDeniedMethod(normalized)
++		p.configuredMethods = append(p.configuredMethods, normalized)
++	}
++
++	if p.AllowlistEnabled() && !cfg.AllowUnsafeRPC {
++		for _, method := range unsafeRPCs {
++			p.addDeniedMethod(method)
++		}
++	}
++
++	return p, nil
++}
++
++// addDeniedMethod records one deny list entry, which is either a single method
++// or a whole service.
++func (p *Policy) addDeniedMethod(method string) {
++	if service, ok := strings.CutSuffix(method, "/*"); ok {
++		p.deniedServices[service] = struct{}{}
++
++		return
++	}
++
++	p.deniedMethods[method] = struct{}{}
++}
++
++// scriptForAddr decodes an address for the active network and returns the
++// output script that pays to it.
++func (p *Policy) scriptForAddr(addr string) ([]byte, error) {
++	decoded, err := btcutil.DecodeAddress(addr, p.params)
++	if err != nil {
++		return nil, fmt.Errorf("%v is not a valid address: %w", addr,
++			err)
++	}
++
++	if !decoded.IsForNet(p.params) {
++		return nil, fmt.Errorf("%v is not an address on %v", addr,
++			p.params.Name)
++	}
++
++	script, err := txscript.PayToAddrScript(decoded)
++	if err != nil {
++		return nil, fmt.Errorf("%v has no output script: %w", addr, err)
++	}
++
++	return script, nil
++}
++
++// Enabled returns true if this policy enforces anything at all.
++func (p *Policy) Enabled() bool {
++	if p == nil {
++		return false
++	}
++
++	return p.AllowlistEnabled() || len(p.deniedMethods) > 0 ||
++		len(p.deniedServices) > 0
++}
++
++// AllowlistEnabled returns true if an on-chain destination allowlist is in
++// force.
++func (p *Policy) AllowlistEnabled() bool {
++	return p != nil && len(p.allowedScripts) > 0
++}
++
++// UnsafeRPCAllowed returns true if the raw transaction RPCs were deliberately
++// left reachable while an allowlist is in force.
++func (p *Policy) UnsafeRPCAllowed() bool {
++	return p != nil && p.unsafeAllowed && p.AllowlistEnabled()
++}
++
++// AllowedAddrs returns the allowlisted destinations, in configuration order.
++func (p *Policy) AllowedAddrs() []string {
++	if p == nil {
++		return nil
++	}
++
++	return append([]string(nil), p.allowedAddrs...)
++}
++
++// DeniedMethods returns every deny list entry, sorted, with wildcard services
++// written back in their "/service/*" form.
++func (p *Policy) DeniedMethods() []string {
++	if p == nil {
++		return nil
++	}
++
++	denied := make([]string, 0, len(p.deniedMethods)+len(p.deniedServices))
++	for method := range p.deniedMethods {
++		denied = append(denied, method)
++	}
++	for service := range p.deniedServices {
++		denied = append(denied, service+"/*")
++	}
++	sort.Strings(denied)
++
++	return denied
++}
++
++// String returns a one line summary suitable for the startup log.
++func (p *Policy) String() string {
++	if !p.Enabled() {
++		return "disabled"
++	}
++
++	allowlist := "off"
++	if p.AllowlistEnabled() {
++		allowlist = strings.Join(p.allowedAddrs, ", ")
++	}
++
++	return fmt.Sprintf("on-chain destinations: %v; disabled RPCs: %v",
++		allowlist, strings.Join(p.DeniedMethods(), ", "))
++}
++
++// ValidateAgainstServer checks that every deny list entry from the
++// configuration names a method the given gRPC server actually serves. A typo
++// in the deny list would otherwise be a security control that silently does
++// nothing.
++//
++// Call it once every service has been registered.
++func (p *Policy) ValidateAgainstServer(server *grpc.Server) error {
++	if p == nil || len(p.configuredMethods) == 0 {
++		return nil
++	}
++
++	methods := make(map[string]struct{})
++	services := make(map[string]struct{})
++	for name, info := range server.GetServiceInfo() {
++		services["/"+name] = struct{}{}
++		for _, method := range info.Methods {
++			methods["/"+name+"/"+method.Name] = struct{}{}
++		}
++	}
++
++	var unknown []string
++	for _, entry := range p.configuredMethods {
++		service, isWildcard := strings.CutSuffix(entry, "/*")
++
++		_, ok := methods[entry]
++		if isWildcard {
++			_, ok = services[service]
++		}
++
++		if !ok {
++			unknown = append(unknown, entry)
++		}
++	}
++
++	if len(unknown) > 0 {
++		return fmt.Errorf("security.disable-rpc names %v, which this "+
++			"lnd does not serve - check the spelling, and that the "+
++			"sub-server is compiled in", strings.Join(unknown, ", "))
++	}
++
++	return nil
++}
++
++// UnaryServerInterceptor returns the interceptor enforcing this policy on
++// unary calls.
++func (p *Policy) UnaryServerInterceptor() grpc.UnaryServerInterceptor {
++	return func(ctx context.Context, req any, info *grpc.UnaryServerInfo,
++		handler grpc.UnaryHandler) (any, error) {
++
++		if err := p.CheckMethod(info.FullMethod); err != nil {
++			return nil, err
++		}
++
++		if err := p.CheckRequest(info.FullMethod, req); err != nil {
++			return nil, err
++		}
++
++		return handler(ctx, req)
++	}
++}
++
++// StreamServerInterceptor returns the interceptor enforcing this policy on
++// streaming calls.
++//
++// A streaming handler reads its request messages itself, so the stream is
++// wrapped and each received message is checked as it arrives. CloseChannel and
++// OpenChannel are server streaming RPCs, and they are two of the calls that
++// matter most here.
++func (p *Policy) StreamServerInterceptor() grpc.StreamServerInterceptor {
++	return func(srv any, stream grpc.ServerStream,
++		info *grpc.StreamServerInfo, handler grpc.StreamHandler) error {
++
++		if err := p.CheckMethod(info.FullMethod); err != nil {
++			return err
++		}
++
++		if !p.AllowlistEnabled() {
++			return handler(srv, stream)
++		}
++
++		return handler(srv, &checkedStream{
++			ServerStream: stream,
++			policy:       p,
++			fullMethod:   info.FullMethod,
++		})
++	}
++}
++
++// checkedStream passes every request message received by a streaming handler
++// through the allowlist.
++type checkedStream struct {
++	grpc.ServerStream
++
++	policy     *Policy
++	fullMethod string
++}
++
++// RecvMsg checks each request message the handler reads.
++func (s *checkedStream) RecvMsg(m any) error {
++	if err := s.ServerStream.RecvMsg(m); err != nil {
++		return err
++	}
++
++	return s.policy.CheckRequest(s.fullMethod, m)
++}
++
++// CheckMethod returns a PermissionDenied error if the given fully qualified
++// method is on the deny list.
++func (p *Policy) CheckMethod(fullMethod string) error {
++	if p == nil {
++		return nil
++	}
++
++	if _, ok := p.deniedMethods[fullMethod]; ok {
++		return deniedErr(fullMethod)
++	}
++
++	service := fullMethod
++	if idx := strings.LastIndex(fullMethod, "/"); idx > 0 {
++		service = fullMethod[:idx]
++	}
++
++	if _, ok := p.deniedServices[service]; ok {
++		return deniedErr(fullMethod)
++	}
++
++	return nil
++}
++
++// CheckRequest returns a PermissionDenied error if the request names an
++// on-chain destination that is not on the allowlist.
++func (p *Policy) CheckRequest(fullMethod string, req any) error {
++	if !p.AllowlistEnabled() {
++		return nil
++	}
++
++	switch r := req.(type) {
++	case *lnrpc.SendCoinsRequest:
++		return p.checkAddr(fullMethod, "destination address", r.Addr)
++
++	case *lnrpc.SendManyRequest:
++		for addr := range r.AddrToAmount {
++			err := p.checkAddr(
++				fullMethod, "destination address", addr,
++			)
++			if err != nil {
++				return err
++			}
++		}
++
++	case *lnrpc.CloseChannelRequest:
++		return p.checkAddr(
++			fullMethod, "delivery address", r.DeliveryAddress,
++		)
++
++	case *lnrpc.OpenChannelRequest:
++		return p.checkAddr(fullMethod, "close address", r.CloseAddress)
++
++	case *lnrpc.BatchOpenChannelRequest:
++		for _, channel := range r.Channels {
++			err := p.checkAddr(
++				fullMethod, "close address",
++				channel.CloseAddress,
++			)
++			if err != nil {
++				return err
++			}
++		}
++
++	case *walletrpc.SendOutputsRequest:
++		for _, output := range r.Outputs {
++			err := p.checkScript(
++				fullMethod, "output script", output.PkScript,
++			)
++			if err != nil {
++				return err
++			}
++		}
++	}
++
++	return nil
++}
++
++// checkAddr enforces the allowlist on an address carried by a request. An
++// empty address means the request names no destination, which is not something
++// the allowlist has an opinion about.
++func (p *Policy) checkAddr(fullMethod, what, addr string) error {
++	if addr == "" {
++		return nil
++	}
++
++	script, err := p.scriptForAddr(addr)
++	if err != nil {
++		return status.Errorf(codes.InvalidArgument, "%v: %v %v",
++			fullMethod, what, err)
++	}
++
++	return p.checkScript(fullMethod, what, script)
++}
++
++// checkScript enforces the allowlist on an output script.
++func (p *Policy) checkScript(fullMethod, what string, script []byte) error {
++	if len(script) == 0 {
++		return nil
++	}
++
++	if _, ok := p.allowedScripts[string(script)]; ok {
++		return nil
++	}
++
++	return status.Errorf(codes.PermissionDenied, "%v: %v %v is not in "+
++		"security.onchain-allowlist (%v)", fullMethod, what,
++		p.describeScript(script), strings.Join(p.allowedAddrs, ", "))
++}
++
++// describeScript renders an output script as an address where it has one, so
++// that the rejection message names what the caller actually asked for.
++func (p *Policy) describeScript(script []byte) string {
++	_, addrs, _, err := txscript.ExtractPkScriptAddrs(script, p.params)
++	if err != nil || len(addrs) != 1 {
++		return "script " + hex.EncodeToString(script)
++	}
++
++	return addrs[0].String()
++}
++
++// deniedErr is the error returned for a call to a disabled RPC.
++func deniedErr(fullMethod string) error {
++	return status.Errorf(codes.PermissionDenied, "%v is disabled by the "+
++		"security policy of this node (security.disable-rpc)",
++		fullMethod)
++}
++
++// normalizeMethod puts a configured method name into the form gRPC uses.
++func normalizeMethod(method string) string {
++	method = strings.TrimSpace(method)
++	if !strings.HasPrefix(method, "/") {
++		method = "/" + method
++	}
++
++	return method
++}
+diff --git a/security/policy_test.go b/security/policy_test.go
+new file mode 100644
+index 0000000..f53ee1e
+--- /dev/null
++++ b/security/policy_test.go
+@@ -0,0 +1,261 @@
++package security
++
++import (
++	"testing"
++
++	"github.com/btcsuite/btcd/btcutil"
++	"github.com/btcsuite/btcd/chaincfg"
++	"github.com/btcsuite/btcd/txscript"
++	"github.com/lightningnetwork/lnd/lnrpc"
++	"github.com/lightningnetwork/lnd/lnrpc/signrpc"
++	"github.com/lightningnetwork/lnd/lnrpc/walletrpc"
++	"github.com/stretchr/testify/require"
++	"google.golang.org/grpc/codes"
++	"google.golang.org/grpc/status"
++)
++
++const (
++	// merchantAddr is the regtest address used as the merchant hardware
++	// wallet throughout the testbed.
++	merchantAddr = "bcrt1q69xmkz08062v59psqj4m2tqg30cyn2yycnt40g"
++
++	sendCoins   = "/lnrpc.Lightning/SendCoins"
++	sendMany    = "/lnrpc.Lightning/SendMany"
++	closeChan   = "/lnrpc.Lightning/CloseChannel"
++	openChan    = "/lnrpc.Lightning/OpenChannel"
++	sendOutputs = "/walletrpc.WalletKit/SendOutputs"
++)
++
++// otherAddr builds a second, definitely different, regtest address.
++func otherAddr(t *testing.T) string {
++	t.Helper()
++
++	hash := make([]byte, 20)
++	for i := range hash {
++		hash[i] = byte(i + 1)
++	}
++
++	addr, err := btcutil.NewAddressWitnessPubKeyHash(
++		hash, &chaincfg.RegressionNetParams,
++	)
++	require.NoError(t, err)
++
++	return addr.String()
++}
++
++// scriptFor returns the output script paying to the given regtest address.
++func scriptFor(t *testing.T, addr string) []byte {
++	t.Helper()
++
++	decoded, err := btcutil.DecodeAddress(
++		addr, &chaincfg.RegressionNetParams,
++	)
++	require.NoError(t, err)
++
++	script, err := txscript.PayToAddrScript(decoded)
++	require.NoError(t, err)
++
++	return script
++}
++
++// newTestPolicy compiles a policy allowing only the merchant address.
++func newTestPolicy(t *testing.T, cfg *Config, upfront string) *Policy {
++	t.Helper()
++
++	policy, err := NewPolicy(cfg, &chaincfg.RegressionNetParams, upfront)
++	require.NoError(t, err)
++
++	return policy
++}
++
++// requireDenied asserts that the error is a PermissionDenied status.
++func requireDenied(t *testing.T, err error) {
++	t.Helper()
++
++	require.Error(t, err)
++	require.Equal(t, codes.PermissionDenied, status.Code(err))
++}
++
++// TestAllowlistOnchainDestinations checks that every request carrying an
++// on-chain destination is accepted for the allowlisted address and rejected
++// for any other.
++func TestAllowlistOnchainDestinations(t *testing.T) {
++	t.Parallel()
++
++	other := otherAddr(t)
++	policy := newTestPolicy(t, &Config{
++		OnchainAllowlist: []string{merchantAddr},
++	}, "")
++
++	allowed := []any{
++		&lnrpc.SendCoinsRequest{Addr: merchantAddr},
++		&lnrpc.SendManyRequest{
++			AddrToAmount: map[string]int64{merchantAddr: 1000},
++		},
++		&lnrpc.CloseChannelRequest{DeliveryAddress: merchantAddr},
++		&lnrpc.OpenChannelRequest{CloseAddress: merchantAddr},
++		&lnrpc.BatchOpenChannelRequest{
++			Channels: []*lnrpc.BatchOpenChannel{
++				{CloseAddress: merchantAddr},
++			},
++		},
++		&walletrpc.SendOutputsRequest{
++			Outputs: []*signrpc.TxOut{
++				{PkScript: scriptFor(t, merchantAddr)},
++			},
++		},
++
++		// A request naming no destination at all is not the business
++		// of the allowlist: the funds stay in the wallet of this node.
++		&lnrpc.SendCoinsRequest{},
++		&lnrpc.CloseChannelRequest{},
++		&lnrpc.OpenChannelRequest{},
++	}
++	for _, req := range allowed {
++		require.NoError(t, policy.CheckRequest(sendCoins, req))
++	}
++
++	denied := []any{
++		&lnrpc.SendCoinsRequest{Addr: other},
++		&lnrpc.SendManyRequest{
++			AddrToAmount: map[string]int64{other: 1000},
++		},
++		&lnrpc.CloseChannelRequest{DeliveryAddress: other},
++		&lnrpc.OpenChannelRequest{CloseAddress: other},
++		&lnrpc.BatchOpenChannelRequest{
++			Channels: []*lnrpc.BatchOpenChannel{
++				{CloseAddress: other},
++			},
++		},
++		&walletrpc.SendOutputsRequest{
++			Outputs: []*signrpc.TxOut{
++				{PkScript: scriptFor(t, other)},
++			},
++		},
++
++		// One good output does not excuse the other one.
++		&lnrpc.SendManyRequest{
++			AddrToAmount: map[string]int64{
++				merchantAddr: 1000,
++				other:        1000,
++			},
++		},
++	}
++	for _, req := range denied {
++		requireDenied(t, policy.CheckRequest(sendMany, req))
++	}
++}
++
++// TestAllowlistDisabled checks that lnd behaves exactly as upstream when no
++// allowlist is configured.
++func TestAllowlistDisabled(t *testing.T) {
++	t.Parallel()
++
++	policy := newTestPolicy(t, &Config{}, "")
++	require.False(t, policy.Enabled())
++	require.False(t, policy.AllowlistEnabled())
++
++	req := &lnrpc.SendCoinsRequest{Addr: otherAddr(t)}
++	require.NoError(t, policy.CheckRequest(sendCoins, req))
++	require.NoError(t, policy.CheckMethod(sendCoins))
++}
++
++// TestDisableRPC checks the deny list, including the comma separated form, the
++// service wildcard, and the leading slash being optional.
++func TestDisableRPC(t *testing.T) {
++	t.Parallel()
++
++	policy := newTestPolicy(t, &Config{
++		DisableRPC: []string{
++			"/routerrpc.Router/SendPaymentV2,lnrpc.Lightning/SendMany",
++			"/signrpc.Signer/*",
++		},
++	}, "")
++
++	require.True(t, policy.Enabled())
++	requireDenied(t, policy.CheckMethod("/routerrpc.Router/SendPaymentV2"))
++	requireDenied(t, policy.CheckMethod(sendMany))
++	requireDenied(t, policy.CheckMethod("/signrpc.Signer/SignMessage"))
++	requireDenied(t, policy.CheckMethod("/signrpc.Signer/SignOutputRaw"))
++
++	require.NoError(t, policy.CheckMethod(sendCoins))
++	require.NoError(t, policy.CheckMethod("/lnrpc.Lightning/GetInfo"))
++}
++
++// TestUnsafeRPCsDeniedWithAllowlist checks that the RPCs able to move funds
++// without naming a destination are closed off as soon as an allowlist is in
++// force, and only reachable again if the user explicitly asks for it.
++func TestUnsafeRPCsDeniedWithAllowlist(t *testing.T) {
++	t.Parallel()
++
++	// Without an allowlist nothing is denied by default.
++	policy := newTestPolicy(t, &Config{}, "")
++	for _, method := range unsafeRPCs {
++		require.NoError(t, policy.CheckMethod(method))
++	}
++
++	policy = newTestPolicy(t, &Config{
++		OnchainAllowlist: []string{merchantAddr},
++	}, "")
++	for _, method := range unsafeRPCs {
++		requireDenied(t, policy.CheckMethod(method))
++	}
++
++	// SendOutputs is checked against the allowlist rather than denied,
++	// because its request does name the destination scripts.
++	require.NoError(t, policy.CheckMethod(sendOutputs))
++
++	policy = newTestPolicy(t, &Config{
++		OnchainAllowlist: []string{merchantAddr},
++		AllowUnsafeRPC:   true,
++	}, "")
++	require.True(t, policy.UnsafeRPCAllowed())
++	for _, method := range unsafeRPCs {
++		require.NoError(t, policy.CheckMethod(method))
++	}
++}
++
++// TestUpfrontShutdownAddrMustBeAllowed checks that the cooperative close
++// destination has to be an allowed destination itself.
++func TestUpfrontShutdownAddrMustBeAllowed(t *testing.T) {
++	t.Parallel()
++
++	cfg := &Config{OnchainAllowlist: []string{merchantAddr}}
++
++	policy := newTestPolicy(t, cfg, merchantAddr)
++	require.True(t, policy.AllowlistEnabled())
++
++	_, err := NewPolicy(cfg, &chaincfg.RegressionNetParams, otherAddr(t))
++	require.ErrorContains(t, err, "not in security.onchain-allowlist")
++
++	// Without an allowlist there is nothing for it to contradict.
++	_, err = NewPolicy(
++		&Config{}, &chaincfg.RegressionNetParams, otherAddr(t),
++	)
++	require.NoError(t, err)
++}
++
++// TestPolicyRejectsBadConfig checks the errors raised at startup rather than
++// at call time.
++func TestPolicyRejectsBadConfig(t *testing.T) {
++	t.Parallel()
++
++	params := &chaincfg.RegressionNetParams
++
++	// An address for the wrong network is a configuration error, not a
++	// silently ignored entry.
++	_, err := NewPolicy(&Config{
++		OnchainAllowlist: []string{
++			"bc1qw508d6qejxtdg4y5r3zarvary0c5xw7kv8f3t4",
++		},
++	}, params, "")
++	require.ErrorContains(t, err, "security.onchain-allowlist")
++
++	_, err = NewPolicy(
++		&Config{DisableRPC: []string{"SendCoins"}}, params, "",
++	)
++	require.ErrorContains(t, err, "fully qualified gRPC method name")
++
++	_, err = NewPolicy(&Config{AllowUnsafeRPC: true}, params, "")
++	require.ErrorContains(t, err, "security.onchain-allowlist")
++}
+-- 
+2.43.0
+

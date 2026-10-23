@@ -1,0 +1,102 @@
+<div th:fragment="channel-details">
+  <div class="row pt-2">
+    <div class="col-6">
+      Remote Alias
+    </div>
+    <div class="col-6">
+      <span class="" th:text="${remoteNode.getAlias()}"></span>
+    </div>
+  </div>
+  <div class="row pt-2">
+    <div class="col-6">
+      Remote Pubkey
+    </div>
+    <div class="col-6">
+      <span class="">
+        <a th:href="'https://amboss.space/node/' + ${remoteNode.getNodepubkey()}">
+          [[${#strings.abbreviate(remoteNode.getNodepubkey(),25)}]]
+       </a>
+      </span>
+      <svg style="cursor: pointer;" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-copy pr-1 pl-1"
+           th:attr="onclick=|copyToClipboard('${lndChannel.getRemote_pubkey()}')|">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+      </svg>
+    </div>
+  </div>
+  <div class="row pt-2">
+    <div class="col-6">
+      Channel Point
+    </div>
+    <div class="col-6">
+      <a th:href="'https://mempool.space/tx/'+${lndChannel.getChannel_point()}">
+        <span class="">
+          [[${#strings.abbreviate(lndChannel.getChannel_point(), 25)}]]
+        </span>
+      </a>
+      <svg style="cursor: pointer;" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-copy pr-1 pl-1"
+           th:attr="onclick=|copyToClipboard('${lndChannel.getChannel_point()}')|">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+      </svg>
+    </div>
+  </div>
+</div>
+<div th:fragment="channel-balance">
+  <div class="row pt-2">
+    <div class="col-6">
+      Channel Capacity
+    </div>
+    <div class="col-6">
+      <span class="" th:text="${#numbers.formatInteger(lndChannel.getCapacity(), 1, 'COMMA')} + ' Satoshi'"></span>
+    </div>
+  </div>
+  <div class="row pt-2">
+    <div class="col-6">
+      Unsettled Balance
+    </div>
+    <div class="col-6">
+      <span class="" th:text="${lndChannel.getUnsettled_balance()}"></span>
+    </div>
+  </div>
+  <div class="row pt-2">
+    <div class="col-6">
+      Commit Fee
+    </div>
+    <div class="col-6">
+      <span class="" th:text="${#numbers.formatDecimal(lndChannel.getCommit_fee(), 1, 0, 'COMMA')}"></span>
+    </div>
+  </div>
+  <div class="row pt-2">
+    <div class="col-6">
+      Commit Weight
+    </div>
+    <div class="col-6">
+      <span class="" th:text="${#numbers.formatDecimal(lndChannel.getCommit_weight(), 1, 0, 'COMMA')}"></span>
+    </div>
+  </div>
+  <div class="row pt-2">
+    <div class="col-6">
+      Fee Per KW
+    </div>
+    <div class="col-6">
+      <span class="" th:text="${#numbers.formatDecimal(lndChannel.getFee_per_kw(), 1, 0, 'COMMA')}"></span>
+    </div>
+  </div>
+  <div class="row pt-2">
+    <div class="col-6">
+      Total Satoshis Sent
+    </div>
+    <div class="col-6">
+      <span class="" th:text="${#numbers.formatInteger(lndChannel.getTotal_satoshis_sent(), 1, 'COMMA')}"></span>
+    </div>
+  </div>
+  <div class="row pt-2">
+    <div class="col-6">
+      Total Satoshis Received
+    </div>
+    <div class="col-6">
+      <span class="" th:text="${#numbers.formatInteger(lndChannel.getTotal_satoshis_received(), 1, 'COMMA')}"></span>
+    </div>
+  </div>
+</div>

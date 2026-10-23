@@ -1,0 +1,68 @@
+<div th:fragment="invoice-table(${invoiceList},${invoiceTotalPages},${invoicePageNumber},${invoiceTotalItems},${invoicePageSize})" class="widget-content widget-content-area br-6">
+    <div th:if="${invoiceTotalItems==0}" class="widget" id="list-invoice_div_list-empty">
+        <div class="widget-content widget-content-area justify-content-center text-center">
+            <h3 style="padding: 20px;">You Do Not Have Any Invoices</h3>
+        </div>
+    </div>
+    <div  th:unless="${invoiceTotalItems==0}" id="default-ordering_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4">
+        <div class="table-responsive">
+            <table id="list-invoice_tbl_list" class="table table-hover dataTable" role="grid">
+                <thead>
+                    <tr role="row">
+                        <th class="" tabindex="0" aria-controls="default-ordering" rowspan="1" colspan="1">R Hash</th>
+                        <th class="sorting" tabindex="0" aria-controls="default-ordering" rowspan="1" colspan="1">Value</th>
+                        <th class="" tabindex="0" aria-controls="default-ordering" rowspan="1" colspan="1">Payment Request</th>
+
+                        <th class="sorting" tabindex="0" aria-controls="default-ordering" rowspan="1" colspan="1">Creation Date</th>
+                        <th class="sorting" tabindex="0" aria-controls="default-ordering" rowspan="1" colspan="1">Status</th>
+                        <th class="sorting" tabindex="0" aria-controls="default-ordering" rowspan="1" colspan="1">Settled Date</th>
+
+                        <th class="dt-no-sorting text-center sorting" tabindex="0" aria-controls="default-ordering" rowspan="1" colspan="1" aria-label="View Invoice Details"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr role="row" th:each="invoice: ${invoiceList}">
+                        <td th:text="${invoice.getR_hash()}"></td>
+                        <td th:text="${#numbers.formatInteger(invoice.getValue(), 1, 'COMMA')} + ' Sats'"></td>
+                        <td>
+                            [[${#strings.abbreviate(invoice.getPayment_request(),50)}]]
+                            <svg style="cursor: pointer;" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-copy pr-1 pl-1"
+                                 th:attr="onclick=|copyToClipboard('${invoice.getPayment_request()}')|">
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                            </svg>
+                        </td>
+
+                        <td th:text="${invoice.getReadableCreationDate()}"></td>
+                        <td>
+                            <span class="badge badge-danger" th:if="${invoice.getState()} == 'CANCELED'" th:text="${invoice.getState()}"></span>
+                            <span class="badge badge-danger" th:if="${invoice.getState()} == 'EXPIRED'" th:text="${invoice.getState()}"></span>
+                            <span class="badge badge-success" th:if="${invoice.getState()} == 'SETTLED'" th:text="${invoice.getState()}"></span>
+                            <span class="badge badge-warning" th:if="${invoice.getState()} == 'PENDING'" th:text="${invoice.getState()}"></span>
+                            <span class="badge badge-primary" th:if="${invoice.getState()} == 'OPEN'" th:text="${invoice.getState()}"></span>
+                        </td>
+                        <td th:text="${invoice.getReadableSettleDate() != null ? invoice.getReadableSettleDate() : 'Not Settled'}"></td>
+
+                        <td class="text-center">
+                            <button class="btn btn-primary btn-sm" th:attr="onclick=|getInvoiceDetails('${invoice.toJson()}')|">View</button>
+                        </td>
+                    </tr>
+                </tbody>
+
+                <tfoot>
+                    <tr>
+                        <th>R Hash</th>
+                        <th>Value</th>
+                        <th>Payment Request</th>
+
+                        <th>Creation Date</th>
+                        <th>Status</th>
+                        <th>Settled Date</th>
+
+                        <th class="invisible" rowspan="1" colspan="1"></th>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>

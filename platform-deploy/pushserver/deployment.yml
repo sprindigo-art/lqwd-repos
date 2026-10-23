@@ -1,0 +1,97 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: push-server
+  namespace: microservice
+  labels:
+    app: push-server
+  annotations:
+    deployment.kubernetes.io/revision: '2'
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: push-server
+  template:
+    metadata:
+      labels:
+        app: push-server
+    spec:
+      imagePullSecrets:
+        - name: ecr-token
+      containers:
+        - name: push-server
+          image: 514063904685.dkr.ecr.us-west-2.amazonaws.com/pushserver:dev-$BUILD_NUMBER
+          ports:
+            - containerPort: 7001
+              protocol: TCP
+            - containerPort: 7008
+              protocol: TCP
+          env:
+            - name: ENV
+              value: kubernetes
+            - name: ALLOWED_ORIGINS
+              value: 'http://localhost:8080'
+            - name: OAUTH_URL
+              value: 'http://oauth2.oauth2:8187/oauth/check_token'
+            - name: CLIENT_ID
+              value: lqwd-front-end-microservice2
+            - name: CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: push-secret
+                  key: CLIENT_SECRET
+            - name: POD_IP
+              valueFrom:
+                fieldRef:
+                  apiVersion: v1
+                  fieldPath: status.podIP
+            - name: REDIS_LINK
+              value: test-redis-master.redis
+            - name: REDIS_CRED
+              valueFrom:
+                secretKeyRef:
+                  name: push-secret
+                  key: REDIS_CRED
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+      volumes:
+        - name: push-secret
+          secret:
+            secretName: push-secret
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+      securityContext: {}
+      schedulerName: default-scheduler
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 25%
+      maxSurge: 25%
+  revisionHistoryLimit: 10
+  progressDeadlineSeconds: 600
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: push-server
+  namespace: microservice
+  labels:
+    app: push-server
+spec:
+  selector:
+    app: push-server
+  ports:
+    - protocol: TCP
+      name: subscribe
+      port: 7001 # The port to expose to the outside
+      targetPort: 7001 # The port the application is running on in the pods
+    - protocol: TCP
+      name: push
+      port: 7008 # The port to expose to the outside
+      targetPort: 7008 # The port the application is running on in the pods
+  type: ClusterIP
+  sessionAffinity: ClientIP

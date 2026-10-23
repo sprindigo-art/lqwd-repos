@@ -1,0 +1,26 @@
+<div id="manage-lnd-node_div_lnd-node-card" class="row d-flex justify-content-start" th:fragment="lnd_node_card(lndNodes)">
+    <div class="" th:each="lndNode : ${lndNodes}"  >
+
+        <div class="col-auto pb-3" th:data-value="${lndNode.getLndNodeName()}" th:data-custodial="${lndNode.getIsNonCustodial()}">
+
+                <div class="card component-card_4 lnd-node-card" style="cursor: pointer;">
+                    <button id="manage-lnd-node_btn_lnd-node-card" class="btn btn-outline-dark">
+                    <div class="card-body">
+                        <div class="user-profile">
+                            <img th:src="@{images/logo/LQwD-Q.png}" class="" alt="LND Node" style="border-radius: 10%; width: 70px; height: 70px;">
+                        </div>
+                        <div class="user-info">
+                            <h5 class="card-user_name" style="color: #1b55e2;" th:text="${lndNode.getLndNodeName()}">LND Node Name</h5>
+                            <p class="card-user_occupation" th:if="${lndNode.getExternalip() != null}" th:text="${lndNode.getExternalip()}+':'+${lndNode.getPort()}">IP:PORT</p>
+                            <div class="card-star_rating">
+                                <span class="badge outline-badge-success" style="font-size: 12px;" th:if="${lndNode.getStatus()} == 'ACTIVE' OR ${lndNode.getStatus()} == 'RUNNING'" th:text="${#strings.toUpperCase(lndNode.getStatus())}">STATUS</span>
+                                <span class="badge outline-badge-warning" style="font-size: 12px;" th:unless="${lndNode.getStatus()} == 'ACTIVE' OR ${lndNode.getStatus()} == 'RUNNING'" th:text="${#strings.toUpperCase(lndNode.getStatus())}">STATUS</span>
+                            </div>
+                        </div>
+                    </div>
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>

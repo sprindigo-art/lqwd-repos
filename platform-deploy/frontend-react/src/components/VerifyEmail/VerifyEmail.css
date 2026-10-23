@@ -1,0 +1,326 @@
+.verify-email-container {
+    position: absolute;
+    padding-left: 25.7%;
+    padding-right: 14.6%;
+    width: 100%;
+    flex-direction: column;
+    height: 100%;
+}
+
+.verify-email-logo {
+    position: relative;
+    width: 146px;
+    top: 15.1%;
+}
+
+.verify-email-subcontainer {
+    position: relative;
+    top: 14.7%;
+    justify-content: center;
+
+}
+
+.verify-email-icon {
+    width: 195px;
+    padding: 100px 0 0 0;
+}
+
+.verify-email-header {
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 36px;
+    line-height: 44px;
+    /* identical to box height, or 122% */
+
+    display: flex;
+    align-items: center;
+
+    color: #000000;
+    padding-bottom: 20px;
+}
+
+.verify-email-subheader {
+    /* Title 2 */
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 22px;
+    color: #4D4D4D;
+    padding-bottom: 28px;
+}
+
+.verify-email-resend {
+    /* Label 1 */
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+
+    display: flex;
+    align-items: center;
+    /* Text - Secondary */
+    color: #4D4D4D;
+}
+
+.verify-email-resent-link {
+    padding-left: 5px;
+    /* Primary */
+    color: #009EE2;
+    text-decoration: none;
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 20px;
+    /* identical to box height, or 143% */
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    text-align: right;
+    text-decoration: none;
+}
+
+.verify-email-footer {
+    /* Label 1 */
+    display: flex;
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+
+    /* Text - Primary */
+    flex-direction: column;
+    color: #111111;
+
+    position: absolute;
+    top: 84.2%;
+}
+
+.verify-email-footer-row {
+    display: flex;
+    flex-direction: row;
+    padding-bottom: 20px;
+}
+
+.verify-email-footer-feedback-link {
+    padding-left: 5px;
+    /* Primary */
+    color: #009EE2;
+    text-decoration: none;
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 20px;
+    /* identical to box height, or 143% */
+
+    display: flex;
+    align-items: center;
+    text-align: right;
+}
+
+.verify-email-footer-rights-line {
+    display: flex;
+    flex-direction: row;
+    padding-bottom: 12px;
+}
+
+.footer-term-links {
+    display: flex;
+    flex-direction: row;
+    column-gap: 8px;
+}
+
+.footer-term-links-link {
+    /* Primary */
+    color: #009EE2;
+    text-decoration: none;
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 20px;
+    /* identical to box height, or 143% */
+
+    display: flex;
+    align-items: center;
+    text-align: right;
+
+    cursor: pointer;
+}
+
+/* Mobile CSS */
+.verify-email-close-icon-mobile{
+    position: relative;
+    float: right;
+    right: 2%;
+    top: 2%;
+    cursor: pointer;
+}
+
+.verify-email-container-mobile {
+    display: flex;
+
+    padding-left: 6.1%;
+    padding-right: 6.1%;
+    padding-top: 3.2%;
+}
+
+.verify-email-subcontainer-mobile {
+    display: flex;
+    top: 29.8%;
+}
+
+.verify-email-icon-mobile {
+    width: 195px;
+    padding: 14% 0 0 0;
+}
+
+
+.verify-email-header-mobile {
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 32px;
+    /* identical to box height, or 133% */
+
+    display: flex;
+    align-items: center;
+
+    color: #000000;
+    padding-bottom: 20px;
+}
+
+.verify-email-subheader-mobile {
+    /* Title 2 */
+
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 22px;
+
+    /* Text - Secondary */
+    color: #4D4D4D;
+    padding-bottom: 28px;
+}
+
+.verify-email-resend-mobile {
+    /* Label 1 */
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+
+    display: flex;
+    align-items: center;
+    /* Text - Secondary */
+    color: #4D4D4D;
+}
+
+.verify-email-resent-link-mobile {
+    padding-left: 5px;
+    /* Primary */
+    color: #009EE2;
+    text-decoration: none;
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 20px;
+    /* identical to box height, or 143% */
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    text-align: right;
+    text-decoration: none;
+}
+
+.verify-email-footer-mobile {
+    flex-direction: column;
+    color: #111111;
+    position: absolute;
+    bottom: 10px;
+}
+
+.verify-email-footer-row-mobile {
+    display: flex;
+    flex-direction: row;
+    padding-bottom: 12px;
+
+    /* Label 1 */
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    /* identical to box height, or 143% */
+
+    display: flex;
+    align-items: center;
+
+    /* Text - Primary */
+
+    color: #111111;
+}
+
+.verify-email-footer-feedback-link-mobile {
+    padding-left: 5px;
+    /* Primary */
+    color: #009EE2;
+    text-decoration: none;
+    font-family: 'Rubik';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 20px;
+    /* identical to box height, or 143% */
+
+    display: flex;
+    align-items: center;
+    text-align: right;
+}
+
+.verify-email-footer-rights-line-mobile {
+    display: flex;
+    flex-direction: row;
+    padding-bottom: 4px;
+
+    /* Label 2 */
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 17px;
+
+    /* Text - Tertiary */
+    color: #7A7A7A;
+}
+
+.footer-term-links-mobile {
+    display: flex;
+    flex-direction: row;
+    column-gap: 8px;
+}
+
+.footer-term-links-link-mobile {
+    /* Primary */
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 17px;
+
+    text-align: center;
+    text-decoration: none;
+    /* Primary */
+    color: #009EE2;
+
+    padding-right: 20px;
+}

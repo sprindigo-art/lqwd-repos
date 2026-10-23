@@ -1,0 +1,34 @@
+# Nothing Yocto-generated belongs in this repo - it is enormous.
+# The Yocto workspace lives at /vm/yocto on the build server, outside this
+# tree, so these are belt-and-braces.
+#
+# Patterns are anchored with a leading slash on purpose. An unanchored "lnd"
+# would also match meta-embedded-lnd/recipes-lnd/lnd/, silently dropping the
+# recipe from the repo.
+/poky/
+/layers/
+/build/
+/downloads/
+/sstate-cache/
+/tmp/
+/artifacts/
+/toolchain/
+/src/
+
+# Build output, wherever it lands.
+*.wic
+*.wic.bz2
+*.wic.bmap
+*.rootfs.*
+*.tar.bz2
+*.tar.xz
+*.manifest
+
+# Local secrets / per-host overrides
+*.local.conf
+local.env
+
+# Testbed runtime data: VPN private keys, client profiles, lnd wallet.
+/testbed/lnd/bin/
+/testbed/.env
+*.ovpn

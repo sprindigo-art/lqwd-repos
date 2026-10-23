@@ -1,0 +1,58 @@
+/* NOC Light — daylight ops variant
+   Same contract as default.css: navy is structure, severity is state.
+   Severity colors darkened for contrast on light surfaces. */
+:root {
+  /* Surfaces */
+  --color-bg: #eef1f7;
+  --color-surface: #ffffff;
+  --color-surface-2: #f4f7fc;
+  --color-border: #d8dfeb;
+  --color-border-strong: #b9c5da;
+
+  /* Brand (structural only) */
+  --color-navy: #1a3c79;
+  --color-navy-bright: #2c5cb4;
+  --color-navy-glow: rgba(26, 60, 121, 0.15);
+
+  /* Text — darkened scale: light surfaces eat contrast, especially at mono text-xs */
+  --color-text: #0d1626;
+  --color-text-muted: #34435e;
+  --color-text-faint: #5a6880;
+
+  /* Severity — darkened for light backgrounds */
+  --color-critical: #d92638;
+  --color-critical-dim: rgba(217, 38, 56, 0.08);
+  --color-warn: #8f5d00;
+  --color-warn-dim: rgba(143, 93, 0, 0.09);
+  --color-ok: #0b8a51;
+  --color-ok-dim: rgba(11, 138, 81, 0.08);
+  --color-stale: #5d6a80;
+  --color-stale-dim: rgba(107, 118, 137, 0.10);
+  --color-pending: #2c5cb4;
+
+  /* Typography (unchanged) */
+  --font-display: "Saira Semi Condensed", "Archivo", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", "JetBrains Mono", monospace;
+  --font-body: "Inter", system-ui, sans-serif;
+  --text-xs: 0.72rem;
+  --text-sm: 0.85rem;
+  --text-base: 1rem;
+  --text-lg: 1.15rem;
+  --text-xl: 1.35rem;
+  --text-2xl: 1.7rem;
+
+  /* Spacing (unchanged) */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+
+  /* Shape (unchanged) */
+  --radius-sm: 3px;
+  --radius-md: 6px;
+  --radius-lg: 10px;
+
+  --shadow-panel: 0 1px 2px rgba(22, 32, 47, 0.06), 0 4px 16px rgba(22, 32, 47, 0.07);
+}

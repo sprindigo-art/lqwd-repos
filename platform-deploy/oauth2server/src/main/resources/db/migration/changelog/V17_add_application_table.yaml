@@ -1,0 +1,71 @@
+databaseChangeLog:
+  - changeSet:
+      id: add_application_table
+      validCheckSum: ANY
+      author: femi
+      changes:
+        - createTable:
+            tableName: application
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  constraints:
+                    primaryKey: true
+                    primaryKeyName: applicationPK
+              - column:
+                  name: company_address
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: company_name
+                  type: VARCHAR(255)
+              - column:
+                  name: company_url
+                  type: VARCHAR(255)
+              - column:
+                  name: contact_email
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: contact_name
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: contact_phone
+                  type: VARCHAR(20)
+              - column:
+                  name: country_code
+                  type: VARCHAR(2)
+              - column:
+                  name: current_solution
+                  type: TEXT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: date_created
+                  type: TIMESTAMP WITHOUT TIME ZONE
+              - column:
+                  name: date_modified
+                  type: TIMESTAMP WITHOUT TIME ZONE
+              - column:
+                  name: goal
+                  type: TEXT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: has_kyc
+                  type: BOOLEAN
+                  constraints:
+                    nullable: false
+              - column:
+                  name: product_info
+                  type: TEXT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: zip_code
+                  type: VARCHAR(10)

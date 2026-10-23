@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/head::header_main(~{::title}, ~{::link})">
+  <title>Application Page</title>
+  <link th:href="@{/assets/css/authentication/form-1.css}"  rel="stylesheet" type="text/css" />
+  <link rel="stylesheet" type="text/css" th:href="@{/assets/css/forms/theme-checkbox-radio.css}" />
+  <link th:href="@{assets/css/widgets/modules-widgets.css}" rel="stylesheet" type="text/css"/>
+  <link rel="stylesheet" type="text/css" th:href="@{/assets/css/forms/switches.css}"/>
+  <link rel="stylesheet" type="text/css" th:href="@{/assets/css/components/custom-modal.css}"/>
+  <link th:href="@{/assets/css/elements/popover.css}" rel="stylesheet" type="text/css" />
+  <link rel="stylesheet" type="text/css" th:href="@{/plugins/animate/animate.css}"/>
+  <link th:href="@{/assets/css/scrollspyNav.css}" rel="stylesheet" type="text/css" />
+  <link th:href="@{/plugins/apex/apexcharts.css}" rel="stylesheet" type="text/css"/>
+  <link th:href="@{/assets/css/users/account-setting.css}" rel="stylesheet" type="text/css" />
+  <link th:href="@{/plugins/dropify/dropify.min.css}" rel="stylesheet" type="text/css" />
+  <link th:href="@{assets/css/elements/popover.css}" rel="stylesheet" type="text/css" />
+  <link rel="stylesheet" type="text/css" th:href="@{plugins/animate/animate.css}">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+  <script th:src='|https://www.google.com/recaptcha/api.js?render=${@captchaSettings.getSite()}|'></script>
+  <style>
+    a{
+      cursor: pointer !important;
+    }
+  </style>
+</head>
+<body class="form">
+  <div class="form-container">
+    <div class="form-form">
+      <div class="form-form-wrap" style="max-width: 100% !important;">
+        <div class="form-container">
+          <div class="form-content">
+            <h2 class="pt-5">Business Application</h2>
+            <p class="signup-link" style="margin-bottom: 30px !important;">New Here? <a id="login_a_beta" th:href="@{/beta}" >Sign Up for Our Beta!</a> Existing User? <a id="application-page_a_login" th:href="@{/login}" >Login Here!</a></p>
+            <form class="text-left">
+              <div class="form" id="application">
+                <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <input autocomplete="off" id="application-page_txt_company-name" name="companyName" placeholder="Company Name" type="text" class="form-control" required>
+                  </div>
+                  <div class="form-group col-md-6">
+                    <input id="application-page_txt_contact_name" name="contactName" type="text" autocomplete="off" placeholder="Contact Name" class="form-control" required>
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <input id="application-page_txt_email" name="contactEmail" type="email" autocomplete="off" placeholder="Contact Email" class="form-control" required>
+                  </div>
+                  <div class="form-group col-md-6">
+                    <input id="application-page_txt_phone-number" name="contactPhone" type="text" autocomplete="off" placeholder="Contact Phone" class="form-control" required>
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <input id="application-page_txt_address" name="companyAddress" type="text" autocomplete="off" placeholder="Address" class="form-control" required>
+                  </div>
+                  <div class="form-group col-md-2">
+                    <input id="application-page_txt_country" name="countryCode" type="text" autocomplete="off" placeholder="CA" class="form-control" required>
+                  </div>
+                  <div class="form-group col-md-4">
+                    <input id="application-page_txt_postal_code" name="zipCode" type="text" autocomplete="off" placeholder="Postal" class="form-control" required>
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <input id="application-page_url_company_url" name="companyUrl" type="url" autocomplete="off" placeholder="Company Website" class="form-control" pattern="https://.*" required>
+                  </div>
+                  <div class="form-row form-group col-md-6">
+                    <div class="col-10">
+                      <span>Do you have a KYC / AML Policy?</span>
+                    </div>
+                    <div class="col-2">
+                      <label class="switch s-primary s-icons s-outline s-outline-default">
+                        <input type="checkbox" id="application-page_chk_policy" required/>
+                        <span class="slider round"></span>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group col-md-12">
+                    <textarea id="application-page_txt_product-info" name="productInfo" type="textarea" autocomplete="off" placeholder="Product/Platform Information" class="form-control"></textarea>
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group col-md-12">
+                    <textarea id="application-page_txt_solution" name="currentSolution" type="textarea" autocomplete="off" placeholder="Current Solutions (Outside of LN)" class="form-control"></textarea>
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group col-md-12">
+                    <textarea id="application-page_txt_goal" name="goal" type="textarea" autocomplete="off" placeholder="What is your goal? (identify setup/integration/onboarding)" class="form-control"></textarea>
+                  </div>
+                </div>
+                <div class="d-sm-flex justify-content-between">
+                  <div class="field-wrapper">
+                    <button id="application-page_btn_submit" type="submit" class="btn btn-primary btn-lg" value="">
+                      Submit
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </form>
+            <p class="terms-conditions" style="margin-top: 40px !important; max-width: 100% !important;">
+              © 2021 All Rights Reserved. <a id="registration_a_lqwd" href="https://lqwdfintech.com">LQwD Financial Corp</a>.
+              <a id="registration_a_cookie" th:href="@{/cookies}">Cookie Preferences</a>,
+              <a id="registration_a_privacy" th:href="@{/privacy}">Privacy</a>, and
+              <a id="registration_a_terms" th:href="@{/terms}">Terms</a>.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-image">
+      <div class="l-image">
+      </div>
+    </div>
+  </div>
+  <!-- END MAIN CONTAINER -->
+  <div th:replace="layout/footer::footer_main(~{::script})">
+    <script th:src="@{plugins/dropify/dropify.min.js}"></script>
+    <script th:src="@{plugins/blockui/jquery.blockUI.min.js}"></script>
+    <script th:src="@{assets/js/components/ui-accordions.js}"></script>
+    <script th:src="@{assets/js/authentication/form-1.js}"></script>
+    <script th:src="@{js/application_page/application_page.js}"></script>
+    <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
+    <script th:src="'https://maps.googleapis.com/maps/api/js?key='+${@environment.getProperty('google.places.key')}+'&callback=initAutocomplete&libraries=places&v=weekly'" async></script>
+   <script>
+      let autocomplete;
+      let address1Field;
+      let postalField;
+      let countryField;
+
+      function initAutocomplete() {
+        address1Field = document.querySelector("#application-page_txt_address");
+        countryField = document.querySelector("#application-page_txt_country");
+        postalField = document.querySelector("#application-page_txt_postal_code");
+        // Create the autocomplete object, restricting the search predictions to
+        // addresses in the US and Canada.
+        autocomplete = new google.maps.places.Autocomplete(address1Field, {
+          componentRestrictions: { country: ["us", "ca"] },
+          fields: ["address_components", "geometry"],
+          types: ["address"],
+        });
+        address1Field.focus();
+        // When the user selects an address from the drop-down, populate the
+        // address fields in the form.
+        autocomplete.addListener("place_changed", fillInAddress);
+      }
+
+      function fillInAddress() {
+        // Get the place details from the autocomplete object.
+        const place = autocomplete.getPlace();
+        let address1 = "";
+        let postcode = "";
+        let country = "";
+
+        for (const component of place.address_components) {
+          const componentType = component.types[0];
+          switch (componentType) {
+            case "street_number": {
+              address1 = `${component.long_name} ${address1}`;
+              break;
+            }
+
+            case "route": {
+              address1 += component.short_name;
+              break;
+            }
+
+            case "postal_code": {
+              postcode = `${component.long_name}${postcode}`;
+              break;
+            }
+
+            case "postal_code_suffix": {
+              postcode = `${postcode}-${component.long_name}`;
+              break;
+            }
+            case "locality":
+              address1 += ` ${component.long_name}`;
+              break;
+            case "administrative_area_level_1": {
+              address1 += ` ${component.short_name}`;
+              break;
+            }
+            case "country":
+              country = component.short_name;
+              break;
+          }
+        }
+
+        address1Field.value = address1;
+        postalField.value = postcode;
+        countryField.value = country;
+      }
+    </script>
+  </div>
+</body>
+</html>

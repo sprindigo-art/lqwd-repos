@@ -1,0 +1,79 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lndap
+  namespace: microservice
+  labels:
+    app: lndap
+spec:
+  selector:
+    matchLabels:
+      app: lndap
+  template:
+    metadata:
+      labels:
+        app: lndap
+    spec:
+      containers:
+        - name: lndap
+          image: '514063904685.dkr.ecr.us-west-2.amazonaws.com/lndap:dev-$BUILD_NUMBER'
+          ports:
+            - containerPort: 8590
+          env:
+            - name: ACTIVE_PROFILE
+              value: "develop"
+
+            - name: SASL_CONFIG
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: SASL_CONFIG
+
+            - name: KEY_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: KEY_PASSWORD
+
+            - name: KEY_STORE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: KEY_STORE_PASSWORD
+
+            - name: TRUST_STORE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: TRUST_STORE_PASSWORD
+
+            - name: AUTH_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: AUTH_USERNAME
+
+            - name: AUTH_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: AUTH_PASSWORD
+
+            - name: AUTH_GRANT_TYPE
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: AUTH_GRANT_TYPE
+
+          resources:
+            limits:
+              memory: "2048Mi"
+              cpu: "2000m"
+
+      volumes:
+        - name: secret
+          secret:
+            secretName: secret
+      imagePullSecrets:
+        - name: ecr-token
+

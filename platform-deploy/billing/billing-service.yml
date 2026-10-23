@@ -1,0 +1,17 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: billing
+  namespace: microservice
+  labels:
+    app: billing
+spec:
+  ports:
+    - name: default
+      protocol: TCP
+      port: 8790
+      targetPort: 8790
+  selector:
+    app: billing
+  type: ClusterIP
+  sessionAffinity: None
